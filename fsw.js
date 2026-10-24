@@ -2,7 +2,7 @@ self.addEventListener('install',function(){self.skipWaiting();});
 self.addEventListener('activate',function(e){e.waitUntil(self.clients.claim());});
 self.addEventListener('push',function(e){
  e.waitUntil(fetch('https://touchline-push.wardyboy11.workers.dev/latest',{cache:'no-store'}).then(function(r){return r.json();}).catch(function(){return {title:'Wigan Junior Latics U15 Blues',body:'Open the page for the latest news.',url:'/family.html'};}).then(function(m){
-  return self.registration.showNotification(m.title||'Wigan Junior Latics U15 Blues',{body:m.body||'',icon:'coach/icon-192.png',badge:'coach/badge.png',data:{url:m.url||'/family.html'},tag:'latics-alert',renotify:true});
+  return self.registration.showNotification(m.title||'Wigan Junior Latics U15 Blues',{body:m.body||'',icon:'icon-192.png',badge:'badge.png',data:{url:m.url||'/family.html'},tag:'latics-alert',renotify:true});
  }));
 });
 self.addEventListener('notificationclick',function(e){
