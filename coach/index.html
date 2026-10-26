@@ -239,6 +239,25 @@ function takeShare(){try{var q=new URLSearchParams(location.search);if(!(q.has('
 document.addEventListener('input',function(e){var t=e.target;if(!t||!t.id||t.id.indexOf('vt')!==0)return;var ov=view.vt||(view.vt={});if(t.id==='vtname')ov.name=t.value;if(t.id==='vtgame')ov.id=t.value;var tp=$('#vttpl'),pv=$('#vtprev');if(pv)pv.textContent=vtFill(tp?tp.value:'',ov.name,ov.id);});
 document.addEventListener('change',function(e){if(e.target&&e.target.id==='vtgame'){var ov=view.vt||(view.vt={});ov.id=e.target.value;var tp=$('#vttpl'),pv=$('#vtprev');if(pv)pv.textContent=vtFill(tp?tp.value:'',ov.name,ov.id);}});
 function vtMsg(){var ov=view.vt||{},tp=$('#vttpl');return vtFill(tp?tp.value:S.settings.vtTpl,(($('#vtname')||{}).value)||ov.name,(($('#vtgame')||{}).value)||ov.id);}
+
+var REFSEED=[
+ {name:'Jake Howard',role:'Referee secretary, BBDFL',phone:'07999316068',notes:'Not a referee. He is the referee secretary. Contact him about referee appointments and problems.'},
+ {name:'Alex',role:'Referee, Bolton and Bury league',phone:'07486575966',notes:'Saved in phone as Alex Ref Bolton N Bury League.'},
+ {name:'Chris Van Geffen',role:'Referee',phone:'07871311357',notes:''},
+ {name:'Dan Lawson',role:'Referee',phone:'07821234465',notes:''},
+ {name:'Dan (saved as Ref Dan)',role:'Referee',phone:'07938179249',notes:'Check whether this is the same Dan as Dan Lawson.'},
+ {name:'Dave Long',role:'Referee',phone:'07951103540',notes:''},
+ {name:'Joe',role:'Referee',phone:'07526092413',notes:''}];
+function refsList(){var st=S.settings;if(!st.refsSeed){st.refs=(st.refs||[]).concat(REFSEED.map(function(r){return {id:uid(),name:r.name,role:r.role,phone:r.phone,email:'',notes:r.notes,at:Date.now()};}));st.refsSeed=1;touch('settings',st);}return st.refs||[];}
+function telOf(p){var d=String(p||'').replace(/[^0-9+]/g,'');if(d.indexOf('+')===0)return d;if(d.indexOf('00')===0)return '+'+d.slice(2);if(d.charAt(0)==='0')return '+44'+d.slice(1);return d;}
+function vRefs(){
+ var L=refsList().slice().sort(function(a,b){var x=/secretary/i.test(a.role)?0:1,y=/secretary/i.test(b.role)?0:1;return x-y||String(a.name).localeCompare(String(b.name));});
+ var ed=view.rfEdit&&L.filter(function(r){return r.id===view.rfEdit;})[0]||{};
+ var h=intro('Referee contacts for you and Deano. Add more as we get to know them. Coaches only.')+'<h2 style="margin:6px 0">Referees</h2><p class="small muted">Coaches only. Phone numbers never show on the parents page or in the visiting teams guide. Check a referee is happy to be saved here before you add him.</p>';
+ h+=L.length?'<div class="list">'+L.map(function(r){var t=telOf(r.phone);return '<div class="card" style="margin:8px 0"><div style="display:flex;align-items:center;gap:8px"><b class="grow" style="font-size:17px">'+esc(r.name)+'</b><span class="tag">'+esc(/secretary/i.test(r.role)?'Secretary':'Referee')+'</span></div><div class="small muted">'+esc(r.role||'')+'</div>'+(r.phone?'<div style="margin-top:4px">'+esc(r.phone)+'</div>':'')+(r.email?'<div class="small">'+esc(r.email)+'</div>':'')+(r.notes?'<div class="small muted" style="margin-top:4px;white-space:pre-wrap">'+esc(r.notes)+'</div>':'')+'<div class="row wrap2" style="margin-top:10px">'+(t?'<a class="btn grow" href="tel:'+esc(t)+'">Call</a><a class="btn grow" target="_blank" rel="noopener" href="https://wa.me/'+esc(t.replace('+',''))+'">WhatsApp</a>':'')+(r.email?'<a class="btn grow" href="mailto:'+esc(r.email)+'">Email</a>':'')+'</div><div class="row wrap2" style="margin-top:8px"><button class="btn sm grow" data-act="rfEdit" data-id="'+r.id+'">Edit</button><button class="btn sm bad grow" data-act="rfDel" data-id="'+r.id+'">Remove</button></div></div>';}).join('')+'</div>':'<p class="small muted">No referees saved yet.</p>';
+ h+='<div class="card"><h3>'+(ed.id?'Edit referee':'Add a referee')+'</h3><label>Name</label><input id="rfn" value="'+esc(ed.name||'')+'" placeholder="For example Dave Long"><label>Role or league</label><input id="rfr" value="'+esc(ed.role||'Referee')+'" placeholder="Referee, BBDFL"><label>Phone</label><input id="rfp" inputmode="tel" value="'+esc(ed.phone||'')+'" placeholder="07..."><label>Email (optional)</label><input id="rfe" inputmode="email" value="'+esc(ed.email||'')+'"><label>Notes (optional)</label><textarea id="rfno" style="min-height:60px" placeholder="For example: good with the lads, usually does Saturday mornings">'+esc(ed.notes||'')+'</textarea><div class="row wrap2" style="margin-top:10px"><button class="btn pri grow" data-act="rfSave" data-id="'+(ed.id||'')+'">'+(ed.id?'Save changes':'Add referee')+'</button>'+(ed.id?'<button class="btn grow" data-act="rfCancel">Cancel</button>':'')+'</div></div>';
+ return h;
+}
 var HOMEADDR='Orrell St James ARLFC, Bankes Avenue, Orrell, Wigan WN5 8HU',TRAINADDR="St Peter's Catholic High School, Howards Lane, Orrell WN5 8NU";
 function newMatch(){var s=S.settings;return {id:uid(),opp:'',date:isoToday(),ko:'10:30',ha:'H',venue:'',addr:HOMEADDR,comp:'League',formation:'4231',half:s.half||35,avail:{},lineup:{},status:'plan',period:1,clock:{acc:0,running:false,t0:0},stints:{},events:[],ratings:{},notes:'',lastWin:0,updatedAt:0};}
 function isoToday(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
@@ -289,8 +308,8 @@ function paintStatus(){var el=$('#st');if(!el)return;var n=Object.keys(S.dirty).
 
 /* ---------- views ---------- */
 function header(){return '<header><img src="'+BADGE+'" alt=""><h1>Touchline</h1><span class="sp"></span><button class="pill" data-act="ps" aria-label="Sunlight mode">Sun</button><button class="pill" id="st" data-act="sync"></button></header>';}
-var GRP={today:['today'],match:['match'],team:['squad','lab','stats','admin'],train:['plan','att','board'],comms:['hub','ask','more']};
-var GNAME={squad:'Squad',lab:'Builder',stats:'Stats',admin:'Welfare',plan:'Plan',att:'Attendance',board:'Board',hub:'Hub',ask:'Ask',more:'More'};
+var GRP={today:['today'],match:['match'],team:['squad','lab','stats','admin'],train:['plan','att','board'],comms:['hub','refs','ask','more']};
+var GNAME={squad:'Squad',lab:'Builder',stats:'Stats',admin:'Welfare',plan:'Plan',att:'Attendance',board:'Board',hub:'Hub',refs:'Referees',ask:'Ask',more:'More'};
 function grpOf(t){for(var g in GRP)if(GRP[g].indexOf(t)>-1)return g;return 'today';}
 function ico(n){var P={home:'<path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>',cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/>',ball:'<circle cx="12" cy="12" r="9"/><path d="M12 7l4 3-1.5 5h-5L8 10z"/>',img:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M21 16l-5-5-8 9"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-3.5 3-5 7-5s7 1.5 7 5"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14c3 0 5 1.5 5 4"/>',clip:'<rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h6M9 14h6"/>',chat:'<path d="M4 5h16v11H9l-5 4z"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'};return '<svg viewBox="0 0 24 24" aria-hidden="true">'+(P[n]||'')+'</svg>';}
 function tabs(){var T=[['today','Today','clock'],['match','Match','ball'],['squad','Team','users'],['plan','Train','clip'],['hub','Comms','chat']];var cg=grpOf(view.tab);return '<nav class="tabs" aria-label="Main">'+T.map(function(t){var on=!view.mid&&grpOf(t[0])===cg;return '<button aria-label="'+t[1]+'" class="'+(on?'on':'')+'" data-act="tab" data-v="'+t[0]+'">'+ico(t[2])+'<span>'+t[1]+'</span></button>';}).join('')+'</nav>';}
@@ -301,7 +320,7 @@ function render(keepScroll){try{document.body.classList.toggle('ps',localStorage
  loadPhotos();
  var body;
  if(view.mid&&M(view.mid)){var m=M(view.mid);body=m.status==='plan'?vPlan(m):(m.status==='done'?vDone(m):vLive(m));}
- else body=view.tab==='today'?vToday():subnav()+(view.tab==='squad'?vSquad():view.tab==='lab'?vLab():view.tab==='plan'?vSession():view.tab==='hub'?vHub():view.tab==='ask'?vAsk():view.tab==='stats'?vStats():view.tab==='more'?vMore():view.tab==='admin'?vAdmin():view.tab==='att'?vAtt():view.tab==='board'?vBoard():vMatches());
+ else body=view.tab==='today'?vToday():subnav()+(view.tab==='squad'?vSquad():view.tab==='lab'?vLab():view.tab==='plan'?vSession():view.tab==='hub'?vHub():view.tab==='refs'?vRefs():view.tab==='ask'?vAsk():view.tab==='stats'?vStats():view.tab==='more'?vMore():view.tab==='admin'?vAdmin():view.tab==='att'?vAtt():view.tab==='board'?vBoard():vMatches());
  r.innerHTML=header()+body+((!view.mid&&(view.tab==='today'||view.tab==='hub'))?SPONC():'')+tabHelp()+tabs();paintStatus();if(!view.mid&&view.tab==='board')bInit();if(!view.mid&&view.tab==='lab')labAfter();if(keepScroll)window.scrollTo(0,y);
 }
 function vLogin(){return '<div class="login"><img src="'+BADGE+'" alt="Wigan Junior Latics"><h1 style="margin:14px 0 4px">Touchline</h1><p class="muted">Coaches only. Enter your code.</p><div class="card"><input id="code" type="password" autocomplete="off" placeholder="Coach code" style="text-align:center"><button class="btn pri block" style="margin-top:12px" data-act="login">Open</button><p class="small muted" id="lerr"></p></div>'+SPONC()+'</div>';}
@@ -853,6 +872,10 @@ var ACT={
  logout:function(){if(Object.keys(S.dirty).length&&!confirm('Some changes have not synced yet. Sign out anyway?'))return;CODE='';lsSet(CKEY,'');S=blank();persist();render();},
  sync:function(){sync(true);},
  vtFromMatch:function(d){view.vt={name:'',id:d.id};setMid(null);view.tab='hub';render();window.scrollTo(0,0);},
+ rfSave:function(d){var n=($('#rfn')||{}).value.trim();if(!n){toast('Add a name');return;}var a=refsList(),o=d.id&&a.filter(function(r){return r.id===d.id;})[0];if(!o){o={id:uid(),at:Date.now()};a.push(o);}o.name=n.slice(0,60);o.role=($('#rfr').value||'').trim().slice(0,80);o.phone=($('#rfp').value||'').trim().slice(0,24);o.email=($('#rfe').value||'').trim().slice(0,80);o.notes=($('#rfno').value||'').trim().slice(0,400);S.settings.refs=a;view.rfEdit='';touch('settings',S.settings);toast('Saved');render(true);},
+ rfEdit:function(d){view.rfEdit=d.id;render(true);window.scrollTo(0,document.body.scrollHeight);},
+ rfCancel:function(){view.rfEdit='';render(true);},
+ rfDel:function(d){S.settings.refs=(S.settings.refs||[]).filter(function(r){return r.id!==d.id;});touch('settings',S.settings);render(true);},
  vtSave:function(){var tp=$('#vttpl');if(!tp||tp.value.indexOf('[LINK]')<0){toast('Keep [LINK] in the wording');return;}S.settings.vtTpl=tp.value.slice(0,900);touch('settings',S.settings);toast('Saved for both of us');},
  vtWa:function(){window.open('https://wa.me/?text='+encodeURIComponent(vtMsg()),'_blank');},
  vtCopy:function(){var t=vtMsg();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){toast('Copied');});}else{toast('Copy not available here');}},
