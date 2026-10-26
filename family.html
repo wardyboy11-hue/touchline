@@ -147,7 +147,22 @@ function mget(id,cb){if(mcache[id]){cb(mcache[id]);return;}call('f.media.get',{i
 function fillImgs(){var n=document.querySelectorAll('img[data-mid]');for(var i=0;i<n.length;i++){(function(el){mget(el.getAttribute('data-mid'),function(u){if(u)el.src=u;});})(n[i]);}}
 function startCar(){clearInterval(carT);var el=document.getElementById('carimg');if(!el||carIds.length<1)return;var show=function(){var e2=document.getElementById('carimg');if(!e2)return;var id=carIds[carI%carIds.length];carI++;mget(id,function(u){var e3=document.getElementById('carimg');if(e3&&u){e3.style.opacity=0;setTimeout(function(){e3.src=u;e3.style.opacity=1;},250);}});};show();carT=setInterval(show,4500);}
 function carousel(){var im=X().media.filter(function(m){return m.kind==='image'&&!m.pending;});if(im.length<3){carIds=[];return '';}carIds=im.map(function(m){return m.id;});return '<div class="car"><img id="carimg" alt="Team pictures"></div>';}
+var CLIPW='https://touchline-clips.wardyboy11.workers.dev',CL=null,CLbusy=false,clTab='all';
+function clipsBlock(){
+ if(CL===null){if(!CLbusy){CLbusy=true;call('f.clips').then(function(d){CL=d;CLbusy=false;r();}).catch(function(){CL={rows:[],pt:'',na:1};CLbusy=false;r();});}return '<div class="card"><p class="small muted">Loading highlights</p></div>';}
+ var rows=CL.rows||[];
+ if(!rows.length)return '<div class="card"><h2>Highlights</h2><p class="small muted">Clips of our games and training drills will show here. Tim posts them once he has checked them.</p></div>';
+ var fl=clTab==='all'?rows:rows.filter(function(c){return c.kind===clTab;});
+ var h='<h2 style="margin:12px 0 6px">Highlights</h2><div class="row">'+[['all','All'],['match','Matches'],['drill','Training']].map(function(t){return '<button class="btn'+(clTab===t[0]?' pri':'')+'" onclick="clTab=\''+t[0]+'\';r()">'+t[1]+'</button>';}).join('')+'</div>';
+ h+='<div class="mgrid">'+fl.map(function(c){return '<div class="mi lk" style="cursor:pointer" onclick="clipPlay(\''+c.id+'\')"><div style="font-size:34px;line-height:1">&#9654;</div><b class="small">'+esc(c.title)+'</b><div class="small muted">'+(c.kind==='drill'?'Training':'Match')+(c.game?', '+esc(c.game):'')+'</div></div>';}).join('')+'</div>';
+ return h+'<h2 style="margin:16px 0 6px">Photos and links</h2>';}
+function clipPlay(id,retry){var d=document.createElement('div');d.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(0,0,0,.92);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:12px';
+ d.innerHTML='<video controls playsinline autoplay style="max-width:100%;max-height:78vh;border-radius:12px;background:#000"></video><button class="btn pri" style="min-width:140px">Close</button>';
+ var v=d.querySelector('video');v.src=CLIPW+'/v/'+id+'?t='+(CL&&CL.pt||'');
+ v.onerror=function(){if(retry)return;call('f.clips').then(function(x){CL=x;d.remove();clipPlay(id,1);}).catch(function(){});};
+ d.querySelector('button').onclick=function(){v.pause();d.remove();};document.body.appendChild(d);}
 function mediaTab(){var h=intro('Team photos and links from parents, players and coaches. Tap a picture to see it bigger. Add your own: Tim or Deano check it first, then it shows for everyone. Only share pictures you have permission to share, and leave children\'s names out of the title.');
+ h+=clipsBlock();
  var all=X().media;
  h+=all.length?'<div class="mgrid">'+all.map(function(m){return m.kind==='image'?'<div class="mi"><img data-mid="'+m.id+'" alt="'+esc(m.title)+'" onclick="bigImg(this)">'+(m.pending?'<span class="tag" style="position:absolute;left:6px;top:6px;background:#7a3b00">Waiting</span>':'')+'<div class="small">'+esc(m.title)+'</div></div>':'<div class="mi lk"><a href="'+esc(m.link)+'" target="_blank" rel="noopener">'+esc(m.title)+'</a>'+(m.pending?'<br><span class="tag" style="background:#7a3b00">Waiting</span>':'')+'<div class="small muted">'+esc(m.who)+'</div></div>';}).join('')+'</div>':'<div class="card"><p class="muted">Nothing here yet. Be the first to add something.</p></div>';
  if(mMsg){h+='<div class="card"><p class="small">'+esc(mMsg)+'</p></div>';}
