@@ -449,7 +449,33 @@ function coachPhotoBox(id,label){var u=view.photos[id];return '<div class="row" 
 
 /* ---------- hub ---------- */
 function calUrl(){return API+'?cal='+encodeURIComponent(CODE);}
-function loadHub(force){if(!CODE||API.indexOf('__'+'API__')>-1)return;if(!force&&now()-view.hub.at<20000)return;view.hub.at=now();Promise.all([call('ev.list'),call('lift.list'),call('media.list'),call('voice.list').catch(function(){return {rows:[],na:1};})]).then(function(r){view.hub.ev=r[0].rows||[];view.hub.lifts=r[1].rows||[];view.hub.media=r[2].rows||[];view.hub.voice=r[3].rows||[];view.hub.voiceNa=!!r[3].na;render(true);fillCm();}).catch(function(e){view.hub.err=e.message;});}
+var CLIPW='https://touchline-clips.wardyboy11.workers.dev';
+function clipCard(){var H=view.hub,rows=H.clips||[];
+ var h='<div class="card"><h3>Highlights</h3>';
+ if(H.clipNa)return h+'<p class="small muted">Highlights are not switched on yet.</p></div>';
+ h+='<p class="small muted">Match highlights and training drills for families and lads. Nothing shows to them until you watch it and press Publish. Export from the Insta360 app as MP4 at 1080p, under 95MB (about two minutes).</p>';
+ h+='<input id="clt" placeholder="Title, no names (e.g. Goal v Leigh)"><select id="clk" style="margin-top:8px"><option value="match">Match highlight</option><option value="drill">Training drill</option></select><input id="clg" placeholder="Game or session (optional)" style="margin-top:8px">';
+ h+='<label class="small" style="display:flex;gap:8px;margin-top:8px;align-items:flex-start"><input type="checkbox" id="clc" style="width:auto;margin-top:3px"><span>Every child shown has parent or carer permission for filming and sharing on this page. I have checked the clip is positive and has no names or private details.</span></label>';
+ h+='<label class="btn block pri" style="margin-top:8px">Choose a video<input type="file" accept="video/mp4,video/quicktime,video/*" data-clup="1" style="display:none"></label><div id="clp" class="small muted" style="margin-top:6px"></div>';
+ if(rows.length){h+='<h4 style="margin:14px 0 4px">Your clips</h4>'+rows.map(function(c){var st=c.status==='live'?'Live':c.status==='draft'?'Waiting for you':c.status==='hidden'?'Hidden':'Upload not finished';return '<div class="it" style="cursor:default;flex-wrap:wrap"><div class="grow small"><b>'+esc(c.title)+'</b> <span class="muted">'+(c.kind==='drill'?'Training':'Match')+', '+st+'</span></div>'+(c.status==='pending'?'':'<button class="btn sm" data-act="clPlay" data-id="'+c.id+'">Watch</button>')+(c.status==='live'?'<button class="btn sm" data-act="clSet" data-id="'+c.id+'" data-s="hidden">Hide</button>':(c.status==='pending'?'':'<button class="btn sm pri" data-act="clSet" data-id="'+c.id+'" data-s="live">Publish</button>'))+'<button class="btn sm bad" data-act="clDel" data-id="'+c.id+'">Delete</button></div>';}).join('');}
+ return h+'</div>';}
+function clipPlay(id,pt,retry){var d=document.createElement('div');d.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(0,0,0,.92);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:12px';
+ d.innerHTML='<video controls playsinline autoplay style="max-width:100%;max-height:78vh;border-radius:12px;background:#000"></video><button class="btn pri" style="min-width:140px">Close</button>';
+ var v=d.querySelector('video');v.src=CLIPW+'/v/'+id+'?t='+pt;
+ v.onerror=function(){if(retry)return;call('clip.list').then(function(x){view.hub.cpt=x.pt;d.remove();clipPlay(id,x.pt,1);}).catch(function(){});};
+ d.querySelector('button').onclick=function(){v.pause();d.remove();};document.body.appendChild(d);}
+function clipUp(f,inp){var ti=$('#clt').value.trim(),p=$('#clp');
+ if(ti.length<3){toast('Add a title first');inp.value='';return;}
+ if(!$('#clc').checked){toast('Tick the permission box first');inp.value='';return;}
+ if(f.size>95*1048576){p.textContent='That file is '+Math.round(f.size/1048576)+'MB. Export at 1080p and keep it under 95MB.';inp.value='';return;}
+ p.textContent='Getting ready';
+ call('clip.new',{title:ti,kind:$('#clk').value,game:$('#clg').value,consent:true}).then(function(n){
+  return new Promise(function(res,rej){var x=new XMLHttpRequest();x.open('PUT',CLIPW+'/u/'+n.id+'?t='+n.up);x.setRequestHeader('Content-Type','video/mp4');
+   x.upload.onprogress=function(e){if(e.lengthComputable){var q=$('#clp');if(q)q.textContent='Uploading '+Math.round(e.loaded/e.total*100)+'%. Keep this screen open.';}};
+   x.onload=function(){if(x.status>=200&&x.status<300)res(n);else rej(new Error('Upload failed ('+x.status+'). Try again on wifi.'));};
+   x.onerror=function(){rej(new Error('Upload failed. Check your signal and try again.'));};x.send(f);});
+ }).then(function(n){return call('clip.done',{id:n.id});}).then(function(){toast('Uploaded. Watch it, then press Publish.');loadHub(true);}).catch(function(e){var q=$('#clp');if(q)q.textContent=e.message;loadHub(true);});}
+function loadHub(force){if(!CODE||API.indexOf('__'+'API__')>-1)return;if(!force&&now()-view.hub.at<20000)return;view.hub.at=now();Promise.all([call('ev.list'),call('lift.list'),call('media.list'),call('voice.list').catch(function(){return {rows:[],na:1};}),call('clip.list').catch(function(){return {rows:[],na:1};})]).then(function(r){view.hub.ev=r[0].rows||[];view.hub.lifts=r[1].rows||[];view.hub.media=r[2].rows||[];view.hub.voice=r[3].rows||[];view.hub.voiceNa=!!r[3].na;view.hub.clips=(r[4]&&r[4].rows)||[];view.hub.cpt=(r[4]&&r[4].pt)||'';view.hub.clipNa=!!(r[4]&&r[4].na);render(true);fillCm();}).catch(function(e){view.hub.err=e.message;});}
 
 var cmc={};
 function fillCm(){var n=document.querySelectorAll('img[data-cm]');for(var i=0;i<n.length;i++){(function(el){var id=el.getAttribute('data-cm');if(cmc[id]){el.src=cmc[id];return;}call('media.get',{id:id}).then(function(d){cmc[id]=d.dataUrl;el.src=d.dataUrl;}).catch(function(){});})(n[i]);}}
@@ -543,6 +569,7 @@ function vHub(){
 
  o+=voiceCoachCard();
  var mp=(h.media||[]).filter(function(m){return m.status==='pending';}),mpub=(h.media||[]).filter(function(m){return m.status==='published';});
+ o+=clipCard();
  o+='<div class="card"><h3>Media</h3><p class="small muted">Photos and links from parents and players wait here until you or Deano approve them. Check there are no names, faces without permission or anything unkind. '+mpub.length+' published.</p>'+(mp.length?mp.map(function(m){return '<div class="it" style="cursor:default;flex-wrap:wrap"><div class="grow small"><b>'+esc(m.title)+'</b> <span class="muted">from '+esc(m.who)+'</span>'+(m.kind==='link'?'<div><a href="'+esc(m.link)+'" target="_blank" rel="noopener">'+esc(m.link.slice(0,50))+'</a></div>':'<img class="mth" data-cm="'+m.id+'" alt="">')+'</div><button class="btn sm pri" data-act="mdSet" data-id="'+m.id+'" data-s="published">Approve</button><button class="btn sm bad" data-act="mdSet" data-id="'+m.id+'" data-s="removed">Remove</button></div>';}).join(''):'<p class="small muted">Nothing waiting.</p>')+'<h4 style="margin:14px 0 4px">Add one yourself (shows straight away)</h4><input id="mdt" placeholder="Title"><label class="btn block" style="margin-top:8px">Choose a picture<input type="file" accept="image/*" data-mup="1" style="display:none"></label><input id="mdl" placeholder="or a link https://" style="margin-top:8px"><button class="btn block" style="margin-top:8px" data-act="mdLink">Add link</button>'+(mpub.length?'<h4 style="margin:14px 0 4px">Published</h4>'+mpub.map(function(m){return '<div class="it" style="cursor:default"><div class="grow small">'+esc(m.title)+' <span class="muted">('+m.kind+', '+esc(m.who)+')</span></div><button class="btn sm bad" data-act="mdSet" data-id="'+m.id+'" data-s="removed">Remove</button></div>';}).join(''):'')+'</div>';
  var cs=S.settings.contacts||[];
  o+='<div class="card"><h3>Club contacts</h3><p class="small muted">Shown on the family Contacts page. Email opens their email app. FA, safeguarding and local FA details are already built in.</p>'+cs.map(function(c){return '<div class="it" style="cursor:default"><div class="grow small"><b>'+esc(c.n)+'</b> '+esc(c.r||'')+'<div class="muted">'+esc(c.e||'')+' '+esc(c.p||'')+'</div></div><button class="btn sm bad" data-act="ctDel" data-id="'+c.id+'">Remove</button></div>';}).join('')+'<input id="ctn" placeholder="Name" style="margin-top:8px"><input id="ctr" placeholder="Role, for example Club Welfare Officer" style="margin-top:8px"><input id="cte" placeholder="Email" style="margin-top:8px"><input id="ctp" placeholder="Phone (optional)" style="margin-top:8px"><button class="btn block" style="margin-top:8px" data-act="ctAdd">Add contact</button></div>';
@@ -835,6 +862,9 @@ var ACT={
   m.events.pop();saveM(m);render(true);},
 
 
+ clPlay:function(d){clipPlay(d.id,view.hub.cpt);},
+ clSet:function(d){call('clip.set',{id:d.id,status:d.s}).then(function(){toast(d.s==='live'?'Published':'Hidden');loadHub(true);}).catch(function(e){toast(e.message);});},
+ clDel:function(d){if(!confirm('Delete this clip for good?'))return;call('clip.del',{id:d.id}).then(function(x){return fetch(CLIPW+'/u/'+d.id+'?t='+x.up,{method:'DELETE'}).catch(function(){});}).then(function(){toast('Deleted');loadHub(true);}).catch(function(e){toast(e.message);});},
  mdSet:function(d){call('media.set',{id:d.id,status:d.s}).then(function(){toast(d.s==='published'?'Approved':'Removed');loadHub(true);}).catch(function(e){toast(e.message);});},
  mdLink:function(){call('media.save',{kind:'link',title:$('#mdt').value,link:$('#mdl').value,who:'Coaches'}).then(function(){toast('Added');loadHub(true);}).catch(function(e){toast(e.message);});},
  ctAdd:function(){var n=$('#ctn').value.trim(),e=$('#cte').value.trim();if(!n||(!e&&!$('#ctp').value.trim())){toast('Add a name and an email or phone');return;}(S.settings.contacts=S.settings.contacts||[]).push({id:uid(),n:n.slice(0,60),r:$('#ctr').value.trim().slice(0,60),e:e.slice(0,80),p:$('#ctp').value.trim().slice(0,30)});touch('settings',S.settings);sync();render(true);toast('Added');},
@@ -1311,6 +1341,7 @@ document.addEventListener('change',function(e){var t=e.target,m=cur();
 });
 document.addEventListener('change',function(e){var t=e.target;
  if(t.dataset&&t.dataset.hub==='welcome'){S.settings.welcome=t.value.slice(0,400);touch('settings',S.settings);toast('Saved');}
+ else if(t.dataset&&t.dataset.clup&&t.files&&t.files[0]){clipUp(t.files[0],t);}
  else if(t.dataset&&t.dataset.mup&&t.files&&t.files[0]){var tt=($('#mdt')||{}).value||'';if(tt.trim().length<3){toast('Add a title first');t.value='';return;}mediaJpeg(t.files[0],function(u){call('media.save',{kind:'image',title:tt,dataUrl:u,who:'Coaches'}).then(function(){toast('Added');loadHub(true);}).catch(function(er){toast(er.message);});});}
  else if(t.dataset&&t.dataset.upl&&t.files&&t.files[0]){var id=t.dataset.upl;smallJpeg(t.files[0],function(u){call('photo.set',{playerId:id,dataUrl:u}).then(function(){view.photos[id]=u;try{localStorage.setItem('tl.photos',JSON.stringify(view.photos));}catch(x){}toast('Picture saved');render(true);if(view.sheet&&view.sheet.id===id)playerSheet(id);}).catch(function(er){toast(er.message);});});}
 });
