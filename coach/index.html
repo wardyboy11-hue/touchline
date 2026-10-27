@@ -138,7 +138,7 @@ body.ps .vi,body.ps .intro,body.ps .ans,body.ps details.pl{background:#fff;color
 .pitch svg.lk{pointer-events:none;z-index:1}.pitch svg.lk line{stroke-width:2.8;stroke-linecap:round;opacity:.9;vector-effect:non-scaling-stroke}.pitch svg.lk line.g{stroke:#4ADE80}.pitch svg.lk line.a{stroke:#FFB81C}.pitch svg.lk line.r{stroke:#F87171}
 .dgg{position:fixed;transform:translate(-50%,-50%);z-index:99;pointer-events:none;opacity:.92}.dgg .av,.dgg .num{width:54px;height:54px;border-radius:50%;box-shadow:0 6px 16px rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center}
 
-.sesssplit{display:grid;gap:12px;grid-template-columns:1fr}.sessbox iframe{width:100%;height:70vh;border:0;border-radius:10px;background:#111}@media(min-width:900px){.sesssplit{grid-template-columns:1.3fr 1fr}.sessbox iframe{height:78vh}}
+.ansvg{width:100%;max-height:60vh;border-radius:10px;display:block;margin-top:8px}.anent{transition:transform 1.1s ease-in-out}.sesssplit{display:grid;gap:12px;grid-template-columns:1fr}.sessbox iframe{width:100%;height:70vh;border:0;border-radius:10px;background:#111}@media(min-width:900px){.sesssplit{grid-template-columns:1.3fr 1fr}.sessbox iframe{height:78vh}}
 </style>
 </head>
 <body>
@@ -323,7 +323,7 @@ function render(keepScroll){try{document.body.classList.toggle('ps',localStorage
  var body;
  if(view.mid&&M(view.mid)){var m=M(view.mid);body=m.status==='plan'?vPlan(m):(m.status==='done'?vDone(m):vLive(m));}
  else body=view.tab==='today'?vToday():subnav()+(view.tab==='squad'?vSquad():view.tab==='lab'?vLab():view.tab==='plan'?vSession():view.tab==='sess'?vSessLib():view.tab==='hub'?vHub():view.tab==='refs'?vRefs():view.tab==='ask'?vAsk():view.tab==='stats'?vStats():view.tab==='more'?vMore():view.tab==='admin'?vAdmin():view.tab==='att'?vAtt():view.tab==='board'?vBoard():vMatches());
- r.innerHTML=header()+body+((!view.mid&&(view.tab==='today'||view.tab==='hub'))?SPONC():'')+tabHelp()+tabs();paintStatus();if(!view.mid&&view.tab==='board')bInit();if(!view.mid&&view.tab==='lab')labAfter();if(keepScroll)window.scrollTo(0,y);
+ r.innerHTML=header()+body+((!view.mid&&(view.tab==='today'||view.tab==='hub'))?SPONC():'')+tabHelp()+tabs();paintStatus();if(!view.mid&&view.tab==='board')bInit();if(!view.mid&&view.tab==='lab')labAfter();if(!view.mid&&view.tab==='sess'){anStop();anInit();}if(keepScroll)window.scrollTo(0,y);
 }
 function vLogin(){return '<div class="login"><img src="'+BADGE+'" alt="Wigan Junior Latics"><h1 style="margin:14px 0 4px">Touchline</h1><p class="muted">Coaches only. Enter your code.</p><div class="card"><input id="code" type="password" autocomplete="off" placeholder="Coach code" style="text-align:center"><button class="btn pri block" style="margin-top:12px" data-act="login">Open</button><p class="small muted" id="lerr"></p></div>'+SPONC()+'</div>';}
 function SPONC(){return '<div class="spn"><span>Proudly sponsored by</span><img src="mfs.png" alt="MFS Limited"></div>';}
@@ -677,6 +677,59 @@ function sessAll(){var m={},L=[];SESS_SEED.concat(S.settings.sessions||[]).forEa
 function driveId(u){var m=String(u).match(/\/d\/([\w-]{20,})/)||String(u).match(/[?&]id=([\w-]{20,})/);return m?m[1]:'';}
 function sessUser(id){var L=S.settings.sessions=S.settings.sessions||[];var r=L.filter(function(x){return x.id===id;})[0];if(!r){r={id:id,files:[],videos:[]};L.push(r);}return r;}
 function vidEmbed(u){var y=u.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/))([\w-]{11})/);if(y)return 'https://www.youtube-nocookie.com/embed/'+y[1]+'?rel=0&playsinline=1';var v=u.match(/vimeo\.com\/(?:video\/)?(\d+)/);if(v)return 'https://player.vimeo.com/video/'+v[1];var d=driveId(u);if(d&&/drive\.google/.test(u))return 'https://drive.google.com/file/d/'+d+'/preview';return '';}
+
+/* ---------- animated drills (generic labels only, no names, safe for a public page) ---------- */
+var ANIMS=[
+{id:'a28p1',sess:'s20261028',title:'Practice one: Spring Gates (Deano leads)',w:25,h:35,
+ gates:[[10.5,14.5,0],[10.5,14.5,35]],chan:[5,20],
+ ents:[['R1','r',9,26],['R2','r',16,26],['R3','r',2.5,8],['R4','r',22.5,8],['Y1','y',12.5,18],['Y2','y',8,12],['Y3','y',2.5,30],['Y4','y',22.5,30],['b','b',12.5,19.5]],
+ steps:[
+ {c:'Yellow have it. Wide lads wait high and wide in their lane.',mv:{b:[12.5,21]}},
+ {c:'Red win it. SECURE it. Ball under your foot.',mv:{R1:[11.5,21.5],b:[11.5,21],Y1:[12.5,24],Y2:[9,17]}},
+ {c:'SUPPORT: nearest lad gets beyond him. SPRING: wide lads go now.',mv:{R2:[14,12],R3:[5.5,12],R4:[19.5,12],Y3:[6,26],Y4:[19,26]}},
+ {c:'Pass forward. Eight seconds to score is double. Through a wide lad is treble.',mv:{b:[14,12.5],R2:[13.5,8]}},
+ {c:'Score through the gate. Now reset: win it, secure it, go.',mv:{b:[12.5,-0.6],R2:[12.5,3]}}]},
+{id:'a28p2a',sess:'s20261028',title:'Practice two A: Win It, Spring',w:55,h:35,
+ goals:[[0,14.5,20.5],[55,14.5,20.5]],mid:27.5,mats:[[31,5],[31,17.5],[31,30]],
+ ents:[['R1','g',2.6,17.5],['R2','r',8,11],['R3','r',8,24],['R4','r',14,17.5],['R5','r',18,17.5],['O1','r',31,5],['O2','r',31,17.5],['O3','r',31,30],
+  ['Y1','y',25,17.5],['Y2','y',22,23],['Y3','y',23,10],['Y4','y',21,29],['Y5','y',21,5],['Y6','y',44,11],['Y7','y',44,24],['Y8','g',52.4,17.5],['b','b',25.6,17.5]],
+ steps:[
+ {c:'Yellow attack, five against four and the keeper.',mv:{Y1:[20,17.5],b:[20.6,17.5],Y3:[19,11],Y2:[18,23]}},
+ {c:'Red win it. SECURE it. First touch away from pressure.',mv:{R4:[16.5,17.5],b:[16.5,17.5]}},
+ {c:'THREE seconds. SUPPORT: nearest lad gets beyond the ball.',mv:{R5:[22,13],Y1:[17,17.5],Y3:[17,14],Y2:[17,21]}},
+ {c:'Pass forward to an outlet on the mats.',mv:{b:[31,17.5]}},
+ {c:'SPRING: wide lads go the moment we win it.',mv:{O1:[40,9],O3:[40,26],R5:[30,14],Y6:[46,14],Y7:[46,22]}},
+ {c:'Goal inside eight seconds is worth two.',mv:{b:[36,12],O1:[43,10]}},
+ {c:'Finish.',mv:{b:[54.4,16.5],Y8:[52.4,15]}}]},
+{id:'a28p2b',sess:'s20261028',title:'Practice two B: Lose It, Fight It',w:55,h:35,
+ goals:[[0,14.5,20.5],[55,14.5,20.5]],mid:27.5,mats:[[31,5],[31,17.5],[31,30]],
+ ents:[['R1','g',2.6,17.5],['R2','r',8,11],['R3','r',8,24],['R4','r',14,17.5],['R5','r',18,17.5],['O1','r',31,5],['O2','r',31,17.5],['O3','r',31,30],
+  ['Y1','y',13,9],['Y2','y',14,22],['Y3','y',21,29],['Y4','y',21,5],['Y5','y',22,17.5],['Y6','y',44,11],['Y7','y',44,24],['Y8','g',52.4,17.5],['b','b',11,10.6]],
+ steps:[
+ {c:'Yellow lose it. Nobody puts their arms up. Nobody turns away.',mv:{b:[9.4,11],R2:[9.4,11]}},
+ {c:'FIVE. Nearest two squeeze the ball for five seconds.',mv:{Y1:[11,10.5],Y2:[11.5,15]}},
+ {c:'Everyone else gets goal side, behind the ball.',mv:{Y3:[26,26],Y4:[26,9],Y5:[27,17.5]}},
+ {c:'Win it back and your next goal is double.',mv:{b:[11.2,10.8],Y1:[11.2,10.8]}},
+ {c:'Spring. Go.',mv:{b:[1,17.5],Y1:[5,14],Y2:[6,20]}}]}
+];
+var anS={id:null,i:0,tm:null,play:false};
+function anOf(id){return ANIMS.filter(function(a){return a.id===id;})[0];}
+function anSvg(a){var w=a.w,h=a.h,o='<svg class="ansvg" viewBox="-4 -4 '+(w+8)+' '+(h+8)+'" role="img" aria-label="'+esc(a.title)+'"><rect x="-4" y="-4" width="'+(w+8)+'" height="'+(h+8)+'" fill="#e6eee1"/><rect x="0" y="0" width="'+w+'" height="'+h+'" fill="#2f7d3a" stroke="#fff" stroke-width=".25"/>';
+ if(a.mid)o+='<line x1="'+a.mid+'" y1="0" x2="'+a.mid+'" y2="'+h+'" stroke="#fff" stroke-width=".2"/>';
+ (a.goals||[]).forEach(function(g){o+='<rect x="'+(g[0]===0?-1.2:g[0])+'" y="'+g[1]+'" width="1.2" height="'+(g[2]-g[1])+'" fill="none" stroke="#fff" stroke-width=".3"/>';});
+ (a.gates||[]).forEach(function(g){o+='<polygon points="'+g[0]+','+(g[2]+0.6)+' '+(g[0]+0.9)+','+(g[2]+0.6)+' '+(g[0]+0.45)+','+(g[2]-0.4)+'" fill="#6a3d9a"/><polygon points="'+g[1]+','+(g[2]+0.6)+' '+(g[1]+0.9)+','+(g[2]+0.6)+' '+(g[1]+0.45)+','+(g[2]-0.4)+'" fill="#6a3d9a"/>';});
+ (a.chan||[]).forEach(function(x){o+='<line x1="'+x+'" y1="0" x2="'+x+'" y2="'+h+'" stroke="#fff" stroke-width=".18" stroke-dasharray="1 1"/>';});
+ (a.mats||[]).forEach(function(m){o+='<rect x="'+(m[0]-1.5)+'" y="'+(m[1]-1.5)+'" width="3" height="3" fill="#f2b705" opacity=".55"/>';});
+ a.ents.forEach(function(e){var id=e[0],t=e[1],x=e[2],y=e[3];if(t==='b')o+='<g id="an_'+id+'" class="anent" style="transform:translate('+x+'px,'+y+'px)"><circle r=".65" fill="#fff" stroke="#111" stroke-width=".15"/></g>';else{var col=t==='r'?'#d62828':t==='y'?'#f2b705':'#2a9d8f';o+='<g id="an_'+id+'" class="anent" style="transform:translate('+x+'px,'+y+'px)"><circle r="1.35" fill="'+col+'" stroke="#fff" stroke-width=".2"/><text y=".5" text-anchor="middle" font-size="1.3" font-weight="700" fill="'+(t==='y'?'#111':'#fff')+'">'+id+'</text></g>';}});
+ return o+'</svg>';}
+function anPos(a,upto){var P={};a.ents.forEach(function(e){P[e[0]]=[e[2],e[3]];});for(var i=0;i<=upto;i++){var m=a.steps[i].mv;for(var k in m)P[k]=m[k];}return P;}
+function anShow(i,instant){var a=anOf(anS.id);if(!a)return;anS.i=Math.max(0,Math.min(a.steps.length-1,i));var P=anPos(a,anS.i);for(var k in P){var el=document.getElementById('an_'+k);if(el){el.style.transition=instant?'none':'transform 1.1s ease-in-out';el.style.transform='translate('+P[k][0]+'px,'+P[k][1]+'px)';}}
+ var c=$('#an_cap');if(c)c.textContent=(anS.i+1)+' of '+a.steps.length+': '+a.steps[anS.i].c;}
+function anStop(){clearTimeout(anS.tm);anS.play=false;var b=$('#an_pp');if(b)b.textContent='Play';}
+function anTick(){var a=anOf(anS.id);if(!a||!anS.play)return;if(anS.i>=a.steps.length-1){anStop();return;}anShow(anS.i+1);anS.tm=setTimeout(anTick,2400);}
+function anCard(sid){var L=ANIMS.filter(function(a){return a.sess===sid;});if(!L.length)return '';var a=anOf(anS.id)&&anOf(anS.id).sess===sid?anOf(anS.id):L[0];anS.id=a.id;
+ return '<div class="card"><h3 style="margin-top:0">Watch it move</h3><p class="small muted">Labels are shirt style codes only, no names. R is red, Y is yellow, green is the keeper.</p><div class="chips">'+L.map(function(x){return '<button class="chip'+(x.id===a.id?' on':'')+'" data-act="anPick" data-id="'+x.id+'">'+esc(x.title)+'</button>';}).join('')+'</div><div id="an_box">'+anSvg(a)+'</div><p id="an_cap" style="font-weight:700;margin:8px 0"></p><div class="row"><button class="btn" data-act="anPrev">Back</button><button class="btn pri" id="an_pp" data-act="anPlay">Play</button><button class="btn" data-act="anNext">Next</button><button class="btn" data-act="anRestart">Restart</button></div></div>';}
+function anInit(){if(anS.id&&$('#an_box')){anShow(0,true);}}
 function vSessLib(){
  var L=sessAll(),td=isoToday(),sel=L.filter(function(x){return x.id===view.sid;})[0];
  var h=intro('Every session plan in one place. Coaches only. Pick a session, read the plan and watch the clips beside it.');
@@ -688,7 +741,7 @@ function vSessLib(){
  var fi=view.sf!=null&&sel.files[view.sf]?view.sf:0,f=sel.files[fi],vi=view.sv,vd=vi!=null&&sel.videos[vi]?sel.videos[vi]:null,em=vd?vidEmbed(vd.u):'';
  h+='<button class="btn" data-act="sessBack">All sessions</button><h2 style="margin:8px 0 2px">'+esc(sel.title)+'</h2><p class="small muted">'+niceDate(sel.date)+(sel.block?' &middot; '+esc(sel.block):'')+'</p>';
  h+='<div class="chips" style="margin:8px 0">'+sel.files.map(function(g,i){return '<button class="chip'+(i===fi?' on':'')+'" data-act="sessFile" data-i="'+i+'">'+esc(g.n)+'</button>';}).join('')+'</div>';
- h+='<div class="sesssplit">';
+ h+=anCard(sel.id);h+='<div class="sesssplit">';
  h+='<div class="card sessbox">'+(f?'<iframe title="'+esc(f.n)+'" src="https://drive.google.com/file/d/'+esc(f.id)+'/preview" allow="autoplay" loading="lazy"></iframe><a class="btn block" style="margin-top:8px" data-ext="1" target="_blank" rel="noopener" href="https://drive.google.com/file/d/'+esc(f.id)+'/view">Open full screen</a>':'<p class="muted">No plan filed yet.</p>')+'<p class="small muted">If it shows a sign in box, sign in with the Google account the file is shared with.</p></div>';
  h+='<div class="card sessbox"><h3 style="margin-top:0">Clips and animations</h3>'+(em?'<iframe title="Clip" src="'+esc(em)+'" allow="autoplay; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe>':'<p class="muted">'+(sel.videos.length?'Pick a clip below.':'No clips yet. Paste a YouTube, Vimeo or Drive video link below.')+'</p>')+sel.videos.map(function(v,i){return '<div class="it"><div class="grow"><b>'+esc(v.n||'Clip')+'</b></div><button class="btn'+(i===vi?' pri':'')+'" data-act="sessVid" data-i="'+i+'">Play</button><button class="btn" data-act="sessVidDel" data-i="'+i+'">Remove</button></div>';}).join('')+'<label>Add a clip</label><input id="nv_n" placeholder="Name, e.g. Spring Gates demo"><input id="nv_u" placeholder="Paste link" style="margin-top:6px"><button class="btn block" style="margin-top:8px" data-act="sessVidAdd">Add clip</button></div>';
  h+='</div><div class="card"><h3 style="margin-top:0">Add another file to this session</h3><input id="nf_n" placeholder="Name, e.g. Set up on the pitch"><input id="nf_l" placeholder="Drive link" style="margin-top:6px"><button class="btn block" style="margin-top:8px" data-act="sessFileAdd">Add file</button></div>';
@@ -861,8 +914,13 @@ function noteSheet(m,type){
 function cur(){return view.mid?M(view.mid):null;}
 function saveM(m){touch('match',m);}
 var ACT={
+anPick:function(d){anStop();anS.id=d.id;anS.i=0;render(true);},
+ anPlay:function(){if(anS.play){anStop();return;}anS.play=true;$('#an_pp').textContent='Pause';var a=anOf(anS.id);if(anS.i>=a.steps.length-1)anShow(0,true);setTimeout(function(){anS.tm=setTimeout(anTick,300);},50);},
+ anNext:function(){anStop();anShow(anS.i+1);},
+ anPrev:function(){anStop();anShow(anS.i-1);},
+ anRestart:function(){anStop();anShow(0,true);},
 todaySess:function(d){view.tab='sess';view.mid=null;ACT.sessOpen(d);},
- sessOpen:function(d){view.sid=d.id;view.sf=0;view.sv=null;render();window.scrollTo(0,0);},
+ sessOpen:function(d){anS.id=null;view.sid=d.id;view.sf=0;view.sv=null;render();window.scrollTo(0,0);},
  sessBack:function(){view.sid=null;render();},
  sessFile:function(d){view.sf=Number(d.i);render(true);},
  sessVid:function(d){view.sv=Number(d.i);render(true);},
