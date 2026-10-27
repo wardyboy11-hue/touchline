@@ -137,6 +137,8 @@ body.ps .vi,body.ps .intro,body.ps .ans,body.ps details.pl{background:#fff;color
 .lsl .nm{display:block;font-size:11px;font-weight:700;text-shadow:0 1px 3px #000;margin-top:2px;line-height:1.1}.lsl .chm{position:absolute;top:-6px;right:4px;min-width:18px;height:18px;border-radius:9px;font-size:10px;font-weight:800;line-height:18px;color:#0b1330}.chm.g{background:#4ADE80}.chm.a{background:#FFB81C}.chm.r{background:#F87171}
 .pitch svg.lk{pointer-events:none;z-index:1}.pitch svg.lk line{stroke-width:2.8;stroke-linecap:round;opacity:.9;vector-effect:non-scaling-stroke}.pitch svg.lk line.g{stroke:#4ADE80}.pitch svg.lk line.a{stroke:#FFB81C}.pitch svg.lk line.r{stroke:#F87171}
 .dgg{position:fixed;transform:translate(-50%,-50%);z-index:99;pointer-events:none;opacity:.92}.dgg .av,.dgg .num{width:54px;height:54px;border-radius:50%;box-shadow:0 6px 16px rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center}
+
+.sesssplit{display:grid;gap:12px;grid-template-columns:1fr}.sessbox iframe{width:100%;height:70vh;border:0;border-radius:10px;background:#111}@media(min-width:900px){.sesssplit{grid-template-columns:1.3fr 1fr}.sessbox iframe{height:78vh}}
 </style>
 </head>
 <body>
@@ -308,8 +310,8 @@ function paintStatus(){var el=$('#st');if(!el)return;var n=Object.keys(S.dirty).
 
 /* ---------- views ---------- */
 function header(){return '<header><img src="'+BADGE+'" alt=""><h1>Touchline</h1><span class="sp"></span><button class="pill" data-act="ps" aria-label="Sunlight mode">Sun</button><button class="pill" id="st" data-act="sync"></button></header>';}
-var GRP={today:['today'],match:['match'],team:['squad','lab','stats','admin'],train:['plan','att','board'],comms:['hub','refs','ask','more']};
-var GNAME={squad:'Squad',lab:'Builder',stats:'Stats',admin:'Welfare',plan:'Plan',att:'Attendance',board:'Board',hub:'Hub',refs:'Referees',ask:'Ask',more:'More'};
+var GRP={today:['today'],match:['match'],team:['squad','lab','stats','admin'],train:['plan','sess','att','board'],comms:['hub','refs','ask','more']};
+var GNAME={squad:'Squad',lab:'Builder',stats:'Stats',admin:'Welfare',plan:'Plan',sess:'Sessions',att:'Attendance',board:'Board',hub:'Hub',refs:'Referees',ask:'Ask',more:'More'};
 function grpOf(t){for(var g in GRP)if(GRP[g].indexOf(t)>-1)return g;return 'today';}
 function ico(n){var P={home:'<path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>',cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/>',ball:'<circle cx="12" cy="12" r="9"/><path d="M12 7l4 3-1.5 5h-5L8 10z"/>',img:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M21 16l-5-5-8 9"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-3.5 3-5 7-5s7 1.5 7 5"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14c3 0 5 1.5 5 4"/>',clip:'<rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h6M9 14h6"/>',chat:'<path d="M4 5h16v11H9l-5 4z"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'};return '<svg viewBox="0 0 24 24" aria-hidden="true">'+(P[n]||'')+'</svg>';}
 function tabs(){var T=[['today','Today','clock'],['match','Match','ball'],['squad','Team','users'],['plan','Train','clip'],['hub','Comms','chat']];var cg=grpOf(view.tab);return '<nav class="tabs" aria-label="Main">'+T.map(function(t){var on=!view.mid&&grpOf(t[0])===cg;return '<button aria-label="'+t[1]+'" class="'+(on?'on':'')+'" data-act="tab" data-v="'+t[0]+'">'+ico(t[2])+'<span>'+t[1]+'</span></button>';}).join('')+'</nav>';}
@@ -320,7 +322,7 @@ function render(keepScroll){try{document.body.classList.toggle('ps',localStorage
  loadPhotos();
  var body;
  if(view.mid&&M(view.mid)){var m=M(view.mid);body=m.status==='plan'?vPlan(m):(m.status==='done'?vDone(m):vLive(m));}
- else body=view.tab==='today'?vToday():subnav()+(view.tab==='squad'?vSquad():view.tab==='lab'?vLab():view.tab==='plan'?vSession():view.tab==='hub'?vHub():view.tab==='refs'?vRefs():view.tab==='ask'?vAsk():view.tab==='stats'?vStats():view.tab==='more'?vMore():view.tab==='admin'?vAdmin():view.tab==='att'?vAtt():view.tab==='board'?vBoard():vMatches());
+ else body=view.tab==='today'?vToday():subnav()+(view.tab==='squad'?vSquad():view.tab==='lab'?vLab():view.tab==='plan'?vSession():view.tab==='sess'?vSessLib():view.tab==='hub'?vHub():view.tab==='refs'?vRefs():view.tab==='ask'?vAsk():view.tab==='stats'?vStats():view.tab==='more'?vMore():view.tab==='admin'?vAdmin():view.tab==='att'?vAtt():view.tab==='board'?vBoard():vMatches());
  r.innerHTML=header()+body+((!view.mid&&(view.tab==='today'||view.tab==='hub'))?SPONC():'')+tabHelp()+tabs();paintStatus();if(!view.mid&&view.tab==='board')bInit();if(!view.mid&&view.tab==='lab')labAfter();if(keepScroll)window.scrollTo(0,y);
 }
 function vLogin(){return '<div class="login"><img src="'+BADGE+'" alt="Wigan Junior Latics"><h1 style="margin:14px 0 4px">Touchline</h1><p class="muted">Coaches only. Enter your code.</p><div class="card"><input id="code" type="password" autocomplete="off" placeholder="Coach code" style="text-align:center"><button class="btn pri block" style="margin-top:12px" data-act="login">Open</button><p class="small muted" id="lerr"></p></div>'+SPONC()+'</div>';}
@@ -667,6 +669,30 @@ function buildBrief(){
  L.push('Please build the session to the project format. Use the Footy Coaching library first and name the source of any practice. Give Deano a named practice to lead. Include two objectives (one technical or tactical, one social or psychological), diagrams, STEP differentiation, odd number plans, coaching points, questions, and the review.');
  return L.join('\n');
 }
+
+/* ---------- coaches sessions library (coaches only, never shown to families) ---------- */
+var SESS_SEED=[{id:'s20261028',date:'2026-10-28',title:'Win It, Spring',block:'Block 3, week 2 of 6',theme:'Structure and transitions',
+ files:[{n:'Full session plan',id:'1JyN8YA-rH8BIMlr6u-zE8uK6tzDcuXUm'},{n:'Deano card (practice one)',id:'1YBMiHYMbJm6x6pGkh1HTon8wuGpmia2j'},{n:'Player sheet and parent note (post only when Tim says)',id:'14_N8gHCFI7yV6bcJWdExQnd5aNro9Q5r'}],videos:[]}];
+function sessAll(){var m={},L=[];SESS_SEED.concat(S.settings.sessions||[]).forEach(function(x){if(x.deleted)return;if(m[x.id]){var o=m[x.id];(x.files||[]).forEach(function(f){if(!o.files.some(function(g){return g.id===f.id;}))o.files.push(f);});(x.videos||[]).forEach(function(v){if(!o.videos.some(function(g){return g.u===v.u;}))o.videos.push(v);});}else{m[x.id]={id:x.id,date:x.date,title:x.title,block:x.block||'',theme:x.theme||'',files:(x.files||[]).slice(),videos:(x.videos||[]).slice()};L.push(m[x.id]);}});return L.sort(function(a,b){return a.date<b.date?1:-1;});}
+function driveId(u){var m=String(u).match(/\/d\/([\w-]{20,})/)||String(u).match(/[?&]id=([\w-]{20,})/);return m?m[1]:'';}
+function sessUser(id){var L=S.settings.sessions=S.settings.sessions||[];var r=L.filter(function(x){return x.id===id;})[0];if(!r){r={id:id,files:[],videos:[]};L.push(r);}return r;}
+function vidEmbed(u){var y=u.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/))([\w-]{11})/);if(y)return 'https://www.youtube-nocookie.com/embed/'+y[1]+'?rel=0&playsinline=1';var v=u.match(/vimeo\.com\/(?:video\/)?(\d+)/);if(v)return 'https://player.vimeo.com/video/'+v[1];var d=driveId(u);if(d&&/drive\.google/.test(u))return 'https://drive.google.com/file/d/'+d+'/preview';return '';}
+function vSessLib(){
+ var L=sessAll(),td=isoToday(),sel=L.filter(function(x){return x.id===view.sid;})[0];
+ var h=intro('Every session plan in one place. Coaches only. Pick a session, read the plan and watch the clips beside it.');
+ if(!sel){
+  h+='<h2 style="margin:6px 0">Sessions</h2><p class="small muted">Coaches only. Nothing here goes to players or parents.</p>';
+  h+=L.map(function(x){var tn=x.date===td;return '<div class="card"><div class="row"><div class="grow"><h3 style="margin:0">'+esc(x.title)+'</h3><div class="small muted">'+niceDate(x.date)+(x.block?' &middot; '+esc(x.block):'')+(tn?' &middot; <b>Tonight</b>':'')+'</div>'+(x.theme?'<div class="small">'+esc(x.theme)+'</div>':'')+'</div><button class="btn pri" data-act="sessOpen" data-id="'+esc(x.id)+'">Open</button></div></div>';}).join('');
+  h+='<div class="card"><h3 style="margin-top:0">Add a session</h3><p class="small muted">Paste the Drive link of the session PDF. Add clips on the session page afterwards.</p><label>Date</label><input type="date" id="ns_d" value="'+td+'"><label>Title</label><input id="ns_t" placeholder="e.g. Two Banks, Five Calls"><label>Block and week (optional)</label><input id="ns_b" placeholder="Block 3, week 1 of 6"><label>Drive link to the plan</label><input id="ns_l" placeholder="https://drive.google.com/file/d/..."><button class="btn pri block" style="margin-top:10px" data-act="sessAdd">Add session</button></div>';
+  return h;}
+ var fi=view.sf!=null&&sel.files[view.sf]?view.sf:0,f=sel.files[fi],vi=view.sv,vd=vi!=null&&sel.videos[vi]?sel.videos[vi]:null,em=vd?vidEmbed(vd.u):'';
+ h+='<button class="btn" data-act="sessBack">All sessions</button><h2 style="margin:8px 0 2px">'+esc(sel.title)+'</h2><p class="small muted">'+niceDate(sel.date)+(sel.block?' &middot; '+esc(sel.block):'')+'</p>';
+ h+='<div class="chips" style="margin:8px 0">'+sel.files.map(function(g,i){return '<button class="chip'+(i===fi?' on':'')+'" data-act="sessFile" data-i="'+i+'">'+esc(g.n)+'</button>';}).join('')+'</div>';
+ h+='<div class="sesssplit">';
+ h+='<div class="card sessbox">'+(f?'<iframe title="'+esc(f.n)+'" src="https://drive.google.com/file/d/'+esc(f.id)+'/preview" allow="autoplay" loading="lazy"></iframe><a class="btn block" style="margin-top:8px" data-ext="1" target="_blank" rel="noopener" href="https://drive.google.com/file/d/'+esc(f.id)+'/view">Open full screen</a>':'<p class="muted">No plan filed yet.</p>')+'<p class="small muted">If it shows a sign in box, sign in with the Google account the file is shared with.</p></div>';
+ h+='<div class="card sessbox"><h3 style="margin-top:0">Clips and animations</h3>'+(em?'<iframe title="Clip" src="'+esc(em)+'" allow="autoplay; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe>':'<p class="muted">'+(sel.videos.length?'Pick a clip below.':'No clips yet. Paste a YouTube, Vimeo or Drive video link below.')+'</p>')+sel.videos.map(function(v,i){return '<div class="it"><div class="grow"><b>'+esc(v.n||'Clip')+'</b></div><button class="btn'+(i===vi?' pri':'')+'" data-act="sessVid" data-i="'+i+'">Play</button><button class="btn" data-act="sessVidDel" data-i="'+i+'">Remove</button></div>';}).join('')+'<label>Add a clip</label><input id="nv_n" placeholder="Name, e.g. Spring Gates demo"><input id="nv_u" placeholder="Paste link" style="margin-top:6px"><button class="btn block" style="margin-top:8px" data-act="sessVidAdd">Add clip</button></div>';
+ h+='</div><div class="card"><h3 style="margin-top:0">Add another file to this session</h3><input id="nf_n" placeholder="Name, e.g. Set up on the pitch"><input id="nf_l" placeholder="Drive link" style="margin-top:6px"><button class="btn block" style="margin-top:8px" data-act="sessFileAdd">Add file</button></div>';
+ return h;}
 function vSession(){
  var p=planDraft(),b=S.settings.briefs||[];
  var h=intro('Pick a focus, add context, post the session to parents and make the brief for Claude.')+'<h2 style="margin:6px 0">Plan a session</h2><p class="small muted">Pick what you want to work on, add anything that helps, then make the brief. Shirt numbers only, no names.</p>';
@@ -835,6 +861,15 @@ function noteSheet(m,type){
 function cur(){return view.mid?M(view.mid):null;}
 function saveM(m){touch('match',m);}
 var ACT={
+todaySess:function(d){view.tab='sess';view.mid=null;ACT.sessOpen(d);},
+ sessOpen:function(d){view.sid=d.id;view.sf=0;view.sv=null;render();window.scrollTo(0,0);},
+ sessBack:function(){view.sid=null;render();},
+ sessFile:function(d){view.sf=Number(d.i);render(true);},
+ sessVid:function(d){view.sv=Number(d.i);render(true);},
+ sessAdd:function(){var t=($('#ns_t').value||'').trim(),dt=$('#ns_d').value,l=$('#ns_l').value,id=driveId(l);if(!t||!dt){toast('Add a date and title');return;}var sid='u'+dt.replace(/-/g,'')+now().toString(36),r=sessUser(sid);r.date=dt;r.title=t;r.block=($('#ns_b').value||'').trim();if(id)r.files.push({n:'Session plan',id:id});S.settings.sessions=S.settings.sessions;touch('settings',S.settings);view.sid=sid;view.sf=0;render();},
+ sessFileAdd:function(){var id=driveId($('#nf_l').value),n=($('#nf_n').value||'').trim()||'File';if(!id){toast('Paste a Drive file link');return;}var r=sessUser(view.sid);if(!r.date){var b=sessAll().filter(function(x){return x.id===view.sid;})[0];r.date=b.date;r.title=b.title;}r.files.push({n:n,id:id});touch('settings',S.settings);render(true);},
+ sessVidAdd:function(){var u=($('#nv_u').value||'').trim(),n=($('#nv_n').value||'').trim()||'Clip';if(!vidEmbed(u)){toast('Use a YouTube, Vimeo or Drive video link');return;}var r=sessUser(view.sid);if(!r.date){var b=sessAll().filter(function(x){return x.id===view.sid;})[0];r.date=b.date;r.title=b.title;}r.videos.push({n:n,u:u});touch('settings',S.settings);view.sv=sessAll().filter(function(x){return x.id===view.sid;})[0].videos.length-1;render(true);},
+ sessVidDel:function(d){var all=sessAll().filter(function(x){return x.id===view.sid;})[0],v=all.videos[Number(d.i)],r=sessUser(view.sid);r.videos=r.videos.filter(function(x){return x.u!==v.u;});if(!r.date){r.date=all.date;r.title=all.title;}touch('settings',S.settings);view.sv=null;render(true);},
  ideaNew:function(){ideaSheet('');},
  ideaEdit:function(d){ideaSheet(d.id);},
  ideaTag:function(d){var a=view.sheet.tags,i=a.indexOf(d.v);if(i>-1)a.splice(i,1);else a.push(d.v);paintTags();},
@@ -1369,6 +1404,9 @@ function vToday(){
  var nm=ms[0];
  if(nm&&nm.date===td){h+=mdCard(nm);}else if(nm){h+='<div class="card kcard"><h3 style="margin-top:0">Next match</h3><h2>'+(nm.ha==='A'?'at ':'v ')+esc(nm.opp)+(nm.pp?' (postponed)':'')+'</h2><p><b>'+niceDate(nm.date)+'</b>, '+esc(nm.ko)+(nm.venue?'<br>'+esc(nm.venue):'')+'</p><div class="row"><button class="btn pri" data-act="openMatch" data-id="'+nm.id+'">Open match</button>'+((nm.addr||nm.venue)?'<a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(nm.addr||nm.venue)+'">Directions</a>':'')+'</div></div>';}
  else h+='<div class="card"><h3 style="margin-top:0">Next match</h3><p class="muted">No match in the diary.</p></div>';
+ 
+ var ts=sessAll().filter(function(x){return x.date>=td;}).reverse()[0];
+ if(ts)h+='<div class="card"><h3 style="margin-top:0">'+(ts.date===td?"Tonight's session":'Next session')+'</h3><h2>'+esc(ts.title)+'</h2><p><b>'+niceDate(ts.date)+'</b>'+(ts.block?', '+esc(ts.block):'')+'</p><div class="row"><button class="btn pri" data-act="todaySess" data-id="'+esc(ts.id)+'">Open session plan</button></div><p class="small muted">Coaches only.</p></div>';
  var ps=(S.settings.posts||[]).filter(function(x){return x.date>=td;}).sort(function(a,b){return a.date<b.date?-1:1;})[0];
  if(ps)h+='<div class="card"><h3 style="margin-top:0">Next on the team page</h3><h2>'+esc(ps.title)+'</h2><p><b>'+niceDate(ps.date)+'</b>'+(ps.time?', '+esc(ps.time):'')+'</p><button class="btn block" data-act="tab" data-v="plan">Open plan</button></div>';
  var hb=view.hub||{},pe=(hb.ev||[]).filter(function(e){return e.status==='pending';}).length,pm=(hb.media||[]).filter(function(e){return e.status==='pending';}).length,ol=(hb.lifts||[]).length;
