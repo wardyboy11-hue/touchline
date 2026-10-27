@@ -310,8 +310,8 @@ function paintStatus(){var el=$('#st');if(!el)return;var n=Object.keys(S.dirty).
 
 /* ---------- views ---------- */
 function header(){return '<header><img src="'+BADGE+'" alt=""><h1>Touchline</h1><span class="sp"></span><button class="pill" data-act="ps" aria-label="Sunlight mode">Sun</button><button class="pill" id="st" data-act="sync"></button></header>';}
-var GRP={today:['today'],match:['match'],team:['squad','lab','stats','admin'],train:['plan','sess','lib','ig','att','board'],comms:['hub','refs','ask','more']};
-var GNAME={squad:'Squad',lab:'Builder',stats:'Stats',admin:'Welfare',plan:'Plan',sess:'Sessions',lib:'Library',ig:'Instagram',att:'Attendance',board:'Board',hub:'Hub',refs:'Referees',ask:'Ask',more:'More'};
+var GRP={today:['today'],match:['match'],team:['squad','lab','stats','admin'],train:['plan','sess','lib','ig','x','att','board'],comms:['hub','refs','ask','more']};
+var GNAME={squad:'Squad',lab:'Builder',stats:'Stats',admin:'Welfare',plan:'Plan',sess:'Sessions',lib:'Library',ig:'Instagram',x:'X posts',att:'Attendance',board:'Board',hub:'Hub',refs:'Referees',ask:'Ask',more:'More'};
 function grpOf(t){for(var g in GRP)if(GRP[g].indexOf(t)>-1)return g;return 'today';}
 function ico(n){var P={home:'<path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>',cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/>',ball:'<circle cx="12" cy="12" r="9"/><path d="M12 7l4 3-1.5 5h-5L8 10z"/>',img:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M21 16l-5-5-8 9"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-3.5 3-5 7-5s7 1.5 7 5"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14c3 0 5 1.5 5 4"/>',clip:'<rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h6M9 14h6"/>',chat:'<path d="M4 5h16v11H9l-5 4z"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'};return '<svg viewBox="0 0 24 24" aria-hidden="true">'+(P[n]||'')+'</svg>';}
 function tabs(){var T=[['today','Today','clock'],['match','Match','ball'],['squad','Team','users'],['plan','Train','clip'],['hub','Comms','chat']];var cg=grpOf(view.tab);return '<nav class="tabs" aria-label="Main">'+T.map(function(t){var on=!view.mid&&grpOf(t[0])===cg;return '<button aria-label="'+t[1]+'" class="'+(on?'on':'')+'" data-act="tab" data-v="'+t[0]+'">'+ico(t[2])+'<span>'+t[1]+'</span></button>';}).join('')+'</nav>';}
@@ -322,7 +322,7 @@ function render(keepScroll){try{document.body.classList.toggle('ps',localStorage
  loadPhotos();
  var body;
  if(view.mid&&M(view.mid)){var m=M(view.mid);body=m.status==='plan'?vPlan(m):(m.status==='done'?vDone(m):vLive(m));}
- else body=view.tab==='today'?vToday():subnav()+(view.tab==='squad'?vSquad():view.tab==='lab'?vLab():view.tab==='plan'?vSession():view.tab==='sess'?vSessLib():view.tab==='lib'?vLib():view.tab==='ig'?vIg():view.tab==='hub'?vHub():view.tab==='refs'?vRefs():view.tab==='ask'?vAsk():view.tab==='stats'?vStats():view.tab==='more'?vMore():view.tab==='admin'?vAdmin():view.tab==='att'?vAtt():view.tab==='board'?vBoard():vMatches());
+ else body=view.tab==='today'?vToday():subnav()+(view.tab==='squad'?vSquad():view.tab==='lab'?vLab():view.tab==='plan'?vSession():view.tab==='sess'?vSessLib():view.tab==='lib'?vLib():view.tab==='ig'?vIg():view.tab==='x'?vX():view.tab==='hub'?vHub():view.tab==='refs'?vRefs():view.tab==='ask'?vAsk():view.tab==='stats'?vStats():view.tab==='more'?vMore():view.tab==='admin'?vAdmin():view.tab==='att'?vAtt():view.tab==='board'?vBoard():vMatches());
  r.innerHTML=header()+body+((!view.mid&&(view.tab==='today'||view.tab==='hub'))?SPONC():'')+tabHelp()+tabs();paintStatus();if(!view.mid&&view.tab==='board')bInit();if(!view.mid&&view.tab==='lab')labAfter();if(!view.mid&&view.tab==='sess'){anStop();anInit();}if(keepScroll)window.scrollTo(0,y);
 }
 function vLogin(){return '<div class="login"><img src="'+BADGE+'" alt="Wigan Junior Latics"><h1 style="margin:14px 0 4px">Touchline</h1><p class="muted">Coaches only. Enter your code.</p><div class="card"><input id="code" type="password" autocomplete="off" placeholder="Coach code" style="text-align:center"><button class="btn pri block" style="margin-top:12px" data-act="login">Open</button><p class="small muted" id="lerr"></p></div>'+SPONC()+'</div>';}
@@ -764,6 +764,16 @@ function vIg(){
  if(cur)h+='<div class="card"><iframe class="libplay" style="height:560px" title="Instagram drill" src="https://www.instagram.com/p/'+esc(cur)+'/embed" allowfullscreen loading="lazy"></iframe></div>';
  h+=L.map(function(x){return '<div class="it"><div class="grow"><b>@'+esc(x.u==='x'?'unknown':x.u)+'</b><div class="small muted">'+esc(T[x.t])+'</div></div><button class="btn'+(x.c===cur?' pri':'')+'" data-act="igPlay" data-id="'+esc(x.c)+'">Watch</button></div>';}).join('')||'<p class="muted">None yet.</p>';
  return h;}
+function vX(){
+ if(!window.XD){if(!window.__xl){window.__xl=1;var sc=document.createElement('script');sc.src='x.js';sc.onload=function(){render(true);};document.head.appendChild(sc);}return intro('Loading X posts.')+'<p class="muted">Loading...</p>';}
+ var T=window.IGT||[],ki=view.xk!=null?view.xk:0,all=window.XD.split('|').map(function(r){var p=r.split(' ');return {c:p[0],u:p[1],t:+p[2]};}),cur=view.xc;
+ var n=[0,0,0,0,0,0,0,0,0];all.forEach(function(x){n[x.t]++;});
+ var h=intro('Drills and coaching ideas saved from X. Coaches only. Tap Watch to play it here.')+'<h2 style="margin:6px 0">X posts</h2><p class="small muted">Played through X itself and credited to the coach who posted it. Nothing is copied. Coaches only: not for players or parents.</p>';
+ if(!T.length){T=["Breaking lines and positional play","Defending","Finishing and shooting","Fitness and strength","General coaching","Goalkeeping","Passing and rondos","Transition and movement","Warm ups and games"];}
+ h+='<div class="chips">'+T.map(function(x,i){return n[i]?'<button class="chip'+(i===ki?' on':'')+'" data-act="xTopic" data-i="'+i+'">'+esc(x)+' ('+n[i]+')</button>':'';}).join('')+'</div>';
+ if(cur)h+='<div class="card"><iframe class="libplay" style="height:600px" title="X post" src="https://platform.twitter.com/embed/Tweet.html?id='+esc(cur)+'&dnt=true" allowfullscreen loading="lazy"></iframe></div>';
+ h+=all.filter(function(x){return x.t===ki;}).map(function(x){return '<div class="it"><div class="grow"><b>@'+esc(x.u)+'</b><div class="small muted">'+esc(T[x.t])+'</div></div><button class="btn'+(x.c===cur?' pri':'')+'" data-act="xPlay" data-id="'+esc(x.c)+'">Watch</button></div>';}).join('')||'<p class="muted">None yet.</p>';
+ return h;}
 function vSessLib(){
  var L=sessAll(),td=isoToday(),sel=L.filter(function(x){return x.id===view.sid;})[0];
  var h=intro('Every session plan in one place. Coaches only. Pick a session, read the plan and watch the clips beside it.');
@@ -948,7 +958,7 @@ function noteSheet(m,type){
 function cur(){return view.mid?M(view.mid):null;}
 function saveM(m){touch('match',m);}
 var ACT={
-igTopic:function(d){view.ik=Number(d.i);view.ic=null;render(true);},igPlay:function(d){view.ic=d.id;render(true);},libTopic:function(d){view.lk=Number(d.i);view.lc=null;render(true);},
+xTopic:function(d){view.xk=Number(d.i);view.xc=null;render(true);},xPlay:function(d){view.xc=d.id;render(true);},igTopic:function(d){view.ik=Number(d.i);view.ic=null;render(true);},igPlay:function(d){view.ic=d.id;render(true);},libTopic:function(d){view.lk=Number(d.i);view.lc=null;render(true);},
  libPlay:function(d){view.lc=Number(d.i);render(true);},
  libAdd:function(){var u=($('#lb_u').value||'').trim(),n=($('#lb_n').value||'').trim()||'Clip',m=u.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/))([\w-]{11})/);if(!m){toast('Use a YouTube link');return;}var L=libAll(),t=L[view.lk||0];var x=S.settings.libx=S.settings.libx||[];x.push({k:t.k,id:m[1],n:n});touch('settings',S.settings);render(true);},
  libDel:function(d){S.settings.libx=(S.settings.libx||[]).filter(function(x){return x.id!==d.id;});touch('settings',S.settings);view.lc=null;render(true);},
