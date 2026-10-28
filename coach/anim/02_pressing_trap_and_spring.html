@@ -1,0 +1,128 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Trap and Spring</title><style>:root{--bg:#0f1720;--fg:#eceff1;--mut:#90a4ae;--acc:#ff9800}body{margin:0;background:var(--bg);color:var(--fg);font-family:'Segoe UI',Arial,sans-serif}
+.wrap{max-width:1280px;margin:0 auto;padding:16px}canvas{width:100%;height:auto;display:block;border-radius:10px;background:#000}
+.ctl{display:flex;gap:8px;align-items:center;margin:10px 0;flex-wrap:wrap}button,select{background:#1c2733;color:#fff;border:1px solid #33475b;border-radius:8px;padding:10px 14px;font-size:15px}
+input[type=range]{flex:1;min-width:140px}h2{color:var(--acc);font-size:15px;letter-spacing:.06em;text-transform:uppercase;margin:22px 0 6px}ul{margin:0;padding-left:20px;line-height:1.55}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 28px}@media(max-width:800px){.grid{grid-template-columns:1fr}}body.render .wrap{padding:0;max-width:none}body.render .ctl,body.render .txt{display:none}</style></head>
+<body><div class="wrap"><canvas id="cv"></canvas>
+<div class="ctl"><button id="restart">Restart</button><button id="prev">Back</button><button id="play">Play</button><button id="next">Next step</button><button id="voice">Voice on</button><input id="bar" type="range" min="0" max="1000" value="0"><select id="speed"><option value="0.5">0.5x</option><option value="1" selected>1x</option><option value="1.5">1.5x</option></select></div>
+<div class="txt"><div class="grid"><div><h2>Set up</h2><ul><li>Blue 4 pressers (B1 to B4) plus B5 as a spare, against Red 5 (R1 to R5) and a Red keeper (KL).</li><li>Blue start in a 1 2 1 shape in Red&#x27;s half. Red start with the keeper on the ball.</li><li>A second Blue keeper (KR) defends the right hand goal.</li></ul><h2>Rules</h2><ul><li>Blue score only after winning the ball in the Red half. A goal counts double.</li><li>Red score by playing through the Blue press and getting a shot at the right hand goal.</li><li>If Red play long, Blue get a point for the first header or second ball won.</li><li>Rotate who presses first every two minutes.</li></ul><h2>How it starts and restarts</h2><ul><li>Red keeper starts with the ball and plays out to a centre back</li><li>Ball out of play: Red keeper restarts.</li><li>Blue shoot: the Red keeper restarts straight away, so Blue must reset the trap.</li></ul></div><div><h2>Coaching points</h2><ul><li>Curve the run: show the ball carrier one way and shut the pass behind you.</li><li>Wait for the trigger: a slow pass, a bad touch or a back pass to the side.</li><li>Spring as one: when the first player goes, everyone moves with him.</li><li>Win it high, then go forward at once.</li></ul><h2>Progressions</h2><ul><li>Add a Red spare player so it is 5v6 and the press must be sharper.</li><li>Count the seconds from regain to shot. Aim for under six.</li><li>Play 9v9 and award a point for every regain in the final third.</li></ul></div></div></div></div>
+<script>window.PRACTICE={"slug": "02_pressing_trap_and_spring", "theme": "Pressing", "title": "Trap and Spring", "age": "U14 / U15", "format": "5v5 plus two keepers, Blue press Red from the goal kick", "area": "50m x 36m, a goal at each end (7m wide), halfway line marked with cones", "kit": "Red and Blue bibs, keepers in a third colour, plenty of balls in each goal", "start": "Red keeper starts with the ball and plays out to a centre back", "L": 50, "W": 36, "ball": "KL", "key": [["R", "Red"], ["B", "Blue"], ["K", "Goalkeeper"], ["Y", "Neutral"]], "goals": [{"x": 50, "y": 18, "w": 7, "side": "right"}, {"x": 0, "y": 18, "w": 7, "side": "left"}], "lines": [[25, 0, 25, 36]], "cones": [[25, 0], [25, 36]], "players": [{"id": "R1", "team": "R", "x": 9, "y": 12}, {"id": "R2", "team": "R", "x": 9, "y": 24}, {"id": "R3", "team": "R", "x": 11, "y": 4}, {"id": "R4", "team": "R", "x": 11, "y": 32}, {"id": "R5", "team": "R", "x": 20, "y": 18}, {"id": "B1", "team": "B", "x": 15, "y": 18}, {"id": "B2", "team": "B", "x": 17, "y": 9}, {"id": "B3", "team": "B", "x": 17, "y": 27}, {"id": "B4", "team": "B", "x": 23, "y": 18}, {"id": "B5", "team": "B", "x": 30, "y": 18}, {"id": "KL", "team": "K", "x": 1.5, "y": 18}, {"id": "KR", "team": "K", "x": 48.5, "y": 18}], "steps": [{"dur": 13, "say": "Red keeper plays out. Blue hold a trap: B1 stands between the two centre backs.", "vo": "Red start with the keeper. Blue set a trap. B1 stands between the two centre backs, and B2 and B3 sit wide and a little back.", "moves": {"B1": [14, 18], "B4": [23, 18]}, "pass": "R1"}, {"dur": 13, "say": "B1 curves the run and shuts the pass inside. The only option is out to the full back.", "vo": "The centre back has the ball. B1 curves his run so the pass inside is shut off. The only safe pass is out to the full back.", "moves": {"B1": [10, 13], "B2": [16, 8], "B4": [22, 15]}, "pass": "R3"}, {"dur": 13, "say": "TRIGGER: the ball goes wide and slow. B2 springs, B4 slides across.", "vo": "That is the trigger. The ball goes wide and slow, so B2 springs. B4 slides across behind him, and B3 tucks in to cover the middle.", "moves": {"B2": [10, 6], "B4": [16, 13], "B3": [14, 24], "B5": [27, 18]}}, {"dur": 13, "say": "Everyone else takes a pass away. R3 is trapped against the line.", "vo": "Everybody takes a pass away. B1 blocks the pass back inside. B3 marks the next player. R3 is trapped against the touchline with nowhere to go.", "moves": {"B1": [9, 12], "B3": [12, 25], "R4": [13, 31], "R5": [19, 17]}, "pass": "B2"}, {"dur": 11, "say": "B2 wins it. First pass is forward to B4 who is already in the middle.", "vo": "B2 wins the ball high up the pitch. His first pass goes forward into B4, who was already waiting in the middle.", "moves": {"B4": [10, 17], "B1": [6, 13], "R1": [8, 15]}, "pass": "B4"}, {"dur": 10, "say": "B4 slides it to B1 who has run beyond the centre backs. B1 shoots.", "vo": "B4 slides the ball into the path of B1, who has run beyond the centre backs. B1 shoots first time.", "moves": {"B1": [4, 17], "B2": [6, 9]}, "shoot": [0, 19]}], "setup": ["Blue 4 pressers (B1 to B4) plus B5 as a spare, against Red 5 (R1 to R5) and a Red keeper (KL).", "Blue start in a 1 2 1 shape in Red's half. Red start with the keeper on the ball.", "A second Blue keeper (KR) defends the right hand goal."], "rules": ["Blue score only after winning the ball in the Red half. A goal counts double.", "Red score by playing through the Blue press and getting a shot at the right hand goal.", "If Red play long, Blue get a point for the first header or second ball won.", "Rotate who presses first every two minutes."], "restart": ["Ball out of play: Red keeper restarts.", "Blue shoot: the Red keeper restarts straight away, so Blue must reset the trap."], "points": ["Curve the run: show the ball carrier one way and shut the pass behind you.", "Wait for the trigger: a slow pass, a bad touch or a back pass to the side.", "Spring as one: when the first player goes, everyone moves with him.", "Win it high, then go forward at once."], "progress": ["Add a Red spare player so it is 5v6 and the press must be sharper.", "Count the seconds from regain to shot. Aim for under six.", "Play 9v9 and award a point for every regain in the final third."]};</script><script>(function(){
+const P=window.PRACTICE;
+const RENDER=new URLSearchParams(location.search).has('render');
+const cv=document.getElementById('cv');const ctx=cv.getContext('2d');
+const W=1280,H=720;cv.width=W;cv.height=H;
+const INTRO=5,OUTRO=8;
+const COL={R:'#e53935',B:'#1e88e5',Y:'#fdd835',K:'#8e24aa'};
+const clone=o=>JSON.parse(JSON.stringify(o));
+let pos={};P.players.forEach(p=>pos[p.id]=[p.x,p.y]);
+const team={};P.players.forEach(p=>team[p.id]=p.team);
+let ball={holder:P.ball,pt:null};
+const segs=[];let T=INTRO;
+P.steps.forEach((s,i)=>{
+  const start=clone(pos),end=clone(pos);
+  for(const k in (s.moves||{}))end[k]=s.moves[k];
+  const seg={t0:T,t1:T+s.dur,s,start,end,h0:ball.holder,pt0:ball.pt,i};
+  if(s.pass){seg.kind='pass';seg.to=s.pass;ball={holder:s.pass,pt:null};}
+  else if(s.shoot){seg.kind='shoot';seg.pt=s.shoot;ball={holder:null,pt:s.shoot};}
+  else seg.kind='carry';
+  seg.h1=ball.holder;seg.pt1=ball.pt;
+  segs.push(seg);pos=end;T+=s.dur;
+});
+const TOTAL=T+OUTRO;
+// layout
+const top=84,bot=H-134,margin=40;
+const sc=Math.min((W-2*margin)/P.L,(bot-top)/P.W);
+const ox=(W-P.L*sc)/2,oy=top+((bot-top)-P.W*sc)/2;
+const X=x=>ox+x*sc,Y=y=>oy+y*sc;
+const ease=p=>p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+const lerp=(a,b,t)=>[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t];
+function wrap(t,x,y,w,lh,font,color,maxLines){ctx.font=font;ctx.fillStyle=color;ctx.textAlign='left';const words=t.split(' ');let line='',n=0;
+  for(const wd of words){const test=line?line+' '+wd:wd;if(ctx.measureText(test).width>w&&line){ctx.fillText(line,x,y+n*lh);n++;line=wd;}else line=test;}
+  ctx.fillText(line,x,y+n*lh);return n+1;}
+function pitch(){
+  ctx.fillStyle='#0f1720';ctx.fillRect(0,0,W,H);
+  // grass band
+  const gx=ox-18,gy=oy-18,gw=P.L*sc+36,gh=P.W*sc+36;
+  ctx.fillStyle='#2e7d32';ctx.fillRect(gx,gy,gw,gh);
+  const n=10;for(let i=0;i<n;i++){ctx.fillStyle=i%2?'rgba(255,255,255,0.035)':'rgba(0,0,0,0.05)';ctx.fillRect(gx+i*gw/n,gy,gw/n,gh);}
+  (P.zones||[]).forEach(z=>{ctx.fillStyle=z.fill||'rgba(255,255,255,0.10)';ctx.fillRect(X(z.x0),Y(z.y0),(z.x1-z.x0)*sc,(z.y1-z.y0)*sc);
+    ctx.strokeStyle='rgba(255,255,255,0.55)';ctx.setLineDash([8,6]);ctx.lineWidth=2;ctx.strokeRect(X(z.x0),Y(z.y0),(z.x1-z.x0)*sc,(z.y1-z.y0)*sc);ctx.setLineDash([]);
+    if(z.label){ctx.font='600 15px Segoe UI, Arial, sans-serif';ctx.fillStyle='rgba(255,255,255,0.85)';ctx.textAlign='center';ctx.fillText(z.label,X((z.x0+z.x1)/2),Y(z.y0)+20);}});
+  ctx.strokeStyle='#fff';ctx.lineWidth=3;ctx.strokeRect(X(0),Y(0),P.L*sc,P.W*sc);
+  (P.lines||[]).forEach(l=>{ctx.beginPath();ctx.moveTo(X(l[0]),Y(l[1]));ctx.lineTo(X(l[2]),Y(l[3]));ctx.stroke();});
+  (P.goals||[]).forEach(g=>{const w=g.w*sc,d=22;ctx.fillStyle='rgba(255,255,255,0.25)';ctx.strokeStyle='#fff';ctx.lineWidth=3;
+    if(g.side==='right'){ctx.fillRect(X(g.x),Y(g.y)-w/2,d,w);ctx.strokeRect(X(g.x),Y(g.y)-w/2,d,w);}
+    else{ctx.fillRect(X(g.x)-d,Y(g.y)-w/2,d,w);ctx.strokeRect(X(g.x)-d,Y(g.y)-w/2,d,w);}});
+  (P.cones||[]).forEach(c=>{const x=X(c[0]),y=Y(c[1]);ctx.fillStyle='#ff9800';ctx.beginPath();ctx.moveTo(x,y-9);ctx.lineTo(x-7,y+7);ctx.lineTo(x+7,y+7);ctx.closePath();ctx.fill();});
+}
+function arrow(a,b,color,dash){const x1=X(a[0]),y1=Y(a[1]),x2=X(b[0]),y2=Y(b[1]);const d=Math.hypot(x2-x1,y2-y1);if(d<20)return;
+  ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=3;ctx.setLineDash(dash?[9,7]:[]);const ang=Math.atan2(y2-y1,x2-x1);const e=[x2-Math.cos(ang)*18,y2-Math.sin(ang)*18];
+  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(e[0],e[1]);ctx.stroke();ctx.setLineDash([]);
+  ctx.beginPath();ctx.moveTo(x2-Math.cos(ang)*16,y2-Math.sin(ang)*16);ctx.lineTo(e[0]+Math.cos(ang+1.57)*7-Math.cos(ang)*2,e[1]+Math.sin(ang+1.57)*7-Math.sin(ang)*2);ctx.lineTo(e[0]+Math.cos(ang-1.57)*7-Math.cos(ang)*2,e[1]+Math.sin(ang-1.57)*7-Math.sin(ang)*2);ctx.closePath();ctx.fill();}
+function player(id,p){const x=X(p[0]),y=Y(p[1]);const t=team[id];ctx.beginPath();ctx.arc(x,y+3,17,0,6.3);ctx.fillStyle='rgba(0,0,0,0.25)';ctx.fill();
+  ctx.beginPath();ctx.arc(x,y,16,0,6.3);ctx.fillStyle=COL[t];ctx.fill();ctx.lineWidth=3;ctx.strokeStyle='#fff';ctx.stroke();
+  ctx.font='700 13px Segoe UI, Arial, sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=(t==='Y')?'#111':'#fff';ctx.fillText(id,x,y+1);ctx.textBaseline='alphabetic';}
+function ballAt(p){const x=X(p[0]),y=Y(p[1]);ctx.beginPath();ctx.arc(x,y,8,0,6.3);ctx.fillStyle='#fff';ctx.fill();ctx.lineWidth=2;ctx.strokeStyle='#111';ctx.stroke();}
+function playersAt(seg,p){const e=ease(p),o={};for(const id in seg.start)o[id]=lerp(seg.start[id],seg.end[id],e);return o;}
+function ballPos(seg,p,pp){const off=[1.5,1.1];
+  const hp=h=>[pp[h][0]+off[0],pp[h][1]+off[1]];
+  if(seg.kind==='carry'){return seg.h0?hp(seg.h0):seg.pt0;}
+  const a=.15,b=.72;
+  if(p<a)return seg.h0?hp(seg.h0):seg.pt0;
+  const q=Math.min(1,(p-a)/(b-a));const pa=playersAt(seg,a);const from=seg.h0?[pa[seg.h0][0]+off[0],pa[seg.h0][1]+off[1]]:seg.pt0;
+  const to=seg.kind==='pass'?[pp[seg.to][0]+off[0],pp[seg.to][1]+off[1]]:seg.pt;
+  const qe=1-Math.pow(1-q,2);return lerp(from,to,qe);}
+function caption(seg){ctx.fillStyle='rgba(10,16,24,0.94)';ctx.fillRect(0,H-96,W,96);ctx.fillStyle='#ff9800';ctx.fillRect(0,H-96,6,96);
+  ctx.font='700 14px Segoe UI, Arial, sans-serif';ctx.fillStyle='#ff9800';ctx.textAlign='left';ctx.fillText('STEP '+(seg.i+1)+' OF '+segs.length,26,H-70);
+  wrap(seg.s.say,26,H-42,W-60,28,'600 24px Segoe UI, Arial, sans-serif','#fff');}
+function header(){ctx.fillStyle='rgba(10,16,24,0.94)';ctx.fillRect(0,0,W,62);ctx.fillStyle='#ff9800';ctx.fillRect(0,60,W,2);
+  ctx.textAlign='left';ctx.font='700 24px Segoe UI, Arial, sans-serif';ctx.fillStyle='#fff';ctx.fillText(P.title,26,38);
+  ctx.textAlign='right';ctx.font='600 15px Segoe UI, Arial, sans-serif';ctx.fillStyle='#b0bec5';ctx.fillText(P.age+'  |  '+P.format,W-26,36);
+  // key
+  }
+function panel(x,y,w,h){ctx.fillStyle='rgba(10,16,24,0.90)';ctx.beginPath();ctx.roundRect?ctx.roundRect(x,y,w,h,14):ctx.rect(x,y,w,h);ctx.fill();}
+function intro(t){panel(W/2-420,110,840,420);ctx.textAlign='left';let x=W/2-390,y=160;
+  ctx.font='700 14px Segoe UI, Arial, sans-serif';ctx.fillStyle='#ff9800';ctx.fillText(P.theme.toUpperCase(),x,y);y+=34;
+  ctx.font='700 34px Segoe UI, Arial, sans-serif';ctx.fillStyle='#fff';ctx.fillText(P.title,x,y);y+=40;
+  const rows=[['Age group',P.age],['Format',P.format],['Area',P.area],['Kit',P.kit],['Start',P.start]];
+  rows.forEach(r=>{ctx.font='700 16px Segoe UI, Arial, sans-serif';ctx.fillStyle='#90a4ae';ctx.fillText(r[0],x,y+4);const n=wrap(r[1],x+120,y+4,640,24,'500 18px Segoe UI, Arial, sans-serif','#fff');y+=Math.max(36,n*24+14);});}
+function outro(t){panel(W/2-460,100,920,470);ctx.textAlign='left';let x=W/2-430,y=148;
+  ctx.font='700 14px Segoe UI, Arial, sans-serif';ctx.fillStyle='#ff9800';ctx.fillText('COACHING POINTS',x,y);y+=14;
+  P.points.forEach(p=>{const n=wrap(p,x+16,y+22,860,26,'500 19px Segoe UI, Arial, sans-serif','#fff');ctx.fillStyle='#ff9800';ctx.fillRect(x,y+8,6,6);y+=n*26+8;});
+  y+=30;ctx.font='700 14px Segoe UI, Arial, sans-serif';ctx.fillStyle='#ff9800';ctx.fillText('MAKE IT HARDER',x,y);y+=14;
+  P.progress.forEach(p=>{const n=wrap(p,x+16,y+22,860,26,'500 19px Segoe UI, Arial, sans-serif','#fff');ctx.fillStyle='#ff9800';ctx.fillRect(x,y+8,6,6);y+=n*26+8;});}
+function keyBar(){ctx.font='600 13px Segoe UI, Arial, sans-serif';let x=26,y=H-108;ctx.textAlign='left';
+  (P.key||[]).forEach(k=>{ctx.beginPath();ctx.arc(x+8,y-4,8,0,6.3);ctx.fillStyle=COL[k[0]];ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();ctx.fillStyle='#fff';ctx.fillText(k[1],x+22,y);x+=ctx.measureText(k[1]).width+52;});}
+function draw(t){
+  t=Math.max(0,Math.min(TOTAL-.001,t));pitch();header();
+  let seg=null;for(const s of segs){if(t>=s.t0&&t<s.t1){seg=s;break;}}
+  if(t<INTRO){const s0=segs[0];const pp=s0.start;for(const id in pp)player(id,pp[id]);const b=s0.h0?[pp[s0.h0][0]+1.5,pp[s0.h0][1]+1.1]:s0.pt0;ballAt(b);intro(t);return;}
+  if(!seg){const l=segs[segs.length-1];const pp=l.end;for(const id in pp)player(id,pp[id]);ballAt(l.h1?[pp[l.h1][0]+1.5,pp[l.h1][1]+1.1]:l.pt1);outro(t);return;}
+  const p=(t-seg.t0)/(seg.t1-seg.t0);const pp=playersAt(seg,p);
+  const fade=Math.min(1,p*4);ctx.globalAlpha=.75*fade;
+  for(const id in seg.end){const a=seg.start[id],b=seg.end[id];arrow(a,b,'#ffffff',true);}
+  if(seg.kind!=='carry'){const a=seg.h0?[seg.start[seg.h0][0]+1.5,seg.start[seg.h0][1]+1.1]:seg.pt0;const b=seg.kind==='pass'?[seg.end[seg.to][0]+1.5,seg.end[seg.to][1]+1.1]:seg.pt;arrow(a,b,'#ffeb3b',false);}
+  ctx.globalAlpha=1;
+  for(const id in pp)player(id,pp[id]);ballAt(ballPos(seg,p,pp));keyBar();caption(seg);}
+window.setT=draw;window.TOTAL=TOTAL;window.SEGS=segs.map(s=>[s.t0,s.t1]);
+if(RENDER){document.body.classList.add('render');draw(0);return;}
+let t=0,playing=false,last=0,speed=1;const $=id=>document.getElementById(id);
+
+let vIdx=-1,voiceOn=true;const synth=window.speechSynthesis;
+function pickVoice(){const vs=synth?synth.getVoices():[];return vs.find(v=>/en[-_]GB/i.test(v.lang)&&/female|google|hazel|libby|sonia|serena|kate/i.test(v.name))||vs.find(v=>/en[-_]GB/i.test(v.lang))||null;}
+function voiceTick(t){if(!synth)return;if(!playing||!voiceOn){if(vIdx!==-1){synth.cancel();vIdx=-1;}return;}
+ const i=segs.findIndex(s=>t>=s.t0&&t<s.t1);if(i===vIdx)return;vIdx=i;synth.cancel();
+ if(i>=0){const u=new SpeechSynthesisUtterance(segs[i].s.vo||segs[i].s.say);u.lang='en-GB';const v=pickVoice();if(v)u.voice=v;u.rate=Math.min(1.25,.95*speed);synth.speak(u);}}
+$('voice').onclick=()=>{voiceOn=!voiceOn;$('voice').textContent=voiceOn?'Voice on':'Voice off';if(!voiceOn&&synth)synth.cancel();vIdx=-1;};
+if(synth&&synth.onvoiceschanged!==undefined)synth.onvoiceschanged=()=>{};
+
+function loop(ts){if(playing){t+=(ts-last)/1000*speed;if(t>=TOTAL){t=TOTAL-.01;playing=false;$('play').textContent='Play';}}last=ts;draw(t);voiceTick(t);$('bar').value=t/TOTAL*1000;requestAnimationFrame(loop);}
+$('play').onclick=()=>{if(t>=TOTAL-.05)t=0;playing=!playing;$('play').textContent=playing?'Pause':'Play';};
+$('restart').onclick=()=>{vIdx=-1;t=0;playing=true;$('play').textContent='Pause';};
+$('bar').oninput=e=>{t=e.target.value/1000*TOTAL;};
+$('prev').onclick=()=>{const idx=segs.findIndex(s=>t>=s.t0&&t<s.t1);t=idx>0?segs[idx-1].t0:0;playing=false;$('play').textContent='Play';};
+$('next').onclick=()=>{const idx=segs.findIndex(s=>t>=s.t0&&t<s.t1);t=idx>=0&&idx<segs.length-1?segs[idx+1].t0:(idx<0&&t<INTRO?segs[0].t0:TOTAL-OUTRO);playing=false;$('play').textContent='Play';};
+$('speed').onchange=e=>{speed=parseFloat(e.target.value);};
+requestAnimationFrame(loop);
+})();
+</script></body></html>
