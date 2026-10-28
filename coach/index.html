@@ -806,6 +806,54 @@ function vRes(){
 var SBSL=[['warm','Welcome and warm up',8],['s1','Session one: first practice',10],['s2','Session two: main practice',20],['game','The game',18]];
 var SBW={1:['Your session'],4:['Introduce it','Build the habits','Add pressure','Bridge into the next block'],6:['Introduce it','Build the habits','Add pressure','Make it like the game','Test it in games','Bridge into the next block']};
 var ANIT=[7,1,1,0,0];
+var SBR=[{id:'out',name:'Playing out from the back, transitions and finishing',next:2,weeks:[
+{name:'Playing out: the keeper is the extra man',split:0,soc:'Talk early. Name the pass before you make it.',
+ lrn:['Use the keeper as the spare man to start the attack','Receive on the half turn and look forward first','First thought forward, second switch, third back'],
+ lead:{warm:'Tim',s1:'Deano',s2:'Tim',game:'Tim'},
+ rc:{warm:[8,['rondo','receiving','activation']],s1:[6,['receiving','first touch','half turn']],s2:[0,['out from the back','build up','building out']],game:[0,['build up','out from the back','game']]},
+ cpB:['Show for it, then check away so you get it on your front foot','First touch away from pressure, head up before it arrives','Open your body early: see the pitch, then play forward'],
+ cpT:['Keeper, you are the spare man. Be an option and shout what you see','Back line spread wide. Pivot drops or splits','Pass to the foot furthest from the press'],
+ ro:{gk:'Be the spare man. First pass forward or wide, never back to the press.',def:'Spread and show an angle. Break the first line with the carry or the pass.',piv:'Drop or split to make the extra man. Receive half turned.',mid:'Show between the lines and face forward.',att:'Show, check away, first touch forward. Pin the centre backs.'}},
+{name:'Build the habits: breaking the first line',split:1,soc:'Pick each other up after a mistake. Next ball.',
+ lrn:['Break the first line with the right pass at the right time','Forwards show late and check away to get on the ball','Finish early, low and across the keeper'],
+ lead:{warm:'Tim',s1:'Tim',s1b:'Deano',s2:'Tim',s2b:'Deano',game:'Tim'},
+ rc:{warm:[8,['rondo','receiving','activation']],s1:[0,['out from the back','build up','short build up']],s1b:[6,['receiving','back to goal','first touch']],s2:[0,['build up','through lines','break lines']],s2b:[2,['finishing','shooting','create and finish']],game:[0,['build up','game','through lines']]},
+ cpB:['Check in, check out. Show late, not early','Back to goal: feel the defender, roll off him','Hit it early, low and across the keeper, do not wait'],
+ cpT:['Breathe it out. First pass out, second pass through','Pivot shows on the back foot of the press','Front is closed? Switch it. Do not force it'],
+ ro:{gk:'Play out under pressure. Look for the pass into the pivot.',def:'Carry into the space when nobody steps. Pass through when they do.',piv:'Show on the back foot, play the line breaking pass.',mid:'Third man. Be the next pass after the pass.',att:'Check away, receive, turn or lay off, then shoot early.'}},
+{name:'Add pressure: playing out against a press',split:1,soc:'Stay calm under pressure. Breathe, then play.',
+ lrn:['Keep the shape when the press comes','Forwards receive under pressure and still play forward','Finish in one v one and two v one moments'],
+ lead:{warm:'Tim',s1:'Tim',s1b:'Deano',s2:'Tim',s2b:'Deano',game:'Tim'},
+ rc:{warm:[8,['rondo','receiving','pressure']],s1:[0,['build up','under pressure','out from the back']],s1b:[6,['receiving','under pressure','back to goal']],s2:[0,['pressing','under pressure','build up']],s2b:[2,['finishing','1v1','create and finish']],game:[0,['build up','pressure','game']]},
+ cpB:['Take it on the side away from the press','Strong body, low, use your arm to feel him','Pass or turn: choose before it arrives'],
+ cpT:['Find the free man. Count them: they are one short','Do not panic pass. Keeper, you are the safe one','Beat the press with a pass past it, not a pass into it'],
+ ro:{gk:'Stay calm. Play past the press, not into it.',def:'Use the keeper, use the pivot. Find the free man.',piv:'Be brave to show for it. Receive half turned.',mid:'Make the angle and play first time if it is on.',att:'Strong body under pressure. Lay off or turn, then run.'}},
+{name:'Make it like the game: win it and go',split:0,soc:'Everybody celebrates the winner of the ball.',
+ lrn:['Three seconds: secure it, support it, go','Nearest players counter press, the rest recover behind the ball','Wide players push high straight away'],
+ lead:{warm:'Tim',s1:'Deano',s2:'Tim',game:'Tim'},
+ rc:{warm:[8,['rondo','transition','activation']],s1:[7,['transition','win it','regain']],s2:[7,['counter','attacking transition','counter attacking']],game:[7,['transition','counter','game']]},
+ cpB:['Win it, look up, go: first pass forward','Support beyond the ball, give him a run to find','Wide players sprint, do not watch'],
+ cpT:['Lose it? Nearest two squeeze straight away','Everyone else sprint back goal side','Do not stand and moan. Move'],
+ ro:{gk:'Quick throw or pass to start the counter, or hold if it is not on.',def:'Squeeze up or drop. Do not both step.',piv:'First to the second ball. Play forward quickly.',mid:'Support beyond the ball and run past it.',att:'Run the channels the moment it turns over.'}},
+{name:'Test it in games: transition at both ends',split:1,soc:'Win the argument with the ball, not your mouth.',
+ lrn:['Defenders: counter press and recover as a unit','Forwards: attack quickly and finish','Switch off the moan, switch on the next job'],
+ lead:{warm:'Tim',s1:'Tim',s1b:'Deano',s2:'Tim',s2b:'Deano',game:'Tim'},
+ rc:{warm:[8,['rondo','transition','activation']],s1:[7,['defensive transition','counter pressing','regain']],s1b:[7,['counter attacking','attacking transition','counter attack']],s2:[7,['transition','counter pressing','overload']],s2b:[2,['finishing','shooting','create and finish']],game:[7,['transition','counter','game']]},
+ cpB:['Hit the target early, do not take the extra touch','Arrive at the back post, stay with it','If it is blocked, go again for the second ball'],
+ cpT:['Squeeze it in five seconds or drop and stay compact','Show them one way, win it on the second contact','Sprint to your place, goal side first'],
+ ro:{gk:'Sweep behind the line, quick distribution when we win it.',def:'Recover goal side and win second contacts.',piv:'Screen the box. Win the second ball.',mid:'Press on the trigger, then run past the ball.',att:'Finish the first chance. Be there for the second.'}},
+{name:'Bridge: from winning it to finishing',split:0,soc:'Lead with your voice for your own position.',
+ lrn:['Move from winning it to creating a chance quickly','Receive on the half turn and combine near the box','Finish the chance and go again'],
+ lead:{warm:'Tim',s1:'Deano',s2:'Tim',game:'Tim'},
+ rc:{warm:[8,['rondo','receiving','activation']],s1:[0,['third man','combination','receiving']],s2:[2,['finishing','crossing and finishing','create and finish']],game:[2,['finishing','game','transition']]},
+ cpB:['Two touches, play forward, run beyond the ball','Third man: make the run before the pass is played','Shoot when you see the target, not when you are ready'],
+ cpT:['Win it, get it forward, then spread wide','Keep the shape behind the ball','Talk: name the runner'],
+ ro:{gk:'Start it and talk to the line.',def:'Keep the shape behind the ball while we finish.',piv:'Link and arrive late at the edge of the box.',mid:'Arrive in the box late. Shoot or pass.',att:'Be there for the chance. Finish, then press.'}}
+]}];
+function sbSlots(w){if(!(w&&w.split))return SBSL;return [['warm','Welcome and warm up',8],['s1','Session one: defence group',10],['s1b','Session one: attack group',10],['s2','Session two: defence group',20],['s2b','Session two: attack group',20],['game','The game: everyone together',18]];}
+function sbWT(b,wk){var w=b.weeks[wk];return (w&&w.name)||sbTheme(b);}
+function sbClearRc(b){b.rcId='';b.weeks.forEach(function(w){delete w.rc;delete w.name;delete w.lrn;delete w.soc;delete w.cpB;delete w.cpT;delete w.ro;});}
+
 var SBLRN=[
  ['Find the pass that splits the lines','Play with your head up and scan before you receive','Make the run that gives the passer an option'],
  ['Stay compact and move as one unit','Know when to press and when to drop','Talk early and tell your mate who has the ball'],
@@ -823,16 +871,17 @@ function sb(){var b=S.settings.sb;if(!b)b=S.settings.sb={topic:-1,free:'',fmt:1,
 function sbDate(b,w){var d=new Date(b.start+'T12:00:00');d.setDate(d.getDate()+7*w);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function sbTheme(b){return b.topic>-1&&window.RT?window.RT[b.topic]:(b.free.trim()||'Your own focus');}
 function sbPool(b,wk,slot){
- var L=resList(),mx=b.fmt>1&&wk===b.fmt-1&&b.next>-1&&slot!=='warm'?b.next:b.topic;
- var toks=(b.free||'').toLowerCase().split(/[^a-z0-9]+/).filter(function(t){return t.length>2&&['the','and','for','with','want','work','session','about'].indexOf(t)<0;});
+ var L=resList(),rc=((b.weeks[wk]||{}).rc||{})[slot],mx=rc?rc[0]:(b.fmt>1&&wk===b.fmt-1&&b.next>-1&&slot!=='warm'?b.next:b.topic);
+ var toks=rc?rc[1]:(b.free||'').toLowerCase().split(/[^a-z0-9]+/).filter(function(t){return t.length>2&&['the','and','for','with','want','work','session','about'].indexOf(t)<0;});
  var used={};b.weeks.forEach(function(w){for(var k in w.s)if(w.s[k]&&!(w.s[k].keep===false))used[w.s[k].t]=1;});
  var out=[];
- function sc(t,k,a,isAnim){var s=0,tl=t.toLowerCase();if(mx>-1&&k===mx)s+=3;toks.forEach(function(x){if(tl.indexOf(x)>-1)s+=2;});
+ function sc(t,k,a,isAnim){var s=0,tl=t.toLowerCase();if(mx>-1&&k===mx)s+=3;toks.forEach(function(x){if(tl.indexOf(x)>-1)s+=(rc?4:2);});
   if(slot==='warm'){if(k===8||/warm|rondo|activation|arrival/.test(tl))s+=3;else s-=2;}
   else if(slot==='game'){if(/game|small sided|ssg| v |match/.test(' '+tl+' '))s+=3;}
   else if(isAnim)s+=2;
   if(k===5&&mx!==5&&!/keeper|goalkeep/.test(toks.join(' ')))s-=5;
-  if(a===1)s-=2;else if(a===4)s-=1;
+  if(a===1)s-=(rc?5:2);else if(a===4)s-=1;
+  if(slot!=='warm'&&/arrival/.test(tl))s-=4;
   if(mx<0&&!toks.length)s+=0;return s;}
  ANI.forEach(function(x,i){if(slot==='warm'||slot==='game')return;if(used[x[1]])return;var s=sc(x[1]+' '+x[2],ANIT[i],0,true),rel=s-2;if(rel>0||(mx<0&&!toks.length))out.push({s:s+1,it:{k:'a',t:x[1],src:'Our animation',u:'https://touchline.cipher-training.co.uk/coach/anim/'+x[0]+'.html',slug:x[0]}});});
  L.forEach(function(r){if(used[r.t])return;var s=sc(r.t,r.k,r.a,false);if(s<=0&&(mx>-1||toks.length))return;out.push({s:s,it:{k:'r',t:r.t,src:RSRC[r.s],age:window.RA[r.a],u:r.v||('https://drive.google.com/drive/search?q='+encodeURIComponent(r.t))}});});
@@ -843,12 +892,13 @@ function sbPool(b,wk,slot){
 function sbFill(b,wk,slot,again){var w=b.weeks[wk],cur=w.s[slot];if(cur&&cur.keep&&!again)return;var pool=sbPool(b,wk,slot);if(!pool.length){toast('Nothing matched. Try other words.');return;}
  var i=again?((w.i[slot]||0)+1)%pool.length:(w.i[slot]||0);w.i[slot]=i;var it=pool[i];if(again&&cur&&it.t===cur.t){i=(i+1)%pool.length;w.i[slot]=i;it=pool[i];}w.s[slot]=it;}
 function sbMins(b,m){return Math.max(3,Math.round(m*(b.mins||60)/60));}
-function sbIntro(b){var t=sbTheme(b),ti=b.topic>-1?SBLRN[b.topic]:SBLRN[4];return {intro:'This week we are working on '+t.toLowerCase()+'. By the end of the session you should be able to '+ti[0].charAt(0).toLowerCase()+ti[0].slice(1)+'.',learn:ti.join('\n')};}
+function sbIntro(b,wk){if(wk==null)wk=b.week;var w=b.weeks[wk]||{},t=sbWT(b,wk),ti=w.lrn?w.lrn:(b.topic>-1?SBLRN[b.topic]:SBLRN[4]);return {intro:'This week we are working on '+t.toLowerCase()+'. By the end of the session you should be able to '+ti[0].charAt(0).toLowerCase()+ti[0].slice(1)+'.'+(w.split?' Part of tonight we split into a defence group and an attack group, then come back together for the game.':''),learn:ti.join('\n')+(w.soc?'\nTeam habit: '+w.soc:'')};}
 function vSb(){
  if(!window.RD){if(!window.__rsl){window.__rsl=1;var sc=document.createElement('script');sc.src='res.js';sc.onload=function(){render(true);};document.head.appendChild(sc);}return intro('Loading the session builder.')+'<p class="muted">Loading...</p>';}
  var b=sb(),st=view.sbs||1,w=b.weeks[b.week],h=intro('Build a session or a whole block. Pick a topic or type what you want, choose the practices, then share it.');
  h+='<h2 style="margin:6px 0">Session builder</h2><div class="chips" style="margin:6px 0">'+['1 Topic','2 Length','3 Practices','4 Share'].map(function(x,i){return '<button class="chip'+(st===i+1?' on':'')+'" data-act="sbStep" data-i="'+(i+1)+'">'+x+'</button>';}).join('')+'</div>';
  if(st===1){
+  h+='<div class="card"><h3 style="margin-top:0">Ready made block</h3><p class="small muted">Six weeks: playing out from the back, transitions, then finishing and receiving. Weeks 2, 3 and 5 split into a defence group (Tim) and an attack group (Deano). Week 6 bridges into the next block. You can still change anything.</p><button class="btn pri block" data-act="sbBlock" data-id="out">Build the 6 week block</button></div>';
   h+='<div class="card"><h3 style="margin-top:0">What do you want to work on?</h3><p class="small muted">Type it in your own words, pick a topic, or both.</p><input data-sb="free" placeholder="For example: pressing from the front, or losing the ball at the back" value="'+esc(b.free)+'">';
   h+='<label>Topics</label><div class="chips"><button class="chip'+(b.topic<0?' on':'')+'" data-act="sbTopic" data-i="-1">Any</button>'+window.RT.map(function(x,i){return '<button class="chip'+(b.topic===i?' on':'')+'" data-act="sbTopic" data-i="'+i+'">'+esc(x)+'</button>';}).join('')+'</div>';
   h+='<label>Quick ideas</label><div class="chips">'+FOCUS.map(function(x){return '<button class="chip" data-act="sbIdea" data-v="'+esc(x)+'">'+esc(x)+'</button>';}).join('')+'</div>';
@@ -860,10 +910,11 @@ function vSb(){
   if(b.fmt>1)h+='<label>Next block topic (the last week bridges into it)</label><div class="chips"><button class="chip'+(b.next<0?' on':'')+'" data-act="sbNext" data-i="-1">Not sure yet</button>'+window.RT.map(function(x,i){return '<button class="chip'+(b.next===i?' on':'')+'" data-act="sbNext" data-i="'+i+'">'+esc(x)+'</button>';}).join('')+'</div>';
   h+='<button class="btn pri block" style="margin-top:12px" data-act="sbStep" data-i="3">Next: choose practices</button></div>';}
  if(st===3){
-  if(b.fmt>1)h+='<div class="chips" style="margin:6px 0">'+b.weeks.map(function(x,i){return '<button class="chip'+(b.week===i?' on':'')+'" data-act="sbWeek" data-i="'+i+'">Week '+(i+1)+'</button>';}).join('')+'</div><p class="small"><b>Week '+(b.week+1)+': '+esc(SBW[b.fmt][b.week])+'</b>'+(b.week===b.fmt-1&&b.next>-1?' &middot; includes a practice from '+esc(window.RT[b.next]):'')+'</p>';
-  h+='<div class="card"><p class="small muted" style="margin-top:0">Theme: <b>'+esc(sbTheme(b))+'</b>. Tick Keep on the ones you like. Search again swaps one. Or let us create the lot.</p><div class="row wrap2"><button class="btn pri grow" data-act="sbAuto">Create it for us</button><button class="btn grow" data-act="sbAutoAll">'+(b.fmt>1?'Create every week':'Start again')+'</button></div></div>';
-  SBSL.forEach(function(sl){var it=w.s[sl[0]],pk=view.sbp===sl[0];
-   h+='<div class="card"><div class="row"><div class="grow"><b>'+sl[1]+'</b><div class="small muted">'+sbMins(b,sl[2])+' minutes</div></div><select data-sblead="'+sl[0]+'" style="width:auto"><option'+((w.lead[sl[0]]||'Tim')==='Tim'?' selected':'')+'>Tim</option><option'+(w.lead[sl[0]]==='Deano'?' selected':'')+'>Deano</option></select></div>';
+  if(b.fmt>1)h+='<div class="chips" style="margin:6px 0">'+b.weeks.map(function(x,i){return '<button class="chip'+(b.week===i?' on':'')+'" data-act="sbWeek" data-i="'+i+'">Week '+(i+1)+(x.split?' (split)':'')+'</button>';}).join('')+'</div><p class="small"><b>Week '+(b.week+1)+': '+esc(b.weeks[b.week].name||SBW[b.fmt][b.week])+'</b>'+(b.week===b.fmt-1&&b.next>-1?' &middot; includes a practice from '+esc(window.RT[b.next]):'')+'</p>';
+  h+='<div class="card"><div class="row"><div class="grow"><b>Split this week</b><div class="small muted">Tim takes defence, Deano takes attack, back together for the game.</div></div><button class="btn'+(w.split?' pri':'')+'" data-act="sbSplit">'+(w.split?'On':'Off')+'</button></div></div>';
+  h+='<div class="card"><p class="small muted" style="margin-top:0">Theme: <b>'+esc(sbWT(b,b.week))+'</b>. Tick Keep on the ones you like. Search again swaps one. Or let us create the lot.</p><div class="row wrap2"><button class="btn pri grow" data-act="sbAuto">Create it for us</button><button class="btn grow" data-act="sbAutoAll">'+(b.fmt>1?'Create every week':'Start again')+'</button></div></div>';
+  sbSlots(w).forEach(function(sl){var it=w.s[sl[0]],pk=view.sbp===sl[0];
+   h+='<div class="card"><div class="row"><div class="grow"><b>'+sl[1]+'</b><div class="small muted">'+sbMins(b,sl[2])+' minutes</div></div><select data-sblead="'+sl[0]+'" style="width:auto"><option'+((w.lead[sl[0]]||(/b$/.test(sl[0])?'Deano':'Tim'))==='Tim'?' selected':'')+'>Tim</option><option'+((w.lead[sl[0]]||(/b$/.test(sl[0])?'Deano':'Tim'))==='Deano'?' selected':'')+'>Deano</option></select></div>';
    if(it){h+='<p style="margin:8px 0 2px;font-weight:700">'+esc(it.t)+'</p><p class="small muted" style="margin:0">'+esc(it.src)+(it.age?' &middot; '+esc(it.age):'')+'</p><div class="row wrap2" style="margin-top:8px"><button class="btn'+(it.keep?' pri':'')+' grow" data-act="sbKeep" data-s="'+sl[0]+'">'+(it.keep?'Kept':'Keep')+'</button><button class="btn grow" data-act="sbAgain" data-s="'+sl[0]+'">Search again</button><a class="btn grow" data-ext="1" target="_blank" rel="noopener" href="'+esc(it.u)+'">'+(it.k==='a'?'Play':'Open')+'</a></div>';}
    else h+='<p class="muted small">Nothing picked yet.</p><button class="btn block" data-act="sbAgain" data-s="'+sl[0]+'">Suggest one</button>';
    h+='<div class="row wrap2" style="margin-top:6px"><button class="btn grow" data-act="sbPickOpen" data-s="'+sl[0]+'">'+(pk?'Close search':'Find my own')+'</button>'+(it?'<button class="btn grow" data-act="sbSsp" data-s="'+sl[0]+'">'+(it.ssp?'Planner link added':'Add planner link')+'</button>':'')+'</div>';
@@ -873,9 +924,9 @@ function vSb(){
    h+='</div>';});
   h+='<button class="btn pri block" data-act="sbStep" data-i="4">Next: review and share</button>';}
  if(st===4){
-  var ii=b.intro?{intro:b.intro,learn:b.learn}:sbIntro(b),done=SBSL.filter(function(s){return w.s[s[0]];}).length;
-  h+='<div class="card"><h3 style="margin-top:0">'+(b.fmt>1?'Week '+(b.week+1)+' of '+b.fmt+': ':'')+esc(sbTheme(b))+'</h3><p class="small muted">'+niceDate(sbDate(b,b.week))+', '+esc(b.time)+'. '+done+' of 4 practices chosen.</p>';
-  h+=SBSL.map(function(sl){var it=w.s[sl[0]];return '<div class="it" style="cursor:default"><div class="grow small"><b>'+sbMins(b,sl[2])+' min &middot; '+sl[1]+'</b><div>'+(it?esc(it.t):'<span class="muted">not chosen</span>')+'</div><div class="muted">Lead: '+esc(w.lead[sl[0]]||'Tim')+'</div></div></div>';}).join('')+'</div>';
+  var ii=b.intro?{intro:b.intro,learn:b.learn}:sbIntro(b),done=sbSlots(w).filter(function(s){return w.s[s[0]];}).length;
+  h+='<div class="card"><h3 style="margin-top:0">'+(b.fmt>1?'Week '+(b.week+1)+' of '+b.fmt+': ':'')+esc(sbWT(b,b.week))+'</h3><p class="small muted">'+niceDate(sbDate(b,b.week))+', '+esc(b.time)+'. '+done+' of '+sbSlots(w).length+' practices chosen.</p>';
+  h+=sbSlots(w).map(function(sl){var it=w.s[sl[0]];return '<div class="it" style="cursor:default"><div class="grow small"><b>'+sbMins(b,sl[2])+' min &middot; '+sl[1]+'</b><div>'+(it?esc(it.t):'<span class="muted">not chosen</span>')+'</div><div class="muted">Lead: '+esc(w.lead[sl[0]]||(/b$/.test(sl[0])?'Deano':'Tim'))+'</div></div></div>';}).join('')+'</div>';
   h+=rvLastCard()+sbGroupHtml(b,b.week,w);
   h+='<div class="card"><h3 style="margin-top:0">What the lads and parents see</h3><label>Intro line</label><textarea data-sb="intro" placeholder="'+esc(sbIntro(b).intro)+'">'+esc(b.intro||sbIntro(b).intro)+'</textarea><label>What they will learn (one per line)</label><textarea data-sb="learn" style="min-height:90px">'+esc(b.learn||sbIntro(b).learn)+'</textarea><p class="small muted">No names, scores or ability notes. This goes to parents and players.</p></div>';
   h+='<div class="card"><div class="row wrap2"><button class="btn grow" data-act="sbPdf">Make the PDF</button><button class="btn grow" data-act="sbSave">Save to session library</button></div>'+(b.fmt>1?'<button class="btn block" style="margin-top:8px" data-act="sbSaveAll">Save the whole block to the library</button>':'')+'<button class="btn pri block" style="margin-top:8px" data-act="sbShare">Confirm and share to parents and players</button><p class="small muted">Share puts this week on the parents and players pages, with the intro and what they will learn, and saves it to the session library. The PDF links open the animations and practices.</p>'+(view.sbShared?'<button class="btn block" data-act="sbAlert">Send a push alert to parents</button><button class="btn block" style="margin-top:6px" data-act="sbAlertP">Send a push alert to the players</button>':'')+'</div>';}
@@ -889,23 +940,35 @@ function sbWho(b,wk){var a=(S.settings.att||{})[sbDate(b,wk)],pl=plist(),on=a?Ob
 function sbDeal(list,n,seed){var l=sbShuf(list,seed).sort(function(x,y){return sbCat(x)-sbCat(y);}),g=[];for(var i=0;i<n;i++)g.push([]);l.forEach(function(p,i){g[i%n].push(p);});return g;}
 function sbGroups(b,wk){var who=sbWho(b,wk),gk=who.filter(function(p){return sbCat(p)===0;})[0],out=who.filter(function(p){return p!==gk;}),base=sbHash(b.start+'|'+wk+'|'+(b.gs||0)),N=who.length,odd=out.length%2===1;
  function two(seed,n1,n2,jk){var o=out.slice(),jo=null;if(odd){var js=sbShuf(o,seed+9);jo=js[0];o=o.filter(function(p){return p!==jo;});}var g=sbDeal(o,2,seed);var r=[{name:n1,list:g[0]},{name:n2,list:g[1]}];if(jo)r.push({name:'Joker (yellow bib)',list:[jo],note:'Plays for whoever has the ball. Odd number plan.'});return r;}
- var sl=[];
+ var sl=[],W=b.weeks[wk]||{};
+ if(W.split){var sp=sbSplit(who,base+5),D=sp.d,A=sp.a;
+  var w3=sbDeal(who,3,base+1);sl.push({k:'warm',t:'Arrival activity',g:[{name:'Red group',list:w3[0]},{name:'Orange group',list:w3[1]},{name:'Yellow group',list:w3[2]}]});
+  sl.push({k:'s1',t:'Practice one: split',g:[{name:'Defence group with '+(W.lead.s1||'Tim')+' (orange bibs)',list:D,note:'Keeper, backs and the deeper mids. Playing out and defending.'},{name:'Attack group with '+(W.lead.s1b||'Deano')+' (red bibs)',list:A,note:'Forwards, wide players and the higher mids. Receiving and finishing.'}]});
+  sl.push({k:'s2',t:'Practice two: split',g:[{name:'Defence group with '+(W.lead.s2||'Tim')+' (orange bibs)',list:D,note:'Same groups as practice one. Swap two players at half way if one side is short.'},{name:'Attack group with '+(W.lead.s2b||'Deano')+' (red bibs)',list:A}]});
+  var m2=two(base+4,'Red team','Orange team');if(gk)m2.push({name:'Keeper',list:[gk],note:'Red goal first half, orange goal second half.'});sl.push({k:'game',t:'The game: everyone back together',g:m2,note:'Mix defenders and attackers across both teams.'});
+  return {n:N,slots:sl,low:N<12,gk:gk,split:1};}
  var w3=sbDeal(who,3,base+1);sl.push({k:'warm',t:'Arrival activity',g:[{name:'Red group',list:w3[0]},{name:'Orange group',list:w3[1]},{name:'Yellow group',list:w3[2]}]});
  var a=two(base+2,'Attackers (red bibs)','Defenders (orange bibs)');if(gk)a[1].note='Keeper '+sbLab(gk)+' in the big goal for the defenders. If the big goal is not there, use a goal of seven a side size.';sl.push({k:'s1',t:'Practice one: attack v defence',g:a});
  var c=two(base+3,'Team A (red bibs)','Team B (orange bibs)');c[0].note='Swap roles at half way.';sl.push({k:'s2',t:'Practice two: main theme',g:c});
  var m=two(base+4,'Red team','Orange team');if(gk)m.push({name:'Keeper',list:[gk],note:'Red goal first half, orange goal second half. Outfield touches in both practices.'});sl.push({k:'game',t:'The game',g:m});
  return {n:N,slots:sl,low:N<12,gk:gk};}
-function sbCoachPts(b){var t=b.topic>-1?SBLRN[b.topic]:SBLRN[4];return {pts:t.slice(0,3),qs:['What did you see before the ball got to you?','Where was the space, and how did we get the ball there?']};}
+
+function sbSplit(who,seed){var l=sbShuf(who,seed),d=[],a=[],m=[];l.forEach(function(p){var c=sbCat(p);if(c<=1)d.push(p);else if(c===3)a.push(p);else m.push(p);});m.forEach(function(p){(d.length<=a.length?d:a).push(p);});while(Math.abs(d.length-a.length)>1){if(d.length>a.length){var q=d.filter(function(p){return sbCat(p)===2;}).pop();if(!q)break;d.splice(d.indexOf(q),1);a.push(q);}else{var q2=a.filter(function(p){return sbCat(p)===2;}).pop();if(!q2)break;a.splice(a.indexOf(q2),1);d.push(q2);}}return {d:d,a:a};}
+function sbRoles(b,wk){var w=b.weeks[wk]||{},ro=w.ro;if(!ro)return [];return sbWho(b,wk).map(function(p){var c=sbCat(p),pos=String(p.pos||'').toUpperCase(),k=c===0?'gk':c===1?'def':c===3?'att':(/DM|CDM|PIV|6/.test(pos)?'piv':'mid');return {n:sbLab(p),pos:p.pos||'',t:ro[k]||''};});}
+function sbRoleHtml(b,wk){var R=sbRoles(b,wk);if(!R.length)return '';return '<div class="card"><h3 style="margin-top:0">Learning outcomes by player</h3><p class="small muted">Coaches only. Shirt numbers. Update the player profiles and these follow.</p>'+R.map(function(r){return '<div class="small"><b>'+esc(r.n)+(r.pos?' '+esc(r.pos):'')+':</b> '+esc(r.t)+'</div>';}).join('')+'</div>';}
+function sbApplyBlock(b,id){var R=SBR.filter(function(x){return x.id===id;})[0];if(!R)return;b.fmt=R.weeks.length;b.rcId=id;b.topic=-1;b.free=R.name;b.next=R.next;b.week=0;b.intro='';b.learn='';b.weeks=R.weeks.map(function(x){return {s:{},i:{},split:x.split,lead:JSON.parse(JSON.stringify(x.lead)),rc:x.rc,name:x.name,lrn:x.lrn,soc:x.soc,cpB:x.cpB,cpT:x.cpT,ro:x.ro};});}
+function sbCoachPts(b,wk){if(wk==null)wk=b.week;var w=b.weeks[wk]||{},t=b.topic>-1?SBLRN[b.topic]:SBLRN[4];return {pts:w.cpB||t.slice(0,3),ptsT:w.cpT||null,qs:['What did you see before the ball got to you?','Where was the space, and how did we get the ball there?']};}
 function sbGroupHtml(b,wk,w){var G=sbGroups(b,wk),h='<div class="card"><h3 style="margin-top:0">Groups for the night</h3><p class="small muted">Coaches only. '+G.n+' players expected from the attendance list, or the whole squad if nobody is marked yet. Mixed on purpose. No ability bands. Differentiate inside the practice with STEP: space, task, equipment, players.</p>';
  if(G.low)h+='<p class="small"><b>Under 12 turning up:</b> drop to one pitch and one set of teams, rotate a neutral player.</p>';
  G.slots.forEach(function(s){h+='<h4 style="margin:10px 0 4px">'+esc(s.t)+'</h4>'+s.g.map(function(g){return '<div class="small"><b>'+esc(g.name)+':</b> '+g.list.map(function(p){return esc(sbLab(p)+' '+(p.name||'').split(' ')[0]);}).join(', ')+(g.note?'<div class="muted">'+esc(g.note)+'</div>':'')+'</div>';}).join('');});
  h+='<button class="btn block" style="margin-top:8px" data-act="sbGrp">Mix them again</button>';
- var C=sbCoachPts(b),mine=SBSL.filter(function(x){return w.s[x[0]]&&w.lead[x[0]]==='Deano';});
+ var C=sbCoachPts(b,wk),mine=sbSlots(w).filter(function(x){return w.s[x[0]]&&(w.lead[x[0]]||(/b$/.test(x[0])?'Deano':'Tim'))==='Deano';});
  h+='<h4 style="margin:12px 0 4px">Coaching points for Deano'+(mine.length?' ('+mine.map(function(x){return x[1];}).join(', ')+')':'')+'</h4>'+C.pts.map(function(p){return '<div class="small">&bull; '+esc(p)+'</div>';}).join('')+'<div class="small muted" style="margin-top:4px">Ask:</div>'+C.qs.map(function(q){return '<div class="small">? '+esc(q)+'</div>';}).join('');
- return h+'</div>';}
-function sbItems(b,wk){var w=b.weeks[wk];return SBSL.filter(function(s){return w.s[s[0]];}).map(function(s){var it=w.s[s[0]];return {slot:s[1],mins:sbMins(b,s[2]),t:it.t,src:it.src,u:it.u,ssp:it.ssp||'',lead:w.lead[s[0]]||'Tim',a:it.k==='a'};});}
-function sbRecord(b,wk){var id='b'+b.start.replace(/-/g,'')+'w'+wk+(b.fmt>1?'f'+b.fmt:''),ii=b.intro?{intro:b.intro,learn:b.learn}:sbIntro(b),r=sessUser(id);
- r.date=sbDate(b,wk);r.title=(b.fmt>1?'Week '+(wk+1)+': ':'')+sbTheme(b);r.block=b.fmt>1?(b.fmt+' week block, week '+(wk+1)+' of '+b.fmt+' ('+SBW[b.fmt][wk]+')'):'Stand alone session';r.theme=sbTheme(b);r.intro=ii.intro;r.learn=ii.learn;r.time=b.time;r.place=b.place;r.built=1;r.plan=sbItems(b,wk);r.groups=sbGroups(b,wk).slots.map(function(x){return {t:x.t,g:x.g.map(function(g){return {n:g.name,l:g.list.map(sbLab)};})};});r.coach=sbCoachPts(b);r.deleted=false;touch('settings',S.settings);return r;}
+ if(C.ptsT)h+='<h4 style="margin:12px 0 4px">Coaching points for Tim (defence group)</h4>'+C.ptsT.map(function(p){return '<div class="small">&bull; '+esc(p)+'</div>';}).join('');
+ return h+'</div>'+sbRoleHtml(b,wk);}
+function sbItems(b,wk){var w=b.weeks[wk];return sbSlots(w).filter(function(s){return w.s[s[0]];}).map(function(s){var it=w.s[s[0]];return {slot:s[1],mins:sbMins(b,s[2]),t:it.t,src:it.src,u:it.u,ssp:it.ssp||'',lead:w.lead[s[0]]||(/b$/.test(s[0])?'Deano':'Tim'),a:it.k==='a'};});}
+function sbRecord(b,wk){var id='b'+b.start.replace(/-/g,'')+'w'+wk+(b.fmt>1?'f'+b.fmt:''),ii=b.intro?{intro:b.intro,learn:b.learn}:sbIntro(b,wk),r=sessUser(id);
+ r.date=sbDate(b,wk);r.title=(b.fmt>1?'Week '+(wk+1)+': ':'')+sbWT(b,wk);r.block=b.fmt>1?(b.fmt+' week block, week '+(wk+1)+' of '+b.fmt+' ('+SBW[b.fmt][wk]+')'):'Stand alone session';r.theme=sbWT(b,wk);r.intro=ii.intro;r.learn=ii.learn;r.time=b.time;r.place=b.place;r.built=1;r.plan=sbItems(b,wk);r.groups=sbGroups(b,wk).slots.map(function(x){return {t:x.t,g:x.g.map(function(g){return {n:g.name,l:g.list.map(sbLab)};})};});r.coach=sbCoachPts(b,wk);r.roles=sbRoles(b,wk);r.deleted=false;touch('settings',S.settings);return r;}
 function sbLoadPdf(){return new Promise(function(ok,bad){if(window.jspdf)return ok();var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';s.onload=ok;s.onerror=function(){bad(new Error('No signal. Try again with a connection.'));};document.head.appendChild(s);});}
 function sbAscii(t){return String(t||'').replace(/[‘’]/g,"'").replace(/[“”]/g,'"').replace(/[–—]/g,', ').replace(/[^\x20-\x7e\n]/g,'');}
 function sbLoadQr(){return new Promise(function(ok){if(window.qrcode)return ok();var q=document.createElement('script');q.src='https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js';q.onload=ok;q.onerror=ok;document.head.appendChild(q);});}
@@ -1116,7 +1179,7 @@ function saveM(m){touch('match',m);}
 var ACT={
 anPick:function(d){view.an=Number(d.i);render(true);},resGo:function(){view.rq=(($('#rq')||{}).value||'').trim();view.rm=40;render(true);},resSrc:function(d){view.rs=Number(d.i);view.rm=40;render(true);},resTopic:function(d){view.rt=Number(d.i);view.rm=40;render(true);},resAge:function(d){view.ra=Number(d.i);view.rm=40;render(true);},resMore:function(){view.rm=(view.rm||40)+40;render(true);},resStar:function(d){var a=S.settings.short||(S.settings.short=[]),i=a.indexOf(d.k);if(i>-1)a.splice(i,1);else a.push(d.k);touch('settings',S.settings);render(true);},resClear:function(){S.settings.short=[];touch('settings',S.settings);render(true);},resCopy:function(){var L=resList(),t='Session brief: practices we want to use\n'+(S.settings.short||[]).map(function(k){var r=L.filter(function(x){return resKey(x)===k;})[0];return r?'- '+r.t+' ('+RSRC[r.s]+', '+window.RA[r.a]+')':'';}).filter(Boolean).join('\n');try{navigator.clipboard.writeText(t);toast('Copied');}catch(e){toast('Could not copy');}},
 sbStep:function(d){view.sbs=Number(d.i);render(true);window.scrollTo(0,0);},sbTopic:function(d){var b=sb();b.topic=Number(d.i);b.intro='';b.weeks.forEach(function(w){w.s={};w.i={};});touch('settings',S.settings);render(true);},sbIdea:function(d){var b=sb();b.free=d.v;b.intro='';touch('settings',S.settings);render(true);},sbFmt:function(d){var b=sb();b.fmt=Number(d.i);b.week=0;touch('settings',S.settings);render(true);},sbMins:function(d){var b=sb();b.mins=Number(d.i);touch('settings',S.settings);render(true);},sbNext:function(d){var b=sb();b.next=Number(d.i);touch('settings',S.settings);render(true);},sbWeek:function(d){var b=sb();b.week=Number(d.i);render(true);},
-sbAuto:function(){var b=sb();SBSL.forEach(function(s){sbFill(b,b.week,s[0],false);});touch('settings',S.settings);render(true);},sbAutoAll:function(){var b=sb();b.weeks.forEach(function(w,i){SBSL.forEach(function(s){sbFill(b,i,s[0],false);});});touch('settings',S.settings);render(true);toast('Done');},
+sbBlock:function(d){var b=sb();sbApplyBlock(b,d.id);b.weeks.forEach(function(w,i){sbSlots(w).forEach(function(sl){sbFill(b,i,sl[0],false);});});view.sbs=3;touch('settings',S.settings);render(true);window.scrollTo(0,0);toast('Six week block built');},sbSplit:function(){var b=sb(),w=b.weeks[b.week];w.split=!w.split;if(w.split){w.lead.s1='Tim';w.lead.s1b='Deano';w.lead.s2='Tim';w.lead.s2b='Deano';}else{delete w.s.s1b;delete w.s.s2b;w.lead.s1=w.lead.s1==='Tim'?'Deano':w.lead.s1;}touch('settings',S.settings);render(true);},sbAuto:function(){var b=sb();sbSlots(b.weeks[b.week]).forEach(function(s){sbFill(b,b.week,s[0],false);});touch('settings',S.settings);render(true);},sbAutoAll:function(){var b=sb();b.weeks.forEach(function(w,i){sbSlots(w).forEach(function(s){sbFill(b,i,s[0],false);});});touch('settings',S.settings);render(true);toast('Done');},
 sbKeep:function(d){var b=sb(),it=b.weeks[b.week].s[d.s];if(it){it.keep=!it.keep;touch('settings',S.settings);render(true);}},sbAgain:function(d){var b=sb();sbFill(b,b.week,d.s,true);touch('settings',S.settings);render(true);},
 sbPickOpen:function(d){view.sbp=view.sbp===d.s?null:d.s;view.sbq='';render(true);},sbSearch:function(){view.sbq=(($('#sbq')||{}).value||'').trim();render(true);},
 sbUse:function(d){var b=sb(),r=resList().filter(function(x){return resKey(x)===d.k;})[0];if(!r)return;b.weeks[b.week].s[d.s]={k:'r',t:r.t,src:RSRC[r.s],age:window.RA[r.a],u:r.v||('https://drive.google.com/drive/search?q='+encodeURIComponent(r.t)),keep:true};view.sbp=null;touch('settings',S.settings);render(true);},
