@@ -30,3 +30,22 @@ case 'hub.help.done': {
   return { ok: true };
 }
 ```
+
+## Training requests (My own training page)
+
+The player page calls `f.trainreq` with the family code and `{topic, note}`. Store it in the same CodeHelp sheet with
+`kind: 'train'` so `help.list` returns it and the coach Today card shows it under Training requests.
+
+```js
+case 'f.trainreq': {
+  var who = whoFromCode_(code); // role and shirt number from the code, never the name
+  rateLimit_('trainreq', 6, 3600);
+  var sh = sheet_('CodeHelp', ['id', 'at', 'role', 'num', 'first', 'done', 'kind', 'topic', 'note']);
+  sh.appendRow([uid_(), Date.now(), who.role, who.num, '', '', 'train',
+    String(p.topic || '').slice(0, 20), String(p.note || '').slice(0, 200)]);
+  return { ok: true };
+}
+```
+
+Weekly home links ride on the existing weekly card as `hp: [{t, u}]` (https links only). Make sure the `wc` field or the
+`[[wc:...]]` sentinel in `why` passes through to the family `D.posts` unchanged.
