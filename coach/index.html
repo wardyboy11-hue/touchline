@@ -49,8 +49,9 @@ textarea{min-height:84px}
 .chip.prim{outline:2px solid var(--amber)}
 .tag{display:inline-block;font-size:11px;font-weight:700;border-radius:6px;padding:2px 7px;background:#26407a;color:#cfe0ff}
 .tag.good{background:#14532d;color:#bbf7d0}.tag.warn{background:#6b4a0a;color:#ffe3a3}.tag.bad{background:#7f1d33;color:#ffd4dc}
-.seg{display:flex;border:1px solid var(--line);border-radius:12px;overflow:hidden}
-.seg button{flex:1;background:#0A173A;border:0;padding:10px;font-weight:700;color:var(--muted)}
+.seg{display:flex;border:1px solid var(--line);border-radius:12px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.seg::-webkit-scrollbar{display:none}
+.seg button{flex:1 0 auto;white-space:nowrap;background:#0A173A;border:0;padding:10px 14px;font-weight:700;color:var(--muted)}
 .seg button.on{background:var(--purple);color:#fff}
 .score{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .score .big{font-size:38px;font-weight:800;letter-spacing:1px}
@@ -321,7 +322,7 @@ function grpOf(t){for(var g in GRP)if(GRP[g].indexOf(t)>-1)return g;return 'toda
 function ico(n){var P={home:'<path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>',cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/>',ball:'<circle cx="12" cy="12" r="9"/><path d="M12 7l4 3-1.5 5h-5L8 10z"/>',img:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M21 16l-5-5-8 9"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-3.5 3-5 7-5s7 1.5 7 5"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14c3 0 5 1.5 5 4"/>',clip:'<rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h6M9 14h6"/>',chat:'<path d="M4 5h16v11H9l-5 4z"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'};return '<svg viewBox="0 0 24 24" aria-hidden="true">'+(P[n]||'')+'</svg>';}
 function tabs(){var T=[['today','Today','clock'],['match','Match','ball'],['squad','Team','users'],['train','Train','clip'],['hub','Comms','chat']];var cg=grpOf(view.tab);return '<nav class="tabs" aria-label="Main">'+T.map(function(t){var on=!view.mid&&(t[0]==='train'?cg==='train':grpOf(t[0])===cg);return '<button aria-label="'+t[1]+'" class="'+(on?'on':'')+'" data-act="tab" data-v="'+t[0]+'">'+ico(t[2])+'<span>'+t[1]+'</span></button>';}).join('')+'</nav>';}
 function subnav(){var g=grpOf(view.tab),L=GRP[g];if(g==='train'){var m=modeOf(view.tab);return '<div class="seg" style="margin:6px 0 6px">'+['plan','run','lib'].map(function(k){return '<button class="'+(m===k?'on':'')+'" data-act="tmode" data-v="'+k+'">'+TM[k].n+'</button>';}).join('')+'</div><div class="seg sub" style="margin:0 0 10px">'+TM[m].l.map(function(x){return '<button class="'+(view.tab===x[0]?'on':'')+'" data-act="tab" data-v="'+x[0]+'" data-m="'+m+'">'+x[1]+'</button>';}).join('')+'</div>';}if(L.length<2)return '';return '<div class="seg" style="margin:6px 0 10px">'+L.map(function(t){return '<button class="'+(view.tab===t?'on':'')+'" data-act="tab" data-v="'+t+'">'+GNAME[t]+'</button>';}).join('')+'</div>';}
-function render(keepScroll){try{document.body.classList.toggle('ps',localStorage.getItem('tl.ps')==='1');}catch(e){}
+function render(keepScroll){setTimeout(function(){try{document.querySelectorAll(".seg button.on").forEach(function(b){b.scrollIntoView({inline:"center",block:"nearest"});});}catch(e){}},0);try{document.body.classList.toggle('ps',localStorage.getItem('tl.ps')==='1');}catch(e){}
  var r=$('#root'),y=window.scrollY;
  if(!CODE){r.innerHTML=vLogin();return;}
  loadPhotos();
