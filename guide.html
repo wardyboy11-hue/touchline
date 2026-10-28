@@ -47,7 +47,13 @@ button:focus-visible,a:focus-visible,video:focus-visible{outline:3px solid rgba(
 var GUIDES=[
  {id:'parents',label:'Parents',src:'guide_parents.mp4',poster:'guide_parents.jpg',vtt:'guide_parents.vtt',
   blurb:'A five minute tour for parents: what it is, how to sign in, alerts, voting, events and asking us questions.',
-  ch:[['welcome','Welcome',6.0],['privacy','Your privacy',67.6],['home','Home',87.4],['games','Games',123.4],['events','Events and media',139.6],['motm','Man of the Match',172.3],['alerts','Match day alerts',195.7],['questions','Questions and ideas',214.7],['lad','Your lad\'s page',239.8],['install','Put it on your phone',272.8]]}
+  ch:[['welcome','Welcome',6.0],['privacy','Your privacy',67.6],['home','Home',87.4],['games','Games',123.4],['events','Events and media',139.6],['motm','Man of the Match',172.3],['alerts','Match day alerts',195.7],['questions','Questions and ideas',214.7],['lad','Your lad\'s page',239.8],['install','Put it on your phone',272.8]]},
+ {id:'new',label:'What\'s new',src:'guide_parents_new.mp4',poster:'guide_parents_new.jpg',vtt:'guide_parents_new.vtt',
+  blurb:'A one minute catch up for parents: subs, the 100 Club, My own training and finding your way round.',
+  ch:[['whatsnew','What\'s new',0],['subs','Subs',6.5],['club','100 Club',18.6],['myowntraining','My own training',30.8],['findingyourway','Finding your way',43.8],['oursponsor','Our sponsor',52.6]]},
+ {id:'players',label:'Players',src:'guide_players.mp4',poster:'guide_players.jpg',vtt:'guide_players.vtt',
+  blurb:'Under two minutes for the lads: what the app is for, training, match day, your profile and where to get help.',
+  ch:[['yourtouchlineapp','Your Touchline app',0],['whatitsfor','What it\'s for',4.7],['whatyoucanuseitfor','What you can use it for',13.3],['whatilldo','What I\'ll do',31.9],['training','Training',38.5],['matchday','Match day',47.6],['yourprofile','Your profile',62.5],['wheretogethelp','Where to get help',81.2]]},
 ];
 var v=document.getElementById('v'),cur=null,list=document.getElementById('chap');
 function fmt(t){var m=Math.floor(t/60),s=Math.floor(t%60);return m+':'+(s<10?'0':'')+s;}
