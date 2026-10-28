@@ -1,0 +1,12 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Listen | Wigan Junior Latics U15 Blues</title><link rel="icon" href="icon-192.png">
+<style>:root{--bg:#06102B;--card:#0E1D45;--line:#27407F;--ink:#F4F6FC;--muted:#A6B2D4;--amber:#FFB81C}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,Arial,sans-serif}main{max-width:640px;margin:0 auto;padding:16px}header{display:flex;align-items:center;gap:12px;border-bottom:2px solid var(--amber);padding-bottom:10px}header img{height:44px}h1{font-size:20px;margin:0}h2{font-size:17px;color:var(--amber);margin:22px 0 4px}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0}.card b{font-size:17px}.m{color:var(--muted);font-size:14px}a.b{display:flex;min-height:48px;align-items:center;justify-content:center;border-radius:12px;background:var(--amber);color:#1b1200;font-weight:700;text-decoration:none;margin-top:10px}.sp{display:flex;align-items:center;justify-content:center;gap:10px;margin:28px 0 8px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:14px}.sp span img{height:28px;background:#fff;border-radius:6px;padding:3px 6px}</style></head><body><main>
+<header><img src="badge.png" alt="Wigan Junior Latics"><div><h1>Listen</h1><div class="m">Podcasts picked by the coaches</div></div></header>
+<p class="m">Players: ask a parent first, and listen to the first one together. The coaches have not listened to every episode, so if anything is not right for you, switch off and tell us.</p>
+<div id="o"></div>
+<div class="sp">Proudly sponsored by <span><img src="coach/mfs.png" alt="MFS Limited"></span></div>
+<p class="m" style="text-align:center"><a href="parents.html" style="color:var(--amber)">Back to the team page</a></p>
+<script src="pod.js"></script><script>
+function e(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+var G=[['players','For players'],['parents','For parents'],['coaches','For coaches']],h='';
+G.forEach(function(g){var l=POD.filter(function(p){return p.who[0]===g[0];});if(!l.length)return;h+='<h2>'+g[1]+'</h2>'+l.map(function(p){return '<div class="card"><b>'+e(p.t)+'</b><div class="m">'+e(p.host)+'</div><p>'+e(p.why)+'</p><a class="b" href="'+e(p.url)+'" target="_blank" rel="noopener">Listen</a></div>';}).join('');});
+document.getElementById('o').innerHTML=h;</script></main></body></html>

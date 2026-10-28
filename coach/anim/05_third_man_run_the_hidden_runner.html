@@ -1,4 +1,4 @@
-<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>The Hidden Runner</title><style>:root{--bg:#0f1720;--fg:#eceff1;--mut:#90a4ae;--acc:#ff9800}body{margin:0;background:var(--bg);color:var(--fg);font-family:'Segoe UI',Arial,sans-serif}
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>The Hidden Runner</title><style>:root{--bg:#06102B;--fg:#F4F6FC;--mut:#A6B2D4;--acc:#FFB81C}body{margin:0;background:var(--bg);color:var(--fg);font-family:'Segoe UI',Arial,sans-serif}
 .wrap{max-width:1280px;margin:0 auto;padding:16px}canvas{width:100%;height:auto;display:block;border-radius:10px;background:#000}
 .ctl{display:flex;gap:8px;align-items:center;margin:10px 0;flex-wrap:wrap}button,select{background:#1c2733;color:#fff;border:1px solid #33475b;border-radius:8px;padding:10px 14px;font-size:15px}
 input[type=range]{flex:1;min-width:140px}h2{color:var(--acc);font-size:15px;letter-spacing:.06em;text-transform:uppercase;margin:22px 0 6px}ul{margin:0;padding-left:20px;line-height:1.55}
@@ -40,7 +40,7 @@ function wrap(t,x,y,w,lh,font,color,maxLines){ctx.font=font;ctx.fillStyle=color;
   for(const wd of words){const test=line?line+' '+wd:wd;if(ctx.measureText(test).width>w&&line){ctx.fillText(line,x,y+n*lh);n++;line=wd;}else line=test;}
   ctx.fillText(line,x,y+n*lh);return n+1;}
 function pitch(){
-  ctx.fillStyle='#0f1720';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#06102B';ctx.fillRect(0,0,W,H);
   // grass band
   const gx=ox-18,gy=oy-18,gw=P.L*sc+36,gh=P.W*sc+36;
   ctx.fillStyle='#2e7d32';ctx.fillRect(gx,gy,gw,gh);
@@ -53,7 +53,7 @@ function pitch(){
   (P.goals||[]).forEach(g=>{const w=g.w*sc,d=22;ctx.fillStyle='rgba(255,255,255,0.25)';ctx.strokeStyle='#fff';ctx.lineWidth=3;
     if(g.side==='right'){ctx.fillRect(X(g.x),Y(g.y)-w/2,d,w);ctx.strokeRect(X(g.x),Y(g.y)-w/2,d,w);}
     else{ctx.fillRect(X(g.x)-d,Y(g.y)-w/2,d,w);ctx.strokeRect(X(g.x)-d,Y(g.y)-w/2,d,w);}});
-  (P.cones||[]).forEach(c=>{const x=X(c[0]),y=Y(c[1]);ctx.fillStyle='#ff9800';ctx.beginPath();ctx.moveTo(x,y-9);ctx.lineTo(x-7,y+7);ctx.lineTo(x+7,y+7);ctx.closePath();ctx.fill();});
+  (P.cones||[]).forEach(c=>{const x=X(c[0]),y=Y(c[1]);ctx.fillStyle='#FFB81C';ctx.beginPath();ctx.moveTo(x,y-9);ctx.lineTo(x-7,y+7);ctx.lineTo(x+7,y+7);ctx.closePath();ctx.fill();});
 }
 function arrow(a,b,color,dash){const x1=X(a[0]),y1=Y(a[1]),x2=X(b[0]),y2=Y(b[1]);const d=Math.hypot(x2-x1,y2-y1);if(d<20)return;
   ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=3;ctx.setLineDash(dash?[9,7]:[]);const ang=Math.atan2(y2-y1,x2-x1);const e=[x2-Math.cos(ang)*18,y2-Math.sin(ang)*18];
@@ -72,25 +72,25 @@ function ballPos(seg,p,pp){const off=[1.5,1.1];
   const q=Math.min(1,(p-a)/(b-a));const pa=playersAt(seg,a);const from=seg.h0?[pa[seg.h0][0]+off[0],pa[seg.h0][1]+off[1]]:seg.pt0;
   const to=seg.kind==='pass'?[pp[seg.to][0]+off[0],pp[seg.to][1]+off[1]]:seg.pt;
   const qe=1-Math.pow(1-q,2);return lerp(from,to,qe);}
-function caption(seg){ctx.fillStyle='rgba(10,16,24,0.94)';ctx.fillRect(0,H-96,W,96);ctx.fillStyle='#ff9800';ctx.fillRect(0,H-96,6,96);
-  ctx.font='700 14px Segoe UI, Arial, sans-serif';ctx.fillStyle='#ff9800';ctx.textAlign='left';ctx.fillText('STEP '+(seg.i+1)+' OF '+segs.length,26,H-70);
+function caption(seg){ctx.fillStyle='rgba(10,16,24,0.94)';ctx.fillRect(0,H-96,W,96);ctx.fillStyle='#FFB81C';ctx.fillRect(0,H-96,6,96);
+  ctx.font='700 14px Segoe UI, Arial, sans-serif';ctx.fillStyle='#FFB81C';ctx.textAlign='left';ctx.fillText('STEP '+(seg.i+1)+' OF '+segs.length,26,H-70);
   wrap(seg.s.say,26,H-42,W-60,28,'600 24px Segoe UI, Arial, sans-serif','#fff');}
-function header(){ctx.fillStyle='rgba(10,16,24,0.94)';ctx.fillRect(0,0,W,62);ctx.fillStyle='#ff9800';ctx.fillRect(0,60,W,2);
+function header(){ctx.fillStyle='rgba(10,16,24,0.94)';ctx.fillRect(0,0,W,62);ctx.fillStyle='#FFB81C';ctx.fillRect(0,60,W,2);
   ctx.textAlign='left';ctx.font='700 24px Segoe UI, Arial, sans-serif';ctx.fillStyle='#fff';ctx.fillText(P.title,26,38);
   ctx.textAlign='right';ctx.font='600 15px Segoe UI, Arial, sans-serif';ctx.fillStyle='#b0bec5';ctx.fillText(P.age+'  |  '+P.format,W-26,36);
   // key
   }
 function panel(x,y,w,h){ctx.fillStyle='rgba(10,16,24,0.90)';ctx.beginPath();ctx.roundRect?ctx.roundRect(x,y,w,h,14):ctx.rect(x,y,w,h);ctx.fill();}
 function intro(t){panel(W/2-420,110,840,420);ctx.textAlign='left';let x=W/2-390,y=160;
-  ctx.font='700 14px Segoe UI, Arial, sans-serif';ctx.fillStyle='#ff9800';ctx.fillText(P.theme.toUpperCase(),x,y);y+=34;
+  ctx.font='700 14px Segoe UI, Arial, sans-serif';ctx.fillStyle='#FFB81C';ctx.fillText(P.theme.toUpperCase(),x,y);y+=34;
   ctx.font='700 34px Segoe UI, Arial, sans-serif';ctx.fillStyle='#fff';ctx.fillText(P.title,x,y);y+=40;
   const rows=[['Age group',P.age],['Format',P.format],['Area',P.area],['Kit',P.kit],['Start',P.start]];
   rows.forEach(r=>{ctx.font='700 16px Segoe UI, Arial, sans-serif';ctx.fillStyle='#90a4ae';ctx.fillText(r[0],x,y+4);const n=wrap(r[1],x+120,y+4,640,24,'500 18px Segoe UI, Arial, sans-serif','#fff');y+=Math.max(36,n*24+14);});}
 function outro(t){panel(W/2-460,100,920,470);ctx.textAlign='left';let x=W/2-430,y=148;
-  ctx.font='700 14px Segoe UI, Arial, sans-serif';ctx.fillStyle='#ff9800';ctx.fillText('COACHING POINTS',x,y);y+=14;
-  P.points.forEach(p=>{const n=wrap(p,x+16,y+22,860,26,'500 19px Segoe UI, Arial, sans-serif','#fff');ctx.fillStyle='#ff9800';ctx.fillRect(x,y+8,6,6);y+=n*26+8;});
-  y+=30;ctx.font='700 14px Segoe UI, Arial, sans-serif';ctx.fillStyle='#ff9800';ctx.fillText('MAKE IT HARDER',x,y);y+=14;
-  P.progress.forEach(p=>{const n=wrap(p,x+16,y+22,860,26,'500 19px Segoe UI, Arial, sans-serif','#fff');ctx.fillStyle='#ff9800';ctx.fillRect(x,y+8,6,6);y+=n*26+8;});}
+  ctx.font='700 14px Segoe UI, Arial, sans-serif';ctx.fillStyle='#FFB81C';ctx.fillText('COACHING POINTS',x,y);y+=14;
+  P.points.forEach(p=>{const n=wrap(p,x+16,y+22,860,26,'500 19px Segoe UI, Arial, sans-serif','#fff');ctx.fillStyle='#FFB81C';ctx.fillRect(x,y+8,6,6);y+=n*26+8;});
+  y+=30;ctx.font='700 14px Segoe UI, Arial, sans-serif';ctx.fillStyle='#FFB81C';ctx.fillText('MAKE IT HARDER',x,y);y+=14;
+  P.progress.forEach(p=>{const n=wrap(p,x+16,y+22,860,26,'500 19px Segoe UI, Arial, sans-serif','#fff');ctx.fillStyle='#FFB81C';ctx.fillRect(x,y+8,6,6);y+=n*26+8;});}
 function keyBar(){ctx.font='600 13px Segoe UI, Arial, sans-serif';let x=26,y=H-108;ctx.textAlign='left';
   (P.key||[]).forEach(k=>{ctx.beginPath();ctx.arc(x+8,y-4,8,0,6.3);ctx.fillStyle=COL[k[0]];ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();ctx.fillStyle='#fff';ctx.fillText(k[1],x+22,y);x+=ctx.measureText(k[1]).width+52;});}
 function draw(t){
@@ -125,4 +125,4 @@ $('next').onclick=()=>{const idx=segs.findIndex(s=>t>=s.t0&&t<s.t1);t=idx>=0&&id
 $('speed').onchange=e=>{speed=parseFloat(e.target.value);};
 requestAnimationFrame(loop);
 })();
-</script></body></html>
+</script><div style="display:flex;align-items:center;gap:12px;justify-content:center;padding:14px 12px 22px;color:#A6B2D4;font:12px Arial,sans-serif;border-top:2px solid #FFB81C;margin-top:10px"><img src="../../badge.png" alt="Wigan Junior Latics" style="height:34px"><span>Wigan Junior Latics U15 Blues. Proudly sponsored by</span><span style="background:#fff;border-radius:6px;padding:3px 6px;display:inline-flex"><img src="../mfs.png" alt="MFS Limited" style="height:26px"></span></div></body></html>
