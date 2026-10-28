@@ -899,6 +899,8 @@ function sbFill(b,wk,slot,again){var w=b.weeks[wk],cur=w.s[slot];if(cur&&cur.kee
  var i=again?((w.i[slot]||0)+1)%pool.length:(w.i[slot]||0);w.i[slot]=i;var it=pool[i];if(again&&cur&&it.t===cur.t){i=(i+1)%pool.length;w.i[slot]=i;it=pool[i];}w.s[slot]=it;}
 function sbMins(b,m){return Math.max(3,Math.round(m*(b.mins||60)/60));}
 function sbIntro(b,wk){if(wk==null)wk=b.week;var w=b.weeks[wk]||{},t=sbWT(b,wk),ti=w.lrn?w.lrn:(b.topic>-1?SBLRN[b.topic]:SBLRN[4]);return {intro:'This week we are working on '+t.toLowerCase()+'. By the end of the session you should be able to '+ti[0].charAt(0).toLowerCase()+ti[0].slice(1)+'.'+(w.split?' Part of tonight we split into a defence group and an attack group, then come back together for the game.':''),learn:ti.join('\n')+(w.soc?'\nTeam habit: '+w.soc:'')};}
+function resPre(){if(window.RD||window.__rsl)return;window.__rsl=1;var sc=document.createElement('script');sc.src='res.js';sc.onload=function(){try{resList();}catch(e){}if(view.tab==='sb'||view.tab==='res')render(true);};sc.onerror=function(){window.__rsl=0;};document.head.appendChild(sc);}
+setTimeout(function(){try{if(CODE)resPre();}catch(e){}},3000);
 function vSb(){
  if(!window.RD){if(!window.__rsl){window.__rsl=1;var sc=document.createElement('script');sc.src='res.js';sc.onload=function(){render(true);};document.head.appendChild(sc);}return intro('Loading the session builder.')+'<p class="muted">Loading...</p>';}
  var b=sb(),st=view.sbs||1,w=b.weeks[b.week],h=intro('Build a session or a whole block. Pick a topic or type what you want, choose the practices, then share it.');
