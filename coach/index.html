@@ -850,7 +850,7 @@ var SBR=[{id:'out',name:'Playing out from the back, transitions and finishing',n
  cpT:['Win it, get it forward, then spread wide','Keep the shape behind the ball','Talk: name the runner'],
  ro:{gk:'Start it and talk to the line.',def:'Keep the shape behind the ball while we finish.',piv:'Link and arrive late at the edge of the box.',mid:'Arrive in the box late. Shoot or pass.',att:'Be there for the chance. Finish, then press.'}}
 ]}];
-function sbWS(b,wk){var w=b.weeks[wk]||{};if(w.wssp!==undefined)return w.wssp;return (b.rcId==='out'&&wk===0)?'https://www.sportsessionplanner.com/my.mpl?a=session_view&id=3515453':'';}
+function sbWS(b,wk){var w=b.weeks[wk]||{};if(w.wssp!==undefined)return w.wssp;if(b.rcId==='out'){var M={0:'3515453',1:'3516533'};if(M[wk])return 'https://www.sportsessionplanner.com/my.mpl?a=session_view&id='+M[wk];}return '';}
 function sbSlots(w){if(!(w&&w.split))return SBSL;return [['warm','Welcome and warm up',8],['s1','Session one: defence group',10],['s1b','Session one: attack group',10],['s2','Session two: defence group',20],['s2b','Session two: attack group',20],['game','The game: everyone together',18]];}
 function sbWT(b,wk){var w=b.weeks[wk];return (w&&w.name)||sbTheme(b);}
 function sbClearRc(b){b.rcId='';b.weeks.forEach(function(w){delete w.rc;delete w.name;delete w.lrn;delete w.soc;delete w.cpB;delete w.cpT;delete w.ro;});}
