@@ -283,6 +283,19 @@ function fam_(b) {
     if (!rcd) return {};
     return { opp: clean_(best.opp, 40), ko: clean_(best.ko, 8), ha: best.ha || 'H', date: best.date, pos: clean_(rcd.pos, 6), inp: clean_(rcd.inp, 200), out: clean_(rcd.out, 200), cue: clean_(rcd.cue, 200), trig: clean_(rcd.trig, 200) };
   }
+  if (b.action === 'f.child') {
+    /* Parent oversight of the linked player. Profile words, published work ons, named voice thread, photo pending. Never coach marks, welfare, scores or other players. */
+    if (role !== 'parent') return {};
+    var sx2 = selfAll_()[pid] || {}, cd = allDocs_().players[pid] || {};
+    var pend = false, pqs = pq_(), pl2 = pqs.getLastRow();
+    if (pl2 > 1) pqs.getRange(2, 2, pl2 - 1, 4).getValues().forEach(function (r) { if (String(r[0]) === pid && String(r[3]) === 'pending') pend = true; });
+    return {
+      num: String(me.num || ''), nick: sx2.nick || '', foot: sx2.foot || '', pos: sx2.pos || [],
+      work: cd.workon && cd.workon.pub ? (cd.workon.items || []).slice(0, 3).map(function (x) { return clean_(x.txt, 160); }) : [],
+      voice: voiceRows_().filter(function (r) { return r.kind === 'q' && r.d.named && r.d.pid === pid; }).sort(function (a, b) { return b.at - a.at; }).slice(0, 10).map(function (r) { return { q: r.d.text, a: r.answer }; }),
+      photoPending: pend
+    };
+  }
   if (b.action === 'f.fm.get') { if (role !== 'player') return {}; return fmGet_(pid); }
   if (b.action === 'f.fm.set') { if (role !== 'player') throw new Error('This page is for the player. Use the player code.'); return fmSet_(pid, b); }
   if (b.action === 'f.workon') {
