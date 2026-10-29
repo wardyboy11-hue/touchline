@@ -56,6 +56,9 @@ function doPost(e) {
     if (b.action === 'help.list') return out_({ ok: true, data: { rows: helpOpen_() } });
     if (b.action === 'hub.help.done') return out_({ ok: true, data: helpDone_(b.id) });
     if (b.action === 'plan.get') return out_({ ok: true, data: planGet_(b) });
+    if (b.action === 'lib.req.list') return out_({ ok: true, data: libReqList_() });
+    if (b.action === 'lib.req.decide') return out_({ ok: true, data: libDecide_(b) });
+    if (b.action === 'lib.give') return out_({ ok: true, data: libGive_(b) });
     if (b.action === 'alert.send') return out_({ ok: true, data: notify_(clean_(b.title, 100) || 'Latics alert', clean_(b.msg, 500), clean_(b.level, 8)) });
     throw new Error('Unknown action');
   } catch (err) {
@@ -304,6 +307,9 @@ function fam_(b) {
     var wd = allDocs_().players[pid];
     return wd && wd.workon && wd.workon.pub ? { items: (wd.workon.items || []).slice(0, 3).map(function (x) { return { k: clean_(x.k, 20), txt: clean_(x.txt, 160) }; }), at: wd.workon.at || 0 } : {};
   }
+  if (b.action === 'f.lib.get') return libGet_(pid, role);
+  if (b.action === 'f.lib.req') return libReq_(pid, role, me, b);
+  if (b.action === 'f.lib.used') return libUsed_(pid, role, b);
   if (b.action === 'f.self.get') { var sx = selfAll_()[pid] || {}; if (role !== 'player') return { role: role, done: true }; return { role: role, done: !!sx.done, nick: sx.nick || '', foot: sx.foot || '', pos: sx.pos || [], sr: sx.sr || {}, at: sx.at || 0 }; }
   if (b.action === 'f.self.set') { if (role !== 'player') throw new Error('This page is for the player. Use the player code.'); return selfSet_(pid, b); }
   if (b.action === 'f.voice.pub') return { rows: voicePub_() };
