@@ -475,9 +475,9 @@ function lbScript(src,cb,fail){var sc=document.createElement('script');sc.src=sr
 function lbLoad(){if(LB.loading||LB.d)return;LB.loading=true;
  var go=function(){call('f.lib.get').then(function(d){LB.d=d;LB.err='';LB.loading=false;r();}).catch(function(e){LB.err=/unknown/i.test(e.message)?'The library is not switched on yet. Ask Tim.':e.message;LB.loading=false;r();});};
  var fail=function(){LB.err='Could not load the library. Check your signal and try again.';LB.loading=false;r();};
- if(window.LIBD&&window.TOPICS&&window.TOPICS.length)go();else lbScript('coach/topics.js?v=53',function(){lbScript('coach/lib.js?v=53',go,fail);},fail);}
+ if(window.LIBD&&window.TOPICS&&window.TOPICS.length)go();else lbScript('coach/topics.js?v=54',function(){lbScript('coach/lib.js?v=54',go,fail);},fail);}
 function lbRow(id){return window.LIBL?window.LIBL().filter(function(x){return x.id===id;})[0]:null;}
-function lbVis(){var pub=(LB.d&&LB.d.pub)||[],q=(LB.q||'').toLowerCase();return window.LIBL().filter(function(r){return pub.indexOf(r.id)>-1&&(LB.t<0||r.t===LB.t)&&(!q||(r.title+' '+r.by+' '+(window.TOPICS[r.t]||'')+(r.tag?' 3-5-2 back three wing back':'')).toLowerCase().indexOf(q)>-1);});}
+function lbVis(){var pub=(LB.d&&LB.d.pub)||[],q=(LB.q||'').toLowerCase();return window.LIBL().filter(function(r){return (pub.indexOf(r.id)>-1||(r.tag==='pin'&&r.appr))&&(LB.t<0||r.t===LB.t)&&(!q||(r.title+' '+r.by+' '+(window.TOPICS[r.t]||'')+(r.tag?' 3-5-2 back three wing back':'')).toLowerCase().indexOf(q)>-1);});}
 function lbCard(r,opt){var T=window.TOPICS||[],yt=r.emb==='y'?window.LIBYT(r.url):'';
  return '<div class="card"><h3 style="margin:0 0 4px">'+esc(r.title)+'</h3><p class="small muted" style="margin:0 0 8px">'+esc(r.by)+' &middot; '+esc(T[r.t]||'')+' &middot; '+(r.paid?'Paid, link only':'Free')+'</p>'
  +(yt&&LB.w===r.id?'<iframe title="'+esc(r.title)+'" src="'+esc(yt)+'" allow="picture-in-picture; fullscreen" allowfullscreen loading="lazy" style="width:100%;aspect-ratio:16/9;border:0;border-radius:10px;background:#111"></iframe>':'')
