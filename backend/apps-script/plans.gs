@@ -9,7 +9,7 @@
  * - The file must sit somewhere under the Footy Coaching root folder (script property PLAN_ROOT,
  *   defaults to the Footy Coaching folder id). Anything else is refused.
  * - 8 MB cap.
- * First run: in the Apps Script editor run planGetTest_() once and accept the Drive permission,
+ * First run: in the Apps Script editor run planGetTest once and accept the Drive permission,
  * then Deploy, Manage deployments, edit, New version.
  */
 var PLAN_ROOT_DEFAULT = '1ahr5GNZuGK2t9S0Wnl9tDkFpPfTY8nI4';
@@ -53,3 +53,6 @@ function planGetTest_() {
   var r = planGet_({ id: '1JyN8YA-rH8BIMlr6u-zE8uK6tzDcuXUm' });
   Logger.log(r.name + ' ' + r.size + ' bytes');
 }
+
+/* Public name so the editor can run it. Run planGetTest once and accept the Drive permission. */
+function planGetTest() { planGetTest_(); }
