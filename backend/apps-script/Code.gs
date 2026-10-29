@@ -58,6 +58,7 @@ function doPost(e) {
     if (b.action === 'lib.req.list') return out_({ ok: true, data: libReqList_() });
     if (b.action === 'lib.req.decide') return out_({ ok: true, data: libDecide_(b) });
     if (b.action === 'lib.give') return out_({ ok: true, data: libGive_(b) });
+    if (b.action === 'consent.list') return out_({ ok: true, data: consentList_() });
     if (b.action === 'alert.send') return out_({ ok: true, data: notify_(clean_(b.title, 100) || 'Latics alert', clean_(b.msg, 500), clean_(b.level, 8)) });
     throw new Error('Unknown action');
   } catch (err) {
@@ -306,6 +307,8 @@ function fam_(b) {
     var wd = allDocs_().players[pid];
     return wd && wd.workon && wd.workon.pub ? { items: (wd.workon.items || []).slice(0, 3).map(function (x) { return { k: clean_(x.k, 20), txt: clean_(x.txt, 160) }; }), at: wd.workon.at || 0 } : {};
   }
+  if (b.action === 'f.consent.get') return consentGet_(pid, role);
+  if (b.action === 'f.consent.save') return consentSave_(pid, role, b);
   if (b.action === 'f.lib.get') return libGet_(pid, role);
   if (b.action === 'f.lib.req') return libReq_(pid, role, me, b);
   if (b.action === 'f.lib.used') return libUsed_(pid, role, b);
@@ -686,12 +689,12 @@ function famAlert_(pid, role, pl, b) {
 }
 
 /* ---------------- v7: media, contacts ---------------- */
-function mediaTab_() { return tab_('Media', ['id', 'src', 'title', 'kind', 'link', 'status', 'at', 'who', 'data']); }
+function mediaTab_() { var sh = tab_('Media', ['id', 'src', 'title', 'kind', 'link', 'status', 'at', 'who', 'data', 'shirts']); if (sh.getMaxColumns() < 10) sh.insertColumnsAfter(sh.getMaxColumns(), 10 - sh.getMaxColumns()); if (!sh.getRange(1, 10).getValue()) sh.getRange(1, 10).setValue('shirts').setFontWeight('bold'); return sh; }
 function mediaMeta_() {
   var sh = mediaTab_(), last = sh.getLastRow();
   if (last < 2) return [];
-  return sh.getRange(2, 1, last - 1, 8).getValues().map(function (r, i) {
-    return { row: i + 2, id: String(r[0]), src: String(r[1]), title: String(r[2]), kind: String(r[3]), link: String(r[4]), status: String(r[5]), at: Number(r[6]) || 0, who: String(r[7]) };
+  return sh.getRange(2, 1, last - 1, 10).getValues().map(function (r, i) {
+    return { row: i + 2, id: String(r[0]), src: String(r[1]), title: String(r[2]), kind: String(r[3]), link: String(r[4]), status: String(r[5]), at: Number(r[6]) || 0, who: String(r[7]), shirts: String(r[9] || '') };
   });
 }
 function mediaAdd_(src, who, status, b) {
@@ -714,16 +717,19 @@ function mediaSet_(b) {
   if (!hit) throw new Error('Not found.');
   var sh = mediaTab_(); sh.getRange(hit.row, 6).setNumberFormat('@').setValue(st);
   if (st === 'removed') sh.getRange(hit.row, 9).setValue('');
+  if (b.shirts != null) sh.getRange(hit.row, 10).setNumberFormat('@').setValue(String(b.shirts).replace(/[^0-9,]/g, '').slice(0, 80));
   return { ok: true };
 }
 function mediaGet_(id, pid, coach) {
   var hit = null; mediaMeta_().forEach(function (r) { if (r.id === id) hit = r; });
   if (!hit) throw new Error('Not found.');
   if (!coach && hit.status !== 'published' && hit.src.split(':')[1] !== pid) throw new Error('Not available.');
+  if (!coach) { var noPic = consentNoShirts_(); if (String(hit.shirts || '').split(',').some(function (n) { return n && noPic.indexOf(n) > -1; })) throw new Error('Not available.'); }
   return { dataUrl: String(mediaTab_().getRange(hit.row, 9).getValue() || '') };
 }
 function mediaForFam_(pid) {
-  return mediaMeta_().filter(function (r) { return (r.status === 'published') || (r.status === 'pending' && r.src === 'parent:' + pid) || (r.status === 'pending' && r.src === 'player:' + pid); })
+  var noPic = consentNoShirts_();
+  return mediaMeta_().filter(function (r) { var tagged = String(r.shirts || '').split(',').filter(String); return !tagged.some(function (n) { return noPic.indexOf(n) > -1; }); }).filter(function (r) { return (r.status === 'published') || (r.status === 'pending' && r.src === 'parent:' + pid) || (r.status === 'pending' && r.src === 'player:' + pid); })
     .sort(function (a, b) { return b.at - a.at; }).slice(0, 40)
     .map(function (r) { return { id: r.id, title: r.title, kind: r.kind, link: r.link, who: r.who, pending: r.status === 'pending', mine: r.src.split(':')[1] === pid, coach: r.src === 'coach' }; });
 }
