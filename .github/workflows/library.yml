@@ -1,0 +1,40 @@
+# Optional. Keeps coach/library.json up to date from the Drive folders.
+# Needs repo secret GDRIVE_SA_JSON (a Google service account with read access to the folders)
+# and repo variables DRIVE_FOLDERS (comma separated folder ids). Without the secret this job exits cleanly.
+name: library
+on:
+  schedule: [{cron: '30 6 * * 4'}]
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      GDRIVE_SA_JSON: ${{ secrets.GDRIVE_SA_JSON }}
+      DRIVE_FOLDERS: ${{ vars.DRIVE_FOLDERS }}
+    steps:
+      - name: Skip when no secret
+        id: gate
+        run: |
+          if [ -z "$GDRIVE_SA_JSON" ] || [ -z "$DRIVE_FOLDERS" ]; then echo "No service account set. Skipping."; echo "go=no" >> "$GITHUB_OUTPUT"; else echo "go=yes" >> "$GITHUB_OUTPUT"; fi
+      - uses: actions/checkout@v4
+        if: steps.gate.outputs.go == 'yes'
+      - uses: actions/setup-node@v4
+        if: steps.gate.outputs.go == 'yes'
+        with: {node-version: 20}
+      - name: List Drive and rebuild
+        if: steps.gate.outputs.go == 'yes'
+        run: node tools/drive-list.mjs > /tmp/export.json && node tools/build-library.mjs /tmp/export.json --overrides tools/library-overrides.json > coach/library.json
+      - name: Open a PR if it changed
+        if: steps.gate.outputs.go == 'yes'
+        run: |
+          git diff --quiet coach/library.json && echo "No change." && exit 0
+          git config user.name "library bot"; git config user.email "bot@users.noreply.github.com"
+          git checkout -b library/refresh-${{ github.run_id }}
+          git add coach/library.json && git commit -m "Refresh library index"
+          git push origin HEAD
+          gh pr create --title "Refresh library index" --body "Weekly library refresh. Links and tags only." --base main
+        env:
+          GH_TOKEN: ${{ github.token }}
