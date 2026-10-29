@@ -3,7 +3,8 @@
 Google Apps Script web app that stores and serves everything the Touchline coach, parents and players pages need.
 
 ## Files
-- `apps-script/Code.gs` (810 lines): the whole backend.
+- `apps-script/Code.gs`: the main backend.
+- `apps-script/helpdesk.gs`: lost code and training request handlers (second file in the same Apps Script project).
 - `apps-script/appsscript.json`: manifest. Runs as the owner (`USER_DEPLOYING`), open to anyone with the link (`ANYONE_ANONYMOUS`). Access is controlled by codes inside the script.
 
 ## Script properties (Project Settings, Script properties)
@@ -28,7 +29,8 @@ Run `setup()` once after setting the properties.
 ## Review notes
 - No keys, tokens or codes are stored in the code.
 - Rotate `COACH_CODE` and `DEANO_CODE` if either is ever shared by mistake.
-- Pending handlers named in the app but not yet written: `f.codehelp`, `help.list`, `hub.help.done`, `f.trainreq`.
+- `f.codehelp` (open, rate limited 10 an hour overall and 3 an hour per shirt number, never returns a code), `f.trainreq` (needs a family or player code), `help.list` and `hub.help.done` (coach only) live in `helpdesk.gs`. They store role, shirt number, first name (lost code only), topic, a short note and a time in a `CodeHelp` sheet.
+- To install: add `helpdesk.gs` as a new file, add the four dispatcher lines in `Code.gs` (see the repo copy), then Deploy, Manage deployments, edit, New version.
 
 ## Not yet in this repo
 - Cloudflare worker `touchline-push`

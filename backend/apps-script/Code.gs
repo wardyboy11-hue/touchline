@@ -18,6 +18,7 @@ function doPost(e) {
   try {
     var b = JSON.parse(e.postData.contents);
     if (b.action === 'clip.chk') return out_({ ok: true, data: clipChk_(b) });
+    if (b.action === 'f.codehelp') return out_({ ok: true, data: codeHelp_(b) });
     if (/^f\./.test(String(b.action))) return out_({ ok: true, data: fam_(b) });
     auth_(b.code);
     if (/^clip\./.test(String(b.action))) return out_({ ok: true, data: clip_(b) });
@@ -48,6 +49,8 @@ function doPost(e) {
     if (b.action === 'ev.set') return out_({ ok: true, data: evSet_(b) });
     if (b.action === 'lift.list') return out_({ ok: true, data: { rows: liftRows_() } });
     if (b.action === 'lift.close') return out_({ ok: true, data: liftClose_(b) });
+    if (b.action === 'help.list') return out_({ ok: true, data: { rows: helpOpen_() } });
+    if (b.action === 'hub.help.done') return out_({ ok: true, data: helpDone_(b.id) });
     if (b.action === 'alert.send') return out_({ ok: true, data: notify_(clean_(b.title, 100) || 'Latics alert', clean_(b.msg, 500), clean_(b.level, 8)) });
     throw new Error('Unknown action');
   } catch (err) {
@@ -202,6 +205,7 @@ function fam_(b) {
   if (!me) throw new Error('That code is not active.');
   var first = String(me.name || '').trim().split(/\s+/)[0] || 'your player';
   if (b.action === 'f.clips') return clipsFam_();
+  if (b.action === 'f.trainreq') return trainReq_(pid, role, me, b);
   if (b.action === 'f.home') {
     var today = Utilities.formatDate(new Date(), 'Europe/London', 'yyyy-MM-dd');
     var yest = Utilities.formatDate(new Date(Date.now() - 86400000), 'Europe/London', 'yyyy-MM-dd');

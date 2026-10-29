@@ -1,3 +1,5 @@
+> Now implemented: see `backend/apps-script/helpdesk.gs` and the dispatcher lines in `Code.gs`. The notes below are the original brief.
+
 # Apps Script: Lost your code request
 
 The family page calls `f.codehelp` with no code. The coach app calls `help.list` and `hub.help.done` with the coach code.
