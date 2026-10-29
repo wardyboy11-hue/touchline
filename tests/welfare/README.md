@@ -10,6 +10,7 @@ Browser tests start their own tiny web server and fake the Apps Script backend, 
     node tests/welfare/p1-goals-browser.js
     node tests/welfare/p3-browser.js
 - `account-switch-browser.js`: the top corner account menu (switch, add, sign out, greyed roles).
+- `auto-update-browser.js`: the app refreshes itself when version.json is newer (not while typing or with unsynced changes).
 
 Backend tests run the real `.gs` files in Node with a pretend Sheet, to check the rules (stage order, day 15 and day 21, who can see what, retention):
 

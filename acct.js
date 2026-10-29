@@ -86,6 +86,7 @@ function draw(){
   probe(v).then(function(p){busy=false;var x={role:p.role,code:v,label:labelFor(p.role,p.first)};put(x.role,x.code,x.label);go(x);}).catch(function(e){busy=false;msg=/fetch|network/i.test(e.message)?'No signal. Try again.':e.message;draw();});};
  m.appendChild(go2);
  if(msg)m.appendChild(el('div','sm',msg));
+ var rf=el('button','lnk','Refresh the app (get the latest version)');rf.type='button';rf.id='acctrefresh';rf.onclick=function(){if(window.tlRefresh)window.tlRefresh();else location.reload();};m.appendChild(rf);
  if(c2){var so=el('button','lnk','Sign out of this account');so.type='button';so.onclick=function(){signOut(false);};m.appendChild(so);}
  if(a.length>1||c2){var sa=el('button','lnk','Sign out of all accounts on this phone');sa.type='button';sa.onclick=function(){signOut(true);};m.appendChild(sa);}
  document.body.appendChild(m);
