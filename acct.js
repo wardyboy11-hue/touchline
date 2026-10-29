@@ -23,9 +23,9 @@ function learn(){var c=cur();if(!c)return;if(c.role==='coach')put('coach',c.code
 function api(){return window.TL_API||(typeof API==='string'?API:DEF);}
 function post(body){return fetch(api(),{method:'POST',redirect:'follow',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)}).then(function(r){return r.json();});}
 function probe(code){
- return post({code:code,action:'f.home'}).then(function(j){
-  if(j&&j.ok&&j.data&&(j.data.role==='player'||j.data.role==='parent'))return {role:j.data.role,first:j.data.first||''};
-  return post({code:code,action:'sync',docs:[],since:Date.now()}).then(function(k){if(k&&k.ok)return {role:'coach',first:''};throw new Error('That code did not work.');});
+ return post({code:code,action:'who.am.i'}).then(function(j){
+  if(j&&j.ok&&j.data&&j.data.role)return {role:j.data.role,first:j.data.first||''};
+  throw new Error((j&&j.error)||'That code did not work.');
  });
 }
 function go(a){
