@@ -32,6 +32,7 @@ Run `setup()` once after setting the properties.
 - `f.codehelp` (open, rate limited 10 an hour overall and 3 an hour per shirt number, never returns a code), `f.trainreq` (needs a family or player code), `help.list` and `hub.help.done` (coach only) live in `helpdesk.gs`. They store role, shirt number, first name (lost code only), topic, a short note and a time in a `CodeHelp` sheet.
 - To install: add `helpdesk.gs` as a new file, add the four dispatcher lines in `Code.gs` (see the repo copy), then Deploy, Manage deployments, edit, New version.
 
-## Not yet in this repo
-- Cloudflare worker `touchline-push`
-- Cloudflare worker `touchline-clips`
+## Cloudflare workers (`cloudflare/`)
+- `push-worker.js` (`touchline-push.wardyboy11.workers.dev`): web push. Endpoints `/vapid`, `/latest`, `/subscribe` (checks the family code with the backend), `/unsubscribe`, `/send` (checks a coach code with the backend). Needs a KV binding named `SUBS`. It creates and stores its own VAPID keys in KV on first use. The contact email in the VAPID subject is a placeholder in this copy.
+- `clips-worker.js` (`touchline-clips.wardyboy11.workers.dev`): private match clip storage and playback. Paths `/v/<id>?t=<token>` to play and `/u/<id>?t=<token>` to upload or delete. Every call is checked with the backend (`clip.chk`). Needs an R2 binding named `CLIPS`. Clips are capped at 95MB.
+- Both contain the public Apps Script web app address. Access is controlled by codes and tokens, not by hiding that address.
