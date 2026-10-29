@@ -26,6 +26,7 @@ function doPost(e) {
     if (b.action === 'answers') return out_({ ok: true, data: { rows: answers_() } });
     if (b.action === 'fam.codes') return out_({ ok: true, data: { rows: famCodes_() } });
     if (b.action === 'ask') return out_({ ok: true, data: { text: coachAsk_(b.q, b.ctx) } });
+    if (b.action === 'fm.list') return out_({ ok: true, data: { rows: fmAll_() } });
     if (b.action === 'self.list') return out_({ ok: true, data: { rows: selfAll_() } });
     if (b.action === 'voice.list') return out_({ ok: true, data: { rows: voiceList_() } });
     if (b.action === 'voice.answer') return out_({ ok: true, data: voiceSet_(String(b.id), function (sh, row) { sh.getRange(row, 5).setValue('answered'); sh.getRange(row, 6).setValue(clean_(b.answer, 600)); sh.getRange(row, 7).setValue(b.pub ? 'yes' : 'no'); }) });
@@ -278,6 +279,13 @@ function fam_(b) {
     var rcd = (best.rc.cards || {})[String(me.num || '')];
     if (!rcd) return {};
     return { opp: clean_(best.opp, 40), ko: clean_(best.ko, 8), ha: best.ha || 'H', date: best.date, pos: clean_(rcd.pos, 6), inp: clean_(rcd.inp, 200), out: clean_(rcd.out, 200), cue: clean_(rcd.cue, 200), trig: clean_(rcd.trig, 200) };
+  }
+  if (b.action === 'f.fm.get') { if (role !== 'player') return {}; return fmGet_(pid); }
+  if (b.action === 'f.fm.set') { if (role !== 'player') throw new Error('This page is for the player. Use the player code.'); return fmSet_(pid, b); }
+  if (b.action === 'f.workon') {
+    if (role !== 'player') return {};
+    var wd = allDocs_().players[pid];
+    return wd && wd.workon && wd.workon.pub ? { items: (wd.workon.items || []).slice(0, 3).map(function (x) { return { k: clean_(x.k, 20), txt: clean_(x.txt, 160) }; }), at: wd.workon.at || 0 } : {};
   }
   if (b.action === 'f.self.get') { var sx = selfAll_()[pid] || {}; if (role !== 'player') return { role: role, done: true }; return { role: role, done: !!sx.done, nick: sx.nick || '', foot: sx.foot || '', pos: sx.pos || [], sr: sx.sr || {}, at: sx.at || 0 }; }
   if (b.action === 'f.self.set') { if (role !== 'player') throw new Error('This page is for the player. Use the player code.'); return selfSet_(pid, b); }
@@ -821,4 +829,38 @@ function clipsFam_() {
   var rows = clipRows_().filter(function (r) { return r.status === 'live' && (!r.exp || r.exp >= today); }).sort(function (x, y) { return y.at - x.at; })
     .map(function (r) { return { id: r.id, title: r.title, kind: r.kind, at: r.at, game: r.game }; });
   return { rows: rows, pt: rows.length ? clipTok_('playc:*', 21000) : '' };
+}
+
+
+/* ---- full time marks (P1): player self marks, four corners plus effort, 1 to 5. Coaches read them; families never see anyone else's. ---- */
+var FM_KEYS_ = ['tec', 'phy', 'psy', 'soc', 'eff'];
+function fmTab_() { return tab_('FtMarks', ['playerId', 'matchId', 'json', 'at']); }
+function fmAll_() {
+  var sh = fmTab_(), last = sh.getLastRow(), out = [];
+  if (last < 2) return out;
+  sh.getRange(2, 1, last - 1, 4).getValues().forEach(function (r) { var j; try { j = JSON.parse(r[2]); } catch (e) { return; } out.push({ pid: String(r[0]), mid: String(r[1]), m: j.m || {}, note: j.note || '', at: Number(r[3]) || 0 }); });
+  return out;
+}
+function fmMatchFor_(pid) {
+  var td = today_(), lim = Utilities.formatDate(new Date(Date.now() - 4 * 86400000), 'Europe/London', 'yyyy-MM-dd'), best = null;
+  allDocs_().matches.forEach(function (m) { if (m.status === 'done' && m.date >= lim && m.date <= td && m.stints && m.stints[pid] && (!best || m.date > best.date)) best = m; });
+  return best;
+}
+function fmGet_(pid) {
+  var m = fmMatchFor_(pid);
+  if (!m) return {};
+  var mine = fmAll_().filter(function (r) { return r.pid === pid && r.mid === m.id; })[0];
+  return { mid: m.id, opp: clean_(m.opp, 40), ha: m.ha || 'H', date: m.date, done: !!mine, mine: mine ? mine.m : null };
+}
+function fmSet_(pid, b) {
+  var m = fmMatchFor_(pid);
+  if (!m || String(b.mid) !== String(m.id)) throw new Error('That game is not open for marks any more.');
+  rate_('fm:' + pid, 6, 3600);
+  var n = {}; FM_KEYS_.forEach(function (k) { var v = Math.round(Number(b.m && b.m[k])); if (v >= 1 && v <= 5) n[k] = v; });
+  if (Object.keys(n).length < 5) throw new Error('Tap a number for all five.');
+  var j = JSON.stringify({ m: n, note: clean_(b.note, 120) }), sh = fmTab_(), last = sh.getLastRow(), row = 0;
+  if (last > 1) { var ids = sh.getRange(2, 1, last - 1, 2).getValues(); for (var i = 0; i < ids.length; i++) { if (String(ids[i][0]) === pid && String(ids[i][1]) === String(m.id)) { row = i + 2; break; } } }
+  if (!row) row = last + 1;
+  sh.getRange(row, 1, 1, 4).setNumberFormat('@').setValues([[pid, String(m.id), j, String(Date.now())]]);
+  return { ok: true };
 }
