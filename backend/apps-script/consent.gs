@@ -82,6 +82,7 @@ function consentPurgeJob_() {
   for (var i = rows.length - 1; i >= 0; i--) { if (rows[i].season !== s) { sh.deleteRow(rows[i].row); gone++; } }
   if (gone) tab_('RetentionLog', ['at', 'what', 'count']).appendRow([new Date(), 'Consent cards from earlier seasons', gone]);
   if (typeof concPurge_ === 'function') { try { gone += concPurge_(); } catch (e) {} }
+  if (typeof respectPurge_ === 'function') { try { gone += respectPurge_(); } catch (e) {} }
   if (typeof goalsPurge_ === 'function') { try { gone += goalsPurge_(); } catch (e) {} }
   return gone;
 }

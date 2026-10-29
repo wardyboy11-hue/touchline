@@ -58,6 +58,10 @@ function doPost(e) {
     if (b.action === 'lib.req.list') return out_({ ok: true, data: libReqList_() });
     if (b.action === 'lib.req.decide') return out_({ ok: true, data: libDecide_(b) });
     if (b.action === 'lib.give') return out_({ ok: true, data: libGive_(b) });
+    if (b.action === 'respect.list') return out_({ ok: true, data: respectList_() });
+    if (b.action === 'datareq.list') return out_({ ok: true, data: dataReqList_() });
+    if (b.action === 'datareq.erase') return out_({ ok: true, data: dataErase_(b) });
+    if (b.action === 'datareq.close') return out_({ ok: true, data: dataReqClose_(b) });
     if (b.action === 'goals.list') return out_({ ok: true, data: goalsList_() });
     if (b.action === 'goals.decide') return out_({ ok: true, data: goalDecide_(b) });
     if (b.action === 'conc.list') return out_({ ok: true, data: concList_() });
@@ -328,6 +332,11 @@ function fam_(b) {
     var allItems = goalItems.concat(needItems).slice(0, 5);
     return allItems.length ? { items: allItems, at: (wd && wd.workon && wd.workon.at) || Date.now() } : {};
   }
+  if (b.action === 'f.respect.get') return respectGet_(pid, role);
+  if (b.action === 'f.respect.sign') return respectSign_(pid, role, me, b);
+  if (b.action === 'f.mydata.get') return myDataGet_(pid, role);
+  if (b.action === 'f.mydata.delete') return myDataDelete_(pid, role, me);
+  if (b.action === 'f.mydata.reqs') return { rows: role === 'parent' ? myDataReqs_(pid) : [] };
   if (b.action === 'f.goals.get') return goalsGet_(pid, role);
   if (b.action === 'f.goals.add') return goalAdd_(pid, role, me, b);
   if (b.action === 'f.goals.review') return goalReview_(pid, role, b);
