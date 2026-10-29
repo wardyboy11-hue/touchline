@@ -26,6 +26,9 @@ function doPost(e) {
     if (b.action === 'answers') return out_({ ok: true, data: { rows: answers_() } });
     if (b.action === 'fam.codes') return out_({ ok: true, data: { rows: famCodes_() } });
     if (b.action === 'ask') return out_({ ok: true, data: { text: coachAsk_(b.q, b.ctx) } });
+    if (b.action === 'photo.q.list') return out_({ ok: true, data: { rows: pqList_() } });
+    if (b.action === 'photo.q.ok') return out_({ ok: true, data: pqDo_(String(b.id), true) });
+    if (b.action === 'photo.q.no') return out_({ ok: true, data: pqDo_(String(b.id), false) });
     if (b.action === 'fm.list') return out_({ ok: true, data: { rows: fmAll_() } });
     if (b.action === 'self.list') return out_({ ok: true, data: { rows: selfAll_() } });
     if (b.action === 'voice.list') return out_({ ok: true, data: { rows: voiceList_() } });
@@ -292,7 +295,7 @@ function fam_(b) {
   if (b.action === 'f.voice.pub') return { rows: voicePub_() };
   if (b.action === 'f.voice.squad') { if (role !== 'player') throw new Error('This page is for players.'); return { squad: voiceSquad_() }; }
   if (b.action === 'f.voice.add') { return voiceAdd_(b, pid, role, me); }
-  if (b.action === 'f.voice.mine') { return { rows: voiceRows_().filter(function (r) { return r.kind === 'pq' && r.d.pid === pid; }).sort(function (a, b) { return b.at - a.at; }).map(function (r) { return { q: r.d.text, a: r.answer }; }) }; }
+  if (b.action === 'f.voice.mine') { return { rows: voiceRows_().filter(function (r) { return (r.kind === 'pq' || (r.kind === 'q' && r.d.named)) && r.d.pid === pid; }).sort(function (a, b) { return b.at - a.at; }).map(function (r) { return { q: r.d.text, a: r.answer }; }) }; }
   if (b.action === 'f.ask') {
     var q = String(b.q || '').trim().slice(0, 600);
     if (q.length < 3) throw new Error('Type your question first.');
@@ -616,10 +619,36 @@ function famExtra_(pid, role, pl) {
     coachPhotos: { tim: ph['coach:tim'] || '', deano: ph['coach:deano'] || '' }, matchDay: matchDay, media: mediaForFam_(pid), contacts: (s.contacts || []).slice(0, 30)
   };
 }
+function pq_() { return tab_('PhotoQ', ['id', 'pid', 'dataUrl', 'at', 'status']); }
 function famPhotoSet_(pid, b) {
+  /* Fail closed: a family upload never goes live by itself. It waits in a queue until a coach approves it. */
   var u = String(b.dataUrl || '');
   if (u.indexOf('data:image/jpeg;base64,') !== 0 || u.length > 40000) throw new Error('That photo is too big. Try another.');
-  return photoSet_({ playerId: pid, dataUrl: u });
+  rate_('pq:' + pid, 3, 86400);
+  var sh = pq_(), last = sh.getLastRow();
+  if (last > 1) { var rows = sh.getRange(2, 1, last - 1, 5).getValues(); for (var i = 0; i < rows.length; i++) { if (String(rows[i][1]) === pid && String(rows[i][4]) === 'pending') { sh.getRange(i + 2, 3, 1, 3).setValues([[u, String(Date.now()), 'pending']]); return { ok: true, pending: true }; } } }
+  sh.appendRow([Utilities.getUuid().slice(0, 8), pid, u, String(Date.now()), 'pending']);
+  try { notify_('Photo to approve', 'A new profile photo is waiting in Comms.', 'quiet'); } catch (e) {}
+  return { ok: true, pending: true };
+}
+function pqList_() {
+  var sh = pq_(), last = sh.getLastRow(), pl = players_(), out = [];
+  if (last < 2) return out;
+  sh.getRange(2, 1, last - 1, 5).getValues().forEach(function (r) { if (String(r[4]) === 'pending') { var p = pl[String(r[1])] || {}; out.push({ id: String(r[0]), pid: String(r[1]), num: p.num || '', name: p.name || '', dataUrl: String(r[2]), at: Number(r[3]) || 0 }); } });
+  return out;
+}
+function pqDo_(id, ok) {
+  var sh = pq_(), last = sh.getLastRow();
+  if (last < 2) throw new Error('Not found.');
+  var rows = sh.getRange(2, 1, last - 1, 5).getValues();
+  for (var i = 0; i < rows.length; i++) {
+    if (String(rows[i][0]) === id && String(rows[i][4]) === 'pending') {
+      if (ok) photoSet_({ playerId: String(rows[i][1]), dataUrl: String(rows[i][2]) });
+      sh.getRange(i + 2, 3).setValue(''); sh.getRange(i + 2, 5).setValue(ok ? 'approved' : 'rejected');
+      return { ok: true };
+    }
+  }
+  throw new Error('Not found.');
 }
 function famAlert_(pid, role, pl, b) {
   var cache = CacheService.getScriptCache(), key = 'alert:' + pid;
@@ -733,7 +762,7 @@ function voiceAdd_(b, pid, role, me) {
   var kind = b.kind === 'q' ? 'q' : (b.kind === 'pq' ? 'pq' : 'xi'), d = {};
   if (kind === 'pq') { if (role !== 'parent') throw new Error('This is for parents.'); d.text = clean_(b.text, 500); if (d.text.length < 5) throw new Error('Write a little more so we can help.'); d.pid = pid; d.who = 'Parent of ' + (String(me.name || '').trim().split(/\s+/)[0] || 'a player'); }
   else if (role !== 'player') throw new Error('This page is for players.');
-  else if (kind === 'q') { d.text = clean_(b.text, 500); if (d.text.length < 5) throw new Error('Write a little more so we can help.'); }
+  else if (kind === 'q') { d.text = clean_(b.text, 500); if (d.text.length < 5) throw new Error('Write a little more so we can help.'); if (b.named === true) { d.named = true; d.pid = pid; d.num = String(me.num || ''); d.who = '#' + String(me.num || '?') + ' (named)'; } }
   else {
     var pl = players_(), ok = ['352', '4231', '433', '442', '4141', '343'];
     d.form = ok.indexOf(String(b.form)) > -1 ? String(b.form) : ''; if (!d.form) throw new Error('Pick a shape.');
@@ -743,6 +772,7 @@ function voiceAdd_(b, pid, role, me) {
   }
   var sh = voiceTab_(), id = Utilities.getUuid().slice(0, 8), at = Date.now();
   sh.appendRow([id, kind, JSON.stringify(d), String(at), 'new', '', '']);
+  if (/(hurt|harm|scared|afraid|bully|abuse|unsafe|suicid|kill myself|want to die|depress|hit me|touch(ed)? me|self.?harm|hate myself|cutting)/i.test((d.text || '') + ' ' + (d.why || ''))) { try { notify_('Your voice: please read today', (d.named ? 'Named message from shirt ' + d.num : 'Anonymous message') + ' has welfare words in it. Open Comms and read it today.', 'normal'); } catch (e) {} }
   return { ok: true };
 }
 function voiceSquad_() {
