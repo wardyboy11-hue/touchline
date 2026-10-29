@@ -269,6 +269,16 @@ function fam_(b) {
     if (pt && pt.txt && pt.mid) { allDocs_().matches.forEach(function (m) { if (m.id === pt.mid && m.date === td && !m.pp && m.status !== 'done') res = { txt: clean_(pt.txt, 200), by: clean_(pt.by, 20), opp: m.opp || '', ko: m.ko || '', ha: m.ha || 'H' }; }); }
     return res;
   }
+  if (b.action === 'f.rolecard') {
+    /* Next game with a published role card. Shirt number only. Players only. */
+    if (role !== 'player') return {};
+    var rtd = today_(), best = null;
+    allDocs_().matches.forEach(function (m) { if (m.rc && m.rc.pub && m.date >= rtd && !m.pp && m.status !== 'done' && (!best || m.date < best.date)) best = m; });
+    if (!best) return {};
+    var rcd = (best.rc.cards || {})[String(me.num || '')];
+    if (!rcd) return {};
+    return { opp: clean_(best.opp, 40), ko: clean_(best.ko, 8), ha: best.ha || 'H', date: best.date, pos: clean_(rcd.pos, 6), inp: clean_(rcd.inp, 200), out: clean_(rcd.out, 200), cue: clean_(rcd.cue, 200), trig: clean_(rcd.trig, 200) };
+  }
   if (b.action === 'f.self.get') { var sx = selfAll_()[pid] || {}; if (role !== 'player') return { role: role, done: true }; return { role: role, done: !!sx.done, nick: sx.nick || '', foot: sx.foot || '', pos: sx.pos || [], sr: sx.sr || {}, at: sx.at || 0 }; }
   if (b.action === 'f.self.set') { if (role !== 'player') throw new Error('This page is for the player. Use the player code.'); return selfSet_(pid, b); }
   if (b.action === 'f.voice.pub') return { rows: voicePub_() };
