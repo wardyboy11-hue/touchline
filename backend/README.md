@@ -32,6 +32,15 @@ Run `setup()` once after setting the properties.
 - `f.codehelp` (open, rate limited 10 an hour overall and 3 an hour per shirt number, never returns a code), `f.trainreq` (needs a family or player code), `help.list` and `hub.help.done` (coach only) live in `helpdesk.gs`. They store role, shirt number, first name (lost code only), topic, a short note and a time in a `CodeHelp` sheet.
 - To install: add `helpdesk.gs` as a new file, add the four dispatcher lines in `Code.gs` (see the repo copy), then Deploy, Manage deployments, edit, New version.
 
+## Resource library (`library.gs`)
+- Third file in the same Apps Script project, plus the dispatcher lines in `Code.gs`. Needs `helpdesk.gs` (for `rate_`).
+- Coach actions: `lib.req.list`, `lib.req.decide` (approve, swap or decline with a note), `lib.give` (to shirt numbers).
+- Player and parent actions: `f.lib.get` (published item ids, items given to this player, own requests), `f.lib.req` (players, 5 an hour), `f.lib.used` (players mark an item as tried).
+- Sheets created on first use: `LibReq` (requests) and `LibGive` (items given). Shirt numbers only, no names.
+- Which items players can see comes from the coach app: Approve, then Publish. The published ids sit in the settings doc as `libPub`.
+- Free text requests that look like a welfare worry are held for review and trigger a coach alert, same words list as Your voice.
+- To install: add `library.gs`, add the six dispatcher lines (see the repo copy), then Deploy, Manage deployments, edit, New version.
+
 ## Cloudflare workers (`cloudflare/`)
 - `push-worker.js` (`touchline-push.wardyboy11.workers.dev`): web push. Endpoints `/vapid`, `/latest`, `/subscribe` (checks the family code with the backend), `/unsubscribe`, `/send` (checks a coach code with the backend). Needs a KV binding named `SUBS`. It creates and stores its own VAPID keys in KV on first use. The contact email in the VAPID subject is a placeholder in this copy.
 - `clips-worker.js` (`touchline-clips.wardyboy11.workers.dev`): private match clip storage and playback. Paths `/v/<id>?t=<token>` to play and `/u/<id>?t=<token>` to upload or delete. Every call is checked with the backend (`clip.chk`). Needs an R2 binding named `CLIPS`. Clips are capped at 95MB.
