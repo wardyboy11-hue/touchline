@@ -59,6 +59,11 @@ function doPost(e) {
     if (b.action === 'lib.req.list') return out_({ ok: true, data: libReqList_() });
     if (b.action === 'lib.req.decide') return out_({ ok: true, data: libDecide_(b) });
     if (b.action === 'lib.give') return out_({ ok: true, data: libGive_(b) });
+    if (b.action === 'goals.list') return out_({ ok: true, data: goalsList_() });
+    if (b.action === 'goals.decide') return out_({ ok: true, data: goalDecide_(b) });
+    if (b.action === 'conc.list') return out_({ ok: true, data: concList_() });
+    if (b.action === 'conc.upsert') return out_({ ok: true, data: concUpsert_(b) });
+    if (b.action === 'conc.void') return out_({ ok: true, data: concVoid_(b) });
     if (b.action === 'consent.list') return out_({ ok: true, data: consentList_() });
     if (b.action === 'alert.send') return out_({ ok: true, data: notify_(clean_(b.title, 100) || 'Latics alert', clean_(b.msg, 500), clean_(b.level, 8)) });
     throw new Error('Unknown action');
@@ -195,6 +200,19 @@ function famCodes_() {
   return Object.keys(pl).map(function (id) { return { playerId: id, num: pl[id].num, name: pl[id].name, code: show_(haveP[id]), pcode: show_(haveK[id]) }; });
 }
 
+/** Counts only. How many sessions this week (Monday to Sunday, London) have heading planned. No names, no health data. */
+function headWeek_() {
+  var h = settings_().heading || {}, now = new Date(), dow = Number(Utilities.formatDate(now, 'Europe/London', 'u'));
+  var mon = Utilities.formatDate(new Date(now.getTime() - (dow - 1) * 86400000), 'Europe/London', 'yyyy-MM-dd');
+  var sun = Utilities.formatDate(new Date(now.getTime() + (7 - dow) * 86400000), 'Europe/London', 'yyyy-MM-dd');
+  var n = 0;
+  Object.keys(h).forEach(function (k) {
+    var o = h[k] || {}, tot = 0; Object.keys(o.d || {}).forEach(function (s) { tot += Number(o.d[s]) || 0; });
+    if (tot > 0 && String(o.date) >= mon && String(o.date) <= sun) n++;
+  });
+  return { n: n };
+}
+
 function famAuth_(code) {
   var cache = CacheService.getScriptCache();
   var fails = Number(cache.get('ffails') || 0);
@@ -226,7 +244,7 @@ function fam_(b) {
     var bday = false, age = 0;
     if (me.dob && String(me.dob).slice(5) === today.slice(5)) { bday = true; age = Number(today.slice(0, 4)) - Number(String(me.dob).slice(0, 4)); }
     var fm = settings_().fam || {};
-    return { first: first, role: role, cap: String(me.cap || ''), honours: String(me.honours || ''), fan: role === 'parent' ? (me.fan || '') : '', photo: photo_(pid), bday: bday, age: age, obj: me.objOn ? String(me.obj || '') : '', tips: String(fm.tips || ''), working: String(fm.working || ''), posts: posts, mine: mine, today: today, vote: voteState_(pid, pl, role), res: resTitles_(pid), x: famExtra_(pid, role, pl) };
+    return { first: first, role: role, cap: String(me.cap || ''), honours: String(me.honours || ''), fan: role === 'parent' ? (me.fan || '') : '', photo: photo_(pid), bday: bday, age: age, obj: me.objOn ? String(me.obj || '') : '', tips: String(fm.tips || ''), working: String(fm.working || ''), posts: posts, mine: mine, today: today, vote: voteState_(pid, pl, role), res: resTitles_(pid), x: famExtra_(pid, role, pl), head: headWeek_() };
   }
   if (b.action === 'f.answer') {
     var a = String(b.answer || '').toUpperCase();
@@ -305,9 +323,18 @@ function fam_(b) {
   if (b.action === 'f.fm.set') { if (role !== 'player') throw new Error('This page is for the player. Use the player code.'); return fmSet_(pid, b); }
   if (b.action === 'f.workon') {
     if (role !== 'player') return {};
-    var wd = allDocs_().players[pid];
-    return wd && wd.workon && wd.workon.pub ? { items: (wd.workon.items || []).slice(0, 3).map(function (x) { return { k: clean_(x.k, 20), txt: clean_(x.txt, 160) }; }), at: wd.workon.at || 0 } : {};
+    var wd = allDocs_().players[pid], goalItems = [];
+    try { goalItems = goalWorkon_(pid); } catch (e) {}
+    var needItems = wd && wd.workon && wd.workon.pub ? (wd.workon.items || []).slice(0, 3).map(function (x) { return { k: clean_(x.k, 20), txt: clean_(x.txt, 160) }; }) : [];
+    var allItems = goalItems.concat(needItems).slice(0, 5);
+    return allItems.length ? { items: allItems, at: (wd && wd.workon && wd.workon.at) || Date.now() } : {};
   }
+  if (b.action === 'f.goals.get') return goalsGet_(pid, role);
+  if (b.action === 'f.goals.add') return goalAdd_(pid, role, me, b);
+  if (b.action === 'f.goals.review') return goalReview_(pid, role, b);
+  if (b.action === 'f.conc.get') return concGet_(pid, role);
+  if (b.action === 'f.conc.confirm') return concConfirm_(pid, role, b);
+  if (b.action === 'f.conc.back') return concBack_(pid, role);
   if (b.action === 'f.consent.get') return consentGet_(pid, role);
   if (b.action === 'f.consent.save') return consentSave_(pid, role, b);
   if (b.action === 'f.lib.get') return libGet_(pid, role);
