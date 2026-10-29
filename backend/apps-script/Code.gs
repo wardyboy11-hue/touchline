@@ -55,6 +55,7 @@ function doPost(e) {
     if (b.action === 'lift.close') return out_({ ok: true, data: liftClose_(b) });
     if (b.action === 'help.list') return out_({ ok: true, data: { rows: helpOpen_() } });
     if (b.action === 'hub.help.done') return out_({ ok: true, data: helpDone_(b.id) });
+    if (b.action === 'plan.get') return out_({ ok: true, data: planGet_(b) });
     if (b.action === 'alert.send') return out_({ ok: true, data: notify_(clean_(b.title, 100) || 'Latics alert', clean_(b.msg, 500), clean_(b.level, 8)) });
     throw new Error('Unknown action');
   } catch (err) {
