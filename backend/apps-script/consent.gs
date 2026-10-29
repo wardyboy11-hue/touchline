@@ -81,6 +81,8 @@ function consentPurgeJob_() {
   var s = consentSeason_(), sh = consentTab_(), rows = consentRows_(), gone = 0;
   for (var i = rows.length - 1; i >= 0; i--) { if (rows[i].season !== s) { sh.deleteRow(rows[i].row); gone++; } }
   if (gone) tab_('RetentionLog', ['at', 'what', 'count']).appendRow([new Date(), 'Consent cards from earlier seasons', gone]);
+  if (typeof concPurge_ === 'function') { try { gone += concPurge_(); } catch (e) {} }
+  if (typeof goalsPurge_ === 'function') { try { gone += goalsPurge_(); } catch (e) {} }
   return gone;
 }
 /** Run this once from the editor to switch the monthly clean up on. */
