@@ -1,8 +1,8 @@
 /* Touchline coach app shell service worker (P0).
    Precache: shell only. Runtime: cache first for versioned static, network first for pages,
    Apps Script and other origins are never touched. No PDFs, video or audio are cached here. */
-var V='touchline-shell-v60',RT='touchline-run-v60';
-var SHELL=['./','index.html','app.css?v=60','topics.js?v=60','app.js?v=60','../pod.js','../acct.js?v=60','../update.js?v=60','manifest.webmanifest','../badge.png','../icon-192.png','../icon-512.png'];
+var V='touchline-shell-v61',RT='touchline-run-v61';
+var SHELL=['./','index.html','app.css?v=61','topics.js?v=61','app.js?v=61','../pod.js','../acct.js?v=61','../update.js?v=61','manifest.webmanifest','../badge.png','../icon-192.png','../icon-512.png'];
 var SKIP=/\.(pdf|mp4|mp3|m4a|webm|mov)$|version\.json$/i;
 self.addEventListener('install',function(e){e.waitUntil(caches.open(V).then(function(c){return c.addAll(SHELL);}).then(function(){return self.skipWaiting();}));});
 self.addEventListener('activate',function(e){e.waitUntil(caches.keys().then(function(ks){return Promise.all(ks.filter(function(k){return k!==V&&k!==RT;}).map(function(k){return caches.delete(k);}));}).then(function(){return self.clients.claim();}));});
