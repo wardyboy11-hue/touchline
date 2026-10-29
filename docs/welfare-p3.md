@@ -17,7 +17,7 @@ Consent, Goals, Respect, Answers, Self, FtMarks, Photos, LibReq and LibGive rows
 ## Apps Script steps
 1. Add `mydata.gs` as a new script file.
 2. Add the dispatcher lines in `Code.gs` (respect.list, datareq.list, datareq.erase, datareq.close, and the family f.respect.* and f.mydata.* ones).
-3. Run `consentInstallTrigger_` once if you have not already.
+3. Add the monthly trigger: Triggers, Add Trigger, function `consentPurgeJob`, time driven, month timer, 1st.
 4. Deploy a new version.
 
 ## Test steps against the acceptance boxes

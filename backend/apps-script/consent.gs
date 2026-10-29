@@ -2,7 +2,8 @@
  * Photo consent and emergency card (welfare P0).
  * Add as a file in the Apps Script project (File, New, Script file, name it consent).
  * Then add the dispatcher lines shown in Code.gs and Deploy, Manage deployments, edit, New version.
- * Run consentInstallTrigger_ once to switch on the monthly clean up.
+ * Switch on the monthly clean up: Triggers, Add Trigger, function consentPurgeJob, time driven, month timer, 1st.
+ * (The editor cannot run functions that end in an underscore, so consentPurgeJob below is a plain wrapper.)
  *
  * What it stores, per child per season: photo choice, up to two emergency contacts (name, phone,
  * relationship) and one optional note the parent chooses to share. Nothing else. No diagnoses.
@@ -90,4 +91,12 @@ function consentPurgeJob_() {
 function consentInstallTrigger_() {
   ScriptApp.getProjectTriggers().forEach(function (t) { if (t.getHandlerFunction() === 'consentPurgeJob_') ScriptApp.deleteTrigger(t); });
   ScriptApp.newTrigger('consentPurgeJob_').timeBased().onMonthDay(1).atHour(4).create();
+}
+
+/* The Apps Script editor only lists and runs functions WITHOUT a trailing underscore.
+   Run installConsentCleanup once from the editor. The monthly job calls the private function above. */
+function consentPurgeJob() { return consentPurgeJob_(); }
+function installConsentCleanup() {
+  ScriptApp.getProjectTriggers().forEach(function (t) { var n = t.getHandlerFunction(); if (n === 'consentPurgeJob_' || n === 'consentPurgeJob') ScriptApp.deleteTrigger(t); });
+  ScriptApp.newTrigger('consentPurgeJob').timeBased().onMonthDay(1).atHour(4).create();
 }

@@ -18,7 +18,7 @@ Built from the "Touchline, what else to add" review and the welfare addendum. Br
 ## Apps Script steps (Tim)
 1. Add `consent.gs` as a new file.
 2. In `Code.gs` the dispatcher gains `consent.list`, `f.consent.get`, `f.consent.save`, and the Media tab gains a `shirts` column (added automatically).
-3. Run `consentInstallTrigger_` once from the editor and accept the permission.
+3. Add the monthly trigger: Triggers, Add Trigger, function `consentPurgeJob`, time driven, month timer, 1st.
 4. Deploy, Manage deployments, edit, New version.
 
 ## Test steps
