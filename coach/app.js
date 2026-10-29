@@ -159,8 +159,8 @@ function paintStatus(){var el=$('#st');if(!el)return;var n=Object.keys(S.dirty).
 
 /* ---------- views ---------- */
 function header(){return '<header><img src="'+BADGE+'" alt=""><h1>Touchline</h1><span class="sp"></span><button class="pill" data-act="ps" aria-label="Sunlight mode">Sun</button><button class="pill" id="st" data-act="sync"></button></header>';}
-var GRP={today:['today'],match:['match'],team:['squad','lab','stats','admin'],train:['sb','plan','run','sess','rev','fit','pod','res','anim','lib','rl','ig','x','att','board'],comms:['hub','refs','ask','more']};
-var GNAME={squad:'Squad',lab:'Builder',stats:'Stats',admin:'Welfare',sb:'Build',rev:'Reflect',fit:'Fitness',pod:'Listen',plan:'Plan',sess:'Sessions',lib:'Library',rl:'Library',res:'Resources',anim:'Animations',ig:'Instagram',x:'X posts',att:'Attendance',board:'Board',run:'Tonight',hub:'Hub',refs:'Referees',ask:'Ask',more:'More'};
+var GRP={today:['today'],match:['match'],team:['squad','fa','lab','stats','admin'],train:['sb','plan','run','sess','rev','fit','pod','res','anim','lib','rl','ig','x','att','board'],comms:['hub','refs','ask','more']};
+var GNAME={squad:'Squad',fa:'Team sheet',lab:'Builder',stats:'Stats',admin:'Welfare',sb:'Build',rev:'Reflect',fit:'Fitness',pod:'Listen',plan:'Plan',sess:'Sessions',lib:'Library',rl:'Library',res:'Resources',anim:'Animations',ig:'Instagram',x:'X posts',att:'Attendance',board:'Board',run:'Tonight',hub:'Hub',refs:'Referees',ask:'Ask',more:'More'};
 var TM={plan:{n:'Plan',l:[['sb','Build'],['plan','This week'],['att','Attendance'],['rev','Reflect']]},run:{n:'Run',l:[['run','Tonight'],['sess','Session'],['anim','Animations'],['board','Board'],['fit','Fitness']]},lib:{n:'Library',l:[['sess','Sessions'],['rl','Library'],['res','Resources'],['ig','Instagram'],['x','X posts'],['pod','Listen'],['lib','Clips']]}};
 function modeOf(t){var m=view.tm;if(m&&TM[m]&&TM[m].l.some(function(x){return x[0]===t;}))return m;if(t==='sess')return 'lib';var k=['plan','run','lib'];for(var i=0;i<3;i++)if(TM[k[i]].l.some(function(x){return x[0]===t;}))return k[i];return 'plan';}
 function trainLanding(){var td=isoToday(),e=addDays(td,6);var has=sessAll().some(function(x){return x.date>=td&&x.date<=e;});return has?{m:'run',t:'run'}:{m:'plan',t:'sb'};}
@@ -177,7 +177,7 @@ function render(keepScroll){setTimeout(function(){try{document.querySelectorAll(
  loadPhotos();
  var body;
  if(view.mid&&M(view.mid)){var m=M(view.mid);body=m.status==='plan'?vPlan(m):(m.status==='done'?vDone(m):vLive(m));}
- else body=view.tab==='today'?vToday():subnav()+(view.tab==='squad'?vSquad():view.tab==='lab'?vLab():view.tab==='sb'?vSb():view.tab==='rev'?vRev():view.tab==='fit'?vFit():view.tab==='pod'?vPod():view.tab==='plan'?vSession():view.tab==='run'?vRun():view.tab==='sess'?vSessLib():view.tab==='rl'?vRL():view.tab==='lib'?vLib():view.tab==='res'?vRes():view.tab==='anim'?vAnim():view.tab==='ig'?vIg():view.tab==='x'?vX():view.tab==='hub'?vHub():view.tab==='refs'?vRefs():view.tab==='ask'?vAsk():view.tab==='stats'?vStats():view.tab==='more'?vMore():view.tab==='admin'?vAdmin():view.tab==='att'?vAtt():view.tab==='board'?vBoard():vMatches());
+ else body=view.tab==='today'?vToday():subnav()+(view.tab==='squad'?vSquad():view.tab==='fa'?vFATab():view.tab==='lab'?vLab():view.tab==='sb'?vSb():view.tab==='rev'?vRev():view.tab==='fit'?vFit():view.tab==='pod'?vPod():view.tab==='plan'?vSession():view.tab==='run'?vRun():view.tab==='sess'?vSessLib():view.tab==='rl'?vRL():view.tab==='lib'?vLib():view.tab==='res'?vRes():view.tab==='anim'?vAnim():view.tab==='ig'?vIg():view.tab==='x'?vX():view.tab==='hub'?vHub():view.tab==='refs'?vRefs():view.tab==='ask'?vAsk():view.tab==='stats'?vStats():view.tab==='more'?vMore():view.tab==='admin'?vAdmin():view.tab==='att'?vAtt():view.tab==='board'?vBoard():vMatches());
  r.innerHTML=header()+body+((!view.mid&&(view.tab==='today'||view.tab==='hub'))?SPONC():'')+tabHelp()+tabs();paintStatus();if(!view.mid&&view.tab==='board')bInit();if(!view.mid&&view.tab==='lab')labAfter();if(!view.mid&&(view.tab==='sess'||view.tab==='run')){anStop();anInit();}if(keepScroll)window.scrollTo(0,y);
 }
 function vLogin(){return '<div class="login"><img src="'+BADGE+'" alt="Wigan Junior Latics"><h1 style="margin:14px 0 4px">Touchline</h1><p class="muted">Coaches only. Enter your code.</p><div class="card"><input id="code" type="password" autocomplete="off" placeholder="Coach code" style="text-align:center"><button class="btn pri block" style="margin-top:12px" data-act="login">Open</button><p class="small muted" id="lerr"></p></div>'+SPONC()+'</div>';}
@@ -236,6 +236,14 @@ function vPlan(m){
 
 function faSeg(){var t=view.mtab||'plan';return '<div class="seg" style="margin:6px 0 10px"><button class="'+(t==='plan'?'on':'')+'" data-act="mtab" data-v="plan">Plan</button><button class="'+(t==='fa'?'on':'')+'" data-act="mtab" data-v="fa">FA squad list</button></div>';}
 function faRows(m){return availPlayers(m).map(function(p){return {n:p.num||'',name:p.name,fan:p.fan||''};});}
+function faMatch(){var td=isoToday(),all=Object.keys(S.matches).map(function(k){return S.matches[k];}).filter(function(m){return !m.deleted&&!m.pp;});
+ var pick=view.fam&&S.matches[view.fam]&&!S.matches[view.fam].deleted?S.matches[view.fam]:null;
+ if(pick)return pick;
+ var t=all.filter(function(m){return m.date===td;})[0];return t||nextMatchFor()||all.sort(function(a,b){return a.date<b.date?1:-1;})[0]||null;}
+function vFATab(){var m=faMatch();if(!m)return '<div class="card"><h3 style="margin-top:0">Team sheet</h3><p class="muted">No match in the app yet. Add one from the Match tab.</p></div>';
+ var td=isoToday(),up=Object.keys(S.matches).map(function(k){return S.matches[k];}).filter(function(x){return !x.deleted&&!x.pp&&x.date>=td;}).sort(function(a,b){return a.date<b.date?-1:1;}).slice(0,4);
+ var h=up.length>1?'<div class="chips" style="margin:6px 0">'+up.map(function(x){return '<button class="chip'+(x.id===m.id?' on':'')+'" data-act="faPick" data-id="'+x.id+'">'+esc(niceDate(x.date))+' '+esc(x.opp||'')+'</button>';}).join('')+'</div>':'';
+ return h+vFA(m);}
 function vFA(m){var R=faRows(m),miss=R.filter(function(r){return !r.fan;}).length;
  var h='<div class="card"><h3 style="margin-top:0">FA squad list</h3><p><b>Wigan Junior Latics U15 Blues '+(m.ha==='A'?'at ':'v ')+esc(m.opp||'opponent')+'</b></p><p class="small muted">'+esc(niceDate(m.date))+', kick off '+esc(m.ko||'TBA')+(m.addr?'<br>'+esc(m.addr):'')+'</p>';
  h+='<table style="width:100%;border-collapse:collapse;margin-top:8px"><tr style="text-align:left" class="small muted"><th style="padding:6px 4px">No</th><th>Name</th><th>FAN</th></tr>'+R.map(function(r){return '<tr style="border-top:1px solid var(--line)"><td style="padding:10px 4px;font-weight:700">'+esc(r.n)+'</td><td>'+esc(r.name)+'</td><td>'+(r.fan?esc(r.fan):'<span style="color:#ff8a8a;font-weight:700">Missing</span>')+'</td></tr>';}).join('')+'</table>';
@@ -1284,9 +1292,9 @@ todaySess:function(d){view.tm='run';view.tab='sess';view.mid=null;ACT.sessOpen(d
  evPlace:function(d){var e=document.getElementById('evp');if(e)e.value=d.v;},
  planPlace:function(d){planDraft().post.place=d.v;touch('settings',S.settings);render(true);},
  newMatch:function(){var m=newMatch();S.matches[m.id]=m;touch('match',m);setMid(m.id);render();window.scrollTo(0,0);},
- mtab:function(d){view.mtab=d.v;render();window.scrollTo(0,0);},
+ faPick:function(d){view.fam=d.id;render(true);},mtab:function(d){view.mtab=d.v;render();window.scrollTo(0,0);},
  openFA:function(d){setMid(d.id);view.mtab='fa';sel={off:null,on:null,mode:'sub'};render();window.scrollTo(0,0);},
- printFA:function(){var m=cur(),R=faRows(m);printHTML('<h1>FA squad list</h1><p><b>Wigan Junior Latics U15 Blues '+(m.ha==='A'?'at ':'v ')+esc(m.opp||'opponent')+'</b></p><p>'+esc(niceDate(m.date))+', kick off '+esc(m.ko||'TBA')+'</p><table><tr><th>No</th><th>Name</th><th>FAN</th></tr>'+R.map(function(r){return '<tr><td>'+esc(r.n)+'</td><td>'+esc(r.name)+'</td><td>'+esc(r.fan||'')+'</td></tr>';}).join('')+'</table>');},
+ printFA:function(){var m=cur()||faMatch(),R=faRows(m);printHTML('<h1>FA squad list</h1><p><b>Wigan Junior Latics U15 Blues '+(m.ha==='A'?'at ':'v ')+esc(m.opp||'opponent')+'</b></p><p>'+esc(niceDate(m.date))+', kick off '+esc(m.ko||'TBA')+'</p><table><tr><th>No</th><th>Name</th><th>FAN</th></tr>'+R.map(function(r){return '<tr><td>'+esc(r.n)+'</td><td>'+esc(r.name)+'</td><td>'+esc(r.fan||'')+'</td></tr>';}).join('')+'</table>');},
  goLive:function(d){var m=S.matches[d.id];if(!m)return;if(m.status==='plan'){startM(m);saveM(m);}setMid(d.id);view.mtab='plan';sel={off:null,on:null,mode:'sub'};render();window.scrollTo(0,0);},
  mdSheet:function(){view.mdsh=!view.mdsh;render(true);},
  openMatch:function(d){view.mtab='plan';setMid(d.id);sel={off:null,on:null,mode:'sub'};render();window.scrollTo(0,0);},
