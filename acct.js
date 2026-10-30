@@ -38,10 +38,10 @@ function signOut(all){
  if(COACH){
   var dirty=0;try{dirty=Object.keys((JSON.parse(g('tl.state.v1'))||{}).dirty||{}).length;}catch(e){}
   if(dirty&&!confirm('Some changes have not synced yet. Sign out anyway?'))return;
-  ['tl.code','tl.state.v1','tl.em','tl.conc'].forEach(rm);
+  ['tl.code','tl.state.v1','tl.em','tl.conc'].forEach(rm);try{indexedDB.deleteDatabase('tl.pdf');}catch(e){}
  }
  if(all||!COACH){rm('fam.code');rm('fam.cache');}
- if(all){['tl.code','tl.state.v1','tl.em','tl.conc'].forEach(rm);save([]);}
+ if(all){['tl.code','tl.state.v1','tl.em','tl.conc'].forEach(rm);try{indexedDB.deleteDatabase('tl.pdf');}catch(e){}save([]);}
  else if(c)dropCode(c.code);
  location.reload();
 }
