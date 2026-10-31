@@ -3,7 +3,7 @@
    this phone is running, it refreshes the app by itself. It will not refresh while you are typing,
    or while there are changes on this phone not yet synced. Bump version.json with every release. */
 (function(){
-var RUN='63',KEY='tl.ver.try',GAP=5*60*1000;
+var RUN='64',KEY='tl.ver.try',GAP=5*60*1000;
 var hiddenAt=0;
 function g(k){try{return localStorage.getItem(k)||'';}catch(e){return '';}}
 function s(k,v){try{localStorage.setItem(k,v);}catch(e){}}
