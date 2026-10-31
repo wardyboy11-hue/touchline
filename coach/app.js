@@ -715,20 +715,57 @@ var SESS_SEED=[{id:'s20261028',date:'2026-11-18',title:'Win It, Spring',block:'B
 /* Session plans are private PDFs in Drive. The backend returns them behind the coach code, so no Google sign in is needed. */
 var PLANS={};
 function b64Blob(b64,mime){var bin=atob(b64),n=bin.length,u=new Uint8Array(n);for(var i=0;i<n;i++)u[i]=bin.charCodeAt(i);return new Blob([u],{type:mime||'application/pdf'});}
-function planPaint(el,url,id){el.innerHTML='<iframe title="'+esc(el.dataset.pname||'Session plan')+'" src="'+url+'" loading="lazy"></iframe><a class="btn pri block" style="margin-top:8px" target="_blank" rel="noopener" href="'+url+'">Open full screen</a><p class="small muted">Opens inside Touchline. No Google sign in needed. On some phones the small view shows page one only, so use Open full screen to scroll the whole plan.</p>';}
-function planFail(el,id,msg){el.innerHTML='<p class="muted">'+esc(msg||'Could not load the plan.')+'</p><button class="btn block" data-act="planRetry" data-id="'+esc(id)+'">Try again</button><a class="btn block" style="margin-top:8px" data-ext="1" target="_blank" rel="noopener" href="https://drive.google.com/file/d/'+esc(id)+'/view">Open in Drive (Google sign in needed)</a>';}
+function planPaint(el,url,id){el.innerHTML='<button class="btn pri block" data-act="planOpen" data-id="'+esc(id)+'" data-n="'+esc(el.dataset.pname||'Session plan')+'">Open '+esc(el.dataset.pname||'the session plan')+'</button><p class="small muted">Opens full screen inside Touchline. No Google sign in needed. Use Back to come out.</p>';}
+function planFail(el,id,msg){el.innerHTML='<p class="muted">'+esc(msg||'Could not load the plan.')+'</p><button class="btn block" data-act="planRetry" data-id="'+esc(id)+'">Try again</button><a class="btn block" style="margin-top:8px" data-ext="1" data-drive="1" target="_blank" rel="noopener" href="https://drive.google.com/file/d/'+esc(id)+'/view">Open in Drive (Google sign in needed)</a>';}
 function planInit(){
  document.querySelectorAll('.planhost').forEach(function(el){
   var id=el.dataset.pid;if(!id)return;
-  if(PLANS[id]){planPaint(el,PLANS[id],id);return;}
-  call('plan.get',{id:id}).then(function(d){
-   var url=URL.createObjectURL(b64Blob(d.b64,d.mime));PLANS[id]=url;
-   var cur=document.querySelector('.planhost[data-pid="'+id+'"]');if(cur)planPaint(cur,url,id);
+  if(PLANS[id]){planPaint(el,PLANS[id].url,id);return;}
+  dvFetch(id).then(function(){
+   var cur=document.querySelector('.planhost[data-pid="'+id+'"]');if(cur)planPaint(cur,PLANS[id].url,id);
   }).catch(function(e){
-   var cur=document.querySelector('.planhost[data-pid="'+id+'"]');if(cur)planFail(cur,id,/network|fetch|failed/i.test(e.message)?'No signal. The plan needs a connection the first time.':e.message);
+   var cur=document.querySelector('.planhost[data-pid="'+id+'"]');if(cur)planFail(cur,id,dvMsg(e));
   });
  });
 }
+/* ---------- in-app Drive viewer: library PDFs, session plans, images, videos, Docs and Slides (as PDF) ----------
+   The backend (file.get, folder.list) checks the coach code and that the file sits under a Footy Coaching folder.
+   Nothing is sent anywhere else. Drive stays as a fallback button only. */
+function driveId(u){var m=String(u||'').match(/^https?:\/\/(?:drive|docs)\.google\.com\/(?:file\/d\/|drive\/(?:u\/\d+\/)?folders\/|(?:document|presentation|spreadsheets|drawings)\/d\/|open\?(?:.*&)?id=|uc\?(?:.*&)?id=)([A-Za-z0-9_-]{20,80})/);if(!m)return null;return {id:m[1],folder:/\/folders\//.test(u)};}
+function dvMsg(e){var m=(e&&e.message)||'';return /network|fetch|failed|load/i.test(m)?'No signal. This needs a connection the first time.':(m||'Could not open that file.');}
+function dvFetch(id){if(PLANS[id])return Promise.resolve(PLANS[id]);return call('file.get',{id:id}).then(function(d){var r={url:URL.createObjectURL(b64Blob(d.b64,d.mime)),mime:d.mime,kind:d.kind||(/pdf/.test(d.mime)?'pdf':/^image/.test(d.mime)?'image':/^video/.test(d.mime)?'video':''),name:d.name||''};PLANS[id]=r;return r;});}
+var PDFJS=null;
+function pdfLib(){if(PDFJS)return PDFJS;PDFJS=import(new URL('vendor/pdfjs/pdf.min.mjs',document.baseURI).href).then(function(m){m.GlobalWorkerOptions.workerSrc=new URL('vendor/pdfjs/pdf.worker.min.mjs',document.baseURI).href;return m;}).catch(function(e){PDFJS=null;throw e;});return PDFJS;}
+function dvShell(title,driveUrl){var old=document.getElementById('dview');if(old)old.remove();
+ var d=document.createElement('div');d.id='dview';d.setAttribute('role','dialog');d.setAttribute('aria-label',title||'Viewer');
+ d.style.cssText='position:fixed;inset:0;z-index:2100;background:#0b1020;display:flex;flex-direction:column';
+ d.innerHTML='<div style="display:flex;gap:8px;padding:8px;background:#111;align-items:center"><button id="dvback" style="min-height:48px;min-width:96px;font:inherit;font-weight:700;border-radius:12px;border:1px solid #444;background:#222;color:#fff">&larr; Back</button><div id="dvtitle" style="flex:1;color:#fff;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(title||'')+'</div><span id="dvzoom" style="display:none;gap:6px"><button data-z="-1" aria-label="Zoom out" style="min-height:48px;min-width:48px;border-radius:12px;border:1px solid #444;background:#222;color:#fff;font-size:20px">&minus;</button><button data-z="1" aria-label="Zoom in" style="min-height:48px;min-width:48px;border-radius:12px;border:1px solid #444;background:#222;color:#fff;font-size:20px">+</button></span></div><div id="dvbody" style="flex:1;overflow:auto;-webkit-overflow-scrolling:touch;color:#fff"><p style="padding:16px">Opening...</p></div><div id="dvfoot" style="padding:6px 8px;background:#111;text-align:center"><a data-ext="1" data-drive="1" target="_blank" rel="noopener" href="'+esc(driveUrl)+'" style="color:#9ab;font-size:13px">Not showing? Open in Drive instead (Google sign in needed)</a></div>';
+ document.body.appendChild(d);
+ var close=function(){d.remove();window.removeEventListener('popstate',onpop);};
+ var onpop=function(){close();};
+ try{history.pushState({dview:1},'');window.addEventListener('popstate',onpop);}catch(e){}
+ d.querySelector('#dvback').onclick=function(){if(history.state&&history.state.dview)history.back();else close();};
+ return d;}
+function dvPdf(d,url){var body=d.querySelector('#dvbody'),zoom=1,doc=null,gen=0;
+ function paint(){var my=++gen;body.innerHTML='';var w=Math.min(body.clientWidth||360,1400)-8;
+  for(var i=1;i<=doc.numPages;i++){(function(n){var c=document.createElement('canvas');c.style.cssText='display:block;margin:4px auto;background:#fff;max-width:none';c.setAttribute('aria-label','Page '+n);body.appendChild(c);
+   doc.getPage(n).then(function(pg){if(my!==gen)return;var v0=pg.getViewport({scale:1}),sc=w*zoom/v0.width,dpr=Math.min(window.devicePixelRatio||1,2),v=pg.getViewport({scale:sc*dpr});c.width=v.width;c.height=v.height;c.style.width=(v.width/dpr)+'px';c.style.height=(v.height/dpr)+'px';return pg.render({canvasContext:c.getContext('2d'),viewport:v}).promise;}).catch(function(){});})(i);}}
+ return pdfLib().then(function(lib){return lib.getDocument({url:url,isEvalSupported:false}).promise;}).then(function(p){doc=p;var z=d.querySelector('#dvzoom');z.style.display='flex';z.onclick=function(e){var b=e.target.closest('[data-z]');if(!b)return;zoom=Math.max(0.5,Math.min(4,zoom*(b.dataset.z==='1'?1.4:1/1.4)));paint();};paint();});}
+function dvShow(d,r){var body=d.querySelector('#dvbody');
+ if(r.kind==='pdf')return dvPdf(d,r.url).catch(function(){body.innerHTML='<iframe title="'+esc(r.name)+'" src="'+r.url+'" style="width:100%;height:100%;border:0;background:#fff"></iframe>';});
+ if(r.kind==='image'){body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;min-height:100%"><img src="'+r.url+'" alt="'+esc(r.name)+'" style="max-width:100%;height:auto"></div>';return Promise.resolve();}
+ if(r.kind==='video'){body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;min-height:100%"><video src="'+r.url+'" controls playsinline style="width:100%;max-height:100%"></video></div>';return Promise.resolve();}
+ body.innerHTML='<p style="padding:16px">This type of file cannot be shown in the app yet. Use the Drive button below.</p>';return Promise.resolve();}
+function dvErr(d,id,msg,folder){var body=d.querySelector('#dvbody');body.innerHTML='<div style="padding:16px"><p>'+esc(msg)+'</p><button class="btn block" id="dvretry">Try again</button></div>';body.querySelector('#dvretry').onclick=function(){d.remove();driveView(id,d.getAttribute('aria-label'),folder);};}
+function driveView(id,title,folder){
+ var durl=folder?'https://drive.google.com/drive/folders/'+id:'https://drive.google.com/file/d/'+id+'/view';
+ var d=dvShell(title||(folder?'Folder':'File'),durl);
+ if(folder){return call('folder.list',{id:id}).then(function(r){d.querySelector('#dvtitle').textContent=r.name||title||'Folder';var body=d.querySelector('#dvbody');
+   body.innerHTML=r.items.length?'<div style="padding:8px">'+r.items.map(function(x){return '<button data-fid="'+esc(x.id)+'" data-fk="'+esc(x.kind)+'" data-fn="'+esc(x.name)+'" style="display:block;width:100%;text-align:left;min-height:48px;margin:4px 0;padding:10px 12px;border-radius:12px;border:1px solid #334;background:#16203a;color:#fff;font:inherit">'+(x.kind==='folder'?'&#128193; ':x.kind==='video'?'&#9654; ':x.kind==='image'?'&#128444; ':'&#128196; ')+esc(x.name)+'</button>';}).join('')+'</div>':'<p style="padding:16px">This folder is empty.</p>';
+   body.onclick=function(e){var b=e.target.closest('[data-fid]');if(!b)return;driveView(b.dataset.fid,b.dataset.fn,b.dataset.fk==='folder');};
+  }).catch(function(e){dvErr(d,id,dvMsg(e),true);});}
+ return dvFetch(id).then(function(r){if(!document.body.contains(d))return;if(r.name&&!title)d.querySelector('#dvtitle').textContent=r.name;return dvShow(d,r);}).catch(function(e){if(document.body.contains(d))dvErr(d,id,dvMsg(e),false);});}
+window.driveView=driveView;window.driveId=driveId;
 function sessAll(){var m={},L=[];SESS_SEED.concat(S.settings.sessions||[]).forEach(function(x){if(x.deleted)return;if(m[x.id]){var o=m[x.id];(x.files||[]).forEach(function(f){if(!o.files.some(function(g){return g.id===f.id;}))o.files.push(f);});(x.videos||[]).forEach(function(v){if(!o.videos.some(function(g){return g.u===v.u;}))o.videos.push(v);});}else{m[x.id]={id:x.id,date:((S.settings.seedDate||{})[x.id])||x.date,title:x.title,block:x.block||'',theme:x.theme||'',files:(x.files||[]).slice(),videos:(x.videos||[]).slice(),res:(x.res||[]).slice(),built:x.built,plan:x.plan,intro:x.intro,learn:x.learn,time:x.time,place:x.place,groups:x.groups,coach:x.coach,roles:x.roles,wssp:x.wssp,rc:x.rc};L.push(m[x.id]);}});return L.sort(function(a,b){return a.date<b.date?1:-1;});}
 function driveId(u){var m=String(u).match(/\/d\/([\w-]{20,})/)||String(u).match(/[?&]id=([\w-]{20,})/);return m?m[1]:'';}
 function sessUser(id){var L=S.settings.sessions=S.settings.sessions||[];var r=L.filter(function(x){return x.id===id;})[0];if(!r){r={id:id,files:[],videos:[]};L.push(r);}return r;}
@@ -1361,6 +1398,7 @@ anPick:function(d){anStop();anS.id=d.id;anS.i=0;render(true);},
  anRestart:function(){anStop();anShow(0,true);},
 todaySess:function(d){view.tm='run';view.tab='sess';view.mid=null;ACT.sessOpen(d);},
  sessOpen:function(d){anS.id=null;view.sid=d.id;view.sf=0;view.sv=null;render();window.scrollTo(0,0);},
+ planOpen:function(d){driveView(d.id,d.n,false);},
  planRetry:function(d){var el=document.querySelector('.planhost[data-pid="'+d.id+'"]');if(el){el.innerHTML='<p class="muted">Loading the plan...</p>';}delete PLANS[d.id];planInit();},
  sessBack:function(){view.sid=null;render();},
  sessFile:function(d){view.sf=Number(d.i);render(true);},
@@ -1662,13 +1700,13 @@ function vBoard(){var T=[['move','Move'],['arrow','Arrow'],['dash','Dashed'],['l
 function yt(u){var m=u.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/))([\w-]{11})/);return m?'https://www.youtube-nocookie.com/embed/'+m[1]+'?rel=0&playsinline=1':null;}
 function vm(u){var m=u.match(/vimeo\.com\/(?:video\/)?(\d+)/);return m?'https://player.vimeo.com/video/'+m[1]:null;}
 function esc2(t){return String(t).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
-function show(url){var emb=yt(url)||vm(url),img=/\.(jpe?g|png|gif|webp)(\?|$)/i.test(url);if(!emb&&!img)return false;
+function show(url,title){var dv=window.driveId&&window.driveId(url);if(dv){window.driveView(dv.id,title||'',dv.folder);return true;}var emb=yt(url)||vm(url),img=/\.(jpe?g|png|gif|webp)(\?|$)/i.test(url);if(!emb&&!img)return false;
  var d=document.createElement('div');d.id='lnkview';d.setAttribute('role','dialog');d.setAttribute('aria-label','Viewer');
  d.style.cssText='position:fixed;inset:0;z-index:2000;background:#000;display:flex;flex-direction:column';
  d.innerHTML='<div style="display:flex;gap:8px;padding:8px;background:#111"><button id="lvx" style="min-height:48px;flex:1;font:inherit;font-weight:700;border-radius:12px;border:1px solid #444;background:#222;color:#fff">Close</button><a href="'+esc2(url)+'" target="_blank" rel="noopener" data-ext="1" style="min-height:48px;flex:1;display:flex;align-items:center;justify-content:center;font-weight:700;border-radius:12px;border:1px solid #444;color:#fff;text-decoration:none">Open in browser</a></div><div style="flex:1;display:flex;align-items:center;justify-content:center;overflow:auto">'+(emb?'<iframe src="'+esc2(emb)+'" style="width:100%;aspect-ratio:16/9;border:0;max-height:100%" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" title="Video"></iframe>':'<img src="'+esc2(url)+'" alt="" style="max-width:100%;max-height:100%">')+'</div>';
  document.body.appendChild(d);document.getElementById('lvx').onclick=function(){d.remove();};return true;}
 window.viewLink=show;
-document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href]');if(!a||a.dataset.ext)return;var h=a.getAttribute('href')||'';if(!/^https?:/i.test(h))return;if(show(h))e.preventDefault();},true);
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href]');if(!a||a.dataset.drive)return;var h=a.getAttribute('href')||'';if(!/^https?:/i.test(h))return;if(a.dataset.ext&&!(window.driveId&&window.driveId(h)))return;if(show(h,a.dataset.title||(a.closest('.it')&&(a.closest('.it').querySelector('b')||{}).textContent)||'')){e.preventDefault();e.stopPropagation();}},true);
 })();
 
 function meetBy(ko){var m=String(ko||'').match(/(\d{1,2}):(\d{2})/);if(!m)return '';var t=(+m[1])*60+(+m[2])-30;if(t<0)t+=1440;return String(Math.floor(t/60)).padStart(2,'0')+':'+String(t%60).padStart(2,'0');}

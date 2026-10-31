@@ -1,7 +1,7 @@
 /* Touchline coach app shell service worker (P0).
    Precache: shell only. Runtime: cache first for versioned static, network first for pages,
    Apps Script and other origins are never touched. No PDFs, video or audio are cached here. */
-var V='touchline-shell-v71',RT='touchline-run-v71';
+var V='touchline-shell-v72',RT='touchline-run-v72';
 var SHELL=['./','index.html','app.css?v=66','topics.js?v=66','topic-bank.js?v=66','guide.js?v=66','app.js?v=66','gui.js?v=66','../pod.js','../acct.js?v=66','../update.js?v=66','manifest.webmanifest','../badge.png','../icon-192.png','../icon-512.png'];
 var SKIP=/\.(pdf|mp4|mp3|m4a|webm|mov)$|version\.json$/i;
 self.addEventListener('install',function(e){e.waitUntil(caches.open(V).then(function(c){return c.addAll(SHELL);}).then(function(){return self.skipWaiting();}));});
