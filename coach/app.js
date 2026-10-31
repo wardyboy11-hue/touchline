@@ -865,7 +865,7 @@ function vIg(){
  var T=window.IGT,ki=view.ik!=null?view.ik:0,L=window.IGD.split('|').map(function(r){var p=r.split(' ');return {c:p[0],u:p[1],t:+p[2],g:p[3]||''};}).filter(function(x){return view.igg?x.g==='352':x.t===ki;}),cur=view.ic;
  var h=intro('Drills and ideas saved from Instagram. Coaches only. Tap Watch to play it here.')+'<h2 style="margin:6px 0">Instagram drills</h2><p class="small muted">Played through Instagram itself and credited to the coach who made it. Nothing is copied or saved. Coaches only: not for players or parents.</p>';
  h+='<div class="chips"><button class="chip'+(view.igg?' on':'')+'" data-act="igTag">3-5-2 / back three</button>'+T.map(function(x,i){return '<button class="chip'+(!view.igg&&i===ki?' on':'')+'" data-act="igTopic" data-i="'+i+'">'+esc(x)+'</button>';}).join('')+'</div>';
- if(cur)h+='<div class="card"><iframe class="libplay" style="height:560px" title="Instagram drill" src="https://www.instagram.com/p/'+esc(cur)+'/embed" allowfullscreen loading="lazy"></iframe></div>';
+ if(cur)h+=embW('https://www.instagram.com/p/'+cur+'/embed',560,'Instagram drill','https://www.instagram.com/p/'+cur+'/','Open on Instagram');else pc();
  h+=L.map(function(x){return '<div class="it"><div class="grow"><b>@'+esc(x.u==='x'?'unknown':x.u)+'</b><div class="small muted">'+esc(T[x.t])+'</div></div><button class="btn'+(x.c===cur?' pri':'')+'" data-act="igPlay" data-id="'+esc(x.c)+'">Watch</button></div>';}).join('')||'<p class="muted">None yet.</p>';
  return h;}
 function vX(){
@@ -875,7 +875,7 @@ function vX(){
  var h=intro('Drills and coaching ideas saved from X. Coaches only. Tap Watch to play it here.')+'<h2 style="margin:6px 0">X posts</h2><p class="small muted">Played through X itself and credited to the coach who posted it. Nothing is copied. Coaches only: not for players or parents.</p>';
  if(!T.length){T=window.TOPICS||[];}
  h+='<div class="chips">'+(ng?'<button class="chip'+(view.xg?' on':'')+'" data-act="xTag">3-5-2 / back three ('+ng+')</button>':'')+T.map(function(x,i){return n[i]?'<button class="chip'+(!view.xg&&i===ki?' on':'')+'" data-act="xTopic" data-i="'+i+'">'+esc(x)+' ('+n[i]+')</button>':'';}).join('')+'</div>';
- if(cur)h+='<div class="card"><iframe class="libplay" style="height:600px" title="X post" src="https://platform.twitter.com/embed/Tweet.html?id='+esc(cur)+'&dnt=true" allowfullscreen loading="lazy"></iframe></div>';
+ if(cur)h+=embW('https://platform.twitter.com/embed/Tweet.html?id='+cur+'&dnt=true',600,'X post','https://x.com/i/status/'+cur,'Open on X');else pc();
  h+=all.filter(function(x){return view.xg?x.g==='352':x.t===ki;}).map(function(x){return '<div class="it"><div class="grow"><b>@'+esc(x.u)+'</b><div class="small muted">'+esc(T[x.t])+'</div></div><button class="btn'+(x.c===cur?' pri':'')+'" data-act="xPlay" data-id="'+esc(x.c)+'">Watch</button></div>';}).join('')||'<p class="muted">None yet.</p>';
  return h;}
 
@@ -1002,6 +1002,8 @@ function sbFill(b,wk,slot,again){var w=b.weeks[wk],cur=w.s[slot];if(cur&&cur.kee
  var i=again?((w.i[slot]||0)+1)%pool.length:(w.i[slot]||0);w.i[slot]=i;var it=pool[i];if(again&&cur&&it.t===cur.t){i=(i+1)%pool.length;w.i[slot]=i;it=pool[i];}w.s[slot]=it;}
 function sbMins(b,m){return Math.max(3,Math.round(m*(b.mins||60)/60));}
 function sbIntro(b,wk){if(wk==null)wk=b.week;var w=b.weeks[wk]||{},t=sbWT(b,wk),ti=w.lrn?w.lrn:(b.topic>-1?SBLRN[b.topic]:SBLRN[4]);return {intro:'This week we are working on '+t.toLowerCase()+'. By the end of the session you should be able to '+ti[0].charAt(0).toLowerCase()+ti[0].slice(1)+'.'+(w.split?' Part of tonight we split into a defence group and an attack group, then come back together for the game.':''),learn:ti.join('\n')+(w.soc?'\nTeam habit: '+w.soc:'')};}
+function embW(src,hgt,title,open,lab){pc();return '<div class="card"><a class="btn block" style="margin-bottom:8px" data-ext="1" target="_blank" rel="noopener" href="'+esc(open)+'">'+lab+'</a><div style="position:relative"><div class="small muted" style="position:absolute;top:12px;left:0;right:0;text-align:center">Loading post…</div><iframe class="libplay" style="position:relative;height:'+hgt+'px;background:transparent" title="'+esc(title)+'" src="'+esc(src)+'" allowfullscreen onload="this.previousSibling.style.display=\'none\'"></iframe></div></div>';}
+function pc(){if(window.__pc)return;window.__pc=1;['https://platform.twitter.com','https://syndication.twitter.com','https://www.instagram.com','https://static.cdninstagram.com','https://abs.twimg.com','https://pbs.twimg.com'].forEach(function(u){var l=document.createElement('link');l.rel='preconnect';l.href=u;l.crossOrigin='';document.head.appendChild(l);});}
 function resPre(){if(window.RD||window.__rsl)return;window.__rsl=1;var sc=document.createElement('script');sc.src='res.js';sc.onload=function(){try{resList();}catch(e){}if(view.tab==='sb'||view.tab==='res')render(true);};sc.onerror=function(){window.__rsl=0;};document.head.appendChild(sc);}
 setTimeout(function(){try{if(CODE)resPre();}catch(e){}},3000);
 function vSb(){
