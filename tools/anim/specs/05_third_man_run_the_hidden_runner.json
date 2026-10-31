@@ -1,0 +1,194 @@
+{
+ "slug": "05_third_man_run_the_hidden_runner",
+ "theme": "Third man runs",
+ "title": "The Hidden Runner",
+ "age": "U14 / U15",
+ "format": "3v1 in a grid, then 3v1 plus a keeper",
+ "area": "40m x 28m, a goal at the right hand end (7m wide)",
+ "kit": "Red and Blue bibs, keeper in a third colour, cones for the grid",
+ "start": "B1 starts with the ball, R1 defends in the middle",
+ "L": 40,
+ "W": 28,
+ "ball": "B1",
+ "key": [
+  [
+   "R",
+   "Red"
+  ],
+  [
+   "B",
+   "Blue"
+  ],
+  [
+   "K",
+   "Goalkeeper"
+  ],
+  [
+   "Y",
+   "Neutral"
+  ]
+ ],
+ "goals": [
+  {
+   "x": 40,
+   "y": 14,
+   "w": 7,
+   "side": "right"
+  }
+ ],
+ "lines": [
+  [
+   20,
+   0,
+   20,
+   28
+  ]
+ ],
+ "cones": [
+  [
+   20,
+   0
+  ],
+  [
+   20,
+   28
+  ]
+ ],
+ "players": [
+  {
+   "id": "B1",
+   "team": "B",
+   "x": 5,
+   "y": 22
+  },
+  {
+   "id": "B2",
+   "team": "B",
+   "x": 15,
+   "y": 12
+  },
+  {
+   "id": "B3",
+   "team": "B",
+   "x": 14,
+   "y": 26
+  },
+  {
+   "id": "R1",
+   "team": "R",
+   "x": 19,
+   "y": 15
+  },
+  {
+   "id": "KR",
+   "team": "K",
+   "x": 38.5,
+   "y": 14
+  }
+ ],
+ "steps": [
+  {
+   "dur": 11,
+   "say": "B1 plays to B2 who has come to show for the ball. R1 steps up.",
+   "vo": "B1 plays into B2, who has come short to show for the ball. R1 steps up to stay tight. B3 waits wide.",
+   "moves": {
+    "B2": [
+     16,
+     12
+    ],
+    "R1": [
+     19,
+     13.5
+    ]
+   },
+   "pass": "B2"
+  },
+  {
+   "dur": 14,
+   "say": "B3 starts the run as the ball is played. R1 is watching the ball, not the runner.",
+   "vo": "B3 starts the run the moment the ball is played. R1 is watching the ball and cannot see him. That is why we call him the hidden runner.",
+   "moves": {
+    "B3": [
+     20,
+     18
+    ]
+   }
+  },
+  {
+   "dur": 11,
+   "say": "B2 lays it off first time into the path of B3.",
+   "vo": "B2 lays it off first time, into the path of B3. One touch, no delay, and R1 is out of the game.",
+   "moves": {
+    "B3": [
+     24,
+     17
+    ],
+    "R1": [
+     19,
+     13
+    ]
+   },
+   "pass": "B3"
+  },
+  {
+   "dur": 11,
+   "say": "B3 has run beyond R1 and is through on goal.",
+   "vo": "B3 has run beyond R1, and now he is through on goal. He does not wait, he drives straight at the keeper.",
+   "moves": {
+    "B3": [
+     30,
+     14
+    ],
+    "B2": [
+     20,
+     18
+    ],
+    "R1": [
+     20,
+     11
+    ]
+   }
+  },
+  {
+   "dur": 10,
+   "say": "B3 shoots first time. B2 follows in for the rebound.",
+   "vo": "B3 shoots. B2 follows in for any rebound, because the first player should always be ready for the second ball.",
+   "moves": {
+    "B2": [
+     28,
+     19
+    ]
+   },
+   "shoot": [
+    40,
+    15
+   ]
+  }
+ ],
+ "setup": [
+  "Three Blue players (B1, B2, B3) against one Red defender (R1).",
+  "A cone gate marks the halfway line, and a goal at the right hand end.",
+  "Run it unopposed first, then add R1."
+ ],
+ "rules": [
+  "B2 must play first time after the pass from B1.",
+  "B3 must start the run only after the ball is played, not before.",
+  "Offside applies from the halfway line.",
+  "Rotate roles every two goes."
+ ],
+ "restart": [
+  "Ball out of play or a goal: B1 restarts with a new ball from the left.",
+  "The defender rotates after each attack."
+ ],
+ "points": [
+  "Start the run when the ball is played, not before.",
+  "One touch from the lay off player: first time, with pace.",
+  "Run beyond the defender and away from his eyeline.",
+  "First player follows the pass to support the attack."
+ ],
+ "progress": [
+  "Add a second defender, so it is 3v2.",
+  "Add a keeper and ask the group to score within eight seconds of the first pass.",
+  "Play it in a game: award a bonus point for every goal with a third man run."
+ ]
+}
