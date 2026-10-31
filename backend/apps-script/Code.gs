@@ -19,6 +19,7 @@ function doPost(e) {
     var b = JSON.parse(e.postData.contents);
     if (b.action === 'clip.chk') return out_({ ok: true, data: clipChk_(b) });
     if (b.action === 'f.codehelp') return out_({ ok: true, data: codeHelp_(b) });
+    if (b.action === 'who.am.i') return out_({ ok: true, data: whoAmI_(b.code) });
     if (/^f\./.test(String(b.action))) return out_({ ok: true, data: fam_(b) });
     auth_(b.code);
     if (/^clip\./.test(String(b.action))) return out_({ ok: true, data: clip_(b) });
@@ -215,6 +216,23 @@ function headWeek_() {
     if (tot > 0 && String(o.date) >= mon && String(o.date) <= sun) n++;
   });
   return { n: n };
+}
+
+/** Open. Tells the account menu what kind of code this is (coach, player or parent) in one call.
+ *  Has its own wrong try counter, so a mistyped code here never locks the coaches out of the coach login. */
+function whoAmI_(code) {
+  var cache = CacheService.getScriptCache(), n = Number(cache.get('wfails') || 0);
+  if (n >= 30) throw new Error('Too many wrong tries. Wait 15 minutes and try again.');
+  var p = PropertiesService.getScriptProperties(), raw = String(code || '');
+  if (raw && (raw === p.getProperty('COACH_CODE') || raw === p.getProperty('DEANO_CODE'))) return { role: 'coach' };
+  var c = norm_(code);
+  if (c.length === 6) {
+    var sh = tab_('Families', ['code', 'playerId', 'createdAt', 'role']), last = sh.getLastRow();
+    var rows = last > 1 ? sh.getRange(2, 1, last - 1, 4).getValues() : [];
+    for (var i = 0; i < rows.length; i++) { if (String(rows[i][0]) === c) return { role: String(rows[i][3]) === 'player' ? 'player' : 'parent' }; }
+  }
+  cache.put('wfails', String(n + 1), 900);
+  throw new Error('That code did not work.');
 }
 
 function famAuth_(code) {

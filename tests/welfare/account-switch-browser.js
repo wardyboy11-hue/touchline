@@ -7,6 +7,7 @@ const H={'access-control-allow-origin':'*'};
 await q.route('**/macros/**',async r=>{let a={};try{a=JSON.parse(r.request().postData()||'{}')}catch(e){}
  const res=o=>r.fulfill({status:200,contentType:'application/json',headers:H,body:JSON.stringify(o)});
  const code=a.code;
+ if(a.action==='who.am.i'){const m={PARENT1:'parent',PLAYER1:'player',COACH1:'coach'}[code];return m?res({ok:true,data:{role:m}}):res({ok:false,error:'That code did not work.'});}
  if(code==='PARENT1'&&a.action==='f.home')return res({ok:true,data:{first:'Cal',role:'parent',x:{},posts:[],res:[],tips:[]}});
  if(code==='PLAYER1'&&a.action==='f.home')return res({ok:true,data:{first:'Cal',role:'player',x:{},posts:[],res:[],tips:[]}});
  if(code==='COACH1'&&a.action==='sync')return res({ok:true,data:{docs:[],serverTime:Date.now()}});
