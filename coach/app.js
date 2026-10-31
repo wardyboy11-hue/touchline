@@ -91,14 +91,15 @@ document.addEventListener('input',function(e){var t=e.target;if(!t||!t.id||t.id.
 document.addEventListener('change',function(e){if(e.target&&e.target.id==='vtgame'){var ov=view.vt||(view.vt={});ov.id=e.target.value;var tp=$('#vttpl'),pv=$('#vtprev');if(pv)pv.textContent=vtFill(tp?tp.value:'',ov.name,ov.id);}});
 function vtMsg(){var ov=view.vt||{},tp=$('#vttpl');return vtFill(tp?tp.value:S.settings.vtTpl,(($('#vtname')||{}).value)||ov.name,(($('#vtgame')||{}).value)||ov.id);}
 
+// Referee phone numbers live only in the coach-only Contacts tab of the private sheet (group 'ref').
 var REFSEED=[
- {name:'Jake Howard',role:'Referee secretary, BBDFL',phone:'07999316068',notes:'Not a referee. He is the referee secretary. Contact him about referee appointments and problems.'},
- {name:'Alex',role:'Referee, Bolton and Bury league',phone:'07486575966',notes:'Saved in phone as Alex Ref Bolton N Bury League.'},
- {name:'Chris Van Geffen',role:'Referee',phone:'07871311357',notes:''},
- {name:'Dan Lawson',role:'Referee',phone:'07821234465',notes:''},
- {name:'Dan (saved as Ref Dan)',role:'Referee',phone:'07938179249',notes:'Check whether this is the same Dan as Dan Lawson.'},
- {name:'Dave Long',role:'Referee',phone:'07951103540',notes:''},
- {name:'Joe',role:'Referee',phone:'07526092413',notes:''}];
+ {name:'Jake Howard',role:'Referee secretary, BBDFL',phone:'',notes:'Not a referee. He is the referee secretary. Contact him about referee appointments and problems.'},
+ {name:'Alex',role:'Referee, Bolton and Bury league',phone:'',notes:'Saved in phone as Alex Ref Bolton N Bury League.'},
+ {name:'Chris Van Geffen',role:'Referee',phone:'',notes:''},
+ {name:'Dan Lawson',role:'Referee',phone:'',notes:''},
+ {name:'Dan (saved as Ref Dan)',role:'Referee',phone:'',notes:'Check whether this is the same Dan as Dan Lawson.'},
+ {name:'Dave Long',role:'Referee',phone:'',notes:''},
+ {name:'Joe',role:'Referee',phone:'',notes:''}];
 function refsList(){var st=S.settings;if(!st.refsSeed){st.refs=(st.refs||[]).concat(REFSEED.map(function(r){return {id:uid(),name:r.name,role:r.role,phone:r.phone,email:'',notes:r.notes,at:Date.now()};}));st.refsSeed=1;touch('settings',st);}return st.refs||[];}
 function telOf(p){var d=String(p||'').replace(/[^0-9+]/g,'');if(d.indexOf('+')===0)return d;if(d.indexOf('00')===0)return '+'+d.slice(2);if(d.charAt(0)==='0')return '+44'+d.slice(1);return d;}
 function vRefs(){
@@ -2144,12 +2145,13 @@ function ctLoad(force){if(!CODE)return;if(!PV.ld){PV.ld=1;faGet('p:ct').then(fun
  Promise.all([call('contacts.get'),call('squad.get')]).then(function(a){PV.busy=0;PV.fresh=1;PV.err='';PV.ct=a[0];faPut('p:ct',a[0]).catch(function(){});if(!PV.sq||!a[1].meta||!PV.sq.meta||(a[1].meta.exported||'')>=(PV.sq.meta.exported||'')){PV.sq=a[1];faPut('p:sq',a[1]).catch(function(){});}rr();}).catch(function(e){PV.busy=0;PV.fresh=1;PV.err=/unknown/i.test(e.message)?'The contacts part of the backend is not switched on yet.':e.message;rr();});}
 function rr(){if(view.tab==='ct'||view.tab==='mday')render(true);}
 function numOf(name){var k=String(name||'').toLowerCase().replace(/\s+/g,' ').trim(),hit=plist(true).filter(function(p){var n=String(p.name||'').toLowerCase().replace(/\s+/g,' ').trim();return n===k||(n&&k.indexOf(n)===0)||(n&&n.split(' ')[0]===k.split(' ')[0]&&n.split(' ').pop()===k.split(' ').pop());})[0];return hit&&hit.num?String(hit.num):'';}
-function vCt(){ctLoad();var c=(PV.ct&&PV.ct.rows)||[],cl=c.filter(function(r){return r.group==='club';}),pa=c.filter(function(r){return r.group==='parent';}),ec={};((PV.sq&&PV.sq.rows)||[]).forEach(function(s){ec[s.name]=s;});
+function vCt(){ctLoad();var c=(PV.ct&&PV.ct.rows)||[],cl=c.filter(function(r){return r.group==='club';}),rf=c.filter(function(r){return r.group==='ref';}),pa=c.filter(function(r){return r.group==='parent';}),ec={};((PV.sq&&PV.sq.rows)||[]).forEach(function(s){ec[s.name]=s;});
  var h=intro('Club, county and parent contacts. Coaches only: this comes from the private sheet and is never shown on the families page (apart from the safeguarding contacts).');
  if(PV.err)h+='<div class="card small" style="color:#ff8a8a">'+esc(PV.err)+'</div>';
  if(!PV.ct&&PV.busy)h+='<div class="card small muted">Loading contacts…</div>';
  h+=sgHtml();
  if(cl.length)h+='<div class="card"><h3 style="margin-top:0">Club officials</h3>'+cl.map(function(r){return ctItem({n:r.name,r:r.role,e:r.email,t:r.phone,note:r.note});}).join('')+'<div class="row wrap2" style="margin-top:8px"><a class="btn grow" href="mailto:?bcc='+encodeURIComponent(cl.map(function(r){return r.email;}).filter(Boolean).join(','))+'">Email all officials</a></div></div>';
+ if(rf.length)h+='<div class="card"><h3 style="margin-top:0">Referees</h3>'+rf.map(function(r){return ctItem({n:r.name,r:r.role,e:r.email,t:r.phone,note:r.note});}).join('')+'</div>';
  h+='<div class="card"><h3 style="margin-top:0">Lancashire FA</h3><p class="small muted">Fines, suspensions, discipline and registrations.</p>'+LFA.map(ctItem).join('')+'</div>';
  if(pa.length){var by={},ord=[];pa.forEach(function(r){if(!by[r.player]){by[r.player]=[];ord.push(r.player);}by[r.player].push(r);});ord.sort(function(a,b){return (Number(numOf(a))||99)-(Number(numOf(b))||99)||a.localeCompare(b);});
   var all={};pa.forEach(function(r){if(r.email)all[r.email.toLowerCase()]=r.email;});
@@ -2157,8 +2159,10 @@ function vCt(){ctLoad();var c=(PV.ct&&PV.ct.rows)||[],cl=c.filter(function(r){re
  else if(PV.ct)h+='<div class="card small muted">No parent contacts in the sheet yet.</div>';
  h+='<div class="row wrap2"><button class="btn grow" data-act="pvRefresh">Refresh from the sheet</button><button class="btn pri grow" data-act="tab" data-v="mday">Matchday squad list</button></div>';return h;}
 function exTxt(m){if(!m||!m.exported)return '';var x=/^(\d{4}-\d\d-\d\d)T(\d\d:\d\d)/.exec(m.exported);return x?ukD(x[1],{day:'numeric',month:'short',year:'numeric'})+', '+x[2]:m.exported;}
+var DEF_OFF=[{name:'Tim Ward',role:'Team Manager'},{name:'Deano',role:'Assistant Coach'}];
+function offL(m){var o=((m&&m.officials)||[]).slice();DEF_OFF.forEach(function(d){var k=d.name.split(' ')[0].toLowerCase();if(!o.some(function(x){return String(x.name||'').toLowerCase().indexOf(k)>=0;}))o.push(d);});return o;}
 function sqRows(){var r=((PV.sq&&PV.sq.rows)||[]).map(function(s){return {num:numOf(s.name),name:s.name,age:s.age,fan:s.fan,reg:s.reg};});r.sort(function(a,b){return (Number(a.num)||99)-(Number(b.num)||99)||a.name.localeCompare(b.name);});return r;}
-function vMday(){ctLoad();var m=(PV.sq&&PV.sq.meta)||{},R=sqRows(),off=m.officials||[],hasN=R.some(function(r){return r.num;});
+function vMday(){ctLoad();var m=(PV.sq&&PV.sq.meta)||{},R=sqRows(),off=offL(m),hasN=R.some(function(r){return r.num;});
  var h='<style>.mdt th,.mdt td{text-align:left!important}.mdt th{padding:4px}#mdayfs:fullscreen{overflow:auto;padding:18px;border-radius:0}</style><div id="mdayfs" class="card" style="background:#fff;color:#111"><div class="row" style="align-items:center"><div class="grow"><b style="font-size:18px">'+esc(m.club||'Wigan Junior Latics')+' '+esc(m.team||'U15 Blues')+'</b><div class="small" style="color:#444">FA squad list'+(m.exported?' · Exported '+esc(exTxt(m)):'')+(R.length?' · '+R.length+' registered':'')+'</div></div></div>';
  if(!R.length)h+='<p class="small" style="color:#444;margin-top:10px">'+(PV.busy?'Loading the squad list…':'No squad list yet. Add the FA export below.')+'</p>';
  else h+='<table class="mdt" style="width:100%;border-collapse:collapse;margin-top:10px;font-size:15px;color:#111"><tr style="font-size:12px;color:#555">'+(hasN?'<th style="padding:4px">No</th>':'')+'<th>Name</th><th>Age</th><th>FAN</th><th>Registered</th></tr>'+R.map(function(r){return '<tr style="border-top:1px solid #ddd">'+(hasN?'<td style="padding:9px 4px;font-weight:700">'+esc(r.num)+'</td>':'')+'<td style="padding:9px 4px">'+esc(r.name)+'</td><td>'+esc(r.age)+'</td><td>'+esc(r.fan)+'</td><td style="white-space:nowrap">'+esc(ukD(r.reg,{day:'numeric',month:'short',year:'2-digit'}))+'</td></tr>';}).join('')+'</table>';
@@ -2179,7 +2183,7 @@ function sqParse(txt){var t=String(txt||'').replace(/\r/g,''),ex='',x=/(\d{1,2})
  var om=/Team Officials[^\n]*\n([\s\S]*?)(\n\s*\n|$)/i.exec(t);if(om)om[1].split('\n').forEach(function(s){var q=/^([A-Z][A-Za-z'\-]+(?:\s+[A-Z][A-Za-z'\-]+){1,3}?)\s*[-–,:]?\s*(Team Manager|Assistant Manager|Manager|Assistant Coach|Coach|Team Secretary|Secretary)\s*$/.exec(s.trim());if(q&&q[2])off.push({name:q[1],role:q[2]});});
  return {exported:ex,rows:rows,officials:off};}
 function sqMerge(p){var old={};((PV.sq&&PV.sq.rows)||[]).forEach(function(s){old[s.name.toLowerCase()]=s;});return p.rows.map(function(r){var o=old[r.name.toLowerCase()]||{};return {name:r.name,fan:o.fan||'',dob:o.dob||'',age:r.age,reg:r.reg||o.reg||'',ec_name:r.ec_name||'',ec_phone:r.ec_phone||''};});}
-function mdayImg(){var m=(PV.sq&&PV.sq.meta)||{},R=sqRows(),off=m.officials||[],W=1080,rh=56,H=260+R.length*rh+(off.length?110:40),c=document.createElement('canvas');c.width=W;c.height=H;var g=c.getContext('2d');
+function mdayImg(){var m=(PV.sq&&PV.sq.meta)||{},R=sqRows(),off=offL(m),W=1080,rh=56,H=260+R.length*rh+(off.length?110:40),c=document.createElement('canvas');c.width=W;c.height=H;var g=c.getContext('2d');
  g.fillStyle='#fff';g.fillRect(0,0,W,H);g.fillStyle='#0b3d91';g.fillRect(0,0,W,150);g.fillStyle='#fff';g.font='bold 44px system-ui,Arial';g.fillText((m.club||'Wigan Junior Latics')+' '+(m.team||'U15 Blues'),40,70);g.font='28px system-ui,Arial';g.fillText('FA squad list'+(m.exported?' · Exported '+exTxt(m):'')+' · '+R.length+' registered',40,118);
  var hasN=R.some(function(r){return r.num;}),y=200,X=hasN?[40,120,560,660,850]:[-999,40,560,660,850];g.fillStyle='#555';g.font='bold 24px system-ui,Arial';['No','Name','Age','FAN','Registered'].forEach(function(s,i){g.fillText(s,X[i],y);});
  g.font='30px system-ui,Arial';R.forEach(function(r,i){y+=rh;if(i%2===0){g.fillStyle='#f1f4fa';g.fillRect(20,y-38,W-40,rh);}g.fillStyle='#111';g.font='bold 30px system-ui,Arial';g.fillText(r.num||'',X[0],y);g.font='30px system-ui,Arial';var n=r.name;while(g.measureText(n).width>420&&n.length>3)n=n.slice(0,-2)+'…';g.fillText(n,X[1],y);g.fillText(String(r.age||''),X[2],y);g.fillText(r.fan||'',X[3],y);g.fillText(ukD(r.reg,{day:'numeric',month:'short',year:'numeric'}),X[4],y);});

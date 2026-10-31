@@ -7,7 +7,7 @@ assert.ok(!files.some(f=>/\.pdf$/i.test(f)&&/squad/i.test(f)),'no squad list PDF
 // public, allowed addresses (safeguarding, county FA, club info)
 const okMail=/@(lancashirefa\.com|thefa\.com|nspcc\.org\.uk|wiganjuniorlaticsfc\.co\.uk|example\.com)$/i;
 let bad=[];
-for(const f of files){const s=fs.readFileSync(f,'utf8').split('\n').filter(l=>!/role:'Referee/.test(l)).join('\n'); // REFSEED (league referees) predates r71, flagged separately
+for(const f of files){const s=fs.readFileSync(f,'utf8').split('\n').join('\n'); // referee numbers moved to the private sheet (r71)
  // UK mobile numbers
  (s.match(/(?<![\d#])07\d{3}\s?\d{6}(?!\d)/g)||[]).forEach(m=>bad.push(f+': phone '+m));
  // 8 digit FA numbers inside a FAN context
