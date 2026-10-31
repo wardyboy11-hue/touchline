@@ -26,6 +26,17 @@ G.unitOfPos=function(pos){var a=Array.isArray(pos)?pos:[pos];for(var i=0;i<a.len
 G.unitOfNum=function(num,squad){num=String(num).replace(/^#/,'');var p=(squad||[]).filter(function(x){return String(x.num)===num;})[0];return p?G.unitOfPos(p.pos):'';};
 G.shortPoint=function(p){var s=String(p||'');var c=s.indexOf(':');if(c>0&&c<40)return s.slice(0,c);var d=s.indexOf('.');return (d>0?s.slice(0,d):s).slice(0,48);};
 var WELFARE=/\b(hurt|injur|knock|concussion|abus|bully|self.?harm|cry|upset|scared|afraid|welfare|safeguard)/i;
+/* Reflect migration (settings.rev -> rev docs). Pure so it can be tested.
+   merge: one list, de-duplicated by id, newest (at/updatedAt) wins. Legacy list stays readable for older app versions.
+   migrate: copy legacy items into revs (mark dirty), and only say clear=true once every legacy id has been confirmed
+   by the server (ack) and none of them is still waiting to sync. */
+function stamp(r){return Math.max(Number(r&&r.at)||0,Number(r&&r.updatedAt)||0);}
+G.mergeRevs=function(legacy,revs){var m={},ord=[];function put(r){if(!r||!r.id)return;if(!(r.id in m)){ord.push(r.id);m[r.id]=r;}else if(stamp(r)>=stamp(m[r.id]))m[r.id]=r;}
+ (legacy||[]).forEach(put);Object.keys(revs||{}).forEach(function(k){put(revs[k]);});return ord.map(function(id){return m[id];});};
+G.migrateRevs=function(legacy,revs,ack,dirty,nowMs){var add=[];legacy=legacy||[];ack=ack||{};dirty=dirty||{};
+ legacy.forEach(function(r){if(!r||!r.id)return;var c=revs[r.id];if(!c||stamp(r)>stamp(c)){var n=JSON.parse(JSON.stringify(r));n.updatedAt=Math.max(stamp(r),nowMs||0);revs[r.id]=n;add.push(r.id);}});
+ var pending=legacy.some(function(r){return r&&r.id&&(!ack[r.id]||dirty['rev:'+r.id]||add.indexOf(r.id)>-1);});
+ return {dirty:add,clear:legacy.length>0&&!pending};};
 G.welfareHit=function(t){return WELFARE.test(String(t||''));};
 
 /* ---------- which week ---------- */
@@ -34,7 +45,7 @@ G.weekDate=function(b,bank,i){var w=(b.weeks||[])[i]||{};return w.date||addDays(
 G.pickWeek=function(b,bank,today,hm){var n=(b.weeks||[]).length||6,t=b.time||'20:00';hm=hm||'00:00';
  for(var i=0;i<n;i++){var w=(b.weeks||[])[i]||{},d=G.weekDate(b,bank,i),st=w.status;
   if(st==='ran'||st==='not-run')continue;
-  if(d>today||(d===today&&hm<t))return {i:i,before:i===0&&today<d&&today<G.weekDate(b,bank,0),done:false};}
+  if(d>today||(d===today&&hm<t))return {i:i,before:i===0&&today<d,done:false};}
  return {i:n-1,before:false,done:true};};
 
 /* ---------- reflections ---------- */
@@ -51,7 +62,7 @@ G.flags=function(by,squad){var names=Object.keys(by).sort(),out=[];if(names.leng
  var A=by[names[0]],B=by[names[1]],a=names[0],b=names[1];
  function cross(w1,i2,n1,n2){chips(w1).forEach(function(c){if(chips(i2).indexOf(c)>-1)out.push(n1+' said "'+c+'" went well, '+n2+' wants it better');});}
  cross(A.well,B.improve,a,b);cross(B.well,A.improve,b,a);
- function units(r){var o={st:{},sg:{}};entries(r.stood).forEach(function(e){var k=/^\d+$/.test(String(e.k).replace('#',''))?(G.unitOfNum(e.k,squad)||'#'+String(e.k).replace('#','')):e.k;o.st[k]=1;if(/^\d/.test(String(e.k).replace('#',''))||true)o.st['#'+String(e.k).replace('#','')]=1;});entries(r.strug).forEach(function(e){var k=/^\d+$/.test(String(e.k).replace('#',''))?(G.unitOfNum(e.k,squad)||'#'+String(e.k).replace('#','')):e.k;o.sg[k]=1;o.sg['#'+String(e.k).replace('#','')]=1;});return o;}
+ function units(r){var o={st:{},sg:{}};function add(m,e){var raw=String(e.k).replace('#',''),num=/^\d+$/.test(raw);m[num?(G.unitOfNum(e.k,squad)||'#'+raw):e.k]=1;if(num)m['#'+raw]=1;}entries(r.stood).forEach(function(e){add(o.st,e);});entries(r.strug).forEach(function(e){add(o.sg,e);});return o;}
  var ua=units(A),ub=units(B);
  Object.keys(ua.st).forEach(function(k){if(ub.sg[k])out.push(a+' had '+k+' doing well, '+b+' had '+k+' struggling');});
  Object.keys(ub.st).forEach(function(k){if(ua.sg[k])out.push(b+' had '+k+' doing well, '+a+' had '+k+' struggling');});

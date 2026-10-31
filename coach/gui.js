@@ -30,7 +30,7 @@ function resItems(){if(RES)return RES;var L=X.resList(),RT=window.RT||[],RA=wind
 /* ---------- the block the guide works from ---------- */
 function planOf(b){return b.plan||BANK.block3.plan.map(function(t,i){return {wk:i+1,topic:t};});}
 function empty(b){return !(b.weeks||[]).some(function(w){return Object.keys(w.s||{}).length;});}
-function ensureWB(cb){if(window.WB){cb();return;}if(BLOAD)return;BLOAD=1;var sc=document.createElement('script');sc.src='wb.js?v=62';sc.onload=function(){BLOAD=0;cb();};sc.onerror=function(){BLOAD=0;X.toast('Could not load');};document.head.appendChild(sc);}
+function ensureWB(cb){if(window.WB){cb();return;}if(BLOAD)return;BLOAD=1;var sc=document.createElement('script');sc.src='wb.js?v=63';sc.onload=function(){BLOAD=0;cb();};sc.onerror=function(){BLOAD=0;X.toast('Could not load');};document.head.appendChild(sc);}
 function blockOK(){var b=S().settings.sb;if(!b)return null;
  if(b.rcId==='b3'||b.plan){if(!b.plan){b.plan=planOf(b);b.blockStart=b.blockStart||BANK.block3.blockStart;b.day=3;}if(b.weeks)b.weeks.forEach(function(w){if(!w.status)w.status='planned';});return b;}
  return null;}
@@ -167,7 +167,7 @@ Object.keys(A).forEach(function(k){X.ACT[k]=A[k];});
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset)return;
  if(t.dataset.gq){setAns(curI(),t.dataset.gq,t.value.trim().slice(0,120));X.render(true);return;}
  if(t.dataset.gn){var r=curRev();if(!r)return;var v=t.value.trim();
-  if(G.welfareHit(v)){t.value='';X.toast('That sounds like a welfare matter. Tell the club welfare officer. It does not belong in here.');return;}
+  if(G.welfareHit(v)){t.value='';X.toast('That sounds like a welfare matter. It was not saved. Tim and Deano have been alerted. Tell the club welfare officer.');try{if(X.welfareAlert)X.welfareAlert();}catch(e){}return;}
   var p=t.dataset.gn.split('.');
   if(p.length===1){r[p[0]]=r[p[0]]||{chips:[]};r[p[0]].note=v.slice(0,140);}
   else{(r[p[0]]||[]).forEach(function(en){if(String(en.k)===p.slice(1).join('.'))en.note=v.slice(0,100);});}
