@@ -33,7 +33,7 @@ assert.ok(/if\(m\.clear\)\{s\.rev=\[\]/.test(mig),'clear only on m.clear');asser
 
 // 2. service worker: library.json network first, cache fallback, version bumped
 const sw=fs.readFileSync(path.join(root,'sw.js'),'utf8');
-assert.ok(/touchline-shell-v63/.test(sw)&&/touchline-run-v63/.test(sw),'cache version bumped');
+assert.ok(/touchline-shell-v64/.test(sw)&&/touchline-run-v64/.test(sw),'cache version bumped');
 const idx=fs.readFileSync(path.join(root,'index.html'),'utf8');assert.ok(!/v=62/.test(idx)&&/app\.js\?v=63/.test(idx));
 async function swRun(netOk){
   const store=new Map(),handlers={},calls=[];

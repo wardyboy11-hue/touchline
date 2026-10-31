@@ -110,14 +110,20 @@ let t=0,playing=false,last=0,speed=1;const $=id=>document.getElementById(id);
 
 let vIdx=-1,voiceOn=true;const synth=window.speechSynthesis;
 function pickVoice(){const vs=synth?synth.getVoices():[];return vs.find(v=>/en[-_]GB/i.test(v.lang)&&/female|google|hazel|libby|sonia|serena|kate/i.test(v.name))||vs.find(v=>/en[-_]GB/i.test(v.lang))||null;}
-function voiceTick(t){if(!synth)return;if(!playing||!voiceOn){if(vIdx!==-1){synth.cancel();vIdx=-1;}return;}
+function voiceTick(t){if(!synth)return;if(!playing||!voiceOn){hold=false;hTok++;if(vIdx!==-1){synth.cancel();vIdx=-1;}return;}
  const i=segs.findIndex(s=>t>=s.t0&&t<s.t1);if(i===vIdx)return;vIdx=i;synth.cancel();
- if(i>=0){const u=new SpeechSynthesisUtterance(segs[i].s.vo||segs[i].s.say);u.lang='en-GB';const v=pickVoice();if(v)u.voice=v;u.rate=Math.min(1.25,.95*speed);synth.speak(u);}}
+ if(i>=0){const u=new SpeechSynthesisUtterance(segs[i].s.vo||segs[i].s.say);u.lang='en-GB';const v=pickVoice();if(v)u.voice=v;u.rate=Math.min(1.25,.95*speed);
+ /* hold the animation clock until the voice actually starts (max 3s), so pictures never run ahead of the words */
+ const tok=++hTok;hold=true;const go=()=>{if(tok===hTok){hold=false;last=performance.now();}};u.onstart=go;u.onerror=go;setTimeout(go,3000);
+ synth.speak(u);}}
+let hold=false,hTok=0,voicesReady=!synth||synth.getVoices().length>0;
 $('voice').onclick=()=>{voiceOn=!voiceOn;$('voice').textContent=voiceOn?'Voice on':'Voice off';if(!voiceOn&&synth)synth.cancel();vIdx=-1;};
-if(synth&&synth.onvoiceschanged!==undefined)synth.onvoiceschanged=()=>{};
+if(synth&&synth.onvoiceschanged!==undefined)synth.onvoiceschanged=()=>{voicesReady=true;};
+/* voices load late on phones: show Loading on Play until ready (max 2s) */
+if(!voicesReady){$('play').textContent='Loading voice...';const rdy=()=>{if(!voicesReady)voicesReady=true;if(!playing)$('play').textContent='Play';};setTimeout(rdy,2000);if(synth)synth.addEventListener&&synth.addEventListener('voiceschanged',rdy);}
 
-function loop(ts){if(playing){t+=(ts-last)/1000*speed;if(t>=TOTAL){t=TOTAL-.01;playing=false;$('play').textContent='Play';}}last=ts;draw(t);voiceTick(t);$('bar').value=t/TOTAL*1000;requestAnimationFrame(loop);}
-$('play').onclick=()=>{if(t>=TOTAL-.05)t=0;playing=!playing;$('play').textContent=playing?'Pause':'Play';};
+function loop(ts){if(playing&&!hold){t+=(ts-last)/1000*speed;if(t>=TOTAL){t=TOTAL-.01;playing=false;$('play').textContent='Play';}}last=ts;draw(t);voiceTick(t);$('bar').value=t/TOTAL*1000;requestAnimationFrame(loop);}
+$('play').onclick=()=>{if(!voicesReady&&voiceOn&&!playing)return;if(t>=TOTAL-.05)t=0;playing=!playing;$('play').textContent=playing?'Pause':'Play';};
 $('restart').onclick=()=>{vIdx=-1;t=0;playing=true;$('play').textContent='Pause';};
 $('bar').oninput=e=>{t=e.target.value/1000*TOTAL;};
 $('prev').onclick=()=>{const idx=segs.findIndex(s=>t>=s.t0&&t<s.t1);t=idx>0?segs[idx-1].t0:0;playing=false;$('play').textContent='Play';};
