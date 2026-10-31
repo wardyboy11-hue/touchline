@@ -39,8 +39,8 @@ for(const role of ['parent','player']){
   T('parent: name never shown on family pages',!/Pat, Sam/.test(await q.innerText('body')));
   await q.evaluate(()=>goTab('data'));await q.waitForTimeout(800);tx=await q.innerText('body');
   T('parent: My data lists the name with Clear',/Pat, Sam's dad/.test(tx)&&!!(await q.$('#mdnameclear')));
-  q.once('dialog',d=>d.accept());await q.click('#mdnameclear');await q.waitForTimeout(500);T('parent: Clear sends empty name',saved==='');
-  await q.evaluate(()=>{goTab('me');showHelp=true;r();});await q.click('#welagain');await q.waitForTimeout(400);T('parent: See the welcome again works',!!(await q.$('#welcome')));
+  q.once('dialog',d=>d.accept());await q.$eval('#mdnameclear',b=>b.click());await q.waitForTimeout(500);T('parent: Clear sends empty name',saved==='');
+  await q.evaluate(()=>{goTab('me');showHelp=true;r();});await q.$eval('#welagain',b=>b.click());await q.waitForTimeout(400);T('parent: See the welcome again works',!!(await q.$('#welcome')));
  }else{
   await q.click('#welskip');await q.waitForTimeout(500);T('player: Skip goes straight Home',!(await q.$('#welcome'))&&!(await q.$('#welrsskip')));
  }

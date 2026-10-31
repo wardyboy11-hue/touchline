@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-title" content="Blues">
 <title>Wigan Junior Latics U15 Blues</title>
 <link rel="manifest" href="family.webmanifest">
-<link rel="apple-touch-icon" href="coach/apple-touch-icon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>
 :root{--bg:#06102B;--card:#0E1D45;--card2:#15295A;--line:#27407F;--ink:#F4F6FC;--muted:#A6B2D4;--amber:#FFB81C;--gold:#C9A24B;--good:#4ADE80;--bad:#FB7185}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -81,7 +81,7 @@ body.ps .vi,body.ps .intro,body.ps .ans,body.ps details.pl{background:#fff;color
 </style>
 </head>
 <body>
-<div id="splash"><div class="spw"><svg viewBox="0 0 240 240" id="sprays"></svg><img src="coach/badge.png" alt=""></div><p>Welcome to <b>Wigan Junior Latics Blues U15</b> Touchline Hub</p><div class="spn"><span>Proudly sponsored by</span><img src="coach/mfs.png" alt="MFS Limited"></div></div>
+<div id="splash"><div class="spw"><svg viewBox="0 0 240 240" id="sprays"></svg><img src="badge.png" alt=""></div><p>Welcome to <b>Wigan Junior Latics Blues U15</b> Touchline Hub</p><div class="spn"><span>Proudly sponsored by</span><img src="coach/mfs.png" alt="MFS Limited"></div></div>
 <script>(function(){var s=document.getElementById("sprays"),h="";for(var i=0;i<24;i++){var a=i*15*Math.PI/180,x1=120+Math.sin(a)*76,y1=120-Math.cos(a)*76,x2=120+Math.sin(a)*108,y2=120-Math.cos(a)*108;h+='<line x1="'+x1.toFixed(1)+'" y1="'+y1.toFixed(1)+'" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+'" style="animation-delay:'+(i*2/24).toFixed(2)+'s"/>';}s.innerHTML=h;window.__sp0=Date.now();window.splashDone=function(){var e=document.getElementById("splash");if(!e||e.__d)return;e.__d=1;setTimeout(function(){e.classList.add("off");setTimeout(function(){if(e.parentNode)e.parentNode.removeChild(e);},600);},Math.max(0,1500-(Date.now()-window.__sp0)));};setTimeout(window.splashDone,9000);})();</script>
 <div class="stripe"></div><div class="kitband" aria-hidden="true"></div>
 <div class="wrap" id="root"></div>
@@ -110,7 +110,7 @@ var SPONH='<div style="display:flex;align-items:center;gap:5px;background:#fff;b
 var SPONX='';
 var SHOP='https://empirekits.co.uk/collections/wigan-junior-latics-blues',FT='https://fulltime.thefa.com/displayTeam.html?divisionseason=344446019&teamID=837121388',showKit=false,resImg='',resTitle='';
 function kitPage(){var k=[['home','Home kit'],['away','Away kit'],['gkgreen','Goalkeeper kit, green'],['gkgrey','Goalkeeper kit, grey'],['bundle','Player bundle']];
- return '<div class="card"><h2>Kit and club shop</h2><p class="small muted">Our kit is made by Empire Kits and sponsored by MFS Limited. Order through the club shop.</p><a class="btn pri block" href="'+SHOP+'" target="_blank" rel="noopener">Open the club shop</a></div>'+k.map(function(x){return '<div class="card"><h3 style="margin-top:0">'+x[1]+'</h3><img src="coach/kit/'+x[0]+'.jpg" alt="'+x[1]+'" style="width:100%;border-radius:10px;display:block"></div>';}).join('')+'<button class="btn block" onclick="showKit=false;r();window.scrollTo(0,0)">Back</button>';}
+ return '<div class="card"><h2>Kit and club shop</h2><p class="small muted">Our kit is made by Empire Kits and sponsored by MFS Limited. Order through the club shop.</p><a class="btn pri block" href="'+SHOP+'" target="_blank" rel="noopener">Open the club shop</a></div>'+k.map(function(x){return '<div class="card"><h3 style="margin-top:0">'+x[1]+'</h3><img src="kit-'+x[0]+'.jpg" alt="'+x[1]+'" style="width:100%;border-radius:10px;display:block"></div>';}).join('')+'<button class="btn block" onclick="showKit=false;r();window.scrollTo(0,0)">Back</button>';}
 function decLink(u){try{var b=u.split(',')[1]||'';if(b.indexOf('TElOSzp7')!==0)return null;var s=decodeURIComponent(escape(atob(b)));var o=JSON.parse(s.slice(5));return /^https?:\/\//.test(o.u||'')?o:null;}catch(e){return null;}}
 function resBody(t,u){var L=decLink(u);if(L)return '<p>'+esc(L.n||'')+'</p><a class="btn pri block" href="'+esc(L.u)+'" target="_blank" rel="noopener">Open</a>';return '<img src="'+u+'" alt="'+esc(t)+'" style="width:100%;border-radius:10px;display:block"><p class="small muted">Pinch to zoom. Private to you and your son.</p>';}
 function openRes(t){resTitle=t;resImg='loading';r();call('f.res',{title:t}).then(function(d){resImg=d.dataUrl;r();}).catch(function(e){resImg='';alert(e.message);r();});}
@@ -383,7 +383,7 @@ function bodyMe(){var x=X(),cp=x.coachPhotos||{},h=cnCard()+rsCard('me')+(D&&D.r
  h+='<div class="card"><h2>Latics calendar</h2><p class="small muted">Games, training and events, with reminders. If a game is postponed or cancelled it shows as cancelled on your calendar. This link is only for you, please do not share it.</p><a class="btn pri block" href="'+esc(calUrl().replace(/^https:/,'webcal:'))+'">Add to Apple or Outlook calendar</a><a class="btn block" style="margin-top:8px" target="_blank" rel="noopener" href="https://calendar.google.com/calendar/r?cid='+encodeURIComponent(calUrl().replace(/^https:/,'webcal:'))+'">Add to Google Calendar</a><p class="small muted">Calendars refresh every few hours, so a change can take a little while to show.</p></div>';
  if((D.res||[]).length)h+='<div class="card"><h2>Resources for '+esc(D.first)+'</h2>'+D.res.map(function(t){return '<button class="btn block" style="margin-top:8px" onclick="openRes(\''+t.replace(/\\/g,'\\\\').replace(/'/g,"\\'")+'\')">'+esc(t)+'</button>';}).join('')+'</div>';
  h+='<div class="card"><h2>2025/26 award winners</h2><p class="small">Players: Charlie Catterall<br>Parents: Andre Medeiros<br>Coaches: Tom Penistone and Jacob Daven</p></div>';
- h+='<div class="card"><h2>Your coaches</h2><div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">'+(cp.tim?'<img src="'+esc(cp.tim)+'" alt="Tim" style="width:72px;height:72px;border-radius:50%;object-fit:cover">':'')+'<div><b>Tim</b><div class="small muted">Manager</div></div></div><div style="display:flex;align-items:center;gap:12px"><img src="'+esc(cp.deano||'coach/deano.jpg')+'" alt="Deano" style="width:72px;height:72px;border-radius:50%;object-fit:cover"><div><b>Deano</b><div class="small muted">Assistant coach</div></div></div></div>';
+ h+='<div class="card"><h2>Your coaches</h2><div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">'+(cp.tim?'<img src="'+esc(cp.tim)+'" alt="Tim" style="width:72px;height:72px;border-radius:50%;object-fit:cover">':'')+'<div><b>Tim</b><div class="small muted">Manager</div></div></div><div style="display:flex;align-items:center;gap:12px"><img src="'+esc(cp.deano||'deano.jpg')+'" alt="Deano" style="width:72px;height:72px;border-radius:50%;object-fit:cover"><div><b>Deano</b><div class="small muted">Assistant coach</div></div></div></div>';
  h+='<div class="card"><h2>Contacts</h2><p class="small muted">Club, safeguarding and local FA contacts. Opens your email app.</p><button class="btn pri block" onclick="goTab(\'contacts\')">Open contacts</button><button class="btn block" style="margin-top:8px" onclick="goTab(\'faq\')">FAQ and help</button></div>';
  h+='<div class="card"><h2>Kit and club shop</h2><p class="small muted">See our kit and order from the club shop.</p><button class="btn pri block" onclick="showKit=true;r();window.scrollTo(0,0)">See the kit</button></div><div class="card"><h2>Fixtures, results and table</h2><p class="small muted">Opens our team page on FA Full Time. Sign in with your FA account if it asks.</p><a class="btn block" href="'+FT+'" target="_blank" rel="noopener">Open our team page</a><p class="small muted" style="margin-top:12px">Prefer an app? The FA Matchday app shows fixtures, results and league tables on your phone. Download it, then search for our team.</p><a class="btn block" href="https://www.englandfootball.com/explore/helpful-apps-and-websites/matchday" target="_blank" rel="noopener">Get the FA Matchday app</a></div>';
  h+='<div class="card"><h2>Ask a football question</h2><p class="small muted">Ask about a football term, practising at home, sleep, food and drink for sport, nerves and confidence. General advice only, no medical advice. Please do not type names or private details.</p><textarea id="q" placeholder="For example: what should we practise at home to improve first touch?"></textarea><button class="btn pri block" style="margin-top:10px" onclick="ask()"'+(askBusy?' disabled':'')+'>'+(askBusy?'Thinking':'Ask')+'</button>'+(askA?'<div class="ans">'+esc(askA).replace(/\n/g,'<br>')+'</div>':'')+'</div>';
@@ -629,7 +629,7 @@ function ownPage(){var h='<div class="card"><h2>My own training</h2><p class="mu
  h+='<div class="card"><h3>Good football sites</h3><p class="small muted">Checked by Tim. Opens in your browser.</p>'+OSITES.map(ownLinkA).join('')+'</div>';
  h+='<button class="btn block" onclick="goTab(\'me\')">Back</button>';return h;}
 
-function r(){var el=document.getElementById('root'),h='<header><img src="coach/badge.png" alt=""><h1>Wigan Junior Latics U15 Blues</h1>'+((D&&D.role)?'<span class="tag" style="margin-left:auto;font-size:13px" aria-label="Signed in as">'+(D.role==='player'?'Player':'Parent')+'</span>':'')+SPONH+'</header>'+updLine();
+function r(){var el=document.getElementById('root'),h='<header><img src="badge.png" alt=""><h1>Wigan Junior Latics U15 Blues</h1>'+((D&&D.role)?'<span class="tag" style="margin-left:auto;font-size:13px" aria-label="Signed in as">'+(D.role==='player'?'Player':'Parent')+'</span>':'')+SPONH+'</header>'+updLine();
  if(!CODE||!D){h+='<div class="card"><h2>Team page</h2><p class="muted">Type the code Tim sent you. Parents have a parent code and players have their own player code.</p><input id="code" placeholder="ABC 123" autocapitalize="characters" autocomplete="off"><div class="err" id="err">'+esc(msg)+'</div><button class="btn pri block" onclick="login()">Open</button></div>'+SPONX+''+lostBox()+'<p class="small"><a href="#" onclick="showPriv=!showPriv;r();return false">Privacy</a></p>'+(showPriv?'<div class="card">'+PRIV+'</div>':'');el.innerHTML=h;return;}
  if(g(OK)!=='1'){h+='<div class="card">'+PRIV+'<button class="btn pri block" style="margin-top:14px" onclick="s(OK,\'1\');r()">I have read this and I am happy to carry on</button></div>';el.innerHTML=h;return;}
  if(!_sl){_sl=1;loadSelf();loadMdp();loadRc();loadFm();loadVoicePub();}
@@ -706,7 +706,7 @@ function pushCard(){
 function out(){CODE='';D=null;s(CK,'');s('fam.cache','');r();}
 if(CODE){var cc=null;try{cc=JSON.parse(g('fam.cache')||'null');}catch(x){}if(cc&&cc.c===CODE&&cc.d){D=cc.d;r();splashDone();}load();}else{r();splashDone();}
 </script>
-<script src="acct.js?v=65" defer></script>
-<script src="update.js?v=65" defer></script>
+<script src="acct.js?v=66" defer></script>
+<script src="update.js?v=66" defer></script>
 </body>
 </html>
