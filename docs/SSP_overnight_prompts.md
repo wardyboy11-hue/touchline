@@ -30,7 +30,7 @@ Work through every drill and session we have in Sport Session Planner (SSP) at s
 - Ask before making anything Public in SSP. Leave everything Private. If I am not there, leave it Private and note it in the status table. Week 2 of the planner is still Private and stays that way until I say.
 - Do not enter passwords or payment details. If SSP, Drive or any site needs a sign in, stop that item, record it as blocked and move on to the next one. I will sign you in when asked.
 - No delete of anything in SSP or Drive. Duplicate or version instead.
-- Drive: confirm folder identity by ID before writing. Root Footy Coaching is 1ahr5GNZuGK2t9S0Wnl9tDkFpPfTY8nI4, Sessions folder is 1iRW4kqiISUgRd_DiH-Zq4FkgTP3P0Snx. Three folders share the name Footy Coaching, so never rely on search results.
+- Drive: confirm folder identity by ID before writing. Root Footy Coaching is 1qDJbUMhzccy974MLF0xuj8q9-RQrF-aJ, Sessions folder is 1iRW4kqiISUgRd_DiH-Zq4FkgTP3P0Snx. Only the main folder is now named Footy Coaching; still never rely on search results.
 - Player safety and privacy: no names, scores or ability bands in anything players or parents see. Watch knocks and niggles in the knees, heels and lower back. Respect FA and league codes and the club safeguarding policy.
 - If you use an idea from Coaches Voice, Elliot Hord, FA Bootroom or Football DNA, name the source so I can pull the original. Adapt, do not copy.
 - UK English. No hyphens in written text; rewrite the sentence instead. Write formations as 352 and 4231. Plain, direct Northern English.

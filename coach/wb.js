@@ -229,7 +229,7 @@ W.drawer=function(b,i,slot,dp){var f=V().wbf||{},C=W.cands(b,i,slot),h='<div sty
  return h+'</div>';};
 
 W.where=function(b,i){var q=encodeURIComponent(topicOf(b,i)),an=X.sbAnFile(b,i);
- return '<div class="small" style="margin-top:8px"><b>Where else to look</b><div class="row wrap2" style="margin-top:4px"><a class="btn grow" data-ext="1" target="_blank" rel="noopener" href="https://drive.google.com/drive/folders/1ahr5GNZuGK2t9S0Wnl9tDkFpPfTY8nI4">Footy Coaching folder</a><a class="btn grow" data-ext="1" target="_blank" rel="noopener" href="https://www.sportsessionplanner.com/search?q='+q+'">Search the planner</a>'+(an?'<a class="btn grow" data-ext="1" target="_blank" rel="noopener" href="https://touchline.cipher-training.co.uk/coach/anim/'+an+'.html">Our animation</a>':'')+'</div></div>';};
+ return '<div class="small" style="margin-top:8px"><b>Where else to look</b><div class="row wrap2" style="margin-top:4px"><a class="btn grow" data-ext="1" target="_blank" rel="noopener" href="https://drive.google.com/drive/folders/1qDJbUMhzccy974MLF0xuj8q9-RQrF-aJ">Footy Coaching folder</a><a class="btn grow" data-ext="1" target="_blank" rel="noopener" href="https://www.sportsessionplanner.com/search?q='+q+'">Search the planner</a>'+(an?'<a class="btn grow" data-ext="1" target="_blank" rel="noopener" href="https://touchline.cipher-training.co.uk/coach/anim/'+an+'.html">Our animation</a>':'')+'</div></div>';};
 
 /* ---------- actions ---------- */
 function cur(){return X.sb();}
