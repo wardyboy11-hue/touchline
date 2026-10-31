@@ -56,7 +56,7 @@ function arrow(a,b,color,dash){const x1=X(a[0]),y1=Y(a[1]),x2=X(b[0]),y2=Y(b[1])
   ctx.beginPath();ctx.moveTo(x2-Math.cos(ang)*16,y2-Math.sin(ang)*16);ctx.lineTo(e[0]+Math.cos(ang+1.57)*7-Math.cos(ang)*2,e[1]+Math.sin(ang+1.57)*7-Math.sin(ang)*2);ctx.lineTo(e[0]+Math.cos(ang-1.57)*7-Math.cos(ang)*2,e[1]+Math.sin(ang-1.57)*7-Math.sin(ang)*2);ctx.closePath();ctx.fill();}
 function player(id,p){const x=X(p[0]),y=Y(p[1]);const t=team[id];ctx.beginPath();ctx.arc(x,y+3,17,0,6.3);ctx.fillStyle='rgba(0,0,0,0.25)';ctx.fill();
   ctx.beginPath();ctx.arc(x,y,16,0,6.3);ctx.fillStyle=COL[t];ctx.fill();ctx.lineWidth=3;ctx.strokeStyle='#fff';ctx.stroke();
-  ctx.font='700 13px Segoe UI, Arial, sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=(t==='Y')?'#111':'#fff';ctx.fillText(id,x,y+1);ctx.textBaseline='alphabetic';}
+  ctx.font='700 13px Segoe UI, Arial, sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=(t==='Y')?'#111':'#fff';ctx.fillText(P.nums&&t!=='R'?id.replace(/^[A-Z]/,''):id,x,y+1);ctx.textBaseline='alphabetic';}
 function ballAt(p){const x=X(p[0]),y=Y(p[1]);ctx.beginPath();ctx.arc(x,y,8,0,6.3);ctx.fillStyle='#fff';ctx.fill();ctx.lineWidth=2;ctx.strokeStyle='#111';ctx.stroke();}
 function playersAt(seg,p){const e=ease(p),o={};for(const id in seg.start)o[id]=lerp(seg.start[id],seg.end[id],e);return o;}
 function ballPos(seg,p,pp){const off=[1.5,1.1];
