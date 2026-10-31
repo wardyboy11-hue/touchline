@@ -880,8 +880,14 @@ function vX(){
  return h;}
 
 var ANI=[['01_counter_attacking_win_it_and_go','Win It and Go','Counter attacking'],['02_pressing_trap_and_spring','Trap and Spring','Pressing'],['03_defending_as_a_unit_shift_squeeze_hold','Shift, Squeeze and Hold','Defending as a unit'],['04_switching_play_pull_and_switch','Pull and Switch','Switching play'],['05_third_man_run_the_hidden_runner','The Hidden Runner','Third man runs']];
+function shapeU(q){return '../shape/index.html?'+q+'&back='+encodeURIComponent('../coach/');}
+function coachShapeCard(full){var R=[['GK','Keeper'],['LCB','Left CB'],['CB','Middle CB'],['RCB','Right CB'],['LWB','Left WB'],['RWB','Right WB'],['CMC','Left mid'],['CMH','Holding mid'],['CMB','Right mid'],['ST1','Striker 1'],['ST2','Striker 2']];
+ var h='<div class="card" id="shape3d"><h3 style="margin-top:0">Our 352 in 3D</h3><p class="small muted">The same 3D shape the lads and parents see, with voice over. Whole team view, or pick a position.</p><a class="btn pri block" href="'+shapeU('mode=squad')+'">Watch our 352 (whole team)</a>';
+ if(full)h+='<p class="small muted" style="margin:10px 0 4px">Each position</p><div class="chips">'+R.map(function(r){return '<a class="chip" href="'+shapeU('mode=role&role='+r[0])+'">'+r[1]+'</a>';}).join('')+'</div>';
+ else h+='<div class="row" style="margin-top:8px"><button class="btn grow" data-act="tab" data-v="anim">Positions and 3D clips</button></div>';
+ return h+'</div>';}
 function vAnim(){var i=view.an!=null?view.an:0,a=ANI[i];
- var h=intro('Our own practice animations. Press Play, turn the voice on, and show it to the lads or Deano on the phone.')+'<h2 style="margin:6px 0">Practice animations</h2><p class="small muted">Original designs, made for Wigan Junior Latics. Pitch sizes match the league. Use the Voice button to hear it on your phone voice. Coaches only until you decide to share.</p>';
+ var h=intro('Our own practice animations. Press Play, turn the voice on, and show it to the lads or Deano on the phone.')+'<h2 style="margin:6px 0">Practice animations</h2><p class="small muted">Original designs, made for Wigan Junior Latics. Pitch sizes match the league. Use the Voice button to hear it on your phone voice. Coaches only until you decide to share.</p>'+coachShapeCard(true);
  h+='<div class="chips">'+ANI.map(function(x,j){return '<button class="chip'+(j===i?' on':'')+'" data-act="anPick" data-i="'+j+'">'+esc(x[1])+'</button>';}).join('')+'</div>';
  h+='<div class="card"><iframe class="libplay" style="height:auto;aspect-ratio:auto;min-height:78vh" title="'+esc(a[1])+'" src="anim/'+a[0]+'.html" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe><a class="btn block" style="margin-top:8px" data-ext="1" target="_blank" rel="noopener" href="anim/'+a[0]+'.html">Open full screen</a></div>';
  return h;}
@@ -1937,6 +1943,7 @@ if(nm&&nm.date===td){mdPrefetch(nm);h+=spine(nm)+mdCard(nm);}else if(nm){h+=spin
  if(cp.length)h+='<div class="card" style="border-color:#FB7185"><h3 style="margin-top:0">Coming up for renewal</h3>'+cp.map(function(c){return '<p>'+esc(c.n)+': '+esc(c.what)+', '+(c.exp<td?'expired ':'ends ')+niceDate(c.exp)+'</p>';}).join('')+'<button class="btn block" data-act="tab" data-v="admin">Welfare and admin</button></div>';
  var pn=S.settings.pain||{},pl=plist().filter(function(p){return pn[p.id]&&pn[p.id]>=addDays(td,-7);});
  if(pl.length)h+='<div class="card" style="border-color:var(--amber)"><h3 style="margin-top:0">Load watch</h3><p class="small muted">Cut jumping and repeated sprinting for these lads this week.</p><div class="list">'+pl.map(function(p){return '<div class="it" style="cursor:default">'+av(p)+'<div class="grow"><b>'+esc(p.name||shortName(p))+'</b><div class="small muted">'+(p.num?'Shirt '+esc(p.num)+' &middot; ':'')+esc(p.pos||'')+'</div></div></div>';}).join('')+'</div></div>';
+ h+=coachShapeCard(false);
  return h;}
 function addDays(iso,n){var p=iso.split('-'),d=new Date(+p[0],+p[1]-1,+p[2]+n);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function vAdmin(){
