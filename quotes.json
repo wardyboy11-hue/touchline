@@ -1,0 +1,406 @@
+{
+ "version": 1,
+ "note": "Real quotes only, exact wording from the linked source. Do not paraphrase. Coaches can add/edit/disable.",
+ "quotes": [
+  {
+   "id": "q01",
+   "text": "Work hard in silence. Let success be your noise.",
+   "who": "Harry Kane",
+   "source": "https://www.independent.co.uk/sport/football/harry-kane-ballon-dor-lamine-yamal-kylian-mbappe-b3074018.html",
+   "tags": [
+    "hard work",
+    "mindset",
+    "ballon-dor"
+   ],
+   "clubs": [
+    "bayern",
+    "tottenham"
+   ],
+   "on": true
+  },
+  {
+   "id": "q02",
+   "text": "For any young boy or girl wanting to achieve their dreams, anything is possible with hard work when nobody else is watching, to go through the ups and downs, to learn from resilience, determination and self-belief.",
+   "who": "Harry Kane",
+   "source": "https://www.englandfootball.com/articles/2026/Oct/26/harry-kane-ballon-d-or-2026-reaction-20262610",
+   "tags": [
+    "hard work",
+    "resilience",
+    "self-belief",
+    "ballon-dor"
+   ],
+   "clubs": [
+    "bayern",
+    "tottenham"
+   ],
+   "on": true
+  },
+  {
+   "id": "q03",
+   "text": "My journey wasn’t straight forward. I wasn’t the kid who went straight to the top - I had to experience the downs, I had to experience a lot of low moods, I had to fight my way to be the very best right now and I hope that can give you inspiration.",
+   "who": "Harry Kane",
+   "source": "https://www.englandfootball.com/articles/2026/Oct/26/harry-kane-ballon-d-or-2026-reaction-20262610",
+   "tags": [
+    "resilience",
+    "ballon-dor"
+   ],
+   "clubs": [
+    "bayern",
+    "tottenham"
+   ],
+   "on": true
+  },
+  {
+   "id": "q04",
+   "text": "I had to bide my time and work hard, a lot of times it was me against my own mind and I had to come through it, I had to show self-belief, determination.",
+   "who": "Harry Kane",
+   "source": "https://www.bbc.com/sport/football/articles/cqlye4jpzzxyo",
+   "tags": [
+    "patience",
+    "self-belief"
+   ],
+   "clubs": [
+    "bayern",
+    "tottenham"
+   ],
+   "on": true
+  },
+  {
+   "id": "q05",
+   "text": "Success is no accident. It is hard work, perseverance, learning, studying, sacrifice and most of all, love of what you are doing or learning to do.",
+   "who": "Pelé",
+   "source": "https://www.whufc.com/news/articles/2020/december/17-december/how-peles-words-wisdom-inspire-ruby-grant",
+   "tags": [
+    "hard work",
+    "learning",
+    "enjoyment"
+   ],
+   "clubs": [],
+   "on": true
+  },
+  {
+   "id": "q06",
+   "text": "We have to change from doubters to believers. Now.",
+   "who": "Jürgen Klopp",
+   "source": "https://www.liverpoolecho.co.uk/incoming/we-must-turn-doubters-believers-10227184",
+   "tags": [
+    "belief"
+   ],
+   "clubs": [
+    "liverpool",
+    "dortmund"
+   ],
+   "on": true
+  },
+  {
+   "id": "q07",
+   "text": "I’ve said before that football always seems the most important of the least important things.",
+   "who": "Jürgen Klopp",
+   "source": "https://www.thisisanfield.com/clubinfo/classicquotes/",
+   "tags": [
+    "perspective",
+    "enjoyment"
+   ],
+   "clubs": [
+    "liverpool",
+    "dortmund"
+   ],
+   "on": true
+  },
+  {
+   "id": "q08",
+   "text": "Playing football is very simple, but playing simple football is the hardest thing there is.",
+   "who": "Johan Cruyff",
+   "source": "https://www.theguardian.com/football/2016/mar/24/you-play-football-with-your-head-and-your-legs-are-there-to-help-you-johan-cruyff-in-quotes",
+   "tags": [
+    "technique",
+    "simplicity"
+   ],
+   "clubs": [
+    "ajax",
+    "barcelona"
+   ],
+   "on": true
+  },
+  {
+   "id": "q09",
+   "text": "You play football with your head, and your legs are there to help you.",
+   "who": "Johan Cruyff",
+   "source": "https://www.theguardian.com/football/2016/mar/24/you-play-football-with-your-head-and-your-legs-are-there-to-help-you-johan-cruyff-in-quotes",
+   "tags": [
+    "decision making"
+   ],
+   "clubs": [
+    "ajax",
+    "barcelona"
+   ],
+   "on": true
+  },
+  {
+   "id": "q10",
+   "text": "Why couldn’t you beat a richer club? I’ve never seen a bag of money score a goal.",
+   "who": "Johan Cruyff",
+   "source": "https://www.theguardian.com/football/2016/mar/24/you-play-football-with-your-head-and-your-legs-are-there-to-help-you-johan-cruyff-in-quotes",
+   "tags": [
+    "underdog",
+    "belief"
+   ],
+   "clubs": [
+    "ajax",
+    "barcelona"
+   ],
+   "on": true
+  },
+  {
+   "id": "q11",
+   "text": "Technique is not being able to juggle a ball 1000 times. Anyone can do that by practising. Then you can work in the circus. Technique is passing the ball with one touch, with the right speed, at the right foot of your team mate.",
+   "who": "Johan Cruyff",
+   "source": "https://www.independent.co.uk/sport/football/news/johan-cruyff-the-best-quotes-on-the-dutch-master-a6950011.html",
+   "tags": [
+    "technique",
+    "passing"
+   ],
+   "clubs": [
+    "ajax",
+    "barcelona"
+   ],
+   "on": true
+  },
+  {
+   "id": "q12",
+   "text": "Football is a game of mistakes. Whoever makes the fewest mistakes wins.",
+   "who": "Johan Cruyff",
+   "source": "https://www.independent.co.uk/sport/football/news/johan-cruyff-the-best-quotes-on-the-dutch-master-a6950011.html",
+   "tags": [
+    "concentration"
+   ],
+   "clubs": [
+    "ajax",
+    "barcelona"
+   ],
+   "on": true
+  },
+  {
+   "id": "q13",
+   "text": "You have to fight to reach your dream. You have to sacrifice and work hard for it.",
+   "who": "Lionel Messi",
+   "source": "https://gulfnews.com/sport/football/lionel-messi-says-sacrifice-took-him-to-the-top-1.1217374",
+   "tags": [
+    "hard work",
+    "dreams"
+   ],
+   "clubs": [
+    "barcelona"
+   ],
+   "on": true
+  },
+  {
+   "id": "q14",
+   "text": "The great fallacy is that the game is first and last about winning. It is nothing of the kind. The game is about glory, it is about doing things in style and with a flourish, about going out and beating the other lot, not waiting for them to die of boredom.",
+   "who": "Danny Blanchflower",
+   "source": "https://www.spurs-web.com/spurs-news/opinion-five-of-the-best-tottenham-danny-blanchflower-quotes/",
+   "tags": [
+    "style",
+    "attacking"
+   ],
+   "clubs": [
+    "tottenham"
+   ],
+   "on": true
+  },
+  {
+   "id": "q15",
+   "text": "It is better to fail aiming high than to succeed aiming low.",
+   "who": "Bill Nicholson (as published by Tottenham; some historians credit Danny Blanchflower)",
+   "source": "https://www.tottenhamhotspur.com/news/1055151/the-words-of-bill-nicholson",
+   "tags": [
+    "ambition"
+   ],
+   "clubs": [
+    "tottenham"
+   ],
+   "on": true
+  },
+  {
+   "id": "q16",
+   "text": "If you are first you are first. If you are second you are nothing.",
+   "who": "Bill Shankly",
+   "source": "https://www.liverpoolfc.com/news/bill-shanklys-final-season-champions-begin-mixed-august",
+   "tags": [
+    "winning mentality"
+   ],
+   "clubs": [
+    "liverpool"
+   ],
+   "on": true
+  },
+  {
+   "id": "q17",
+   "text": "For a player to be good enough to play for Liverpool, he must be prepared to run through a brick wall for me then come out fighting on the other side.",
+   "who": "Bill Shankly",
+   "source": "https://www.thisisanfield.com/clubinfo/classicquotes/",
+   "tags": [
+    "commitment"
+   ],
+   "clubs": [
+    "liverpool"
+   ],
+   "on": true
+  },
+  {
+   "id": "q18",
+   "text": "Without fans who pay at the turnstile, football is nothing. Sometimes we are inclined to forget that.",
+   "who": "Jock Stein",
+   "source": "https://www.supporters-direct.scot/football-without-fans-is-nothing/",
+   "tags": [
+    "supporters"
+   ],
+   "clubs": [
+    "celtic"
+   ],
+   "on": true
+  },
+  {
+   "id": "q19",
+   "text": "What is a club in any case? Not the buildings or the directors or the people who are paid to represent it. It’s not the television contracts, get-out clauses, marketing departments or executive boxes. It’s the noise, the passion, the feeling of belonging, the pride in your city.",
+   "who": "Sir Bobby Robson",
+   "source": "https://www.chroniclelive.co.uk/sport/football/football-news/sir-bobby-robson-quote-tell-6260751",
+   "tags": [
+    "belonging",
+    "club"
+   ],
+   "clubs": [
+    "newcastle",
+    "ipswich"
+   ],
+   "on": true
+  },
+  {
+   "id": "q20",
+   "text": "The legacy of this tournament is a change in society. We’ve brought everyone together, brought people to games.",
+   "who": "Leah Williamson",
+   "source": "https://www.skysports.com/football/news/12662032/chloe-kelly-savours-englands-historic-moment-as-leah-williamson-sends-powerful-message-after-euro-2022-glory",
+   "tags": [
+    "togetherness",
+    "legacy"
+   ],
+   "clubs": [
+    "arsenal"
+   ],
+   "on": true
+  },
+  {
+   "id": "q21",
+   "text": "Stick to the plan, stick together and keep the noise out.",
+   "who": "Sarina Wiegman",
+   "source": "https://www.bbc.com/sport/football/articles/czxyv03x1d9o",
+   "tags": [
+    "focus",
+    "togetherness"
+   ],
+   "clubs": [],
+   "on": true
+  },
+  {
+   "id": "q22",
+   "text": "I’m telling you right now … England is still a place where a naughty boy who comes from nothing can live his dream.",
+   "who": "Raheem Sterling",
+   "source": "https://www.theplayerstribune.com/articles/raheem-sterling-england-it-was-all-a-dream",
+   "tags": [
+    "dreams",
+    "resilience"
+   ],
+   "clubs": [
+    "man-city",
+    "liverpool",
+    "chelsea"
+   ],
+   "on": true
+  },
+  {
+   "id": "q23",
+   "text": "We didn’t win by luck – from start to finish it was an incredible performance.",
+   "who": "Roberto Martínez (after Wigan's 2013 FA Cup final win)",
+   "source": "https://www.bbc.com/sport/football/22497837",
+   "tags": [
+    "underdog",
+    "performance"
+   ],
+   "clubs": [
+    "wigan-athletic"
+   ],
+   "on": true
+  },
+  {
+   "id": "q24",
+   "text": "If you believe we can do it, we can do it. Give yourselves the chance to be heroes.",
+   "who": "Rafael Benítez (Istanbul 2005, half-time)",
+   "source": "https://www.bbc.co.uk/sport/football/51018488",
+   "tags": [
+    "belief",
+    "comeback"
+   ],
+   "clubs": [
+    "liverpool"
+   ],
+   "on": true
+  },
+  {
+   "id": "q25",
+   "text": "Love always wins.",
+   "who": "Bukayo Saka",
+   "source": "https://scroll.in/field/1000324/full-text-love-always-wins-saka-joins-sancho-rashford-in-issuing-statement-against-racial-abuse",
+   "tags": [
+    "resilience",
+    "respect"
+   ],
+   "clubs": [
+    "arsenal"
+   ],
+   "on": true
+  },
+  {
+   "id": "q26",
+   "text": "The pass is what unites the group.",
+   "who": "Pep Guardiola",
+   "source": "https://www.manchestereveningnews.co.uk/sport/football/football-news/pep-guardiola-man-city-derby-15399407",
+   "tags": [
+    "passing",
+    "team"
+   ],
+   "clubs": [
+    "man-city",
+    "barcelona",
+    "bayern"
+   ],
+   "on": true
+  },
+  {
+   "id": "q27",
+   "text": "Never giving up is something that when you are in United’s academy, they give it to you from then.",
+   "who": "Marcus Rashford",
+   "source": "https://www.rte.ie/sport/soccer/2021/0114/1189766-rashford-vows-to-step-up-mission-to-end-food-poverty/",
+   "tags": [
+    "never give up",
+    "academy"
+   ],
+   "clubs": [
+    "man-utd"
+   ],
+   "on": true
+  },
+  {
+   "id": "q28",
+   "text": "It really was tough but all worth it.",
+   "who": "Jamie Vardy",
+   "source": "https://sports.yahoo.com/articles/jamie-vardy-football-killer-asked-050100826.html",
+   "tags": [
+    "perseverance"
+   ],
+   "clubs": [
+    "leicester"
+   ],
+   "on": true
+  }
+ ]
+}
