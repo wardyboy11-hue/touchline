@@ -1,0 +1,9760 @@
+{
+"version": 1,
+"built": "2026-10-29",
+"note": "Links only. Coaches' Voice is paid: never rehost or copy content. res.js items are merged at runtime by the app (resList()), not duplicated here.",
+"vocab": {
+"type": [
+"pdf",
+"masterclass",
+"x",
+"video",
+"animation",
+"search"
+],
+"moment": [
+"in possession",
+"out of possession",
+"set pieces",
+"transition"
+],
+"system": [
+"3-5-2",
+"3-4-3",
+"4-3-3",
+"4-4-2",
+"4-2-3-1",
+"5-3-2",
+"3-4-2-1",
+"5-2-3",
+"back three"
+]
+},
+"items": [
+{
+"id": "cv-18g-XW8tChkNhRYHCmqhsjfhZ1vgOpG5k",
+"title": "David Martinez U17 General strength and conditioning",
+"url": "https://drive.google.com/file/d/18g-XW8tChkNhRYHCmqhsjfhZ1vgOpG5k/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"physical"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": "David Martinez"
+},
+{
+"id": "cv-1oSY4VhmrSlY6cWABwH3-A2QUSafVVhbD",
+"title": "U12 - U16 General finishing",
+"url": "https://drive.google.com/file/d/1oSY4VhmrSlY6cWABwH3-A2QUSafVVhbD/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"finishing"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1LAFxnSe9-hWg-CwhR-PjZNRZLSFTZbvS",
+"title": "u14u15-crossing-1",
+"url": "https://drive.google.com/file/d/1LAFxnSe9-hWg-CwhR-PjZNRZLSFTZbvS/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"crossing"
+],
+"age": [
+"U14U15"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1gl9Ae2-FqGORTIq649mWgysLSZ-PN0s2",
+"title": "u14u15-playing-through-the-lines-1",
+"url": "https://drive.google.com/file/d/1gl9Ae2-FqGORTIq649mWgysLSZ-PN0s2/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"breaking lines"
+],
+"age": [
+"U14U15"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1iRgoo8doz0aLMMQ2p9xlJj9gZUXiVSBu",
+"title": "u14u15-using-the-third-man-1",
+"url": "https://drive.google.com/file/d/1iRgoo8doz0aLMMQ2p9xlJj9gZUXiVSBu/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"third man"
+],
+"age": [
+"U14U15"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1aGO6LFcu0W52ZJ1F0nLehKJSm5qs3sV7",
+"title": "Eric Laurie U12-U16 Switching play",
+"url": "https://drive.google.com/file/d/1aGO6LFcu0W52ZJ1F0nLehKJSm5qs3sV7/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"switching play"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": "Eric Laurie"
+},
+{
+"id": "cv-1z1Y0aTVq7vxwpt1LQs_yiujRHC0Yp8Um",
+"title": "Josh Bednash U12-U16 Low-block defending",
+"url": "https://drive.google.com/file/d/1z1Y0aTVq7vxwpt1LQs_yiujRHC0Yp8Um/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": "Josh Bednash"
+},
+{
+"id": "cv-1P8T3Nbw9UkKiQS7fkBQTxHDPyIx1k80D",
+"title": "U12-U13 Control and passing 3",
+"url": "https://drive.google.com/file/d/1P8T3Nbw9UkKiQS7fkBQTxHDPyIx1k80D/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"first touch",
+"passing"
+],
+"age": [
+"U12-U13"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1_wJ2baR-D7YFsktFKi0DcZawPD5ERmG4",
+"title": "U12-U13 Individual defensive pressure 1",
+"url": "https://drive.google.com/file/d/1_wJ2baR-D7YFsktFKi0DcZawPD5ERmG4/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending",
+"pressing"
+],
+"age": [
+"U12-U13"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-10LuJQVlvDA0F_av2ba_WuohlZd_DUyIy",
+"title": "U12-U13 Vertical progression 1",
+"url": "https://drive.google.com/file/d/10LuJQVlvDA0F_av2ba_WuohlZd_DUyIy/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"progression"
+],
+"age": [
+"U12-U13"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1rsSyPdtUU1uv9CcR7IMJcWEKvLZ6eWC1",
+"title": "u12-u13-attacking-overloads-1",
+"url": "https://drive.google.com/file/d/1rsSyPdtUU1uv9CcR7IMJcWEKvLZ6eWC1/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"attacking",
+"overloads"
+],
+"age": [
+"U12-U13"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1M6zF9DSn30exQRdsP_tbSq2Ov8qyTBTU",
+"title": "u12-u13-control-and-passing-1",
+"url": "https://drive.google.com/file/d/1M6zF9DSn30exQRdsP_tbSq2Ov8qyTBTU/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"first touch",
+"passing"
+],
+"age": [
+"U12-U13"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1obKsrhcnXcZgcxs-ASqQKQ9ojI4VoucI",
+"title": "u12-u13-control-and-passing-2",
+"url": "https://drive.google.com/file/d/1obKsrhcnXcZgcxs-ASqQKQ9ojI4VoucI/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"first touch",
+"passing"
+],
+"age": [
+"U12-U13"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1lGqdVs34j4bG2CAAHd4E5CoB6wEXzKRp",
+"title": "u12-u13-losing-your-marker-1",
+"url": "https://drive.google.com/file/d/1lGqdVs34j4bG2CAAHd4E5CoB6wEXzKRp/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"transition"
+],
+"theme": [
+"marking"
+],
+"age": [
+"U12-U13"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-11obSEwQof69rlEUiAv-IFovmAesjre0H",
+"title": "u12-u13-losing-your-marker-2",
+"url": "https://drive.google.com/file/d/11obSEwQof69rlEUiAv-IFovmAesjre0H/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"transition"
+],
+"theme": [
+"marking"
+],
+"age": [
+"U12-U13"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1IBVHPJtzGjNEg2sjK0ANNFfWwvxpmWcQ",
+"title": "U12-U13-Marking-1",
+"url": "https://drive.google.com/file/d/1IBVHPJtzGjNEg2sjK0ANNFfWwvxpmWcQ/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"marking"
+],
+"age": [
+"U12-U13"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1OL6vRc02v9ctMwZeGldTSqM86Zk1KGvJ",
+"title": "u12-u13-passing-combinations-to-overcome-pressure-1",
+"url": "https://drive.google.com/file/d/1OL6vRc02v9ctMwZeGldTSqM86Zk1KGvJ/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"out of possession"
+],
+"theme": [
+"combinations",
+"passing",
+"pressing"
+],
+"age": [
+"U12-U13"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1swVdsJBErMebTHjOMeNwJyy5PouY74wi",
+"title": "U12-U13-Pinning-to-overlap",
+"url": "https://drive.google.com/file/d/1swVdsJBErMebTHjOMeNwJyy5PouY74wi/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"overlaps"
+],
+"age": [
+"U12-U13"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1go7TFt8rSNid6QmZJR8175oweaD3reGO",
+"title": "u12-u13-support-play-to-progress-1",
+"url": "https://drive.google.com/file/d/1go7TFt8rSNid6QmZJR8175oweaD3reGO/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"progression",
+"support play"
+],
+"age": [
+"U12-U13"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1gZ8o34VAX7Wdj6omjftKJpangxvI1vUv",
+"title": "u12-u13-switching-play-1",
+"url": "https://drive.google.com/file/d/1gZ8o34VAX7Wdj6omjftKJpangxvI1vUv/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"switching play"
+],
+"age": [
+"U12-U13"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-13DarmrHGtn37b-R6_JzGd105RR6g6AJx",
+"title": "U12-U13-Switching-Play-2",
+"url": "https://drive.google.com/file/d/13DarmrHGtn37b-R6_JzGd105RR6g6AJx/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"switching play"
+],
+"age": [
+"U12-U13"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1-YDrD8jDB06dicKCNpddFc5V7SJNuBzE",
+"title": "U12-U16 - Positional Possession",
+"url": "https://drive.google.com/file/d/1-YDrD8jDB06dicKCNpddFc5V7SJNuBzE/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"possession"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1M5CHzjmAJfzU_WQGTVxxzD4tgXW9ozBa",
+"title": "U12-U16 Attacking transition",
+"url": "https://drive.google.com/file/d/1M5CHzjmAJfzU_WQGTVxxzD4tgXW9ozBa/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"transition"
+],
+"theme": [
+"attacking",
+"transition"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1CJcyMle__I4V1PxTTtu9V8H9r_xtXd1y",
+"title": "U12-U16 Breaking lines 2",
+"url": "https://drive.google.com/file/d/1CJcyMle__I4V1PxTTtu9V8H9r_xtXd1y/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"breaking lines"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1swiSAmLi681cFWfCjFEOGQqdBpn4V4m4",
+"title": "U12-U16 Breaking lines",
+"url": "https://drive.google.com/file/d/1swiSAmLi681cFWfCjFEOGQqdBpn4V4m4/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"breaking lines"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1QiRuSseBfEyf6WDN9fi3rsIuUxOj3Oey",
+"title": "U12-U16 Build-up play from the defensive third",
+"url": "https://drive.google.com/file/d/1QiRuSseBfEyf6WDN9fi3rsIuUxOj3Oey/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"build-up",
+"defending"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1hDAnEEDGQqk9oMZ61SpjDcu9R2ryjW7w",
+"title": "U12-U16 Build-up play",
+"url": "https://drive.google.com/file/d/1hDAnEEDGQqk9oMZ61SpjDcu9R2ryjW7w/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"build-up"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1nPsBe0kdHHCEv92HXPmcptgTVwvzAqjM",
+"title": "U12-U16 Central combination play",
+"url": "https://drive.google.com/file/d/1nPsBe0kdHHCEv92HXPmcptgTVwvzAqjM/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"combinations"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1fRFebbj0sX5XLys4HVNYK4ptvi1pfwru",
+"title": "U12-U16 Combination play to create chances",
+"url": "https://drive.google.com/file/d/1fRFebbj0sX5XLys4HVNYK4ptvi1pfwru/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"combinations",
+"creating chances"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-16gZSjltX5cAWKoxU8PeQy-qmT0MEZLAJ",
+"title": "U12-U16 Counter-attacking from deep",
+"url": "https://drive.google.com/file/d/16gZSjltX5cAWKoxU8PeQy-qmT0MEZLAJ/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"transition"
+],
+"theme": [
+"attacking",
+"counter-attack"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1ZDBTt10G8qW663Y-tJLSZJ9uWiVvepN7",
+"title": "U12-U16 Counter-attacks - Final-third regains",
+"url": "https://drive.google.com/file/d/1ZDBTt10G8qW663Y-tJLSZJ9uWiVvepN7/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"transition"
+],
+"theme": [
+"attacking",
+"counter-attack",
+"final third"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1IX-EJqHRIjI2g_h5Ej-CAe6Bbc6nFhi1",
+"title": "U12-U16 Counter-attacks from deep",
+"url": "https://drive.google.com/file/d/1IX-EJqHRIjI2g_h5Ej-CAe6Bbc6nFhi1/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"transition"
+],
+"theme": [
+"attacking",
+"counter-attack"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1QKYYTSpRztke1am_sKtWvoGW7JKBeuxn",
+"title": "U12-U16 Counter-attacks from the final third",
+"url": "https://drive.google.com/file/d/1QKYYTSpRztke1am_sKtWvoGW7JKBeuxn/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"transition"
+],
+"theme": [
+"attacking",
+"counter-attack",
+"final third"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1RwrmqDbXvXPsXIiUTs9JU2SvzliMD4E3",
+"title": "U12-U16 Counter-attacks on a possession regain",
+"url": "https://drive.google.com/file/d/1RwrmqDbXvXPsXIiUTs9JU2SvzliMD4E3/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"transition"
+],
+"theme": [
+"attacking",
+"counter-attack",
+"possession"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1xbCZb8TYdQp691WO_vHiCwBTCopHiUxJ",
+"title": "U12-U16 Creating central overloads in a 4-3-3",
+"url": "https://drive.google.com/file/d/1xbCZb8TYdQp691WO_vHiCwBTCopHiUxJ/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"overloads"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": [
+"4-3-3"
+]
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1_lEb3KLVIoaGNh8bXmkX2Fja97CZJGJQ",
+"title": "U12-U16 Creating final-third overloads on transition",
+"url": "https://drive.google.com/file/d/1_lEb3KLVIoaGNh8bXmkX2Fja97CZJGJQ/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"transition"
+],
+"theme": [
+"final third",
+"overloads",
+"transition"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1xESIDWhh9__ow4eRVzjTTlRR9TX9PmgD",
+"title": "U12-U16 Creating switches of play to create wide overloads",
+"url": "https://drive.google.com/file/d/1xESIDWhh9__ow4eRVzjTTlRR9TX9PmgD/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"creating chances",
+"overloads",
+"switching play",
+"wide play"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1BhriRpzsAqUyNVCX6byxD9qxguYYQRTm",
+"title": "U12-U16 Creating wide overloads 2",
+"url": "https://drive.google.com/file/d/1BhriRpzsAqUyNVCX6byxD9qxguYYQRTm/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"overloads",
+"wide play"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-10VZ40fVlynQMt9M_Cl0-dt9pL6EQmg8_",
+"title": "U12-U16 Creating wide overloads",
+"url": "https://drive.google.com/file/d/10VZ40fVlynQMt9M_Cl0-dt9pL6EQmg8_/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"overloads",
+"wide play"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1BxXRiQO9xvg9mEslMId4VX42Pgrkmmpl",
+"title": "U12-U16 Crossing and finishing",
+"url": "https://drive.google.com/file/d/1BxXRiQO9xvg9mEslMId4VX42Pgrkmmpl/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"crossing",
+"finishing"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1DoyGwUZ_0kqdWVkQx5KqRb9yXfif7bJ_",
+"title": "U12-U16 Dealing with direct play",
+"url": "https://drive.google.com/file/d/1DoyGwUZ_0kqdWVkQx5KqRb9yXfif7bJ_/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"direct play"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1y4NdIj8e4PoMzvcFiEx1NZOI-6x_vs9b",
+"title": "U12-U16 Defending against attacking overloads",
+"url": "https://drive.google.com/file/d/1y4NdIj8e4PoMzvcFiEx1NZOI-6x_vs9b/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"out of possession"
+],
+"theme": [
+"attacking",
+"defending",
+"overloads"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1yd0SKPHLAy6Ec4RN1HfIGc2hbV7h1OmY",
+"title": "U12-U16 Defending against overloads",
+"url": "https://drive.google.com/file/d/1yd0SKPHLAy6Ec4RN1HfIGc2hbV7h1OmY/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"out of possession"
+],
+"theme": [
+"defending",
+"overloads"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1u43Pli25eZX66rvPl-5D_LRwpuM2DVmv",
+"title": "U12-U16 Defending as a back four",
+"url": "https://drive.google.com/file/d/1u43Pli25eZX66rvPl-5D_LRwpuM2DVmv/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1Gfp4sYFLyWfn_4Q_p3bRcofyR12YV_Iy",
+"title": "U12-U16 Defending central areas",
+"url": "https://drive.google.com/file/d/1Gfp4sYFLyWfn_4Q_p3bRcofyR12YV_Iy/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-13pSN3SmBbsOIwcd684C2UpTU9LIUY-ww",
+"title": "U12-U16 Defending in a 4-4-2 against a 3-5-2",
+"url": "https://drive.google.com/file/d/13pSN3SmBbsOIwcd684C2UpTU9LIUY-ww/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": [
+"3-5-2",
+"4-4-2"
+]
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-12T1g47ZNZmFoJLEsUbSuD7UQphZEec4J",
+"title": "U12-U16 Defending in a low block in a 3-5-2",
+"url": "https://drive.google.com/file/d/12T1g47ZNZmFoJLEsUbSuD7UQphZEec4J/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending",
+"low block"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": [
+"3-5-2"
+]
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1UVAM1FhwStRfCKbPg1OwLYxU5qIHdZnf",
+"title": "U12-U16 Defending the box 3",
+"url": "https://drive.google.com/file/d/1UVAM1FhwStRfCKbPg1OwLYxU5qIHdZnf/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending",
+"defending the box"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1yHusRqyf9mk8qxKdvqVqhicOE60tL9qc",
+"title": "U12-U16 Defending the box 4",
+"url": "https://drive.google.com/file/d/1yHusRqyf9mk8qxKdvqVqhicOE60tL9qc/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending",
+"defending the box"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1XivbIUicJA4gcOCUmRrn43vJftTjPAYJ",
+"title": "U12-U16 Defending the box 5",
+"url": "https://drive.google.com/file/d/1XivbIUicJA4gcOCUmRrn43vJftTjPAYJ/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending",
+"defending the box"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1JvwxP2pxoHz88A2PNewdKF1-oZMRDk_O",
+"title": "U12-U16 Defending the Box",
+"url": "https://drive.google.com/file/d/1JvwxP2pxoHz88A2PNewdKF1-oZMRDk_O/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending",
+"defending the box"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1NXH8hbA3kC1Tadik_RuuCCFDTFLMG6r-",
+"title": "U12-U16 Defending the middle and bottom thirds in a low block",
+"url": "https://drive.google.com/file/d/1NXH8hbA3kC1Tadik_RuuCCFDTFLMG6r-/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending",
+"low block"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1BOTdZd6TTkqNi6_PlLrQ4S2xasnqbtXN",
+"title": "U12-U16 Defending wide areas",
+"url": "https://drive.google.com/file/d/1BOTdZd6TTkqNi6_PlLrQ4S2xasnqbtXN/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending",
+"wide play"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1KNBj_0Ox75dacuNhDZGh4w7Qp0HObn0b",
+"title": "U12-U16 Defensive awareness - defensive line",
+"url": "https://drive.google.com/file/d/1KNBj_0Ox75dacuNhDZGh4w7Qp0HObn0b/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"breaking lines",
+"defending",
+"defensive awareness"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1RkAyHGvpMHvPUirtiQ6pYB4ol26XozgX",
+"title": "U12-U16 Defensive awareness",
+"url": "https://drive.google.com/file/d/1RkAyHGvpMHvPUirtiQ6pYB4ol26XozgX/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"defending",
+"defensive awareness"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-10Nf5daLngKrWdMmHVaJCrDG5yoVKdRe-",
+"title": "U12-U16 Defensive transition 1",
+"url": "https://drive.google.com/file/d/10Nf5daLngKrWdMmHVaJCrDG5yoVKdRe-/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"transition"
+],
+"theme": [
+"defending",
+"transition"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1QJpnFQUVyeVYhdVBQnmpiCgkDPzHSuGE",
+"title": "U12-U16 Defensive transition",
+"url": "https://drive.google.com/file/d/1QJpnFQUVyeVYhdVBQnmpiCgkDPzHSuGE/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"transition"
+],
+"theme": [
+"defending",
+"transition"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1JxqJ2jTP3AilCK-LPsPbgQrFDB9ox3L9",
+"title": "U12-U16 Defensive transitions",
+"url": "https://drive.google.com/file/d/1JxqJ2jTP3AilCK-LPsPbgQrFDB9ox3L9/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"transition"
+],
+"theme": [
+"defending",
+"transition"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-184WCqQ7_0SothaYOhhcF5oVHrtsTAWQP",
+"title": "U12-U16 Developing movement of the front two",
+"url": "https://drive.google.com/file/d/184WCqQ7_0SothaYOhhcF5oVHrtsTAWQP/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"front two"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1JPtNg7CjeX2Kaayr5fo11QfGgQm5a_TS",
+"title": "U12-U16 Emergency defending",
+"url": "https://drive.google.com/file/d/1JPtNg7CjeX2Kaayr5fo11QfGgQm5a_TS/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1czPmImZAcL145Pa13sUzwFh3Px6-6TZH",
+"title": "U12-U16 Final-third combination play",
+"url": "https://drive.google.com/file/d/1czPmImZAcL145Pa13sUzwFh3Px6-6TZH/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"combinations",
+"final third"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1q_8iDPxR-zUeaPVrI_9DnUf33_56_81F",
+"title": "U12-U16 Final-third principles",
+"url": "https://drive.google.com/file/d/1q_8iDPxR-zUeaPVrI_9DnUf33_56_81F/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"final third",
+"principles"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1b04-9_YnDQIrTQfZyQRn9ilbhldpJihw",
+"title": "U12-U16 Finishing 3",
+"url": "https://drive.google.com/file/d/1b04-9_YnDQIrTQfZyQRn9ilbhldpJihw/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"finishing"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1MBdEwZGDi3mcdF0ESotP73DGf3rj-peW",
+"title": "U12-U16 Finishing from central combinations",
+"url": "https://drive.google.com/file/d/1MBdEwZGDi3mcdF0ESotP73DGf3rj-peW/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"combinations",
+"finishing"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1tI2G_FMM2dkwxe6tClJtkjdLMPyfMx3G",
+"title": "U12-U16 Finishing phase within a 4-4-2",
+"url": "https://drive.google.com/file/d/1tI2G_FMM2dkwxe6tClJtkjdLMPyfMx3G/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"finishing"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": [
+"4-4-2"
+]
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1cEqz0kItqBSzs1gUeerRQZacI7HadFu2",
+"title": "U12-U16 Finishing",
+"url": "https://drive.google.com/file/d/1cEqz0kItqBSzs1gUeerRQZacI7HadFu2/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"finishing"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1FfnSz-wbXuz5S6b1aXSjCYs0yfGaSdHR",
+"title": "U12-U16 Full-back and wide player relationship",
+"url": "https://drive.google.com/file/d/1FfnSz-wbXuz5S6b1aXSjCYs0yfGaSdHR/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"full-backs",
+"wide play"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-17G52g3TdoO3M9FbZOXRhl_w1XTdKTppB",
+"title": "U12-U16 High pressing in a 4-3-3",
+"url": "https://drive.google.com/file/d/17G52g3TdoO3M9FbZOXRhl_w1XTdKTppB/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"pressing"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": [
+"4-3-3"
+]
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1HncuQk3V4DIdg7X4NWSV2o7LFvbBVTzc",
+"title": "U12-U16 High pressing",
+"url": "https://drive.google.com/file/d/1HncuQk3V4DIdg7X4NWSV2o7LFvbBVTzc/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"pressing"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1PbDlJWbZ0iaQCIBrzEMHvB-_o52qrtH7",
+"title": "U12-U16 Individual development - wide players",
+"url": "https://drive.google.com/file/d/1PbDlJWbZ0iaQCIBrzEMHvB-_o52qrtH7/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"wide play"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1mPra_yz03DiJnS-tLl7vG2hEuq7fuI_b",
+"title": "U12-U16 Line-breaking passing",
+"url": "https://drive.google.com/file/d/1mPra_yz03DiJnS-tLl7vG2hEuq7fuI_b/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"breaking lines",
+"passing"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1ej4c-w1smtC2i5qgHJogq3z5hKgmPNY8",
+"title": "U12-U16 Midfield rotations",
+"url": "https://drive.google.com/file/d/1ej4c-w1smtC2i5qgHJogq3z5hKgmPNY8/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"midfield",
+"rotations"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1sY0EkDt4eNB_Smc99C0F3aqVMRlF_teo",
+"title": "U12-U16 Passing and receiving in the final third to create and score",
+"url": "https://drive.google.com/file/d/1sY0EkDt4eNB_Smc99C0F3aqVMRlF_teo/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"creating chances",
+"final third",
+"finishing",
+"passing",
+"receiving"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1HfUWmaS4awJLh07WxpUJXNSDx_kClU97",
+"title": "U12-U16 Passing and receiving to play forward",
+"url": "https://drive.google.com/file/d/1HfUWmaS4awJLh07WxpUJXNSDx_kClU97/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"passing",
+"playing forward",
+"receiving"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1Myi6UaAaqPcMaTqFO4AhNmlySLNL4uTb",
+"title": "U12-U16 Playing out from the back",
+"url": "https://drive.google.com/file/d/1Myi6UaAaqPcMaTqFO4AhNmlySLNL4uTb/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"playing out"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-16Lidkvkl8ZQ1orkfFQaa_prTyrfVVaVX",
+"title": "U12-U16 Playing over and through a high press",
+"url": "https://drive.google.com/file/d/16Lidkvkl8ZQ1orkfFQaa_prTyrfVVaVX/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"pressing"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1Qj6798Ll0MFU5hvINM7vxdQgie0Us1Hb",
+"title": "U12-U16 Playing through the lines",
+"url": "https://drive.google.com/file/d/1Qj6798Ll0MFU5hvINM7vxdQgie0Us1Hb/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"breaking lines"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1Ql9uh935V6VXHTYo9OT8jTnpad-FbOl-",
+"title": "U12-U16 Pressing as an offensive weapon",
+"url": "https://drive.google.com/file/d/1Ql9uh935V6VXHTYo9OT8jTnpad-FbOl-/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"pressing"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1HN3awfFdTBSsZ07xOyoUgY3YRm_t96Nw",
+"title": "U12-U16 Pressing from a mid-block",
+"url": "https://drive.google.com/file/d/1HN3awfFdTBSsZ07xOyoUgY3YRm_t96Nw/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"mid block",
+"pressing"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1H5cZ3-AMeCedVwqyMriDLbT4yEdoVyxl",
+"title": "U12-U16 Retaining possession under pressure",
+"url": "https://drive.google.com/file/d/1H5cZ3-AMeCedVwqyMriDLbT4yEdoVyxl/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"out of possession"
+],
+"theme": [
+"possession",
+"pressing"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1mcKeWtt35cNEjH48lWcfhe6VVWsraJzg",
+"title": "U12-U16 Switching play and using wide 2v1s",
+"url": "https://drive.google.com/file/d/1mcKeWtt35cNEjH48lWcfhe6VVWsraJzg/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"switching play",
+"wide play"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1a83bgHBJ3LqUDhi5vyMbBZOXrtEoYIz2",
+"title": "U12-U16 Switching play vs a low block",
+"url": "https://drive.google.com/file/d/1a83bgHBJ3LqUDhi5vyMbBZOXrtEoYIz2/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"out of possession"
+],
+"theme": [
+"low block",
+"switching play"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1CpuHFgDg1Jd4S2VTFJeaGSzripGL7mz-",
+"title": "U12-U16 Technical development - central midfielders",
+"url": "https://drive.google.com/file/d/1CpuHFgDg1Jd4S2VTFJeaGSzripGL7mz-/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"midfield",
+"technique"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1DSYqsPTKU0TgO6BdAUWryNSxAoljE8yr",
+"title": "U12-U16 Technical development - long-range passing",
+"url": "https://drive.google.com/file/d/1DSYqsPTKU0TgO6BdAUWryNSxAoljE8yr/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"passing",
+"technique"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1-QgExxQLNMr4DrGW4cPY8Th_WBREmaBc",
+"title": "U12-U16 Technical development - Wing-backs",
+"url": "https://drive.google.com/file/d/1-QgExxQLNMr4DrGW4cPY8Th_WBREmaBc/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"technique",
+"wing-backs"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1LewIXa4ksPqnXJt4uiVOTgiKBb18a19z",
+"title": "U12-U16 Technical development – Centre-backs and strikers",
+"url": "https://drive.google.com/file/d/1LewIXa4ksPqnXJt4uiVOTgiKBb18a19z/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"centre-backs",
+"strikers",
+"technique"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1LkA4Ie47AvMOOd8hO6toFRbSPwaLqxI5",
+"title": "U12-U16 Technical development – Centre-backs",
+"url": "https://drive.google.com/file/d/1LkA4Ie47AvMOOd8hO6toFRbSPwaLqxI5/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"centre-backs",
+"technique"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1z59voj2rHztTIHxCVAZwUiU10z0y9VA1",
+"title": "U12-U16 Technical development – Deep-lying midfielder",
+"url": "https://drive.google.com/file/d/1z59voj2rHztTIHxCVAZwUiU10z0y9VA1/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"midfield",
+"technique"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1xj5DYgblFARnC6BXOz75b3F54mbeuwqX",
+"title": "U12-U16 Technical development – wide players",
+"url": "https://drive.google.com/file/d/1xj5DYgblFARnC6BXOz75b3F54mbeuwqX/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"technique",
+"wide play"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1h6JRZFDl3Pn8rj4kHN0ZdHRvGLMcBLbp",
+"title": "U12-U16 Technical development",
+"url": "https://drive.google.com/file/d/1h6JRZFDl3Pn8rj4kHN0ZdHRvGLMcBLbp/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"technique"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1iR9X9V4U-deX32jHp_SCcBmJxxFYmXsK",
+"title": "U12-U16 Third-man combination play",
+"url": "https://drive.google.com/file/d/1iR9X9V4U-deX32jHp_SCcBmJxxFYmXsK/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"combinations"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1dyT8Y2vifEOCkp9rdgPI3RKaKv2hRMqy",
+"title": "U12-U16 Unit development - 9 and 10 pressing",
+"url": "https://drive.google.com/file/d/1dyT8Y2vifEOCkp9rdgPI3RKaKv2hRMqy/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"pressing",
+"units"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1cRCx3nS0qGJrwVPoDb5-XttTvYrYNsGK",
+"title": "U12-U16 Unit-specific session - Defending the goal",
+"url": "https://drive.google.com/file/d/1cRCx3nS0qGJrwVPoDb5-XttTvYrYNsGK/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending",
+"finishing",
+"units"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1wOc-S3WcRZNkViD2sm0YJ9ltb4h_bJtz",
+"title": "U12-U16 Unit-specific session – centre-backs",
+"url": "https://drive.google.com/file/d/1wOc-S3WcRZNkViD2sm0YJ9ltb4h_bJtz/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"centre-backs",
+"units"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1PC818BRoAwr-hQ2bsMPRx-EvgyLhXPjU",
+"title": "U12-U16 Unit-specific session – forwards and wingers",
+"url": "https://drive.google.com/file/d/1PC818BRoAwr-hQ2bsMPRx-EvgyLhXPjU/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"playing forward",
+"units",
+"wingers"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1LTWQiWEg73XI_O_AxRGfkiKMz-Xi2_fJ",
+"title": "U12-U16 Wide combination play to break a block",
+"url": "https://drive.google.com/file/d/1LTWQiWEg73XI_O_AxRGfkiKMz-Xi2_fJ/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"out of possession"
+],
+"theme": [
+"breaking lines",
+"combinations",
+"wide play"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1GvSEv0MFZT6sXcMQM2C2BhQc1Cix-vqF",
+"title": "u12-u16-attacking-and-defending-the-counter-attack",
+"url": "https://drive.google.com/file/d/1GvSEv0MFZT6sXcMQM2C2BhQc1Cix-vqF/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"out of possession",
+"transition"
+],
+"theme": [
+"attacking",
+"counter-attack",
+"defending"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1uBec1XXg7hkEtIOxmGuVLgvIQioFZvAX",
+"title": "u12-u16-attacking-and-defensive-transitions",
+"url": "https://drive.google.com/file/d/1uBec1XXg7hkEtIOxmGuVLgvIQioFZvAX/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"transition"
+],
+"theme": [
+"attacking",
+"defending",
+"transition"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1KmCP57w5TMTglN3e7jGZa0x9alBEbLCN",
+"title": "u12-u16-attacking-the-goal-using-quick-combinations",
+"url": "https://drive.google.com/file/d/1KmCP57w5TMTglN3e7jGZa0x9alBEbLCN/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"attacking",
+"combinations",
+"finishing"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1ht5DnU05e_4jqyqkpPkATZU6q2W8Zp_y",
+"title": "u12-u16-attacking-transitions-in-wide-areas",
+"url": "https://drive.google.com/file/d/1ht5DnU05e_4jqyqkpPkATZU6q2W8Zp_y/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"transition"
+],
+"theme": [
+"attacking",
+"transition",
+"wide play"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-19CUpdJVr27UDzC7RcUY0angNrYy0l0B6",
+"title": "u12-u16-building-out-from-the-back",
+"url": "https://drive.google.com/file/d/19CUpdJVr27UDzC7RcUY0angNrYy0l0B6/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"build-up"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-16io-AydEWPVwDF0XqPViD1SxjxLKMFAv",
+"title": "u12-u16-combination-play",
+"url": "https://drive.google.com/file/d/16io-AydEWPVwDF0XqPViD1SxjxLKMFAv/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"combinations"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-10blly0gFjdMhooR_StkmCQLcN-TKo16v",
+"title": "u12-u16-controlling-possession-to-switch-play",
+"url": "https://drive.google.com/file/d/10blly0gFjdMhooR_StkmCQLcN-TKo16v/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"first touch",
+"possession",
+"switching play"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1N-il66ijyQz-CcbjCBHK7WKCdMTDj2qk",
+"title": "u12-u16-controlling-possession",
+"url": "https://drive.google.com/file/d/1N-il66ijyQz-CcbjCBHK7WKCdMTDj2qk/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"first touch",
+"possession"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1imvL7zqG-Knm3QZjtJKCJ1kVpBAGtr_t",
+"title": "u12-u16-counter-attacking-with-an-overload",
+"url": "https://drive.google.com/file/d/1imvL7zqG-Knm3QZjtJKCJ1kVpBAGtr_t/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"transition"
+],
+"theme": [
+"attacking",
+"counter-attack",
+"overloads"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1ElFE0fN71lrMcNeCo3pAmgMDcdBmJxvx",
+"title": "u12-u16-counter-attacking",
+"url": "https://drive.google.com/file/d/1ElFE0fN71lrMcNeCo3pAmgMDcdBmJxvx/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"transition"
+],
+"theme": [
+"attacking",
+"counter-attack"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1O0R8H1lUcZv-1mg26tSHMqZR9oMP0bPu",
+"title": "u12-u16-counter-pressing-2",
+"url": "https://drive.google.com/file/d/1O0R8H1lUcZv-1mg26tSHMqZR9oMP0bPu/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession",
+"transition"
+],
+"theme": [
+"counter-attack",
+"pressing"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1YJAZeIiZ7FbqviQYSZad7cYhIaIwhVoV",
+"title": "u12-u16-counter-pressing",
+"url": "https://drive.google.com/file/d/1YJAZeIiZ7FbqviQYSZad7cYhIaIwhVoV/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession",
+"transition"
+],
+"theme": [
+"counter-attack",
+"pressing"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1_GOJ9AdKEUbGj0qXeaO9PicaFejPx2Z9",
+"title": "u12-u16-creating-an-overload-to-build-out",
+"url": "https://drive.google.com/file/d/1_GOJ9AdKEUbGj0qXeaO9PicaFejPx2Z9/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"build-up",
+"overloads"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1xCQjUVNWFccOsUNjrs1CMq-KmpfmuFiF",
+"title": "u12-u16-creating-and-finishing",
+"url": "https://drive.google.com/file/d/1xCQjUVNWFccOsUNjrs1CMq-KmpfmuFiF/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"finishing"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-146M-ZhsAJIOJhheHUgVu7aMuoGPyWeph",
+"title": "u12-u16-creating-central-overloads",
+"url": "https://drive.google.com/file/d/146M-ZhsAJIOJhheHUgVu7aMuoGPyWeph/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"overloads"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-11Bez-iCWMuIq1gdKa2gacJrPQhmJ4KR6",
+"title": "u12-u16-creating-space-to-receive-on-the-half-turn",
+"url": "https://drive.google.com/file/d/11Bez-iCWMuIq1gdKa2gacJrPQhmJ4KR6/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"receiving",
+"space",
+"turning"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1Y9QAyE7bDsInRVWsF3UCjx5j0krrWoeX",
+"title": "u12-u16-defending-against-overloads-2",
+"url": "https://drive.google.com/file/d/1Y9QAyE7bDsInRVWsF3UCjx5j0krrWoeX/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"out of possession"
+],
+"theme": [
+"defending",
+"overloads"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1zw6Cj3G2MdJEw1IDgm0yk7uonqkS05_0",
+"title": "u12-u16-defending-as-a-back-four-2",
+"url": "https://drive.google.com/file/d/1zw6Cj3G2MdJEw1IDgm0yk7uonqkS05_0/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1uGLBdFTc4w50c1DD9YdhaQf8JIK5oDPV",
+"title": "u12-u16-defending-direct-play",
+"url": "https://drive.google.com/file/d/1uGLBdFTc4w50c1DD9YdhaQf8JIK5oDPV/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending",
+"direct play"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1koNQa2BM28V-J7JsfSpG6mbPmyiZ0Y2x",
+"title": "u12-u16-defending-in-a-mid-block-to-counter",
+"url": "https://drive.google.com/file/d/1koNQa2BM28V-J7JsfSpG6mbPmyiZ0Y2x/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession",
+"transition"
+],
+"theme": [
+"counter-attack",
+"defending",
+"mid block"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1_6SPl_TRDcLwWnhIcKdiq5lndVy5fGns",
+"title": "u12-u16-defending-in-the-final-third",
+"url": "https://drive.google.com/file/d/1_6SPl_TRDcLwWnhIcKdiq5lndVy5fGns/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending",
+"final third"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1eFf3KS2kI1E6cIkA_1hNYlq38OmjoArT",
+"title": "u12-u16-defending-the-box-6",
+"url": "https://drive.google.com/file/d/1eFf3KS2kI1E6cIkA_1hNYlq38OmjoArT/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending",
+"defending the box"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1Ojsm8fCdZvEXbBdRCfndgGu9HVxRX84X",
+"title": "u12-u16-defending-underloaded-after-losing-possession",
+"url": "https://drive.google.com/file/d/1Ojsm8fCdZvEXbBdRCfndgGu9HVxRX84X/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"out of possession",
+"transition"
+],
+"theme": [
+"defending",
+"possession"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-16Zwl5IhP5-G9iRQ6xUlpUnkBc49-w_9y",
+"title": "u12-u16-defending-underloaded",
+"url": "https://drive.google.com/file/d/16Zwl5IhP5-G9iRQ6xUlpUnkBc49-w_9y/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1OEiYjVKQyK_fewKNBc88y610zCZiesf-",
+"title": "u12-u16-defensive-actions",
+"url": "https://drive.google.com/file/d/1OEiYjVKQyK_fewKNBc88y610zCZiesf-/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"defending"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1gY-Wh5JJ8VZC_m_H9xQZga8Pm7Zf8lXF",
+"title": "u12-u16-defensive-strategies",
+"url": "https://drive.google.com/file/d/1gY-Wh5JJ8VZC_m_H9xQZga8Pm7Zf8lXF/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"defending"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1mDhrwomZbHfUx6qW5b6KIaf4FqmMn9Zi",
+"title": "u12-u16-developing-1v1-skills",
+"url": "https://drive.google.com/file/d/1mDhrwomZbHfUx6qW5b6KIaf4FqmMn9Zi/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"1v1"
+],
+"age": [
+"U12-U16"
+],
+"players": [
+"1v1"
+],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-15afebRacUWh8V5TegOyRIWMvOi2DvVPT",
+"title": "u12-u16-developing-ability-to-stay-on-the-ball",
+"url": "https://drive.google.com/file/d/15afebRacUWh8V5TegOyRIWMvOi2DvVPT/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"ball retention"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1dYJEUtSCpu-JNZzYC0frs_5hyb6AmLnC",
+"title": "u12-u16-dominating-1v1-to-create-and-score",
+"url": "https://drive.google.com/file/d/1dYJEUtSCpu-JNZzYC0frs_5hyb6AmLnC/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"1v1",
+"creating chances",
+"finishing"
+],
+"age": [
+"U12-U16"
+],
+"players": [
+"1v1"
+],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1NQHdko8iVPBpXJGW7rQ6n8JQeWMg76jG",
+"title": "u12-u16-dribbling-in-game-situations",
+"url": "https://drive.google.com/file/d/1NQHdko8iVPBpXJGW7rQ6n8JQeWMg76jG/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"dribbling"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1cSBfjwRlKx6TkCJV7wxuLkuGk9TNkYn3",
+"title": "u12-u16-exploiting-space-behind-the-opposition-back-line",
+"url": "https://drive.google.com/file/d/1cSBfjwRlKx6TkCJV7wxuLkuGk9TNkYn3/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"breaking lines",
+"in behind",
+"space"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1RiLhQhKhY1omUHNtFj63sYxsoTCMkKq6",
+"title": "u12-u16-exploiting-space-in-behind",
+"url": "https://drive.google.com/file/d/1RiLhQhKhY1omUHNtFj63sYxsoTCMkKq6/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"in behind",
+"space"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1hH-z1dgVm89TExtPC8YWCq1DwH_-rdZj",
+"title": "u12-u16-forward-passing",
+"url": "https://drive.google.com/file/d/1hH-z1dgVm89TExtPC8YWCq1DwH_-rdZj/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"passing",
+"playing forward"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1Opx_AM4wyIvuLE-0WUhAJNijZsD_4xuG",
+"title": "u12-u16-forward-runs",
+"url": "https://drive.google.com/file/d/1Opx_AM4wyIvuLE-0WUhAJNijZsD_4xuG/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"playing forward",
+"runs"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1vuQCTCCcRfMCmvQxlZdXaRhrcAHNHAzV",
+"title": "u12-u16-goalkeepers--distribution",
+"url": "https://drive.google.com/file/d/1vuQCTCCcRfMCmvQxlZdXaRhrcAHNHAzV/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"finishing",
+"goalkeeping"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1e4GPdTRzmswSLw822zMD2elWL6MBIYs4",
+"title": "u12-u16-goalkeepers-1v1-dominance",
+"url": "https://drive.google.com/file/d/1e4GPdTRzmswSLw822zMD2elWL6MBIYs4/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"1v1",
+"finishing",
+"goalkeeping"
+],
+"age": [
+"U12-U16"
+],
+"players": [
+"1v1"
+],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1oiBm-OUeXX9HmBLcP9wGK-R4SshkvClx",
+"title": "u12-u16-goalkeepers-recovery-saves",
+"url": "https://drive.google.com/file/d/1oiBm-OUeXX9HmBLcP9wGK-R4SshkvClx/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"finishing",
+"goalkeeping"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1G0jXSiYmUpP2u0wiX0THHQutpBcj5AvV",
+"title": "u12-u16-goalkeepers-shot-stopping",
+"url": "https://drive.google.com/file/d/1G0jXSiYmUpP2u0wiX0THHQutpBcj5AvV/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"finishing",
+"goalkeeping"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1UVGeDQaK1-Fl16xEzVQJkd8sXmRzZcNh",
+"title": "u12-u16-high-pressure-to-score",
+"url": "https://drive.google.com/file/d/1UVGeDQaK1-Fl16xEzVQJkd8sXmRzZcNh/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"finishing",
+"pressing"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-18qTDBsr3qQhJZbHaI7yicxH8lwwUo9D9",
+"title": "u12-u16-line-breaking-passes",
+"url": "https://drive.google.com/file/d/18qTDBsr3qQhJZbHaI7yicxH8lwwUo9D9/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"breaking lines",
+"passing"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1XIL_PigLmiUYsg0jhNkY9TiC_Fb1dm0G",
+"title": "u12-u16-playing-away-from-pressure",
+"url": "https://drive.google.com/file/d/1XIL_PigLmiUYsg0jhNkY9TiC_Fb1dm0G/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"pressing"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1NHPXfXTh23gv1C4ru0eOu5f1Q9vo4dIM",
+"title": "u12-u16-playing-through-the-lines-to-create",
+"url": "https://drive.google.com/file/d/1NHPXfXTh23gv1C4ru0eOu5f1Q9vo4dIM/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"breaking lines",
+"creating chances"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1G729vWfgFXs7Ofg7v7kepecyCr2LHj-Q",
+"title": "u12-u16-pressing-from-the-inside-and-protecting-the-middle",
+"url": "https://drive.google.com/file/d/1G729vWfgFXs7Ofg7v7kepecyCr2LHj-Q/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"pressing"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-18TRHb-LGmY_2cYvGX-StjekZdngTfXxS",
+"title": "u12-u16-receiving-under-pressure-to-attack",
+"url": "https://drive.google.com/file/d/18TRHb-LGmY_2cYvGX-StjekZdngTfXxS/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"out of possession"
+],
+"theme": [
+"attacking",
+"pressing",
+"receiving"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1-2EONZP2p3g-Dad1kh4ewXmjyWaTIBWT",
+"title": "u12-u16-wide-combination-play",
+"url": "https://drive.google.com/file/d/1-2EONZP2p3g-Dad1kh4ewXmjyWaTIBWT/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"combinations",
+"wide play"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-12qcGWdFX58dkMeKbuycty9kfbgMdyetj",
+"title": "U14-U15 Building out from the back 1",
+"url": "https://drive.google.com/file/d/12qcGWdFX58dkMeKbuycty9kfbgMdyetj/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"build-up"
+],
+"age": [
+"U14-U15"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-14hSU3_r6WnOeE1teeVYDvAE5gKc6Vrnt",
+"title": "U14-U15 Overlapping 2",
+"url": "https://drive.google.com/file/d/14hSU3_r6WnOeE1teeVYDvAE5gKc6Vrnt/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"overlaps"
+],
+"age": [
+"U14-U15"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1EmvtxCJeLXqBhPEanjfDDTREJMGlotY5",
+"title": "u14-u15-overlapping-1",
+"url": "https://drive.google.com/file/d/1EmvtxCJeLXqBhPEanjfDDTREJMGlotY5/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"overlaps"
+],
+"age": [
+"U14-U15"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-12LjdIdKO6yX2RFaRjfwXDHeEPQ-_KvgR",
+"title": "u14-u15-passing-and-crossing-1",
+"url": "https://drive.google.com/file/d/12LjdIdKO6yX2RFaRjfwXDHeEPQ-_KvgR/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"crossing",
+"passing"
+],
+"age": [
+"U14-U15"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1iu_a9dUEKFsoVtitUKcMgttmyUdqnTWp",
+"title": "u14-u15-short-build-up-to-play-through-lines-1",
+"url": "https://drive.google.com/file/d/1iu_a9dUEKFsoVtitUKcMgttmyUdqnTWp/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"breaking lines",
+"build-up"
+],
+"age": [
+"U14-U15"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1o3d9VKAEjheU0YfJs_IxNXHsEATwiVJy",
+"title": "u14-u15-supporting-the-attack-1",
+"url": "https://drive.google.com/file/d/1o3d9VKAEjheU0YfJs_IxNXHsEATwiVJy/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"attacking",
+"support play"
+],
+"age": [
+"U14-U15"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1_wh4yuaGoQT987yjFDdxRRJxq7MPuuBp",
+"title": "u14-u15-using-the-third-man-2",
+"url": "https://drive.google.com/file/d/1_wh4yuaGoQT987yjFDdxRRJxq7MPuuBp/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"third man"
+],
+"age": [
+"U14-U15"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1hBaWdQPmcPgLjjZL1xpzQJRGny7rhfeb",
+"title": "u14-u15-vertical-passes-to-beat-defensive-lines-1",
+"url": "https://drive.google.com/file/d/1hBaWdQPmcPgLjjZL1xpzQJRGny7rhfeb/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"breaking lines",
+"defending",
+"passing"
+],
+"age": [
+"U14-U15"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1ixL7kJMp5TETv7XeE7bKy5RsCrK0Ks8R",
+"title": "U16-U17 Individual and unit pressing 1",
+"url": "https://drive.google.com/file/d/1ixL7kJMp5TETv7XeE7bKy5RsCrK0Ks8R/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"pressing",
+"units"
+],
+"age": [
+"U16-U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1fuiSO6vpHNI8IYGsbRZss356XFhBSP0G",
+"title": "u16-u17-breaking-lines-1",
+"url": "https://drive.google.com/file/d/1fuiSO6vpHNI8IYGsbRZss356XFhBSP0G/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"breaking lines"
+],
+"age": [
+"U16-U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1DR3lAMZ0tCYrlmX8FqU5X6HgALNuzAIN",
+"title": "u16-u17-overlapping-1-s1",
+"url": "https://drive.google.com/file/d/1DR3lAMZ0tCYrlmX8FqU5X6HgALNuzAIN/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"overlaps"
+],
+"age": [
+"U16-U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-170g61xpmkYq0kilMUx4wCIsutlNh-LCo",
+"title": "u16-u17-playing-as-a-unit-1",
+"url": "https://drive.google.com/file/d/170g61xpmkYq0kilMUx4wCIsutlNh-LCo/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"units"
+],
+"age": [
+"U16-U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1_3CSkXJUSt6ZrnJ8J3PqnVE971pJrMwC",
+"title": "u16-u17-support-play-1-s1",
+"url": "https://drive.google.com/file/d/1_3CSkXJUSt6ZrnJ8J3PqnVE971pJrMwC/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"support play"
+],
+"age": [
+"U16-U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1HooBqiJL3461ZHtJCIwzmN61G72U8lZ2",
+"title": "u16-u17-using-the-third-man-1",
+"url": "https://drive.google.com/file/d/1HooBqiJL3461ZHtJCIwzmN61G72U8lZ2/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"third man"
+],
+"age": [
+"U16-U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1fPsocEROh7EXQkaWG7tyk3zfFP7eVe-f",
+"title": "u16-u17-vertical-passing-to-progress-1-s1",
+"url": "https://drive.google.com/file/d/1fPsocEROh7EXQkaWG7tyk3zfFP7eVe-f/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"passing",
+"progression"
+],
+"age": [
+"U16-U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1XnW29PeUPMvTVQRgZLp8ZS142M3Yfghn",
+"title": "David Martinez U17 Transitions",
+"url": "https://drive.google.com/file/d/1XnW29PeUPMvTVQRgZLp8ZS142M3Yfghn/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"transition"
+],
+"theme": [
+"transition"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": "David Martinez"
+},
+{
+"id": "cv-15cxq5ONgqRg2HkUVmz5r9R3MsyieNj0M",
+"title": "Ian Burchnall U17 Attacking play in the final third",
+"url": "https://drive.google.com/file/d/15cxq5ONgqRg2HkUVmz5r9R3MsyieNj0M/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"attacking",
+"final third"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": "Ian Burchnall"
+},
+{
+"id": "cv-1ia3DVRHInYIVqyVwTBS67WoKiuKSYYi6",
+"title": "Michael Jolley U17 Playing through wide overloads",
+"url": "https://drive.google.com/file/d/1ia3DVRHInYIVqyVwTBS67WoKiuKSYYi6/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"overloads",
+"wide play"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": "Michael Jolley"
+},
+{
+"id": "cv-1EpcIQQQqXfizGX9KyoCL0wFNzwxEZHNG",
+"title": "U16-U17 Build-up play and finishing 1",
+"url": "https://drive.google.com/file/d/1EpcIQQQqXfizGX9KyoCL0wFNzwxEZHNG/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"build-up",
+"finishing"
+],
+"age": [
+"U16-U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1eg3N7D4YoBfRAtAryBJXdFOUsyE8JJrp",
+"title": "U16-U17 Building out from the back 1",
+"url": "https://drive.google.com/file/d/1eg3N7D4YoBfRAtAryBJXdFOUsyE8JJrp/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"build-up"
+],
+"age": [
+"U16-U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1tuVxl6yPUEP6jCHdM_BeVkMAoV6JAXqv",
+"title": "U16-U17 Defensive line vs attacking line 1",
+"url": "https://drive.google.com/file/d/1tuVxl6yPUEP6jCHdM_BeVkMAoV6JAXqv/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"attacking",
+"breaking lines",
+"defending"
+],
+"age": [
+"U16-U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1pxt-9QKr49xojvvB5eYNlZP2Sx_9OL7Z",
+"title": "U16-U17 Overlapping 2",
+"url": "https://drive.google.com/file/d/1pxt-9QKr49xojvvB5eYNlZP2Sx_9OL7Z/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"overlaps"
+],
+"age": [
+"U16-U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1IKHJolSMS1tq21X9bAnS2WoVMT9OI4VV",
+"title": "U16-U17 Playing as a unit 2",
+"url": "https://drive.google.com/file/d/1IKHJolSMS1tq21X9bAnS2WoVMT9OI4VV/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"units"
+],
+"age": [
+"U16-U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1vUFT-4WnCA4dpm5Pvy14RcKeuAM3BmV1",
+"title": "U16-U17 Playing as a unit 3",
+"url": "https://drive.google.com/file/d/1vUFT-4WnCA4dpm5Pvy14RcKeuAM3BmV1/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"units"
+],
+"age": [
+"U16-U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1JL9tGc4UPV7kLPSW-XL7V4qM9BhVhc_a",
+"title": "U16-U17 Progressive play 1",
+"url": "https://drive.google.com/file/d/1JL9tGc4UPV7kLPSW-XL7V4qM9BhVhc_a/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"progression"
+],
+"age": [
+"U16-U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1gHk7nvO3vDxoywH1TJeUOhpxinH9HZvJ",
+"title": "U16-U17 Switching play 1",
+"url": "https://drive.google.com/file/d/1gHk7nvO3vDxoywH1TJeUOhpxinH9HZvJ/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"switching play"
+],
+"age": [
+"U16-U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1p-DYLfgCGpErxg0VEFtYzW307QuIQnie",
+"title": "U17 4-4-2 diamond - creating overloads to play into the final third",
+"url": "https://drive.google.com/file/d/1p-DYLfgCGpErxg0VEFtYzW307QuIQnie/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"final third",
+"overloads"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"4-4-2"
+]
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1LlbHoT0bGoqnHZTbYojO_ClaBfwcnfy2",
+"title": "U17 Attacking in wide areas",
+"url": "https://drive.google.com/file/d/1LlbHoT0bGoqnHZTbYojO_ClaBfwcnfy2/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"attacking",
+"wide play"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1qSRwlw1cWiNM57Chjm6MXcyVnUkaBX_i",
+"title": "U17 Attacking principles - using half-spaces",
+"url": "https://drive.google.com/file/d/1qSRwlw1cWiNM57Chjm6MXcyVnUkaBX_i/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"attacking",
+"principles",
+"space"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1wLYv1OjDLFdFCQK0qHAdohOJQ7QT962o",
+"title": "U17 Attacking principles",
+"url": "https://drive.google.com/file/d/1wLYv1OjDLFdFCQK0qHAdohOJQ7QT962o/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"attacking",
+"principles"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1nleDiAzNA81rPwJNYAl539iHoESONXjg",
+"title": "U17 Attacking with an overload",
+"url": "https://drive.google.com/file/d/1nleDiAzNA81rPwJNYAl539iHoESONXjg/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"attacking",
+"overloads"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-10sk8AoFiBfPWqjrrtnHgzhcRoPJM-jL9",
+"title": "U17 Beating a 3-5-2 low block",
+"url": "https://drive.google.com/file/d/10sk8AoFiBfPWqjrrtnHgzhcRoPJM-jL9/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"low block"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"3-5-2"
+]
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1LWgeBcyaRkispk6PJpWwzaZ24xr9pii7",
+"title": "U17 Breaking the last line from central",
+"url": "https://drive.google.com/file/d/1LWgeBcyaRkispk6PJpWwzaZ24xr9pii7/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"breaking lines"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1Np7fpHu2opMTwC_tX1C4tTGZ6hCIFCFJ",
+"title": "U17 Build-up and progress with a midfield diamond",
+"url": "https://drive.google.com/file/d/1Np7fpHu2opMTwC_tX1C4tTGZ6hCIFCFJ/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"build-up",
+"midfield",
+"progression"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1s8RKueIDtNFydVkFHuU3CZ8cvop6mQjl",
+"title": "U17 Build-up playing through the lines",
+"url": "https://drive.google.com/file/d/1s8RKueIDtNFydVkFHuU3CZ8cvop6mQjl/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"breaking lines",
+"build-up"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1zp1gItfweeWE8zmHXrwbLQ_L-htsPGxo",
+"title": "U17 Building from the back in a 3-5-2 2",
+"url": "https://drive.google.com/file/d/1zp1gItfweeWE8zmHXrwbLQ_L-htsPGxo/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"build-up"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"3-5-2"
+]
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1xSvICRBvsM9mTHTqFFuHtWhvDGRJbbku",
+"title": "U17 Building out with a back four and midfield diamond",
+"url": "https://drive.google.com/file/d/1xSvICRBvsM9mTHTqFFuHtWhvDGRJbbku/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"build-up",
+"midfield"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1m65GvfJFm5OgoGSdfHsKsOTRBx5n-CQ4",
+"title": "U17 Building through the thirds with a midfield box",
+"url": "https://drive.google.com/file/d/1m65GvfJFm5OgoGSdfHsKsOTRBx5n-CQ4/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"out of possession"
+],
+"theme": [
+"build-up",
+"defending the box",
+"midfield"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1B66rhINJ_4c93_Hjy80TDT8uFpViOQF9",
+"title": "U17 Building up from the back in a 4-3-3",
+"url": "https://drive.google.com/file/d/1B66rhINJ_4c93_Hjy80TDT8uFpViOQF9/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"build-up"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"4-3-3"
+]
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1VSioHmhskQimTvUeisJvl1PcwiuO01l-",
+"title": "U17 Building up from the back",
+"url": "https://drive.google.com/file/d/1VSioHmhskQimTvUeisJvl1PcwiuO01l-/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"build-up"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1SBHRLylXTNuAwoevnwRy_00Ql-OcJuDh",
+"title": "U17 Central combination play 2",
+"url": "https://drive.google.com/file/d/1SBHRLylXTNuAwoevnwRy_00Ql-OcJuDh/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"combinations"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1FGD3wUYbhkuNy16mBU2jptE0KuqYZWBX",
+"title": "U17 Central combination play to create goalscoring opportunties",
+"url": "https://drive.google.com/file/d/1FGD3wUYbhkuNy16mBU2jptE0KuqYZWBX/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"combinations",
+"creating chances",
+"finishing"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1BXO69XfSj0NIQw4YMCZ7PjChF07tyfXB",
+"title": "U17 Central Combination Play",
+"url": "https://drive.google.com/file/d/1BXO69XfSj0NIQw4YMCZ7PjChF07tyfXB/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"combinations"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1JbpTlxZBbtGjG-M_apgv11at0FEWREoF",
+"title": "U17 Combination play in the final third",
+"url": "https://drive.google.com/file/d/1JbpTlxZBbtGjG-M_apgv11at0FEWREoF/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"combinations",
+"final third"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1ak7E-7UViCS4bPn8BH6Gw1R43nGDMqto",
+"title": "U17 Combination play through the lines ",
+"url": "https://drive.google.com/file/d/1ak7E-7UViCS4bPn8BH6Gw1R43nGDMqto/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"breaking lines",
+"combinations"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1dI4HYo7nC_1nZ8PdpBrjredSLIgCgzRB",
+"title": "U17 Compact defending around the box",
+"url": "https://drive.google.com/file/d/1dI4HYo7nC_1nZ8PdpBrjredSLIgCgzRB/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"compactness",
+"defending",
+"defending the box"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1NABqL8qYAP8C6iRaGgAryl_6I2m5-y0R",
+"title": "U17 Controlling the tempo",
+"url": "https://drive.google.com/file/d/1NABqL8qYAP8C6iRaGgAryl_6I2m5-y0R/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"first touch"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-14K9P1xJlIO1X0Z8VHs7oYbcePYj8QnWc",
+"title": "U17 Counter-attacking from a 3-5-2 formation",
+"url": "https://drive.google.com/file/d/14K9P1xJlIO1X0Z8VHs7oYbcePYj8QnWc/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"transition"
+],
+"theme": [
+"attacking",
+"counter-attack"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"3-5-2"
+]
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1nya7YMEfa0kwHBv2A8lGC5pMGsKCyijI",
+"title": "U17 Counter-attacking from deep",
+"url": "https://drive.google.com/file/d/1nya7YMEfa0kwHBv2A8lGC5pMGsKCyijI/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"transition"
+],
+"theme": [
+"attacking",
+"counter-attack"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1cQr398SX0tqXFdD3ltylKEVg-sp3XVqy",
+"title": "U17 Counter-attacks from the middle third",
+"url": "https://drive.google.com/file/d/1cQr398SX0tqXFdD3ltylKEVg-sp3XVqy/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"transition"
+],
+"theme": [
+"attacking",
+"counter-attack"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1qNxasyLHJroyixbAeTrk2gWsIhIOKK8V",
+"title": "U17 Counter-attacks – Regains in the final third",
+"url": "https://drive.google.com/file/d/1qNxasyLHJroyixbAeTrk2gWsIhIOKK8V/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"transition"
+],
+"theme": [
+"attacking",
+"counter-attack",
+"final third"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1tzb7FPTNp9-rS0tOOCdIuDVUVGB_TEJI",
+"title": "U17 Creating and finishing vs a low block",
+"url": "https://drive.google.com/file/d/1tzb7FPTNp9-rS0tOOCdIuDVUVGB_TEJI/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"out of possession"
+],
+"theme": [
+"finishing",
+"low block"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1d9It_lagiL7HgeAb4Pt_6EHpybK3UrOM",
+"title": "U17 Creating overloads in the middle third to play forward",
+"url": "https://drive.google.com/file/d/1d9It_lagiL7HgeAb4Pt_6EHpybK3UrOM/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"overloads",
+"playing forward"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1d6aFD8vZkKJ4Oi9Vgl4dR-CWHQDJeJ1U",
+"title": "U17 Creating overloads to progress through the thirds",
+"url": "https://drive.google.com/file/d/1d6aFD8vZkKJ4Oi9Vgl4dR-CWHQDJeJ1U/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"overloads",
+"progression"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1Wg5Wy-s7mkrOrQCecgbs4r_qTjyWZu6q",
+"title": "U17 Creating wide overloads 1 ",
+"url": "https://drive.google.com/file/d/1Wg5Wy-s7mkrOrQCecgbs4r_qTjyWZu6q/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"overloads",
+"wide play"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1wbKzwFyQw-AYd1sf4Aitzo1emVqhOmpu",
+"title": "U17 Crossing & Finishing",
+"url": "https://drive.google.com/file/d/1wbKzwFyQw-AYd1sf4Aitzo1emVqhOmpu/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"crossing",
+"finishing"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1QfQ2xKb5ohMNdG0-8ovePTXwySsd5cng",
+"title": "U17 Defending against attacking overloads",
+"url": "https://drive.google.com/file/d/1QfQ2xKb5ohMNdG0-8ovePTXwySsd5cng/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"out of possession"
+],
+"theme": [
+"attacking",
+"defending",
+"overloads"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1qXIf7lqL6kk_zw-yVWNwGpNJwxWtRteS",
+"title": "U17 Defending against overloads",
+"url": "https://drive.google.com/file/d/1qXIf7lqL6kk_zw-yVWNwGpNJwxWtRteS/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"out of possession"
+],
+"theme": [
+"defending",
+"overloads"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-17bUmCySQBYg9oq1ku8XQotdLEjd6wsSG",
+"title": "U17 Defending Crosses 1",
+"url": "https://drive.google.com/file/d/17bUmCySQBYg9oq1ku8XQotdLEjd6wsSG/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"out of possession"
+],
+"theme": [
+"crossing",
+"defending"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1_00hjOKRkNhrgotpypT9FdF-_W2z7GXM",
+"title": "U17 Defending deep to counter-attack",
+"url": "https://drive.google.com/file/d/1_00hjOKRkNhrgotpypT9FdF-_W2z7GXM/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"out of possession",
+"transition"
+],
+"theme": [
+"attacking",
+"counter-attack",
+"defending"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1LsbNY3XGFB7bOyI_Wcw1aJn8xTzkcqxt",
+"title": "U17 Defending in a low block to counter-attack",
+"url": "https://drive.google.com/file/d/1LsbNY3XGFB7bOyI_Wcw1aJn8xTzkcqxt/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"out of possession",
+"transition"
+],
+"theme": [
+"attacking",
+"counter-attack",
+"defending",
+"low block"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1yTYpFahr1Rs-MmKGD-ZCY2S41hqiWThb",
+"title": "U17 Defending in a low block",
+"url": "https://drive.google.com/file/d/1yTYpFahr1Rs-MmKGD-ZCY2S41hqiWThb/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending",
+"low block"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1FLVy_qthWcrXR2KZ4UmWDuKCg1x1CxmO",
+"title": "U17 Defending The Box",
+"url": "https://drive.google.com/file/d/1FLVy_qthWcrXR2KZ4UmWDuKCg1x1CxmO/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending",
+"defending the box"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1-lQRNm0XDFBtoX3-F3MLNqTackYsDxwz",
+"title": "U17 Defensive organisation in mid-block",
+"url": "https://drive.google.com/file/d/1-lQRNm0XDFBtoX3-F3MLNqTackYsDxwz/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending",
+"mid block",
+"shape"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1KPnJuwEQHv558agQwYblv8q1ITZRRZ8K",
+"title": "U17 Defensive organisation",
+"url": "https://drive.google.com/file/d/1KPnJuwEQHv558agQwYblv8q1ITZRRZ8K/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"defending",
+"shape"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1RxDmR0b4uln_hMvDXcXEE2XHKuOW6on0",
+"title": "U17 Defensive principles in a 3-4-3",
+"url": "https://drive.google.com/file/d/1RxDmR0b4uln_hMvDXcXEE2XHKuOW6on0/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"defending",
+"principles"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"3-4-3"
+]
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1bWEpvvNHw1XDK1WqhbyDMCH_3DFyAle6",
+"title": "U17 Defensive principles",
+"url": "https://drive.google.com/file/d/1bWEpvvNHw1XDK1WqhbyDMCH_3DFyAle6/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"defending",
+"principles"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1xF0Hfw77GujzL1q-bx0SjVsit60pt9PB",
+"title": "U17 Defensive transition principles",
+"url": "https://drive.google.com/file/d/1xF0Hfw77GujzL1q-bx0SjVsit60pt9PB/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"transition"
+],
+"theme": [
+"defending",
+"principles",
+"transition"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1N79SxbMVUObEw-IEP-TLIK8dCxmAouC9",
+"title": "U17 Defensive transitions in 1-4-2-3-1",
+"url": "https://drive.google.com/file/d/1N79SxbMVUObEw-IEP-TLIK8dCxmAouC9/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"transition"
+],
+"theme": [
+"defending",
+"transition"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"4-2-3-1"
+]
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-11YzIxu2Tcbr98ApWH2YzparDCbfuUYeg",
+"title": "U17 Emergency defending",
+"url": "https://drive.google.com/file/d/11YzIxu2Tcbr98ApWH2YzparDCbfuUYeg/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1eMHgoNZzqe_XH9GYMbGroU5xlW_TiUB3",
+"title": "U17 Finishing from low crosses 2",
+"url": "https://drive.google.com/file/d/1eMHgoNZzqe_XH9GYMbGroU5xlW_TiUB3/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"crossing",
+"finishing"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-10EHNAJSpSJNaRdLaWIAvJoD3AqfmbpNv",
+"title": "U17 Finishing from low crosses",
+"url": "https://drive.google.com/file/d/10EHNAJSpSJNaRdLaWIAvJoD3AqfmbpNv/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"crossing",
+"finishing"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1lHP06zcwnoSb4skqEk4DUJaf1QLyf68e",
+"title": "U17 Full-backs defending in wide areas",
+"url": "https://drive.google.com/file/d/1lHP06zcwnoSb4skqEk4DUJaf1QLyf68e/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending",
+"full-backs",
+"wide play"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1GSov_Yum3f7WHFr1NxhgaIgieB-FHdDO",
+"title": "U17 High pressing 2",
+"url": "https://drive.google.com/file/d/1GSov_Yum3f7WHFr1NxhgaIgieB-FHdDO/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"pressing"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1n6lL9EmPg3T8RjOEk4PJmsgR4_2XdcmU",
+"title": "U17 High pressing in a 4-4-2",
+"url": "https://drive.google.com/file/d/1n6lL9EmPg3T8RjOEk4PJmsgR4_2XdcmU/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"pressing"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"4-4-2"
+]
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1AmyD_wYttCpNqhfO5b6JBZ1hhwie2Ri6",
+"title": "U17 High pressing",
+"url": "https://drive.google.com/file/d/1AmyD_wYttCpNqhfO5b6JBZ1hhwie2Ri6/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"pressing"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-12abh5JhpZPFWrkCXV9YbBRIhC5IzJ1dB",
+"title": "U17 High pressure to score",
+"url": "https://drive.google.com/file/d/12abh5JhpZPFWrkCXV9YbBRIhC5IzJ1dB/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"finishing",
+"pressing"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-18bF-l9j1-ycxnSnAvKDR4i8vek3KkzPh",
+"title": "U17 Individual development – Strikers",
+"url": "https://drive.google.com/file/d/18bF-l9j1-ycxnSnAvKDR4i8vek3KkzPh/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"strikers"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1ZJuAaMDjpnBHicim85lNdiswiSjdlhpN",
+"title": "U17 Individual development – wingers",
+"url": "https://drive.google.com/file/d/1ZJuAaMDjpnBHicim85lNdiswiSjdlhpN/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"wingers"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-18IG9Sf31ZpAXeHUhCp8SvBY3d4hB43fR",
+"title": "U17 Line-breaking passing",
+"url": "https://drive.google.com/file/d/18IG9Sf31ZpAXeHUhCp8SvBY3d4hB43fR/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"breaking lines",
+"passing"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1MnbdEFqOltgI5wo1Jst5J6vPAjwHyecV",
+"title": "U17 Penetrating in behind",
+"url": "https://drive.google.com/file/d/1MnbdEFqOltgI5wo1Jst5J6vPAjwHyecV/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"in behind"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1wLGCDN-jDSeUPBs1zTTCWHvg4uMzNOYQ",
+"title": "U17 Playing out from the back",
+"url": "https://drive.google.com/file/d/1wLGCDN-jDSeUPBs1zTTCWHvg4uMzNOYQ/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"playing out"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1knR2e6m8qzfvC9zJ-PSi05f3U_VzTJen",
+"title": "U17 Playing out in a 3-5-2",
+"url": "https://drive.google.com/file/d/1knR2e6m8qzfvC9zJ-PSi05f3U_VzTJen/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"playing out"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"3-5-2"
+]
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1me2LhcdE9Sghp9vo-izb6R2YgGT_slES",
+"title": "U17 Pressing from a mid-block",
+"url": "https://drive.google.com/file/d/1me2LhcdE9Sghp9vo-izb6R2YgGT_slES/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"mid block",
+"pressing"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1LxQ9yGX512FjFvYj0bOXPy3Nsly9V8_0",
+"title": "U17 Pressing in a 4-2-3-1 high block",
+"url": "https://drive.google.com/file/d/1LxQ9yGX512FjFvYj0bOXPy3Nsly9V8_0/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"high press",
+"pressing"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"4-2-3-1"
+]
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1erUCH2DTl9o10bwzVVNMRFJAu9tUp3c-",
+"title": "U17 Pressing",
+"url": "https://drive.google.com/file/d/1erUCH2DTl9o10bwzVVNMRFJAu9tUp3c-/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"pressing"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1xnUaizIe6-jTn34b5cPIxHqjj8S98JKj",
+"title": "U17 Recovery running",
+"url": "https://drive.google.com/file/d/1xnUaizIe6-jTn34b5cPIxHqjj8S98JKj/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"recovery runs"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-12gkRbkQoMliQ0-9GTSt3Kp2hsFZurrV_",
+"title": "U17 Runs behind the defensive line",
+"url": "https://drive.google.com/file/d/12gkRbkQoMliQ0-9GTSt3Kp2hsFZurrV_/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"breaking lines",
+"defending",
+"in behind",
+"runs"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-162ddRchJsfYoBcnxR4sSJ66mPuKwGELI",
+"title": "U17 Striker-specific training 1",
+"url": "https://drive.google.com/file/d/162ddRchJsfYoBcnxR4sSJ66mPuKwGELI/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"strikers"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1VWpxjJhc_eCju45Mkwb7AACSpO6-9A3B",
+"title": "U17 Switching play 2",
+"url": "https://drive.google.com/file/d/1VWpxjJhc_eCju45Mkwb7AACSpO6-9A3B/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"switching play"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1lRDunIH6l4SLcjaFBoviUWyP554GiSS9",
+"title": "U17 Switching play 3",
+"url": "https://drive.google.com/file/d/1lRDunIH6l4SLcjaFBoviUWyP554GiSS9/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"switching play"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1CBRShhWf398Bwq6-N03M9HDl1qaw96iU",
+"title": "U17 Technical development – attacking midfielders",
+"url": "https://drive.google.com/file/d/1CBRShhWf398Bwq6-N03M9HDl1qaw96iU/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"attacking",
+"midfield",
+"technique"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1y_NW0V4XQM3qpjQM6Gkppacw0WQZ6JK4",
+"title": "U17 Technical development – defensive midfielders",
+"url": "https://drive.google.com/file/d/1y_NW0V4XQM3qpjQM6Gkppacw0WQZ6JK4/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"defending",
+"midfield",
+"technique"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1buyaJ9AmL71PQHIIsFHFDZyQ5PpOP89a",
+"title": "U17 Technical Development – Full-backs",
+"url": "https://drive.google.com/file/d/1buyaJ9AmL71PQHIIsFHFDZyQ5PpOP89a/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"full-backs",
+"technique"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1iqMZ-zWTr30XAx8fJ2z-zFWWjPUjQYUI",
+"title": "U17 Technical development – Number 10",
+"url": "https://drive.google.com/file/d/1iqMZ-zWTr30XAx8fJ2z-zFWWjPUjQYUI/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"technique"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1GwVFSpoUZur0zIrvIhw7IMJ9eQs-pMpo",
+"title": "U17 Technical development – wing-backs",
+"url": "https://drive.google.com/file/d/1GwVFSpoUZur0zIrvIhw7IMJ9eQs-pMpo/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"technique",
+"wing-backs"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1N2bHNTvU792iWGOlpt3Vq2FTqhijPBLa",
+"title": "U17 Unbalancing runs from midfielders",
+"url": "https://drive.google.com/file/d/1N2bHNTvU792iWGOlpt3Vq2FTqhijPBLa/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"midfield",
+"runs"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1bmL6V5IODvaZa8JDM3MEoqpy3SIqIWv2",
+"title": "U17 Unit-specific session – Attackers",
+"url": "https://drive.google.com/file/d/1bmL6V5IODvaZa8JDM3MEoqpy3SIqIWv2/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"attacking",
+"units"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1q2uXU5V6kaT_nZ24xYHBhMR5keP6ny-q",
+"title": "U17 Unit-specific session – Wide forwards",
+"url": "https://drive.google.com/file/d/1q2uXU5V6kaT_nZ24xYHBhMR5keP6ny-q/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"playing forward",
+"units",
+"wide play"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1hJ1xZXSFAD6T2X-pf-5BSU35kOrBzAL8",
+"title": "U17 Wide Overloads",
+"url": "https://drive.google.com/file/d/1hJ1xZXSFAD6T2X-pf-5BSU35kOrBzAL8/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"overloads",
+"wide play"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1C79a__5w7qlrH9n95_cdeg6SdhV_JM1-",
+"title": "U17 Wide rotations",
+"url": "https://drive.google.com/file/d/1C79a__5w7qlrH9n95_cdeg6SdhV_JM1-/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"rotations",
+"wide play"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1yagJYmMS1uolGTmj-Nwaf8HuDtU_8QOl",
+"title": "U17 Winning possession in wide areas and counter-attacks",
+"url": "https://drive.google.com/file/d/1yagJYmMS1uolGTmj-Nwaf8HuDtU_8QOl/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"transition"
+],
+"theme": [
+"attacking",
+"counter-attack",
+"possession",
+"wide play"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1FwBZwLEg2E0bgg895q4-7XxqIQbgsJZ5",
+"title": "U17+ Set-pieces – Corner routines",
+"url": "https://drive.google.com/file/d/1FwBZwLEg2E0bgg895q4-7XxqIQbgsJZ5/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"set pieces"
+],
+"theme": [
+"set pieces"
+],
+"age": [
+"U17+"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1f8w7NK441VYBNwJ26x_D3ATDEaIhzkON",
+"title": "u17-attacking-in-wide-areas-2",
+"url": "https://drive.google.com/file/d/1f8w7NK441VYBNwJ26x_D3ATDEaIhzkON/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"attacking",
+"wide play"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1ic75SfENFSyjZzy_rNapPtXbneRv8jZt",
+"title": "u17-attacking-principles-4-4-2-diamond",
+"url": "https://drive.google.com/file/d/1ic75SfENFSyjZzy_rNapPtXbneRv8jZt/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"attacking",
+"principles"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"4-4-2"
+]
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-17_3fhZHG1GffKb8o4BrEWXX6DHgI2avT",
+"title": "u17-attacking-set-pieces",
+"url": "https://drive.google.com/file/d/17_3fhZHG1GffKb8o4BrEWXX6DHgI2avT/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"set pieces"
+],
+"theme": [
+"attacking",
+"set pieces"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1HjT9mjNqQ5O-gZzxegV_RHpZSTJW5eez",
+"title": "u17-attacking-transitions",
+"url": "https://drive.google.com/file/d/1HjT9mjNqQ5O-gZzxegV_RHpZSTJW5eez/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"transition"
+],
+"theme": [
+"attacking",
+"transition"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-18P49C8V8jo3y6E8OcLWOX8Tacuj6qRJ7",
+"title": "u17-breaking-down-a-block",
+"url": "https://drive.google.com/file/d/18P49C8V8jo3y6E8OcLWOX8Tacuj6qRJ7/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"out of possession"
+],
+"theme": [
+"breaking lines"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1FlrBuVKt67RXJe9diMVX-cC9Vlqhk0yR",
+"title": "u17-breaking-lines",
+"url": "https://drive.google.com/file/d/1FlrBuVKt67RXJe9diMVX-cC9Vlqhk0yR/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"breaking lines"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1zLHJJYP2DHyZfNze7csNeiqpLnjpcKlZ",
+"title": "u17-building-out-against-high-pressure",
+"url": "https://drive.google.com/file/d/1zLHJJYP2DHyZfNze7csNeiqpLnjpcKlZ/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"out of possession"
+],
+"theme": [
+"build-up",
+"pressing"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1fn8fu3EPwLn00zAZ9UsorQVGX9ayUCUZ",
+"title": "u17-building-out-from-the-back-in-a-4-box-2",
+"url": "https://drive.google.com/file/d/1fn8fu3EPwLn00zAZ9UsorQVGX9ayUCUZ/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"out of possession"
+],
+"theme": [
+"build-up",
+"defending the box"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1PVWQailVVsBjrKl6BySDsKlMpohixeZu",
+"title": "u17-building-out-in-a-3-4-3",
+"url": "https://drive.google.com/file/d/1PVWQailVVsBjrKl6BySDsKlMpohixeZu/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"build-up"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"3-4-3"
+]
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1z78z-1lcSSchgmqyVepTbToeu-fGNOPP",
+"title": "u17-building-out-in-a-4-3-3",
+"url": "https://drive.google.com/file/d/1z78z-1lcSSchgmqyVepTbToeu-fGNOPP/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"build-up"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"4-3-3"
+]
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-19MUs7DnfY4A4Ryenpt6VlclsoW4TfTCU",
+"title": "u17-building-play-into-the-final-third",
+"url": "https://drive.google.com/file/d/19MUs7DnfY4A4Ryenpt6VlclsoW4TfTCU/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"build-up",
+"final third"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1Qlb6nJOVvn3hzSoUH50kLoDbKtq7pNrn",
+"title": "u17-controlling-possession",
+"url": "https://drive.google.com/file/d/1Qlb6nJOVvn3hzSoUH50kLoDbKtq7pNrn/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"first touch",
+"possession"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1ToNWsXMottl4zn_7yuCGoZuWqlnzSIt_",
+"title": "u17-controlling-the-tempo-2",
+"url": "https://drive.google.com/file/d/1ToNWsXMottl4zn_7yuCGoZuWqlnzSIt_/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"first touch"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1Yf0Ph5L-JJRX5usTGDkI0zfEybpQHBfh",
+"title": "u17-counter-attacking",
+"url": "https://drive.google.com/file/d/1Yf0Ph5L-JJRX5usTGDkI0zfEybpQHBfh/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"transition"
+],
+"theme": [
+"attacking",
+"counter-attack"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1Zvww9HfQy_-AU940GVkW0YVFImQ-Im-3",
+"title": "u17-counter-pressing",
+"url": "https://drive.google.com/file/d/1Zvww9HfQy_-AU940GVkW0YVFImQ-Im-3/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession",
+"transition"
+],
+"theme": [
+"counter-attack",
+"pressing"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-15FStaswr9k1hM4xKJDEmGV8MPcrmENCG",
+"title": "u17-counter-pressure",
+"url": "https://drive.google.com/file/d/15FStaswr9k1hM4xKJDEmGV8MPcrmENCG/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession",
+"transition"
+],
+"theme": [
+"counter-attack",
+"pressing"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1hULccdTe3YWCF3d39QCSQ_4o_ac2S9op",
+"title": "u17-creating-central-overloads-in-a-3-5-2",
+"url": "https://drive.google.com/file/d/1hULccdTe3YWCF3d39QCSQ_4o_ac2S9op/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"overloads"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"3-5-2"
+]
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1C7Kts7KW92OGqmks-i1FWG3pOPHZs-dv",
+"title": "u17-creating-central-overloads-in-a-4-2-3-1",
+"url": "https://drive.google.com/file/d/1C7Kts7KW92OGqmks-i1FWG3pOPHZs-dv/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"overloads"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"4-2-3-1"
+]
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1zwxmzlObXVxcYcCHIr4yWTVzQ_FMTBZx",
+"title": "u17-creating-the-attack-in-a-3-5-2",
+"url": "https://drive.google.com/file/d/1zwxmzlObXVxcYcCHIr4yWTVzQ_FMTBZx/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"attacking"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"3-5-2"
+]
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1t-FoVEmUusFtZ1FhOH1AMjS0OXkSzG6k",
+"title": "u17-creativity-in-the-final-third",
+"url": "https://drive.google.com/file/d/1t-FoVEmUusFtZ1FhOH1AMjS0OXkSzG6k/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"final third"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1-9zw24DJuVPSpjh9_gIiRu113PibPjIR",
+"title": "u17-dealing-with-direct-play",
+"url": "https://drive.google.com/file/d/1-9zw24DJuVPSpjh9_gIiRu113PibPjIR/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"direct play"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-19TF0I6kD8u7CJmfPxt2KroijfkHbr9Nb",
+"title": "u17-defence-to-attack-transition",
+"url": "https://drive.google.com/file/d/19TF0I6kD8u7CJmfPxt2KroijfkHbr9Nb/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"transition"
+],
+"theme": [
+"attacking",
+"transition"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1rNivN1nxLod0L1D7wpZbkKTeRtwODqMu",
+"title": "u17-defending-central-areas",
+"url": "https://drive.google.com/file/d/1rNivN1nxLod0L1D7wpZbkKTeRtwODqMu/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1ZXrXD_H-OLQQUBIO3foCAEk0U3lxIfi4",
+"title": "u17-defending-in-a-mid-block-in-a-4-4-2",
+"url": "https://drive.google.com/file/d/1ZXrXD_H-OLQQUBIO3foCAEk0U3lxIfi4/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending",
+"mid block"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"4-4-2"
+]
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1X2iNKXI4DIAzPjmoWUJepqD3MKUNn2CA",
+"title": "u17-defending-set-pieces",
+"url": "https://drive.google.com/file/d/1X2iNKXI4DIAzPjmoWUJepqD3MKUNn2CA/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession",
+"set pieces"
+],
+"theme": [
+"defending",
+"set pieces"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1vKy235eaTwv-lqKy7F_YFUuJ0qo8pFUJ",
+"title": "u17-defending-the-box-in-a-3-5-2",
+"url": "https://drive.google.com/file/d/1vKy235eaTwv-lqKy7F_YFUuJ0qo8pFUJ/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending",
+"defending the box"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"3-5-2"
+]
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1vqCP5Ng-9A62mWIOwlyNDj9K_fwnm7la",
+"title": "u17-defending-the-counter-attack",
+"url": "https://drive.google.com/file/d/1vqCP5Ng-9A62mWIOwlyNDj9K_fwnm7la/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"out of possession",
+"transition"
+],
+"theme": [
+"attacking",
+"counter-attack",
+"defending"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1Yc1ydgfpZdlBphvsZrpOIiVT8-cHhFEM",
+"title": "u17-defending-to-restrict-space",
+"url": "https://drive.google.com/file/d/1Yc1ydgfpZdlBphvsZrpOIiVT8-cHhFEM/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending",
+"space"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1K-3EtczJzT3yXHK_GbO9c1eT1MeGA6R0",
+"title": "u17-defending-with-a-high-line",
+"url": "https://drive.google.com/file/d/1K-3EtczJzT3yXHK_GbO9c1eT1MeGA6R0/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"breaking lines",
+"defending"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1vFYzsFoXjdWkiDzntdVtHAN3Rp-cIbXC",
+"title": "u17-defensive-transitions",
+"url": "https://drive.google.com/file/d/1vFYzsFoXjdWkiDzntdVtHAN3Rp-cIbXC/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"transition"
+],
+"theme": [
+"defending",
+"transition"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1i2jfXng_9ANac0sfNAWz2ntrqoOmbpWK",
+"title": "u17-dominating-possession-to-exploit-space",
+"url": "https://drive.google.com/file/d/1i2jfXng_9ANac0sfNAWz2ntrqoOmbpWK/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"possession",
+"space"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1-hCLcIlAcEOu9O7tVLIvnZNdil2GJVje",
+"title": "u17-dominating-possession-to-progress-in-a-3-5-2",
+"url": "https://drive.google.com/file/d/1-hCLcIlAcEOu9O7tVLIvnZNdil2GJVje/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"possession",
+"progression"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"3-5-2"
+]
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1rcu4S-hPOz-2VWyOfoHfaLLPbcesL4WY",
+"title": "u17-front-two-pivot-pressing",
+"url": "https://drive.google.com/file/d/1rcu4S-hPOz-2VWyOfoHfaLLPbcesL4WY/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"front two",
+"pressing"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1XD8FptFEC5O4ELSnGK5rmS53hxijuuMh",
+"title": "u17-goalkeepers--defending-the-space-and-angled-shot-stopping",
+"url": "https://drive.google.com/file/d/1XD8FptFEC5O4ELSnGK5rmS53hxijuuMh/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending",
+"finishing",
+"goalkeeping",
+"space"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1w2SmX_L8TlrhMG23B-ujnbdLXr5YGj3P",
+"title": "u17-goalkeepers-dealing-with-crosses",
+"url": "https://drive.google.com/file/d/1w2SmX_L8TlrhMG23B-ujnbdLXr5YGj3P/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"crossing",
+"finishing",
+"goalkeeping"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1ijD3aU_HgLAH2KBvbLKuO2_DjG0iGjjX",
+"title": "u17-goalkeepers-dealing-with-high-balls-and-counter-attacking",
+"url": "https://drive.google.com/file/d/1ijD3aU_HgLAH2KBvbLKuO2_DjG0iGjjX/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"transition"
+],
+"theme": [
+"attacking",
+"counter-attack",
+"finishing",
+"goalkeeping"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1oLjH-ZaXwxUszOcxk2srrUOxA11ao3UX",
+"title": "u17-individual-development-forwards",
+"url": "https://drive.google.com/file/d/1oLjH-ZaXwxUszOcxk2srrUOxA11ao3UX/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"playing forward"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1rc9HpPB6f9jPA-1GmS6k46Jrn4Jw28Lr",
+"title": "u17-maintaining-possession",
+"url": "https://drive.google.com/file/d/1rc9HpPB6f9jPA-1GmS6k46Jrn4Jw28Lr/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"possession"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1coqswt_wcaeMhtBEUxqYZJ9teDGV7nWM",
+"title": "u17-midfield-rotations-to-control-and-penetrate",
+"url": "https://drive.google.com/file/d/1coqswt_wcaeMhtBEUxqYZJ9teDGV7nWM/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"first touch",
+"midfield",
+"rotations"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1tXY74uZvwnbDlRy-Gfro4xzSA-Q0iuZQ",
+"title": "u17-player-oriented-pressing",
+"url": "https://drive.google.com/file/d/1tXY74uZvwnbDlRy-Gfro4xzSA-Q0iuZQ/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"pressing"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1nAr5eol5ccySIU1iYOh_hejGqvsuuK8B",
+"title": "u17-playing-off-the-front-to-create-and-score",
+"url": "https://drive.google.com/file/d/1nAr5eol5ccySIU1iYOh_hejGqvsuuK8B/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"creating chances",
+"finishing"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1_ATZCoMadwF-54pMdFE23g48Mtpfr-W4",
+"title": "u17-playing-through-round-or-over-a-mid-block",
+"url": "https://drive.google.com/file/d/1_ATZCoMadwF-54pMdFE23g48Mtpfr-W4/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"mid block"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1kAVb86lsi4KT2U71aofg3EtlhjdvgTK5",
+"title": "u17-pressing-in-a-3-4-3",
+"url": "https://drive.google.com/file/d/1kAVb86lsi4KT2U71aofg3EtlhjdvgTK5/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"pressing"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"3-4-3"
+]
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1C_bF8ggEdXhIUcMeqL-HuJeUWP1dv2YS",
+"title": "u17-pressing-with-a-front-three",
+"url": "https://drive.google.com/file/d/1C_bF8ggEdXhIUcMeqL-HuJeUWP1dv2YS/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"pressing"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1zjK7OiTlv9yGnBznYBHBwS4OUuheMBwf",
+"title": "u17-using-the-full-backs-to-create-and-finish",
+"url": "https://drive.google.com/file/d/1zjK7OiTlv9yGnBznYBHBwS4OUuheMBwf/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"creating chances",
+"finishing",
+"full-backs"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1acW8-OsjTRywc5xEFFidcBLs1iHnD3kD",
+"title": "u17-using-the-goalkeeper-as-a-spare-player",
+"url": "https://drive.google.com/file/d/1acW8-OsjTRywc5xEFFidcBLs1iHnD3kD/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"finishing",
+"goalkeeping"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-10wUJWgoVC6L-HQmfj4c2J-5YT9n0zeMv",
+"title": "u12-u16-setting-wide-traps-to-regain",
+"url": "https://drive.google.com/file/d/10wUJWgoVC6L-HQmfj4c2J-5YT9n0zeMv/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"transition"
+],
+"theme": [
+"wide play"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "cv-1tAu3Ea6hEPHsnGlE4Yw7WMWddrGzZ2-n",
+"title": "U14-U15 Playing as a unit 1",
+"url": "https://drive.google.com/file/d/1tAu3Ea6hEPHsnGlE4Yw7WMWddrGzZ2-n/view",
+"type": "pdf",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"units"
+],
+"age": [
+"U14-U15"
+],
+"players": [],
+"system": []
+},
+"private": true,
+"coach": null
+},
+{
+"id": "mc-cv_steve-holland_mc_ep02_v4cv-academymp4",
+"title": "Steve Holland: Attacking with a front line of five",
+"url": "https://academy.coachesvoice.com/programs/cv_steve-holland_mc_ep02_v4cv-academymp4-1725f7",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"attacking",
+"breaking lines"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "10:59"
+},
+{
+"id": "mc-sean-dyche-masterclass-beating-a-high-pr",
+"title": "Sean Dyche: Beating a high press",
+"url": "https://academy.coachesvoice.com/programs/sean-dyche-masterclass-beating-a-high-press",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"pressing"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "2 videos"
+},
+{
+"id": "mc-enzo-maresca-inverted-full-backs-masterc",
+"title": "Enzo Maresca: Inverted full-backs",
+"url": "https://academy.coachesvoice.com/programs/enzo-maresca-inverted-full-backs-masterclass-tactics",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"full-backs"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "12:42"
+},
+{
+"id": "mc-pablo-zabaleta-full-back-principles-mast",
+"title": "Pablo Zabaleta: Principles of full-back play",
+"url": "https://academy.coachesvoice.com/programs/pablo-zabaleta-full-back-principles-masterclass",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"full-backs",
+"principles"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "19:24"
+},
+{
+"id": "mc-cesc-fabregas-masterclass-building-up-to",
+"title": "Cesc Fàbregas: Building up to attack",
+"url": "https://academy.coachesvoice.com/programs/cesc-fabregas-masterclass-building-up-to-attack",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"attacking",
+"build-up"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "07:42"
+},
+{
+"id": "mc-alvarobenito_mc_eng_ep01_v3mp4-c9e60d",
+"title": "Álvaro Benito: Playing through a high press at Real Madrid Academy",
+"url": "https://academy.coachesvoice.com/programs/alvarobenito_mc_eng_ep01_v3mp4-c9e60d",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"pressing"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "07:02"
+},
+{
+"id": "mc-marti-cifuentes-masterclass-attacking-in",
+"title": "Martí Cifuentes: Attacking a mid-block",
+"url": "https://academy.coachesvoice.com/programs/marti-cifuentes-masterclass-attacking-in-a-mid-block",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession",
+"out of possession"
+],
+"theme": [
+"attacking",
+"mid block"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "15:58"
+},
+{
+"id": "mc-alvaro-benito_mc_ep02_eng_gfx_v4cvamp4-2",
+"title": "Álvaro Benito: Overcoming a defensive mid-block in a 4-3-3",
+"url": "https://academy.coachesvoice.com/programs/alvaro-benito_mc_ep02_eng_gfx_v4cvamp4-28e40d",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending",
+"mid block"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": [
+"4-3-3"
+]
+},
+"paid": true,
+"length": "13:18"
+},
+{
+"id": "mc-thomas-frank-masterclass-brentford-tacti",
+"title": "Thomas Frank: Brentford 2 Swansea 0, play-off final",
+"url": "https://academy.coachesvoice.com/programs/thomas-frank-masterclass-brentford-tactics",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "13:10"
+},
+{
+"id": "mc-thomas-frank-masterclass-tactics-brentfo",
+"title": "Thomas Frank: Brentford 2 Arsenal 0",
+"url": "https://academy.coachesvoice.com/programs/thomas-frank-masterclass-tactics-brentford-arsenal",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "15:42"
+},
+{
+"id": "mc-russell-martin-swansea-masterclass-tacti",
+"title": "Russell Martin: Cardiff 0 Swansea 4",
+"url": "https://academy.coachesvoice.com/programs/russell-martin-swansea-masterclass-tactics",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "28:26"
+},
+{
+"id": "mc-abel-ferreira-masterclass-tactics-palmei",
+"title": "Abel Ferreira: Palmeiras 2 Flamengo 1",
+"url": "https://academy.coachesvoice.com/programs/abel-ferreira-masterclass-tactics-palmeiras",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "30:19"
+},
+{
+"id": "mc-aitor-karanka-masterclass-real-madrid-bi",
+"title": "Aitor Karanka: Bilbao to Madrid",
+"url": "https://academy.coachesvoice.com/programs/aitor-karanka-masterclass-real-madrid-bilbao",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "17:05"
+},
+{
+"id": "mc-adi-hutter-masterclass-frankfurt-bayern",
+"title": "Adi Hütter: Frankfurt 2 Bayern 1",
+"url": "https://academy.coachesvoice.com/programs/adi-hutter-masterclass-frankfurt-bayern",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "18:24"
+},
+{
+"id": "mc-xavi-masterclass-tacics-barcelona-spain",
+"title": "Xavi: Changing position and the third man",
+"url": "https://academy.coachesvoice.com/programs/xavi-masterclass-tacics-barcelona-spain",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"third man"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "12:03"
+},
+{
+"id": "mc-xavimc_eng_academy-5f014e",
+"title": "Xavi: Playing style at Al Sadd",
+"url": "https://academy.coachesvoice.com/programs/xavimc_eng_academy-5f014e",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"playing style"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "14:30"
+},
+{
+"id": "mc-phil-neville-masterclassmp4-dacdc6",
+"title": "Phil Neville: England Women's tactics",
+"url": "https://academy.coachesvoice.com/programs/phil-neville-masterclassmp4-dacdc6",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "07:19"
+},
+{
+"id": "mc-thiago-alcantara-masterclass-tactics",
+"title": "Thiago Alcântara: Barcelona, Bayern & Liverpool tactics (uses tactics board across his career)",
+"url": "https://academy.coachesvoice.com/programs/thiago-alcantara-masterclass-tactics",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"crossing"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "15:42"
+},
+{
+"id": "mc-alvaro-arbeloa-masterclass-tactics",
+"title": "Álvaro Arbeloa: Marking Messi, Villa and Iniesta",
+"url": "https://academy.coachesvoice.com/programs/alvaro-arbeloa-masterclass-tactics",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"marking"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "13:27"
+},
+{
+"id": "mc-cesc-fabregas-masterclass-arsenal",
+"title": "Cesc Fàbregas: Role under Wenger at Arsenal",
+"url": "https://academy.coachesvoice.com/programs/cesc-fabregas-masterclass-arsenal",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"player roles"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "15:04"
+},
+{
+"id": "mc-paulo-fonseca-masterclass-shakhtar-roma-",
+"title": "Paulo Fonseca: Shakhtar to Roma",
+"url": "https://academy.coachesvoice.com/programs/paulo-fonseca-masterclass-shakhtar-roma-tactics",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "16:24"
+},
+{
+"id": "mc-gianfranco-zola-masterclass-chelsea",
+"title": "Gianfranco Zola: Striker's role and the Chelsea years",
+"url": "https://academy.coachesvoice.com/programs/gianfranco-zola-masterclass-chelsea",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"player roles",
+"strikers"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "10:02"
+},
+{
+"id": "mc-jordi-cruyff-masterclass-barcelona-johan",
+"title": "Jordi Cruyff: Johan Cruyff and the Barcelona way",
+"url": "https://academy.coachesvoice.com/programs/jordi-cruyff-masterclass-barcelona-johan-cruyff",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "09:51"
+},
+{
+"id": "mc-cv-ryan-giggs-masterclass-two-gfx-v1_rev",
+"title": "Ryan Giggs: Moving into central midfield",
+"url": "https://academy.coachesvoice.com/programs/cv-ryan-giggs-masterclass-two-gfx-v1_reversionedmp4-cb5116",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"midfield"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "05:56"
+},
+{
+"id": "mc-cv-ryan-giggs-masterclass-one-gfx-v2_rev",
+"title": "Ryan Giggs: Winning the Premier League and Champions League",
+"url": "https://academy.coachesvoice.com/programs/cv-ryan-giggs-masterclass-one-gfx-v2_reversionedmp4-436f52",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "11:46"
+},
+{
+"id": "mc-juan-carlos-unzuemp4-126b59",
+"title": "Juan Carlos Unzué: Goalkeeper evolution at Barcelona",
+"url": "https://academy.coachesvoice.com/programs/juan-carlos-unzuemp4-126b59",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"finishing",
+"goalkeeping"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "15:25"
+},
+{
+"id": "mc-xabi-alonso-masterclass-gfx-v4_reversion",
+"title": "Xabi Alonso: Role at Liverpool, Real Madrid and Bayern",
+"url": "https://academy.coachesvoice.com/programs/xabi-alonso-masterclass-gfx-v4_reversionedmp4-d3a4d0",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"player roles"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "08:12"
+},
+{
+"id": "mc-david-moyes-masterclass-gfx-v3_reversion",
+"title": "David Moyes: Everton's evolution",
+"url": "https://academy.coachesvoice.com/programs/david-moyes-masterclass-gfx-v3_reversionedmp4-00db4b",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "12:02"
+},
+{
+"id": "mc-carlos-vicens-masterclass-tactics",
+"title": "Carlos Vicens: Europa League tactics, Braga 1 Nottingham Forest 0",
+"url": "https://academy.coachesvoice.com/programs/carlos-vicens-masterclass-tactics",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "30:40"
+},
+{
+"id": "mc-gary-oneil-masterclass-chelsea-wolves-ta",
+"title": "Gary O'Neil: Chelsea 2 Wolves 4",
+"url": "https://academy.coachesvoice.com/programs/gary-oneil-masterclass-chelsea-wolves-tactics",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "27:23"
+},
+{
+"id": "mc-johnnie-jackson-masterclass-afc-wimbledo",
+"title": "Johnnie Jackson: AFC Wimbledon League Two Playoffs",
+"url": "https://academy.coachesvoice.com/programs/johnnie-jackson-masterclass-afc-wimbledon",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "27:59"
+},
+{
+"id": "mc-carles-martinez-novell-masterclass",
+"title": "Carles Martínez Novell: Toulouse v Liverpool",
+"url": "https://academy.coachesvoice.com/programs/carles-martinez-novell-masterclass",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"match analysis"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "16:22"
+},
+{
+"id": "mc-luis-de-la-fuente-spain-masterclass",
+"title": "Luis de la Fuente: Euro 2024 Final, Spain 2-1 England",
+"url": "https://academy.coachesvoice.com/programs/luis-de-la-fuente-spain-masterclass",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"match analysis"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "21:25"
+},
+{
+"id": "mc-edin-terzic-masterclass-borussia-dortmun",
+"title": "Edin Terzić: Dortmund v PSG Champions League semi-final",
+"url": "https://academy.coachesvoice.com/programs/edin-terzic-masterclass-borussia-dortmund-tactics",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"match analysis"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "2 videos"
+},
+{
+"id": "mc-des-buckingham-masterclass-tactics-oxfor",
+"title": "Des Buckingham: Oxford United League One play-off final",
+"url": "https://academy.coachesvoice.com/programs/des-buckingham-masterclass-tactics-oxford-united",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"units"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "23:24"
+},
+{
+"id": "mc-scott-lindsey_masterclass-crawley-tactic",
+"title": "Scott Lindsey: Crawley Town League Two play-offs",
+"url": "https://academy.coachesvoice.com/programs/scott-lindsey_masterclass-crawley-tactics",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "24:45"
+},
+{
+"id": "mc-ruud-van-nistelrooy-masterclass-psv-ajax",
+"title": "Ruud van Nistelrooy: PSV v Ajax",
+"url": "https://academy.coachesvoice.com/programs/ruud-van-nistelrooy-masterclass-psv-ajax-tactics",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"match analysis"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "21:20"
+},
+{
+"id": "mc-jesse-marsch-masterclass-tactics-leeds-l",
+"title": "Jesse Marsch: Liverpool 1 Leeds 2",
+"url": "https://academy.coachesvoice.com/programs/jesse-marsch-masterclass-tactics-leeds-liverpool",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "21:29"
+},
+{
+"id": "mc-cesc-fabregas-masterclass-false-9",
+"title": "Cesc Fàbregas: The False 9",
+"url": "https://academy.coachesvoice.com/programs/cesc-fabregas-masterclass-false-9",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"false 9"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "11:59"
+},
+{
+"id": "mc-nathan-jones-masterclass-southampton-man",
+"title": "Nathan Jones: Southampton 2 Man City 0",
+"url": "https://academy.coachesvoice.com/programs/nathan-jones-masterclass-southampton-manchester-city",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "25:07"
+},
+{
+"id": "mc-bo-svensson-masterclass-mainz-tactics",
+"title": "Bo Svensson: Mainz 2 Bayern 1",
+"url": "https://academy.coachesvoice.com/programs/bo-svensson-masterclass-mainz-tactics",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "24:01"
+},
+{
+"id": "mc-rob-edwards-masterclass-luton",
+"title": "Rob Edwards: Sheffield United 0 Luton 1",
+"url": "https://academy.coachesvoice.com/programs/rob-edwards-masterclass-luton",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"units"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "27:45"
+},
+{
+"id": "mc-cv-will-still-masterclass",
+"title": "Will Still: Reims 0 PSG 0",
+"url": "https://academy.coachesvoice.com/programs/cv-will-still-masterclass",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "17:45"
+},
+{
+"id": "mc-masterclass-casey-stoney-everton-man-uni",
+"title": "Casey Stoney: Everton Women 0 Man United Women 3",
+"url": "https://academy.coachesvoice.com/programs/masterclass-casey-stoney-everton-man-united-tactics",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"units"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "08:01"
+},
+{
+"id": "mc-masterclass-tactcis-casey-stoney-man-uni",
+"title": "Casey Stoney: Man United Women 2 Man City Women 2",
+"url": "https://academy.coachesvoice.com/programs/masterclass-tactcis-casey-stoney-man-united-man-city",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"units"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "05:56"
+},
+{
+"id": "mc-casey-stoney-masterclass-tactics-manches",
+"title": "Casey Stoney: Man United Women 1 Arsenal Women 0",
+"url": "https://academy.coachesvoice.com/programs/casey-stoney-masterclass-tactics-manchester-united-arsenal",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"units"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "07:45"
+},
+{
+"id": "mc-sean-dyche-masterclass-burnley-tactics",
+"title": "Sean Dyche: Key principles of the 4-4-2 at Burnley",
+"url": "https://academy.coachesvoice.com/programs/sean-dyche-masterclass-burnley-tactics",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"principles"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": [
+"4-4-2"
+]
+},
+"paid": true,
+"length": "19:47"
+},
+{
+"id": "mc-masterclass-sean-dyche-liverpool-burnley",
+"title": "Sean Dyche: Liverpool 0 Burnley 1",
+"url": "https://academy.coachesvoice.com/programs/masterclass-sean-dyche-liverpool-burnley-tactics",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "18:26"
+},
+{
+"id": "mc-rafa-benitez-masterclass-liverpool-tacti",
+"title": "Rafa Benítez: Liverpool 4 Real Madrid 0",
+"url": "https://academy.coachesvoice.com/programs/rafa-benitez-masterclass-liverpool-tactics",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "10:51"
+},
+{
+"id": "mc-rafa-benitez-masterclass-tactics",
+"title": "Rafa Benítez: Liverpool, Valencia and the 4-2-3-1",
+"url": "https://academy.coachesvoice.com/programs/rafa-benitez-masterclass-tactics",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"match analysis"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": [
+"4-2-3-1"
+]
+},
+"paid": true,
+"length": "18:26"
+},
+{
+"id": "mc-rudi-garcia-masterclass-lyon-tactics",
+"title": "Rudi Garcia: Man City 1 Lyon 3",
+"url": "https://academy.coachesvoice.com/programs/rudi-garcia-masterclass-lyon-tactics",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "10:41"
+},
+{
+"id": "mc-michael-oneill-masterclass-northern-irel",
+"title": "Michael O'Neill: Euro 2016, Ukraine 0 Northern Ireland 2",
+"url": "https://academy.coachesvoice.com/programs/michael-oneill-masterclass-northern-ireland-tactics",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"match analysis"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "17:21"
+},
+{
+"id": "mc-michael-oneill-masterclass-qpr-stoke-tac",
+"title": "Michael O'Neill: QPR 0 Stoke 2",
+"url": "https://academy.coachesvoice.com/programs/michael-oneill-masterclass-qpr-stoke-tactics",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "13:39"
+},
+{
+"id": "mc-pep-lijnders-masterclass-liverpool-barce",
+"title": "Pep Lijnders: Liverpool 4 Barcelona 0",
+"url": "https://academy.coachesvoice.com/programs/pep-lijnders-masterclass-liverpool-barcelona-tactics",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "28:41"
+},
+{
+"id": "mc-mark-warburton-tactics-masterclass-qpr",
+"title": "Mark Warburton: QPR 1 Blackburn 0",
+"url": "https://academy.coachesvoice.com/programs/mark-warburton-tactics-masterclass-qpr",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "11:12"
+},
+{
+"id": "mc-paulo-sousa-masterclass-tactics-dortmund",
+"title": "Paulo Sousa: Dortmund 1996/97",
+"url": "https://academy.coachesvoice.com/programs/paulo-sousa-masterclass-tactics-dortmund",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"match analysis"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "09:30"
+},
+{
+"id": "mc-paulo-sousa-masterclass-tactics-juventus",
+"title": "Paulo Sousa: Juventus 1995/96",
+"url": "https://academy.coachesvoice.com/programs/paulo-sousa-masterclass-tactics-juventus",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"match analysis"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "09:34"
+},
+{
+"id": "mc-tite-masterclass-tactics-club-world-cup-",
+"title": "Tite: Corinthians 1 Chelsea 0",
+"url": "https://academy.coachesvoice.com/programs/tite-masterclass-tactics-club-world-cup-corinthians-chelsea",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "23:11"
+},
+{
+"id": "mc-tite-masterclass-tactics-copa-america-br",
+"title": "Tite: Copa América, Brazil 3-1 Peru",
+"url": "https://academy.coachesvoice.com/programs/tite-masterclass-tactics-copa-america-brazil-peru",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"match analysis"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "28:26"
+},
+{
+"id": "mc-gianfranco-zola-masterclass-tactics-watf",
+"title": "Gianfranco Zola: Watford 3 Leicester 1",
+"url": "https://academy.coachesvoice.com/programs/gianfranco-zola-masterclass-tactics-watford-leicester",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "16:28"
+},
+{
+"id": "mc-brendanrodgersliverpool",
+"title": "Brendan Rodgers: Liverpool 5 Arsenal 1",
+"url": "https://academy.coachesvoice.com/programs/brendanrodgersliverpool",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "04:54"
+},
+{
+"id": "mc-jordi-cruyff-masterclass-manchester-unit",
+"title": "Jordi Cruyff: Man United and the 4-4-2",
+"url": "https://academy.coachesvoice.com/programs/jordi-cruyff-masterclass-manchester-united",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"units"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": [
+"4-4-2"
+]
+},
+"paid": true,
+"length": "12:23"
+},
+{
+"id": "mc-diego-martinez-masterclass-tactics-grana",
+"title": "Diego Martínez: Villarreal 4-4 Granada",
+"url": "https://academy.coachesvoice.com/programs/diego-martinez-masterclass-tactics-granada",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"match analysis"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "09:42"
+},
+{
+"id": "mc-veljko-paunovic-masterclass-reading-blac",
+"title": "Veljko Paunović: Blackburn 2-4 Reading",
+"url": "https://academy.coachesvoice.com/programs/veljko-paunovic-masterclass-reading-blackburn",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"match analysis"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "18:11"
+},
+{
+"id": "mc-cv_unai-emery_mc_ep01_eng_v3_cvamp4-dd0f",
+"title": "Unai Emery: Liverpool 1 Sevilla 3",
+"url": "https://academy.coachesvoice.com/programs/cv_unai-emery_mc_ep01_eng_v3_cvamp4-dd0f7b",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "13:09"
+},
+{
+"id": "mc-steve-holland-masterclass-one-gfx-platfo",
+"title": "Steve Holland: Chelsea 1-0 Barcelona",
+"url": "https://academy.coachesvoice.com/programs/steve-holland-masterclass-one-gfx-platformmp4-bf8086",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"match analysis"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "09:50"
+},
+{
+"id": "mc-cv_robertomoreno_mc_ep01_eng_v3academymp",
+"title": "Robert Moreno: Spain 5 Romania 0",
+"url": "https://academy.coachesvoice.com/programs/cv_robertomoreno_mc_ep01_eng_v3academymp4-edecc4",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "21:22"
+},
+{
+"id": "mc-mark-hughes-masterclass-gfx-platformmp4-",
+"title": "Mark Hughes: Stoke 6 Liverpool 1",
+"url": "https://academy.coachesvoice.com/programs/mark-hughes-masterclass-gfx-platformmp4-9a7ef4",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "14:20"
+},
+{
+"id": "mc-howemp4-607493",
+"title": "Eddie Howe: Chelsea 0-3 Bournemouth",
+"url": "https://academy.coachesvoice.com/programs/howemp4-607493",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"match analysis"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "10:15"
+},
+{
+"id": "mc-cv-tim-cahill-masterclass-one-reversionm",
+"title": "Tim Cahill: Millwall to Everton, midfield to number 10",
+"url": "https://academy.coachesvoice.com/programs/cv-tim-cahill-masterclass-one-reversionmp4-a1b88f",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"midfield"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "10:12"
+},
+{
+"id": "mc-sven-goran-eriksson-masterclass-2mp4-e1e",
+"title": "Sven-Göran Eriksson: Lazio 1999-2000",
+"url": "https://academy.coachesvoice.com/programs/sven-goran-eriksson-masterclass-2mp4-e1e80b",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"match analysis"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "05:02"
+},
+{
+"id": "mc-sven-goran-eriksson-masterclass-1mp4-e62",
+"title": "Sven-Göran Eriksson: Germany 1 England 5",
+"url": "https://academy.coachesvoice.com/programs/sven-goran-eriksson-masterclass-1mp4-e62ee7",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "10:35"
+},
+{
+"id": "mc-alan-pardewmp4-4bf63c",
+"title": "Alan Pardew: Newcastle 3 Man United 0",
+"url": "https://academy.coachesvoice.com/programs/alan-pardewmp4-4bf63c",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"units"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "09:36"
+},
+{
+"id": "mc-hughtonmp4-38dfaf",
+"title": "Chris Hughton: Brighton 3 Man United 2",
+"url": "https://academy.coachesvoice.com/programs/hughtonmp4-38dfaf",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"units"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "09:46"
+},
+{
+"id": "mc-setienmp4-3fbd8e",
+"title": "Quique Setién: Betis 3 Espanyol 0",
+"url": "https://academy.coachesvoice.com/programs/setienmp4-3fbd8e",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "06:20"
+},
+{
+"id": "mc-di-francescomp4-558474",
+"title": "Eusebio Di Francesco: Roma 3 Chelsea 0",
+"url": "https://academy.coachesvoice.com/programs/di-francescomp4-558474",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "05:46"
+},
+{
+"id": "mc-clarence-seedorf-masterclassmp4-9669de",
+"title": "Clarence Seedorf: Athletic Bilbao 2 Deportivo 3",
+"url": "https://academy.coachesvoice.com/programs/clarence-seedorf-masterclassmp4-9669de",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "09:08"
+},
+{
+"id": "mc-sanchez-floresmp4-561a16",
+"title": "Quique Sánchez Flores: Watford 3 Liverpool 0",
+"url": "https://academy.coachesvoice.com/programs/sanchez-floresmp4-561a16",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "07:44"
+},
+{
+"id": "mc-cv-mourinho-masterclassmp4-e8a500",
+"title": "José Mourinho: Inter 3 Barcelona 1",
+"url": "https://academy.coachesvoice.com/programs/cv-mourinho-masterclassmp4-e8a500",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "12:19"
+},
+{
+"id": "mc-jack-ross-masterclassmp4-fb7d68",
+"title": "Jack Ross: St Mirren 3 Dundee United 0",
+"url": "https://academy.coachesvoice.com/programs/jack-ross-masterclassmp4-fb7d68",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"units"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "12:43"
+},
+{
+"id": "mc-alan-stubbs-masterclassmp4-208074",
+"title": "Alan Stubbs: Scottish Cup final, Rangers 2 Hibernian 3",
+"url": "https://academy.coachesvoice.com/programs/alan-stubbs-masterclassmp4-208074",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "07:20"
+},
+{
+"id": "mc-carvalhalmp4-534148",
+"title": "Carlos Carvalhal: Swansea 1 Liverpool 0",
+"url": "https://academy.coachesvoice.com/programs/carvalhalmp4-534148",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "15:46"
+},
+{
+"id": "mc-southgate-masterclass-3_reversionedmp4-0",
+"title": "Gareth Southgate: England 2 Spain 2",
+"url": "https://academy.coachesvoice.com/programs/southgate-masterclass-3_reversionedmp4-0b1dc3",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "09:28"
+},
+{
+"id": "mc-shaun-derry-masterclassmp4-829fed",
+"title": "Shaun Derry: Cambridge 4 Coventry 0",
+"url": "https://academy.coachesvoice.com/programs/shaun-derry-masterclassmp4-829fed",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "11:48"
+},
+{
+"id": "mc-kevin-nicholson-masterclassmp4-5e823e",
+"title": "Kevin Nicholson: Bangor City 5 The New Saints 2",
+"url": "https://academy.coachesvoice.com/programs/kevin-nicholson-masterclassmp4-5e823e",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "16:26"
+},
+{
+"id": "mc-chris-powell-masterclassmp4-629422",
+"title": "Chris Powell: Southend 3 Wigan 1",
+"url": "https://academy.coachesvoice.com/programs/chris-powell-masterclassmp4-629422",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "06:24"
+},
+{
+"id": "mc-pako-ayestaran-masterclassmp4-431fee",
+"title": "Pako Ayestarán: Barcelona 1 Valencia 2",
+"url": "https://academy.coachesvoice.com/programs/pako-ayestaran-masterclassmp4-431fee",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "10:35"
+},
+{
+"id": "mc-manuel-pellegrini-masterclassmp4-a54b27",
+"title": "Manuel Pellegrini: Man City 4 Man United 1",
+"url": "https://academy.coachesvoice.com/programs/manuel-pellegrini-masterclassmp4-a54b27",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"units"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "04:40"
+},
+{
+"id": "mc-lee-johnson-masterclassmp4-c2dee4",
+"title": "Lee Johnson: Bristol City 2 Man United 1",
+"url": "https://academy.coachesvoice.com/programs/lee-johnson-masterclassmp4-c2dee4",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [
+"units"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "04:48"
+},
+{
+"id": "mc-graham-potter-masterclassmp4-668cdf",
+"title": "Graham Potter: Östersunds 2 Galatasaray 0",
+"url": "https://academy.coachesvoice.com/programs/graham-potter-masterclassmp4-668cdf",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "06:10"
+},
+{
+"id": "mc-michael-jolley-masterclassmp4-76c09f",
+"title": "Michael Jolley: Eskilstuna 3 Malmö 1",
+"url": "https://academy.coachesvoice.com/programs/michael-jolley-masterclassmp4-76c09f",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "07:30"
+},
+{
+"id": "mc-slavisa-jokanovic-masterclassmp4-958854",
+"title": "Slavisa Jokanovic: Newcastle 1 Fulham 3",
+"url": "https://academy.coachesvoice.com/programs/slavisa-jokanovic-masterclassmp4-958854",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "06:17"
+},
+{
+"id": "mc-gary-rowett-masterclassmp4-de83ce",
+"title": "Gary Rowett: Birmingham 2 Sheffield Wednesday 1",
+"url": "https://academy.coachesvoice.com/programs/gary-rowett-masterclassmp4-de83ce",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "05:26"
+},
+{
+"id": "mc-nunomp4-977931",
+"title": "Nuno Espírito Santo: Valencia 2 Real Madrid 1",
+"url": "https://academy.coachesvoice.com/programs/nunomp4-977931",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "03:53"
+},
+{
+"id": "mc-paul-clementmp4-113c35",
+"title": "Paul Clement: Liverpool 2 Swansea 3",
+"url": "https://academy.coachesvoice.com/programs/paul-clementmp4-113c35",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "05:54"
+},
+{
+"id": "mc-garry-monkmp4-5f7153",
+"title": "Garry Monk: Arsenal 0 Swansea 1",
+"url": "https://academy.coachesvoice.com/programs/garry-monkmp4-5f7153",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "09:30"
+},
+{
+"id": "mc-roslermp4-3437f2",
+"title": "Uwe Rosler: Man City 1 Wigan 2",
+"url": "https://academy.coachesvoice.com/programs/roslermp4-3437f2",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "09:13"
+},
+{
+"id": "mc-mini-masterclass-combination-play-and-fi",
+"title": "Aidan Denver (Pro Football Academy): Mini masterclass: Combination play and finishing (One-to-one & small groups rail)",
+"url": "https://academy.coachesvoice.com/programs/mini-masterclass-combination-play-and-finishing",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"combinations",
+"finishing"
+],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "9 videos"
+},
+{
+"id": "mc-gary-caldwell-masterclass-coach-tactics",
+"title": "Gary Caldwell: The Coach's Cut",
+"url": "https://academy.coachesvoice.com/programs/gary-caldwell-masterclass-coach-tactics",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "n/a"
+},
+{
+"id": "mc-ian-burchnall-masterclass-coach-tactics",
+"title": "Ian Burchnall: The Coach's Cut",
+"url": "https://academy.coachesvoice.com/programs/ian-burchnall-masterclass-coach-tactics",
+"type": "masterclass",
+"src": "coachesvoice",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [
+"ADULT"
+],
+"players": [],
+"system": []
+},
+"paid": true,
+"length": "n/a"
+},
+{
+"id": "x-2115426920150044796",
+"title": "@justcfc — Carragher on CBs in a back three",
+"url": "https://x.com/justcfc/status/2115426920150044796",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [],
+"theme": [
+"centre-backs"
+],
+"age": [
+"U15"
+],
+"players": [],
+"system": [
+"back three"
+]
+},
+"note": "https://docs.google.com/document/d/1x8M-hA_z7NltvK1Gxs1gBx-KbDA2R-S8B3UGHFhOPP4/edit"
+},
+{
+"id": "x-2115235307977093460",
+"title": "@ChoriCabra — 3-5-2 organised build-up phase (video)",
+"url": "https://x.com/ChoriCabra/status/2115235307977093460",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"build-up"
+],
+"age": [],
+"players": [],
+"system": [
+"3-5-2"
+]
+},
+"note": "https://docs.google.com/document/d/1WZ7IYzbzOtPmCaB2S4wqHjmlwq0bVUvrI-2-FKepU3E/edit"
+},
+{
+"id": "x-2115183538261893178",
+"title": "@FAIR_FootballAI — Torino 3-5-2 half-time stats (Serie A)",
+"url": "https://x.com/FAIR_FootballAI/status/2115183538261893178",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [],
+"players": [],
+"system": [
+"3-5-2"
+]
+},
+"note": "https://docs.google.com/document/d/1lhV3KSVPeVw_DOoON0UFxPh7XsaRycGLsJqSagunIVg/edit"
+},
+{
+"id": "x-2105301354210074947",
+"title": "@ProAcademyDrill — 11v11 3-4-3 wing-back demand (diagram)",
+"url": "https://x.com/ProAcademyDrill/status/2105301354210074947",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [],
+"theme": [
+"1v1",
+"wing-backs"
+],
+"age": [],
+"players": [
+"11v11"
+],
+"system": [
+"3-4-3"
+]
+},
+"note": "https://docs.google.com/document/d/12cWHx-OpbF0znYD8iqm6mKZUanEGiwxPd_1yKUCS4Lk/edit"
+},
+{
+"id": "x-1912210812074066006",
+"title": "@TheS_Resource — Thread: why a 3-4-2-1 struggles (Man Utd)",
+"url": "https://x.com/TheS_Resource/status/1912210812074066006",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [],
+"players": [],
+"system": [
+"3-4-2-1"
+]
+},
+"note": "https://docs.google.com/document/d/1cANbUp80S5o2qkXbQLJx352XtEhki3SerL-vDQ0knys/edit"
+},
+{
+"id": "x-1894132292068553008",
+"title": "@_MKFootball — West Ham pressing triggers (3-3)",
+"url": "https://x.com/_MKFootball/status/1894132292068553008",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"pressing"
+],
+"age": [],
+"players": [],
+"system": []
+},
+"note": "https://docs.google.com/document/d/1ZU3NA10Dhi04m7pTrysKWoH-cIGJ4pHcBYTWlJu1rIY/edit"
+},
+{
+"id": "x-1894132284317368698",
+"title": "@_MKFootball — West Ham 5-3-2 low block → transition (match analysis, 1-3)",
+"url": "https://x.com/_MKFootball/status/1894132284317368698",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [
+"out of possession",
+"transition"
+],
+"theme": [
+"low block",
+"transition"
+],
+"age": [],
+"players": [],
+"system": [
+"5-3-2"
+]
+},
+"note": "https://docs.google.com/document/d/1q7xtlSE1ii_mGMWnFZhB5MfRxFikvC9B-D80NEcMIFY/edit"
+},
+{
+"id": "x-1829189517162500254",
+"title": "@CVAcademy — Pittman: session to beat the press with a 3-5-2",
+"url": "https://x.com/CVAcademy/status/1829189517162500254",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"pressing"
+],
+"age": [],
+"players": [],
+"system": [
+"3-5-2"
+]
+},
+"note": "https://docs.google.com/document/d/1HYCyY75ynT_7jUhAMoZ-ZgvEUkO3EFnoIZVni94E4Hs/edit"
+},
+{
+"id": "x-1816717512202997951",
+"title": "@footballdna_ — How to coach 9v9 → 11v11 (1-3-3-2 → 1-3-5-2) (video)",
+"url": "https://x.com/footballdna_/status/1816717512202997951",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [],
+"theme": [
+"1v1"
+],
+"age": [],
+"players": [
+"11v11",
+"9v9"
+],
+"system": [
+"3-5-2"
+]
+},
+"note": "https://docs.google.com/document/d/1cB7pGkmYngxtNciKls759fdYs57lFazM0hydglgAzlw/edit"
+},
+{
+"id": "x-1791144831370277130",
+"title": "@CVAcademy — Pittman: 3-5-2 patterns of play",
+"url": "https://x.com/CVAcademy/status/1791144831370277130",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [],
+"players": [],
+"system": [
+"3-5-2"
+]
+},
+"note": "https://docs.google.com/document/d/1_5R6Ql1zS8euty4YIYec6y-kOj80BYrM2R3MF1Gc8hI/edit"
+},
+{
+"id": "x-1784124727545463238",
+"title": "@footballdna_ — Playing Through Midfield in a 3-5-2 (diagram)",
+"url": "https://x.com/footballdna_/status/1784124727545463238",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [],
+"theme": [
+"midfield"
+],
+"age": [],
+"players": [],
+"system": [
+"3-5-2"
+]
+},
+"note": "https://docs.google.com/document/d/1EJL4KX2R2veKy0knjsHitTlLehmXyaJUWFxFiftDPUI/edit"
+},
+{
+"id": "x-1758031147131429036",
+"title": "@footballdna_ — Playing Out From The Back 3-5-2 (v 3-4-3, 4-4-2, 4-2-3-1)",
+"url": "https://x.com/footballdna_/status/1758031147131429036",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"playing out"
+],
+"age": [],
+"players": [],
+"system": [
+"3-4-3",
+"3-5-2",
+"4-2-3-1",
+"4-4-2",
+"back three"
+]
+},
+"note": "https://docs.google.com/document/d/1tEvVLwYAQzQcSVblc9dCqIhisaNXgLmaGgp0tDyw5QQ/edit"
+},
+{
+"id": "x-1696236207959638304",
+"title": "@TFA_Analysis — Attacking in a 3-4-3 and how to coach it",
+"url": "https://x.com/TFA_Analysis/status/1696236207959638304",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"attacking"
+],
+"age": [],
+"players": [],
+"system": [
+"3-4-3"
+]
+},
+"note": "https://docs.google.com/document/d/19Qrn6yKoZ4Cc0cPK7cIjSispA1w34hfpdNg-1ev31tc/edit"
+},
+{
+"id": "x-1670886669375926273",
+"title": "@TFA_Analysis — Tactical Theory: striker movement in a 3-5-2",
+"url": "https://x.com/TFA_Analysis/status/1670886669375926273",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [],
+"theme": [
+"strikers"
+],
+"age": [],
+"players": [],
+"system": [
+"3-5-2"
+]
+},
+"note": "https://docs.google.com/document/d/14hke2pq3Kr2Daj3SnxsrZ0zg1Rm83eaFeA8H935BVDQ/edit"
+},
+{
+"id": "x-1647533791441829888",
+"title": "@CVAcademy — Pittman Coaching Clinic: wing-backs in a 3-5-2",
+"url": "https://x.com/CVAcademy/status/1647533791441829888",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [],
+"theme": [
+"wing-backs"
+],
+"age": [],
+"players": [],
+"system": [
+"3-5-2"
+]
+},
+"note": "https://docs.google.com/document/d/1MihG15fPLtCrb8ds-7sH4IeWP29F9Vblijz9uHOM8yw/edit"
+},
+{
+"id": "x-1581999954322948096",
+"title": "@Statsbomb — StatsBomb: Exeter WBs hugging the touchline (team width)",
+"url": "https://x.com/Statsbomb/status/1581999954322948096",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [],
+"theme": [
+"breaking lines",
+"first touch",
+"wide play"
+],
+"age": [],
+"players": [],
+"system": []
+},
+"note": "https://docs.google.com/document/d/1vU0CmnHgjPfoCkPWkMlqZPlJsosun7RpLQzTu-4z7PQ/edit"
+},
+{
+"id": "x-1537350435987668994",
+"title": "@CoachesVoice — Wing-backs explained (role graphic)",
+"url": "https://x.com/CoachesVoice/status/1537350435987668994",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [],
+"theme": [
+"player roles",
+"wing-backs"
+],
+"age": [],
+"players": [],
+"system": []
+},
+"note": "https://docs.google.com/document/d/1xmqygVi-8l7VothO8MXM7JqNn35Eqlvcxc-u0V8CsLc/edit"
+},
+{
+"id": "x-1537430779680022528",
+"title": "@CoachesVoice — Conte wing-backs in 3-5-2 vs 3-4-3",
+"url": "https://x.com/CoachesVoice/status/1537430779680022528",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [],
+"theme": [
+"wing-backs"
+],
+"age": [],
+"players": [],
+"system": [
+"3-4-3",
+"3-5-2"
+]
+},
+"note": "https://docs.google.com/document/d/14h2i8o0-e6U54Sj9saPBlRtJUJ_tzmRZec4AoPDFiC4/edit"
+},
+{
+"id": "x-1484465155819905024",
+"title": "@CoachesVoice — 3-4-3 formation explained (2 graphics)",
+"url": "https://x.com/CoachesVoice/status/1484465155819905024",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [],
+"players": [],
+"system": [
+"3-4-3"
+]
+},
+"note": "https://docs.google.com/document/d/1lIfKbInHYuMRkm7OFz4-mIpw6TKzF3F2eK6P7hVjMhw/edit"
+},
+{
+"id": "x-1446394782415216647",
+"title": "@CoachesVoice — Back three explained",
+"url": "https://x.com/CoachesVoice/status/1446394782415216647",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [],
+"players": [],
+"system": [
+"back three"
+]
+},
+"note": "https://docs.google.com/document/d/1WJZ6q4_Y2O179m0bq2tnCT5Wbd5nTgJabDgKIPT0YVc/edit"
+},
+{
+"id": "x-1413913408689213441",
+"title": "@footballdna_ — Defending a 3-4-1-2 (video)",
+"url": "https://x.com/footballdna_/status/1413913408689213441",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending"
+],
+"age": [],
+"players": [],
+"system": []
+},
+"note": "https://docs.google.com/document/d/1HRWZc3o6o7udXDUg7v8rF81Yl7R7Ee7UVZ4yXzwxaNM/edit"
+},
+{
+"id": "x-1336687547188195330",
+"title": "@CoachesVoice — Leipzig: 3-5-2 press → 5-3-2 mid-block",
+"url": "https://x.com/CoachesVoice/status/1336687547188195330",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"mid block",
+"pressing"
+],
+"age": [],
+"players": [],
+"system": [
+"3-5-2",
+"5-3-2"
+]
+},
+"note": "https://docs.google.com/document/d/1M0ehQAuqyqFqcgXcNskaXQo3m-xwCRno1803cV0nKio/edit"
+},
+{
+"id": "x-1149046884918411265",
+"title": "@CoachesVoice — Di Francesco: winger defending vs a 3-4-3 (video)",
+"url": "https://x.com/CoachesVoice/status/1149046884918411265",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending",
+"wingers"
+],
+"age": [],
+"players": [],
+"system": [
+"3-4-3"
+]
+},
+"note": "https://docs.google.com/document/d/1z-RLp-3dzEgqblBaqUOHl8Y0ug3-U8H9FwqC7_ojELI/edit"
+},
+{
+"id": "x-1110578836482215936",
+"title": "@footballdna_ — Sheffield United 3-5-2 overlapping centre-backs (4 stills)",
+"url": "https://x.com/footballdna_/status/1110578836482215936",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [],
+"theme": [
+"centre-backs",
+"overlaps",
+"units"
+],
+"age": [],
+"players": [],
+"system": [
+"3-5-2"
+]
+},
+"note": "https://docs.google.com/document/d/1Y1xwyMxWvZzxEJldN7xX6qjjm0iyuLeOFCSOujlsj2Q/edit"
+},
+{
+"id": "x-1040544434830618625",
+"title": "@CoachesVoice — England 5-3-2 mid-block (WC 2018)",
+"url": "https://x.com/CoachesVoice/status/1040544434830618625",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"mid block"
+],
+"age": [],
+"players": [],
+"system": [
+"5-3-2"
+]
+},
+"note": "https://docs.google.com/document/d/1rjQ0r9VQ4Zk92nn5rt-u9k68hcGpJuUySYu6e5M1tkc/edit"
+},
+{
+"id": "x-2115358732284477766",
+"title": "@ProAcademyDrill — Add target players to possession (video tip)",
+"url": "https://x.com/ProAcademyDrill/status/2115358732284477766",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"possession"
+],
+"age": [],
+"players": [],
+"system": []
+},
+"note": "https://docs.google.com/document/d/1l94U2_EGPOYi6WkTy2Qg9ovLMT6lXxoaCP2jMtNl-yE/edit"
+},
+{
+"id": "x-2115489017563418671",
+"title": "@TheS_Resource — U8 Passing Session",
+"url": "https://x.com/TheS_Resource/status/2115489017563418671",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [],
+"theme": [
+"passing"
+],
+"age": [
+"U8"
+],
+"players": [],
+"system": []
+},
+"note": "https://docs.google.com/document/d/1QVV0xWIVTSB4T76cUb4iEThF30eA7Plx-Rn6HVVVbo4/edit"
+},
+{
+"id": "x-2115521229574885625",
+"title": "@TheS_Resource — Transition Combinations (counter-attack)",
+"url": "https://x.com/TheS_Resource/status/2115521229574885625",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [
+"in possession",
+"transition"
+],
+"theme": [
+"attacking",
+"combinations",
+"counter-attack",
+"transition"
+],
+"age": [],
+"players": [],
+"system": []
+},
+"note": "https://docs.google.com/document/d/1WXwzV66WoJynbLFcCm3CbVcgZLGFnnbNmCzlmQciyzc/edit"
+},
+{
+"id": "x-2115572819702780283",
+"title": "@TheS_Resource — Shark Attack activity",
+"url": "https://x.com/TheS_Resource/status/2115572819702780283",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"attacking"
+],
+"age": [],
+"players": [],
+"system": []
+},
+"note": "https://docs.google.com/document/d/1TEzKDKQVlWxbpaISV7e3w8xt9TCvUNdLwoAPnpz5P_U/edit"
+},
+{
+"id": "x-2115597482055123250",
+"title": "@TheS_Resource — 5v4 Split Game (NEEDS ADAPTATION)",
+"url": "https://x.com/TheS_Resource/status/2115597482055123250",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [],
+"players": [
+"5v4"
+],
+"system": []
+},
+"note": "https://docs.google.com/document/d/1nQn51Cos7Nea8-L4NFjxXkni6Xf8mAbZxlCFgoQ1pMA/edit"
+},
+{
+"id": "x-2115193730374176837",
+"title": "Defending Final Third — Session Card (adapted from @_MKFootball)",
+"url": "https://x.com/_MKFootball/status/2115193730374176837",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending",
+"final third"
+],
+"age": [],
+"players": [],
+"system": []
+},
+"note": "https://docs.google.com/document/d/1MPHImqbhYfiXX2WiPEPLzvZ_3m0QA9uXHNlC-4F-u04/edit"
+},
+{
+"id": "x-2110415073718194193",
+"title": "@CVAcademy — Stevenage Academy U11: lose defender & finish",
+"url": "https://x.com/CVAcademy/status/2110415073718194193",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [
+"in possession",
+"out of possession",
+"transition"
+],
+"theme": [
+"defending",
+"finishing"
+],
+"age": [
+"U11"
+],
+"players": [],
+"system": []
+},
+"note": "https://docs.google.com/document/d/1IS130A10TPdm4IRSsHXeUdlH7XkakpoiVDLexJEOHt4/edit"
+},
+{
+"id": "x-2112845633602334820",
+"title": "@CVAcademy — U12/U13 defensive session plans (marking, covering, pressure)",
+"url": "https://x.com/CVAcademy/status/2112845633602334820",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending",
+"marking",
+"pressing"
+],
+"age": [
+"U12",
+"U13"
+],
+"players": [],
+"system": []
+},
+"note": "https://docs.google.com/document/d/13mAu1LE4A6HYzT_eKVsn-G-OFcgm0rcJESRXy1GAJDs/edit"
+},
+{
+"id": "x-2110717328380043393",
+"title": "@footballdna_ — Transition Delaying The Counter (free session)",
+"url": "https://x.com/footballdna_/status/2110717328380043393",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [
+"transition"
+],
+"theme": [
+"counter-attack",
+"transition"
+],
+"age": [],
+"players": [],
+"system": []
+},
+"note": "https://docs.google.com/document/d/1p5SfFoaKo5i_-jnxg6wP1_E6a36fIOvWyrLTX36gAGQ/edit"
+},
+{
+"id": "x-2112921851420885487",
+"title": "@footballdna_ — Futsal Sole Stop Receiving Touch (full session)",
+"url": "https://x.com/footballdna_/status/2112921851420885487",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [],
+"theme": [
+"first touch",
+"receiving"
+],
+"age": [],
+"players": [],
+"system": []
+},
+"note": "https://docs.google.com/document/d/1go9HEpNTB28Pe7FZHRWiX7rADK2JtLokim7m5JHZm9o/edit"
+},
+{
+"id": "x-2114610471621800274",
+"title": "@ProAcademyDrill — Uneven numbers 3v2 / 4v3 (video)",
+"url": "https://x.com/ProAcademyDrill/status/2114610471621800274",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [],
+"players": [
+"3v2",
+"4v3"
+],
+"system": []
+},
+"note": "https://docs.google.com/document/d/10S_IYciQIjCnTvcyzstcT-kXp7BKfn6S4mizxkPszkw/edit"
+},
+{
+"id": "x-2113864507705454595",
+"title": "@ProAcademyDrill — Pass-before-score rule (video tip)",
+"url": "https://x.com/ProAcademyDrill/status/2113864507705454595",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [],
+"theme": [
+"finishing",
+"passing"
+],
+"age": [],
+"players": [],
+"system": []
+},
+"note": "https://docs.google.com/document/d/1dlqnrwBBO8VuPwVU0Lfz8ojHu5a_2W5EMLFgXzFH4yo/edit"
+},
+{
+"id": "x-2113354588010971213",
+"title": "@ProAcademyDrill — 9v9 Building the Attack vs 2 defenders",
+"url": "https://x.com/ProAcademyDrill/status/2113354588010971213",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [
+"in possession",
+"out of possession"
+],
+"theme": [
+"attacking",
+"build-up",
+"defending"
+],
+"age": [],
+"players": [
+"9v9"
+],
+"system": []
+},
+"note": "https://docs.google.com/document/d/1_B3HwPy3Pzo5eZ7Oxy68960XHRpZnpWxrC6tk83NF10/edit"
+},
+{
+"id": "x-2114422975986561207",
+"title": "@ProAcademyDrill — Unopposed passing drill (back foot)",
+"url": "https://x.com/ProAcademyDrill/status/2114422975986561207",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [],
+"theme": [
+"passing"
+],
+"age": [],
+"players": [],
+"system": []
+},
+"note": "https://docs.google.com/document/d/15xdPMHWW1zgYuqRjZTGLxJFTF9gKX9-xsnyBoIACaQw/edit"
+},
+{
+"id": "x-2112937203034710156",
+"title": "@TheS_Resource — 1v1 In Front of Goal",
+"url": "https://x.com/TheS_Resource/status/2112937203034710156",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [],
+"theme": [
+"1v1",
+"finishing"
+],
+"age": [],
+"players": [
+"1v1"
+],
+"system": []
+},
+"note": "https://docs.google.com/document/d/14RqSY98D-5Jcj9FIAteGFBSP9XJp-j-uodDsWBSl20c/edit"
+},
+{
+"id": "x-2113336294013059435",
+"title": "@TheS_Resource — 6v3 Possession Transfer Game",
+"url": "https://x.com/TheS_Resource/status/2113336294013059435",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"possession"
+],
+"age": [],
+"players": [
+"6v3"
+],
+"system": []
+},
+"note": "https://docs.google.com/document/d/1GlMM-UJYyuSHYTp76M8vlr1U-ABlWtX8xbLscCLihSg/edit"
+},
+{
+"id": "x-2113694271035597059",
+"title": "@TheS_Resource — Defensive Shape session",
+"url": "https://x.com/TheS_Resource/status/2113694271035597059",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [],
+"theme": [
+"defending",
+"shape"
+],
+"age": [],
+"players": [],
+"system": []
+},
+"note": "https://docs.google.com/document/d/1JxoFCP413ru50hH-ancxHbhtXsOxd_BglBOQ1Nsrwk8/edit"
+},
+{
+"id": "x-2113698936112271390",
+"title": "@TheS_Resource — Passing Square Warm-Up",
+"url": "https://x.com/TheS_Resource/status/2113698936112271390",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [],
+"theme": [
+"passing",
+"warm-up"
+],
+"age": [],
+"players": [],
+"system": []
+},
+"note": "https://docs.google.com/document/d/1-zaN_6B8dtijX1SHfE9cnEGIaoRvfAtZfpvbR0u3Bb0/edit"
+},
+{
+"id": "x-2115177185208066363",
+"title": "@TheS_Resource — 39 FREE Football Coaching Session Plans",
+"url": "https://x.com/TheS_Resource/status/2115177185208066363",
+"type": "x",
+"src": "x-sessions",
+"tags": {
+"moment": [],
+"theme": [],
+"age": [],
+"players": [],
+"system": []
+},
+"note": "https://docs.google.com/document/d/17fmgBZqw3Lm6NoKeIl1etUCv4Jg-bqOIDpbsNP8UCRE/edit"
+},
+{
+"id": "an-18jzpYTavvR7QVlXGYKKvllhOqfDurl2W",
+"title": "U12-U16 Defending in a low block in a 3-5-2 (animations)",
+"url": "https://drive.google.com/drive/folders/18jzpYTavvR7QVlXGYKKvllhOqfDurl2W",
+"type": "animation",
+"src": "animations",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending",
+"low block"
+],
+"age": [
+"U12-U16"
+],
+"players": [],
+"system": [
+"3-5-2"
+]
+}
+},
+{
+"id": "an-1G5BXO_MeZa-Bn9lv8wPsOoVypJ41uy94",
+"title": "U17 Building from the back in a 3-5-2 2 (animations)",
+"url": "https://drive.google.com/drive/folders/1G5BXO_MeZa-Bn9lv8wPsOoVypJ41uy94",
+"type": "animation",
+"src": "animations",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"build-up"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"3-5-2"
+]
+}
+},
+{
+"id": "an-1Uudl0XzYc4xmYzivu-Rd_YPZhyrXjegl",
+"title": "U17 Building out in a 3-4-3 (animations)",
+"url": "https://drive.google.com/drive/folders/1Uudl0XzYc4xmYzivu-Rd_YPZhyrXjegl",
+"type": "animation",
+"src": "animations",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"build-up"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"3-4-3"
+]
+}
+},
+{
+"id": "an-1iU33tNf6a1sLbQWp6tjyR9nmPdI-mDVI",
+"title": "U17 Counter-attacking from a 3-5-2 (animations)",
+"url": "https://drive.google.com/drive/folders/1iU33tNf6a1sLbQWp6tjyR9nmPdI-mDVI",
+"type": "animation",
+"src": "animations",
+"tags": {
+"moment": [
+"in possession",
+"transition"
+],
+"theme": [
+"attacking",
+"counter-attack"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"3-5-2"
+]
+}
+},
+{
+"id": "an-1Wnu3-_qCsVQRnPrsitudfpQ74uV2xpgE",
+"title": "U17 Creating central overloads in a 3-5-2 (animations)",
+"url": "https://drive.google.com/drive/folders/1Wnu3-_qCsVQRnPrsitudfpQ74uV2xpgE",
+"type": "animation",
+"src": "animations",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"overloads"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"3-5-2"
+]
+}
+},
+{
+"id": "an-1VbLSq6UtkwoGr3IaR9FBcZwP_AcRen2j",
+"title": "U17 Creating the attack in a 3-5-2 (animations)",
+"url": "https://drive.google.com/drive/folders/1VbLSq6UtkwoGr3IaR9FBcZwP_AcRen2j",
+"type": "animation",
+"src": "animations",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"attacking"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"3-5-2"
+]
+}
+},
+{
+"id": "an-1St9TjHiHyPmgjzTI_JTsklulKP2Dcz4P",
+"title": "U17 Defending the box in a 3-5-2 (animations)",
+"url": "https://drive.google.com/drive/folders/1St9TjHiHyPmgjzTI_JTsklulKP2Dcz4P",
+"type": "animation",
+"src": "animations",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"defending",
+"defending the box"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"3-5-2"
+]
+}
+},
+{
+"id": "an-1mjObsELlvrs2jFP1SD1rqeI1hg5jsNx8",
+"title": "U17 Defensive principles in a 3-4-3 (animations)",
+"url": "https://drive.google.com/drive/folders/1mjObsELlvrs2jFP1SD1rqeI1hg5jsNx8",
+"type": "animation",
+"src": "animations",
+"tags": {
+"moment": [],
+"theme": [
+"defending",
+"principles"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"3-4-3"
+]
+}
+},
+{
+"id": "an-1QjwNI6NOpMJz4Gsqy1MnUXOq7Q733XTd",
+"title": "U17 Dominating possession to progress in a 3-5-2 (animations)",
+"url": "https://drive.google.com/drive/folders/1QjwNI6NOpMJz4Gsqy1MnUXOq7Q733XTd",
+"type": "animation",
+"src": "animations",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"possession",
+"progression"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"3-5-2"
+]
+}
+},
+{
+"id": "an-10RGsYN8HbxaePiziSR0TPPmXrtE03riD",
+"title": "U17 Playing out in a 3-5-2 (animations)",
+"url": "https://drive.google.com/drive/folders/10RGsYN8HbxaePiziSR0TPPmXrtE03riD",
+"type": "animation",
+"src": "animations",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"playing out"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"3-5-2"
+]
+}
+},
+{
+"id": "an-1JBUR4ENJgWToo7RZ0nN_fzMwRqxbUNKe",
+"title": "U17 Pressing in a 3-4-3 (animations)",
+"url": "https://drive.google.com/drive/folders/1JBUR4ENJgWToo7RZ0nN_fzMwRqxbUNKe",
+"type": "animation",
+"src": "animations",
+"tags": {
+"moment": [
+"out of possession"
+],
+"theme": [
+"pressing"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"3-4-3"
+]
+}
+},
+{
+"id": "an-1ZtCVqM5GBtc4GmTUtgPJD_hPOqYQSORM",
+"title": "p3_d1 Unopposed Building Patterns 2D – curved + voiceover",
+"url": "https://drive.google.com/file/d/1ZtCVqM5GBtc4GmTUtgPJD_hPOqYQSORM/view",
+"type": "animation",
+"src": "animations",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"build-up",
+"playing out"
+],
+"age": [
+"U17"
+],
+"players": [],
+"system": [
+"3-5-2"
+]
+}
+},
+{
+"id": "an-1i2jvOifOM7IyW19OfNMZx-l1n1q-fnkr",
+"title": "02 9v8 Position-Specific Practice – 2D – v3",
+"url": "https://drive.google.com/file/d/1i2jvOifOM7IyW19OfNMZx-l1n1q-fnkr/view",
+"type": "animation",
+"src": "animations",
+"tags": {
+"moment": [
+"in possession"
+],
+"theme": [
+"build-up",
+"playing through pressure"
+],
+"age": [
+"U17"
+],
+"players": [
+"9v8"
+],
+"system": [
+"3-5-2"
+]
+}
+}
+]
+}

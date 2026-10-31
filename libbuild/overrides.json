@@ -1,0 +1,6 @@
+{
+ "_note": "Hand overrides keyed by Drive id or URL. Fields here replace or add to auto tags. 'drop': true removes an entry.",
+ "1ZtCVqM5GBtc4GmTUtgPJD_hPOqYQSORM": {"tags": {"theme": ["build-up", "playing out"], "system": ["3-5-2"]}},
+ "1i2jvOifOM7IyW19OfNMZx-l1n1q-fnkr": {"tags": {"theme": ["build-up", "playing through pressure"], "system": ["3-5-2"]}},
+ "1U0rxnDQ0asDo-H-e7D9rlKTnq8NzRzhTC0LRIxWtteA": {"drop": true}
+}
