@@ -103,7 +103,7 @@ function sync_(b) {
     var idx = {};
     vals.forEach(function (r, i) { idx[r[0] + ':' + r[1]] = i; });
     (b.docs || []).forEach(function (d) {
-      if (!d || !/^(player|match|settings|idea)$/.test(d.kind) || !d.id || String(d.json).length > 45000) return;
+      if (!d || !/^(player|match|settings|idea|rev|gd)$/.test(d.kind) || !d.id || String(d.json).length > 45000) return;
       var key = d.kind + ':' + d.id, row = [d.kind, String(d.id), Number(d.updatedAt) || 0, now, String(d.json)];
       if (key in idx) {
         if (Number(vals[idx[key]][2]) <= row[2]) vals[idx[key]] = row;

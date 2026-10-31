@@ -34,6 +34,7 @@ function wk(b,i){return b.weeks[i]||{};}
 function topicOf(b,i){var w=wk(b,i);return w.topic||w.name||X.sbWT(b,i);}
 W.wtags=function(b,i){var w=wk(b,i),t=w.tags||{},th=(t.theme||[]).slice(),mo=(t.moment||[]).slice();
  if(!th.length&&!mo.length){var s=sep(W.tagsFor(topicOf(b,i)+' '+(w.name||'')));th=s.theme;mo=s.moment;}
+ if(w.gtags){var s2=sep(W.tagsFor(w.gtags));s2.theme.forEach(function(x){if(th.indexOf(x)<0)th.push(x);});s2.moment.forEach(function(x){if(mo.indexOf(x)<0)mo.push(x);});}
  return {theme:th,moment:mo,fmt:t.fmt||(w.split?'split':'normal')};};
 
 /* ---------- index ---------- */
@@ -170,6 +171,7 @@ var B3W=[
   sugg:{s1:['d1TShiuBicwqJN8nI359v8VQQitkdS_PdW','d14K9P1xJlIO1X0Z8VHs7oYbcePYj8QnWc'],s2:['d19TF0I6kD8u7CJmfPxt2KroijfkHbr9Nb'],game:['d1MkdavMGRZWBG7MhYEl5VqgUMCN8kx2to']}}];
 W.B3={id:'b3',name:'Block 3: Shape and Transition (attacking)',start:'2026-11-04',fmt:6,next:1,weeks:B3W};
 W.loadB3=function(b){W.archive(b);var R=W.B3;b.rcId=R.id;b.topic=-1;b.free=R.name;b.fmt=R.fmt;b.start=R.start;b.fixed=true;b.next=R.next;b.week=0;b.intro='';b.learn='';b.undo=null;
+ if(window.TOPIC_BANK){var bp=TOPIC_BANK.block3;b.blockStart=bp.blockStart;b.day=bp.day;b.plan=bp.plan.map(function(t,i){return {wk:i+1,topic:t};});}
  b.weeks=R.weeks.map(function(x){var w=JSON.parse(JSON.stringify(x));w.s=w.s||{};w.i={};w.lead=w.lead||{};w.split=w.split?1:0;return w;});
  W.norm(b);W.syncSeed(b);save();return b;};
 
