@@ -31,6 +31,7 @@ for(const role of ['player','parent']){
   if(a.action==='f.goals.get')return okk({season:'2026/27',ht:'Autumn 2',canEdit:role==='player',goals:[{id:'g2',corner:'soc',txt:'talk more',status:'agreed',ht:'Autumn 2',note:'Good',review:''}]});
   if(a.action==='f.goals.add'){added=a;return okk({ok:true});}
   return okk({});});
+ await q.addInitScript(()=>{const _g=Storage.prototype.getItem;Storage.prototype.getItem=function(k){return /^fam\.wel\./.test(k)?'1':_g.call(this,k);};}); // welcome screen already seen
  await q.addInitScript((c)=>{localStorage.setItem('fam.code',c);localStorage.setItem('fam.ok1','1');},role);
  await q.goto('http://localhost:8769/family.html');await q.waitForTimeout(1500);
  const tx=await q.innerText('body');

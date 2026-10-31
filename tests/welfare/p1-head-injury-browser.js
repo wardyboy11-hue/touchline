@@ -66,6 +66,7 @@ for(const role of ['parent','player']){
   if(a.action==='f.conc.get')return okk(role==='player'?{open:true}:{open:true,id:'x',inj:'2026-10-20',st:{1:'2026-10-22',2:'2026-10-24'},day:9,min5:15,min6:21});
   if(a.action==='f.conc.confirm'){conf.push(a);return r.fulfill({status:200,contentType:'application/json',headers:H,body:JSON.stringify({ok:false,error:'Training with possible head contact starts from day 15 at the earliest. It is day 9.'})});}
   return okk({});});
+ await q.addInitScript(()=>{const _g=Storage.prototype.getItem;Storage.prototype.getItem=function(k){return /^fam\.wel\./.test(k)?'1':_g.call(this,k);};}); // welcome screen already seen
  await q.addInitScript(()=>{localStorage.setItem('fam.code','CODE12');localStorage.setItem('fam.ok1','1');});
  await q.goto('http://localhost:8767/family.html');await q.waitForTimeout(1500);
  const tx=await q.innerText('body');

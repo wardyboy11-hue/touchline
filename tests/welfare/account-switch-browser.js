@@ -13,6 +13,7 @@ await q.route('**/macros/**',async r=>{let a={};try{a=JSON.parse(r.request().pos
  if(code==='COACH1'&&a.action==='sync')return res({ok:true,data:{docs:[],serverTime:Date.now()}});
  if(a.action==='f.home'||a.action==='sync')return res({ok:false,error:'That code did not work'});
  return res({ok:true,data:{}});});
+await q.addInitScript(()=>{const _g=Storage.prototype.getItem;Storage.prototype.getItem=function(k){return /^fam\.wel\./.test(k)?'1':_g.call(this,k);};}); // welcome screen already seen
 await q.addInitScript(()=>{if(!localStorage.getItem('fam.code')&&!sessionStorage.getItem('seeded')){localStorage.setItem('fam.code','PARENT1');localStorage.setItem('fam.ok1','1');sessionStorage.setItem('seeded','1');}});
 await q.goto('http://localhost:8771/family.html');await q.waitForTimeout(1800);
 T('button is in the header on the parent page',!!(await q.$('header #acctbtn')));

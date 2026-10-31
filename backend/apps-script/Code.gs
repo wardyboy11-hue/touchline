@@ -188,13 +188,30 @@ function settings_() {
   return s;
 }
 
+/** Parent's own name for this parent code (column 5, parentName). Coaches only see it, in the codes list.
+ *  Never shown on family pages, never sent to AI, not in exports. Pass val to save; '' clears it. */
+function famName_(code, val) {
+  var sh = tab_('Families', ['code', 'playerId', 'createdAt', 'role', 'parentName']);
+  if (sh.getRange(1, 5).getValue() !== 'parentName') sh.getRange(1, 5).setValue('parentName');
+  var c = norm_(code), last = sh.getLastRow(), rows = last > 1 ? sh.getRange(2, 1, last - 1, 5).getValues() : [];
+  for (var i = 0; i < rows.length; i++) {
+    if (String(rows[i][0]) !== c) continue;
+    if (val === undefined) return String(rows[i][4] || '');
+    var v = clean_(val, 60).replace(/[<>]/g, '');
+    if (String(val).trim().length > 60) throw new Error('Keep your name to 60 letters or fewer.');
+    sh.getRange(i + 2, 5).setNumberFormat('@').setValue(v);
+    return v;
+  }
+  throw new Error('That code did not work.');
+}
+
 /** Coach only. Makes a code for every active player who does not have one yet. */
 function famCodes_() {
   var sh = tab_('Families', ['code', 'playerId', 'createdAt', 'role']);
   if (!sh.getRange(1, 4).getValue()) sh.getRange(1, 4).setValue('role');
-  var last = sh.getLastRow(), rows = last > 1 ? sh.getRange(2, 1, last - 1, 4).getValues() : [];
-  var haveP = {}, haveK = {}, used = {};
-  rows.forEach(function (r) { used[r[0]] = 1; if (String(r[3]) === 'player') haveK[r[1]] = r[0]; else haveP[r[1]] = r[0]; });
+  var last = sh.getLastRow(), rows = last > 1 ? sh.getRange(2, 1, last - 1, Math.max(4, Math.min(5, sh.getLastColumn()))).getValues() : [];
+  var haveP = {}, haveK = {}, used = {}, pname = {};
+  rows.forEach(function (r) { used[r[0]] = 1; if (String(r[3]) === 'player') haveK[r[1]] = r[0]; else { haveP[r[1]] = r[0]; if (r[4]) pname[r[1]] = String(r[4]); } });
   var pl = players_(), add = [];
   function mk() { var c; do { c = ''; for (var i = 0; i < 6; i++) c += ALPHA.charAt(Math.floor(Math.random() * ALPHA.length)); } while (used[c]); used[c] = 1; return c; }
   Object.keys(pl).forEach(function (id) {
@@ -202,7 +219,7 @@ function famCodes_() {
     if (!haveK[id]) { haveK[id] = mk(); add.push([haveK[id], id, Date.now(), 'player']); }
   });
   if (add.length) sh.getRange(sh.getLastRow() + 1, 1, add.length, 4).setNumberFormat('@').setValues(add);
-  return Object.keys(pl).map(function (id) { return { playerId: id, num: pl[id].num, name: pl[id].name, code: show_(haveP[id]), pcode: show_(haveK[id]) }; });
+  return Object.keys(pl).map(function (id) { return { playerId: id, num: pl[id].num, name: pl[id].name, code: show_(haveP[id]), pcode: show_(haveK[id]), pname: pname[id] || '' }; });
 }
 
 /** Counts only. How many sessions this week (Monday to Sunday, London) have heading planned. No names, no health data. */
@@ -351,6 +368,8 @@ function fam_(b) {
     var allItems = goalItems.concat(needItems).slice(0, 5);
     return allItems.length ? { items: allItems, at: (wd && wd.workon && wd.workon.at) || Date.now() } : {};
   }
+  if (b.action === 'f.name.get') return { name: role === 'parent' ? famName_(b.code) : '' };
+  if (b.action === 'f.name.set') { if (role !== 'parent') throw new Error('Only a parent code can add a name.'); return { name: famName_(b.code, b.name) }; }
   if (b.action === 'f.respect.get') return respectGet_(pid, role);
   if (b.action === 'f.respect.sign') return respectSign_(pid, role, me, b);
   if (b.action === 'f.mydata.get') return myDataGet_(pid, role);
