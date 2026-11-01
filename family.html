@@ -158,7 +158,7 @@ function clipsBlock(){
  var h='<h2 style="margin:12px 0 6px">Highlights</h2><div class="row">'+[['all','All'],['match','Matches'],['drill','Training']].map(function(t){return '<button class="btn'+(clTab===t[0]?' pri':'')+'" onclick="clTab=\''+t[0]+'\';r()">'+t[1]+'</button>';}).join('')+'</div>';
  h+='<div class="mgrid">'+fl.map(function(c){return '<div class="mi lk" style="cursor:pointer" onclick="clipPlay(\''+c.id+'\')"><div style="font-size:34px;line-height:1">&#9654;</div><b class="small">'+esc(c.title)+'</b><div class="small muted">'+(c.kind==='drill'?'Training':'Match')+(c.game?', '+esc(c.game):'')+'</div></div>';}).join('')+'</div>';
  return h+'<h2 style="margin:16px 0 6px">Photos and links</h2>';}
-function clipPlay(id,retry){var d=document.createElement('div');d.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(0,0,0,.92);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:12px';
+function clipPlay(id,retry){if(!retry)call('f.clip.seen',{id:id}).catch(function(){});var d=document.createElement('div');d.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(0,0,0,.92);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:12px';
  d.innerHTML='<video controls playsinline autoplay style="max-width:100%;max-height:78vh;border-radius:12px;background:#000"></video><button class="btn pri" style="min-width:140px">Close</button>';
  var v=d.querySelector('video');v.src=CLIPW+'/v/'+id+'?t='+(CL&&CL.pt||'');
  v.onerror=function(){if(retry)return;call('f.clips').then(function(x){CL=x;d.remove();clipPlay(id,1);}).catch(function(){});};
@@ -413,7 +413,7 @@ function bodyHomePosts(){var h='';
  D.posts.forEach(function(p){var a=D.mine[p.id]||'';var fx=p.type==='match'?X().fixtures.filter(function(m){return m.date===p.date&&!m.done;})[0]:null;
   h+='<div class="card"><span class="tag">'+(p.type==='match'?'Match':'Training')+'</span><h2 style="margin-top:8px">'+esc(p.title)+'</h2><p><b>'+esc(nice(p.date))+'</b>'+(p.time?', '+esc(p.time):'')+(p.place?'<br>'+esc(p.place):'')+'</p>'+
   (wcClean(p.why)?'<h3>Why we are doing it</h3><p>'+esc(wcClean(p.why)).replace(/\n/g,'<br>')+'</p>':'')+(p.bring?'<h3>Bring</h3><p>'+esc(p.bring)+'</p>':'')+
-  '<h3>'+(D.role==='player'?'Can you come?':'Can '+esc(D.first)+' come?')+'</h3><div class="row yn"><button class="btn y'+(a==='Y'?' on':'')+'" onclick="ans(\''+p.id+'\',\'Y\')">Yes</button><button class="btn m'+(a==='M'?' on':'')+'" onclick="ans(\''+p.id+'\',\'M\')">Maybe</button><button class="btn n'+(a==='N'?' on':'')+'" onclick="ans(\''+p.id+'\',\'N\')">No</button></div>'+(fx&&(a==='Y'||a==='M')?liftBox(fx.id,fxTitle(fx),fx.date):'')+'</div>';});
+  ynBtns(p,a)+(fx&&(a==='Y'||a==='M')?liftBox(fx.id,fxTitle(fx),fx.date):'')+'</div>';});
  h+=voteCards();
  if(D.tips)h+='<div class="card"><h2>Game day reminders</h2><p>'+esc(D.tips).replace(/\n/g,'<br>')+'</p></div>';
  return h;}
@@ -433,7 +433,7 @@ function todayCard(){var x=X(),td=today();var pend=(D.posts||[]).filter(function
  var md=nx&&nx.date===td;var h='';
  if(md){h+='<div class="card today md"><span class="tag" style="background:#FFB81C;color:#1b1200">Match day</span><h2 style="margin-top:8px">'+(nx.ha==='A'?'at ':'v ')+esc(nx.opp)+'</h2><p>Kick off <b>'+esc(nx.ko||'TBC')+'</b>'+(meetBy(nx.ko)?'. Please be there by <b>'+meetBy(nx.ko)+'</b>.':'')+'</p>'+venueBlock(nx)+'<h3>Need us?</h3><p class="small">Running late or stuck in traffic? Use Match day help below. Lifts are on the Games tab.</p><div class="row"><button class="btn" onclick="goTab(\'games\')">Games and lifts</button><button class="btn" onclick="document.getElementById(\'mdh\')&&document.getElementById(\'mdh\').scrollIntoView({behavior:\'smooth\'})">Match day help</button></div></div>';}
  if(pend){var fx=pend.type==='match'?x.fixtures.filter(function(m){return m.date===pend.date&&!m.done;})[0]:null;var pl=pend.place||(fx&&(fx.venue))||'';
-  h+='<div class="card today"><span class="tag">Needs your answer</span><h2 style="margin-top:8px">'+esc(pend.title)+'</h2><p><b>'+esc(nice(pend.date))+'</b>'+(pend.time?', '+esc(pend.time):'')+(pl?'<br>'+esc(pl):'')+'</p><h3>'+(D.role==='player'?'Can you come?':'Can '+who+' come?')+'</h3><div class="ybig"><button class="btn" style="background:#14532d;border-color:#4ADE80" onclick="ans(\''+pend.id+'\',\'Y\')">Yes</button><button class="btn" style="background:#7f1d33;border-color:#FB7185" onclick="ans(\''+pend.id+'\',\'N\')">No</button></div><button class="btn block" style="margin-top:8px" onclick="ans(\''+pend.id+'\',\'M\')">Maybe</button>'+(pl?'<div class="row"><a class="btn" target="_blank" rel="noopener" href="'+mapUrl(pl)+'">Directions</a><a class="btn" target="_blank" rel="noopener" href="'+wxUrl(pl)+'">Weather</a></div>':'')+'</div>';return h;}
+  h+='<div class="card today"><span class="tag">Needs your answer</span><h2 style="margin-top:8px">'+esc(pend.title)+'</h2><p><b>'+esc(nice(pend.date))+'</b>'+(pend.time?', '+esc(pend.time):'')+(pl?'<br>'+esc(pl):'')+'</p><h3>'+(pend.type==='match'?(D.role==='player'?'Playing?':'Is '+who+' playing?'):(D.role==='player'?'Can you come?':'Can '+who+' come?'))+'</h3><div class="ybig"><button class="btn" style="background:#14532d;border-color:#4ADE80" onclick="ans(\''+pend.id+'\',\'Y\')">Yes</button><button class="btn" style="background:#7f1d33;border-color:#FB7185" onclick="ans(\''+pend.id+'\',\'N\')">No</button></div>'+(pend.type==='match'?'':'<button class="btn block" style="margin-top:8px" onclick="ans(\''+pend.id+'\',\'M\')">Maybe</button>')+''+(pl?'<div class="row"><a class="btn" target="_blank" rel="noopener" href="'+mapUrl(pl)+'">Directions</a><a class="btn" target="_blank" rel="noopener" href="'+wxUrl(pl)+'">Weather</a></div>':'')+'</div>';return h;}
  if(nx&&!md){h+='<div class="card today"><span class="tag">You are sorted</span><h2 style="margin-top:8px">Next: '+(nx.ha==='A'?'at ':'')+esc(nx.opp)+'</h2><p><b>'+esc(nice(nx.date))+'</b>'+(nx.ko?', '+koTxt(nx):'')+(meetBy(nx.ko)?'<br>Be there by '+meetBy(nx.ko):'')+'</p>'+venueBlock(nx)+'<button class="btn block" style="margin-top:8px" onclick="goTab(\'games\')">Games and lifts</button></div>';}
  return h;}
 function unans(){var td=today();return (D&&D.posts?D.posts:[]).filter(function(p){return p.date>=td&&!D.mine[p.id];}).length;}
@@ -661,7 +661,10 @@ function lostBox(){if(!LC.open)return '<p class="small"><a href="#" onclick="LC.
 function lostSend(){var n=(document.getElementById('lcn')||{}).value||'',f=(document.getElementById('lcf')||{}).value||'',w=(document.getElementById('lcw')||{}).value||'parent';if(!/^\d{1,3}$/.test(n.trim())){document.getElementById('lce').textContent='Add the shirt number.';return;}
  call('f.codehelp',{role:w,num:n.trim(),first:f.trim().slice(0,30)}).then(function(){LC.st='sent';r();}).catch(function(){LC.st='err';r();});}
 function login(){var v=document.getElementById('code').value.trim();if(!v)return;CODE=v;msg='Checking';document.getElementById('err').textContent='Checking';call('f.home').then(function(d){s(CK,v);D=d;msg='';r();}).catch(function(e){CODE='';msg=e.message;r();});}
-function ans(id,a){D.mine[id]=a;r();call('f.answer',{postId:id,answer:a}).catch(function(e){alert(e.message);load();});}
+function ans(id,a){D.mine[id]=a;if(a!=='N'&&D.rsn)delete D.rsn[id];r();call('f.answer',{postId:id,answer:a}).catch(function(e){alert(e.message);load();});}
+function ansWhy(id){var el=document.getElementById('rs_'+id),v=el?el.value.trim().slice(0,200):'';D.rsn=D.rsn||{};D.rsn[id]=v;call('f.answer',{postId:id,answer:'N',reason:v}).then(function(){alert(v?'Thanks. Only Tim and Deano see this.':'Removed.');r();}).catch(function(e){alert(e.message);load();});}
+function whyBox(p){var v=(D.rsn||{})[p.id]||'';return '<div style="margin-top:10px"><label class="small" for="rs_'+p.id+'">Want to tell the coaches why? This is optional.</label><input id="rs_'+p.id+'" maxlength="200" value="'+esc(v)+'" placeholder="For example: family party, poorly, school trip"><button class="btn block" style="margin-top:6px" onclick="ansWhy(\''+p.id+'\')">'+(v?'Update':'Send')+'</button><p class="small muted">No need to say. Only Tim and Deano see it. Please do not put medical details here; tell Tim directly.</p></div>';}
+function ynBtns(p,a){var mt=p.type==='match';return '<h3>'+(mt?(D.role==='player'?'Playing?':'Is '+esc(D.first)+' playing?'):(D.role==='player'?'Can you come?':'Can '+esc(D.first)+' come?'))+'</h3><div class="row yn"><button class="btn y'+(a==='Y'?' on':'')+'" onclick="ans(\''+p.id+'\',\'Y\')">Yes</button>'+(mt?'':'<button class="btn m'+(a==='M'?' on':'')+'" onclick="ans(\''+p.id+'\',\'M\')">Maybe</button>')+'<button class="btn n'+(a==='N'?' on':'')+'" onclick="ans(\''+p.id+'\',\'N\')">No</button></div>'+(a==='N'?whyBox(p):'');}
 function ask(){var q=document.getElementById('q').value.trim();if(q.length<3)return;askBusy=true;askA='';r();document.getElementById('q').value=q;call('f.ask',{q:q}).then(function(d){askA=d.text;askBusy=false;r();}).catch(function(e){askA=e.message;askBusy=false;r();});}
 window.addEventListener('online',function(){load();});window.addEventListener('offline',function(){r();});
 (function(){
@@ -712,9 +715,9 @@ function pushCard(){
 function out(){CODE='';D=null;s(CK,'');s('fam.cache','');r();}
 if(CODE){var cc=null;try{cc=JSON.parse(g('fam.cache')||'null');}catch(x){}if(cc&&cc.c===CODE&&cc.d){D=cc.d;r();splashDone();}load();}else{r();splashDone();}
 </script>
-<script src="positions.js?v=76" defer></script>
-<script src="acct.js?v=76" defer></script>
-<script src="update.js?v=76" defer></script>
-<script src="pq.js?v=76" defer></script>
+<script src="positions.js?v=77" defer></script>
+<script src="acct.js?v=77" defer></script>
+<script src="update.js?v=77" defer></script>
+<script src="pq.js?v=77" defer></script>
 </body>
 </html>
