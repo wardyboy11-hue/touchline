@@ -14,8 +14,7 @@ T('prompts to add the matchday PDF and still shows the app list as a fallback',/
 await p.setInputFiles('#fapdf',{name:'team-sheet.pdf',mimeType:'application/pdf',buffer:pdf});await p.waitForTimeout(700);
 T('after adding, the PDF shows in a frame with a full screen link',!!(await p.$('iframe[title="FA team sheet"][src^="blob:"]'))&&!!(await p.$('a:has-text("Open full screen")')));
 T('app squad list is hidden once the PDF is there',!/Test One/.test(await p.innerText('#root')));
-await p.click('button:has-text("Show the app squad list instead")');await p.waitForTimeout(300);
-T('can still switch to the app squad list',/Test One/.test(await p.innerText('#root')));
+T('no generated app squad list to switch to (r78: the FA PDF only)',!(await p.$('button:has-text("Show the app squad list instead")')));
 await p.reload();await p.waitForTimeout(900);await p.click('nav.tabs >> text=Team');await p.click('.seg button:has-text("Team sheet")');await p.waitForTimeout(800);
 T('PDF is still there after closing and reopening the app',!!(await p.$('iframe[title="FA team sheet"]'))||/Show the app squad list|Replace/.test(await p.innerText('#root')));
 await p.setInputFiles('#fapdf',{name:'notes.txt',mimeType:'text/plain',buffer:Buffer.from('hello')});await p.waitForTimeout(400);
