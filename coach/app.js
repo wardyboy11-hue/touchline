@@ -229,7 +229,7 @@ function vPlan(m){
  if(mapLink)h+='<p><a class="btn sm pur" href="'+mapLink+'" target="_blank" rel="noopener">Open in Google Maps</a></p>';
  h+='<div class="row"><div class="grow"><label>Half length (minutes)</label><input type="number" min="10" max="45" data-f="half" value="'+esc(m.half)+'"></div><div class="grow">'+formSel(m)+'</div></div></div>';
  h+=viCard(m);h+=scoutCard(m);h+='<div class="card"><h3>Postponed?</h3><div class="row"><div class="grow"><select data-f="pp"><option value=""'+(m.pp?'':' selected')+'>On as planned</option><option value="1"'+(m.pp?' selected':'')+'>Postponed</option></select></div></div><label>Note for parents and players</label><input data-f="ppnote" value="'+esc(m.ppnote||'')+'" placeholder="For example: pitch waterlogged, new date to follow"></div>';
- h+='<div class="card"><h3>Who is available ('+inCount+' of '+avail.length+')</h3><div class="chips">'+avail.map(function(p){var on=m.avail[p.id]!==false&&!ccRec(p.id);return '<button class="chip'+(on?' on':'')+'" data-act="avail" data-id="'+p.id+'"'+(ccRec(p.id)?' style="opacity:.55"':'')+'>'+esc(p.num||'')+' '+esc(shortName(p))+(ccRec(p.id)?' (not available)':'')+'</button>';}).join('')+'</div></div>';
+ h+=pickNoteCard(m.date);h+='<div class="card"><h3>Who is available ('+inCount+' of '+avail.length+')</h3><div class="chips">'+avail.map(function(p){var on=m.avail[p.id]!==false&&!ccRec(p.id);return '<button class="chip'+(on?' on':'')+'" data-act="avail" data-id="'+p.id+'"'+(ccRec(p.id)?' style="opacity:.55"':'')+'>'+esc(p.num||'')+' '+esc(shortName(p))+(ccRec(p.id)?' (not available)':'')+'</button>';}).join('')+'</div></div>';
  var mp=m.postId?posts().filter(function(x){return x.id===m.postId;})[0]:null;
  h+='<div class="card"><h3>Ask the parents</h3>'+(mp&&mp.status==='published'?'<p class="small" style="color:var(--good)">Posted. Parents can answer now.</p><div class="row wrap2"><button class="btn grow" data-act="matchAns">Pull in answers</button><button class="btn grow" data-act="matchUnpost">Take it down</button></div>'+ansCard(m.postId):'<p class="small muted">Posts the date, kick off and place, with a Yes, No or Maybe button for each parent.</p><button class="btn pri block" data-act="matchPost">Post this match to parents</button>')+'</div>';
  h+='<div class="card"><h3>Line up ('+filled+' of 11)</h3><div class="row wrap2" style="margin-bottom:10px"><button class="btn grow" data-act="suggest">Suggest a starting 11</button><button class="btn grow" data-act="printXI">Print team sheet</button></div>'+pitchHTML(m,'plan',0)+'<p class="small muted">Tap a position to choose a player. The list puts the best fits first.</p></div>';
@@ -505,8 +505,9 @@ function statsFor(){
  return Object.keys(out).map(function(k){return out[k];});
 }
 function vStats(){
+ if(!view.answers&&!view.ansBusy){view.ansBusy=1;loadAnswers(true).then(function(){render(true);});}var AS=attStats();
  var rows=statsFor().filter(function(r){return r.p.active!==false||r.app>0;}).sort(function(a,b){return b.mins-a.mins;});
- var h=intro('Minutes, goals, assists and ratings. Coaches only. Never shown to parents or players.')+'<h2 style="margin:6px 0">Season</h2><div class="card"><table><tr><th>Player</th><th>App</th><th>Start</th><th>Min</th><th>G</th><th>A</th><th>MOM</th><th>Avg</th></tr>'+rows.map(function(r){var avg=r.r.length?(r.r.reduce(function(a,b){return a+b;},0)/r.r.length).toFixed(1):'';return '<tr><td>'+esc(r.p.num||'')+' '+esc(shortName(r.p))+'</td><td>'+r.app+'</td><td>'+r.start+'</td><td>'+Math.round(r.mins/60)+'</td><td>'+(r.g||'')+'</td><td>'+(r.a||'')+'</td><td>'+(r.mom||'')+'</td><td>'+avg+'</td></tr>';}).join('')+'</table><p class="small muted">Minutes and ratings are for coaches. Nothing here is shared with players or parents yet.</p></div>';
+ var h=intro('Minutes, goals, assists and ratings. Coaches only. Never shown to parents or players.')+'<h2 style="margin:6px 0">Season</h2><div class="card"><table><tr><th>Player</th><th>App</th><th>Start</th><th>Min</th><th>G</th><th>A</th><th>MOM</th><th>Avg</th><th>Trn</th><th>Trn %</th><th>Said yes</th></tr>'+rows.map(function(r){var t=AS[r.p.id]||{n:0,of:0,my:0,mn:0};var avg=r.r.length?(r.r.reduce(function(a,b){return a+b;},0)/r.r.length).toFixed(1):'';return '<tr><td>'+esc(r.p.num||'')+' '+esc(shortName(r.p))+'</td><td>'+r.app+'</td><td>'+r.start+'</td><td>'+Math.round(r.mins/60)+'</td><td>'+(r.g||'')+'</td><td>'+(r.a||'')+'</td><td>'+(r.mom||'')+'</td><td>'+avg+'</td><td>'+(t.of?t.n:'')+'</td><td>'+(t.of?Math.round(t.n/t.of*100)+'%':'')+'</td><td>'+(t.my||t.mn?t.my+' of '+(t.my+t.mn):'')+'</td></tr>';}).join('')+'</table><p class="small muted">App is match appearances. Trn is training sessions ticked in Attendance, out of the sessions recorded. Said yes is how often the family answered Yes to Playing?. Minutes and ratings are for coaches. Nothing here is shared with players or parents yet.</p></div>';
  return h;
 }
 var FQSTOP='the an and for you your how can what do does did is are to of on in it my me we with this that when where why who from at be get have has will'.split(' ');
@@ -652,7 +653,7 @@ function voiceCoachCard(){var h=view.hub,rows=h.voice||[];if(h.voiceNa)return '<
 function voiceDo(act,id,extra){call(act,Object.assign({id:id},extra||{})).then(function(){view.hub.at=0;loadHub(true);toast('Done');}).catch(function(e){toast(e.message);});}
 function vHub(){
  loadHub();loadPhotos();var h=view.hub,s=S.settings;
- var o=intro('Your control room: what parents see on Home, events, lifts, media to approve, contacts, phone alerts and pictures.')+wxCard()+'<h2 style="margin:6px 0">Hub</h2><p class="small muted">What parents and players see on their home page, plus events, lifts and phone alerts.</p>';
+ var o=intro('Your control room: what parents see on Home, events, lifts, media to approve, contacts, phone alerts and pictures.')+wxCard()+'<h2 style="margin:6px 0">Hub</h2><p class="small muted">What parents and players see on their home page, plus events, lifts and phone alerts.</p>'+attReqCard();
  o+='<div class="card"><h3>Subs and 100 Club</h3><p class="small muted">Adds a reminder to the news parents see on Home. The Subs and 100 Club cards are already on the parent page.</p><div class="row wrap2"><button class="btn grow" data-act="newsSubs">Add subs reminder to news</button><button class="btn grow" data-act="news100">Add 100 Club to news</button></div><div class="row wrap2" style="margin-top:8px"><button class="btn grow" data-act="waSubs">WhatsApp subs reminder</button><button class="btn grow" data-act="wa100">WhatsApp 100 Club</button></div></div>';
  o+='<div class="card"><h3>Welcome message</h3><textarea data-hub="welcome" placeholder="A short hello for the top of the team page">'+esc(s.welcome||'')+'</textarea><p class="small muted">Shows at the top of every parent and player home page.</p>';
  o+='<h4 style="margin:14px 0 4px">News and reminders</h4>'+news().filter(function(n){return !n.gone;}).map(function(n){return '<div class="it" style="cursor:default"><div class="grow small">'+esc(n.t)+'<div class="muted">'+esc(n.d||'')+'</div></div><button class="btn sm bad" data-act="newsDel" data-id="'+n.id+'">Remove</button></div>';}).join('')+'<div class="row" style="margin-top:8px"><input id="newst" class="grow" placeholder="For example: Christmas do, Friday 18 December, 7pm"><input id="newsd" type="date" style="width:150px"></div><button class="btn block" style="margin-top:8px" data-act="newsAdd">Add to home page</button></div>';
@@ -1222,7 +1223,7 @@ function ansSum(id){var a=ansFor(id),r={Y:[],N:[],M:[],none:[]};plist().forEach(
 function ansCard(id){
  if(!id)return '';var r=ansSum(id);
  var names=function(a){return a.length?a.map(function(p){return esc(shortName(p));}).join(', '):'None';};
- return '<div class="bar"><span style="background:#14532d">Yes '+r.Y.length+'</span><span style="background:#6b4a0a">Maybe '+r.M.length+'</span><span style="background:#7f1d33">No '+r.N.length+'</span><span style="background:#26407a">Waiting '+r.none.length+'</span></div><p class="small"><b>Yes:</b> '+names(r.Y)+'</p><p class="small"><b>Maybe:</b> '+names(r.M)+'</p><p class="small"><b>No:</b> '+names(r.N)+'</p><p class="small"><b>Not answered:</b> '+names(r.none)+'</p>';
+ return '<div class="bar"><span style="background:#14532d">Yes '+r.Y.length+'</span><span style="background:#6b4a0a">Maybe '+r.M.length+'</span><span style="background:#7f1d33">No '+r.N.length+'</span><span style="background:#26407a">Waiting '+r.none.length+'</span></div><p class="small"><b>Yes:</b> '+names(r.Y)+'</p><p class="small"><b>Maybe:</b> '+names(r.M)+'</p><p class="small"><b>No:</b> '+(r.N.length?r.N.map(function(p){var w=ansRow(id,p.id);return esc(shortName(p))+(w&&w.reason?' <i>('+esc(w.reason)+')</i>':'');}).join(', '):'None')+'</p><p class="small"><b>Not answered:</b> '+names(r.none)+'</p>';
 }
 function loadAnswers(quiet){return call('answers').then(function(d){view.answers=d.rows||[];if(!quiet)render(true);}).catch(function(){if(!quiet)toast('Could not load answers');});}
 function savePost(status){
@@ -1428,7 +1429,7 @@ todaySess:function(d){view.tm='run';view.tab='sess';view.mid=null;ACT.sessOpen(d
  printPost:function(){var p=planDraft(),pd=p.post;printHTML('<h1>'+esc(pd.title||'Training')+'</h1><p><b>'+esc(niceDate(p.date))+'</b> '+esc(pd.time)+' '+esc(pd.place)+'</p><h2>Why we are doing it</h2><p>'+esc(pd.why).replace(/\n/g,'<br>')+'</p><h2>Bring</h2><p>'+esc(pd.bring)+'</p><p>Wigan Junior Latics U15 Blues</p>');},
  matchPost:function(){var m=cur();var id=m.postId||(m.postId=uid());var arr=posts(),o=arr.filter(function(x){return x.id===id;})[0];if(!o){o={id:id};arr.push(o);}
   o.type='match';o.date=m.date;o.time=m.ko;o.place=m.addr||m.venue||(m.ha==='H'?'Home':'Away');o.title='Match '+(m.ha==='A'?'at ':'v ')+(m.opp||'opponent');o.why='';o.bring='Kit, shin pads, boots and a water bottle';o.status='published';o.publishedAt=now();
-  S.settings.posts=arr;touch('settings',S.settings);saveM(m);sync(true).then(function(){toast('Posted');render(true);});},
+  S.settings.posts=arr;touch('settings',S.settings);saveM(m);sync(true).then(function(){toast('Posted');render(true);if(confirm('Send the game to every family with alerts on, with Playing? Yes / No at the bottom?'))famPush(gameMsg(m).replace(/https:\/\/\S+/,'').trim()).then(function(j){toast('Sent to '+j.sent+' of '+j.total+' phones');}).catch(function(e){toast(e.message);});});},
  matchUnpost:function(){var m=cur(),o=posts().filter(function(x){return x.id===m.postId;})[0];if(o){o.status='draft';touch('settings',S.settings);}sync(true).then(function(){render(true);});},
  matchAns:function(){var m=cur();loadAnswers(true).then(function(){var r=ansSum(m.postId);r.Y.forEach(function(p){if(!ccRec(p.id))m.avail[p.id]=true;});r.N.forEach(function(p){m.avail[p.id]=false;var k=slotOfPlayer(m,p.id);if(k)delete m.lineup[k];});saveM(m);toast('Yes '+r.Y.length+', No '+r.N.length+', Maybe '+r.M.length+', waiting '+r.none.length);render(true);});},
  suggest:function(){var m=cur();m.lineup=suggestXI(m);saveM(m);toast('Suggested from who is in, positions and minutes so far. Change anything.');render(true);},
@@ -2003,9 +2004,13 @@ function vAdmin(){
  return h;}
 function vAtt(){
  var s=S.settings,dt=view.attDate||isoToday(),a=(s.att||{})[dt]||{},pl=plist();
- var h='<h2 style="margin:6px 0">Attendance</h2><p class="small muted">Coach only. Use it with the training review for selection evidence, never as a ranking.</p><div class="card"><label style="margin-top:0">Session date</label><input type="date" id="attd" value="'+dt+'"><h3>Who was there ('+Object.keys(a).length+' of '+pl.length+')</h3><div class="chips">'+pl.map(function(p){return '<button class="chip'+(a[p.id]?' on':'')+'" data-act="attTog" data-id="'+p.id+'">'+esc(shortName(p))+'</button>';}).join('')+'</div></div>';
+ var h='<h2 style="margin:6px 0">Attendance</h2><p class="small muted">Coach only. Use it with the training review for selection evidence, never as a ranking.</p><div class="card"><label style="margin-top:0">Session date</label><input type="date" id="attd" value="'+dt+'"><h3>Who was there ('+Object.keys(a).length+' of '+pl.length+')</h3><div class="chips">'+pl.map(function(p){return '<button class="chip'+(a[p.id]?' on':'')+'" data-act="attTog" data-id="'+p.id+'">'+esc(shortName(p))+'</button>';}).join('')+'</div>';
+ var tp=posts().filter(function(x){return x.type==='training'&&x.date===dt;})[0],wl=(s.attWell||{})[dt]||{};
+ if(tp){if(!view.answers)loadAnswers(true).then(function(){render(true);});var no=pl.filter(function(p){var r=ansRow(tp.id,p.id);return r&&r.answer==='N';});h+='<button class="btn block" style="margin-top:8px" data-act="attFill">Tick everyone who said Yes</button>'+(no.length?'<p class="small" style="margin-top:8px"><b>Said no:</b> '+no.map(function(p){var r=ansRow(tp.id,p.id);return esc(shortName(p))+(r.reason?' <i>('+esc(r.reason)+')</i>':'');}).join(', ')+'</p>':'');}
+ h+='<h3>Did well</h3><p class="small muted">Tap a lad to add a short did well note for this session. It goes on the team pick note.</p><div class="chips">'+pl.map(function(p){return '<button class="chip'+(wl[p.id]?' on':'')+'" data-act="attWell" data-id="'+p.id+'"'+(typeof wl[p.id]==='string'?' title="'+esc(wl[p.id])+'"':'')+'>'+esc(shortName(p))+'</button>';}).join('')+'</div></div>';
+ var nm=nextMatch();h+='<div class="card"><h3 style="margin-top:0">Team pick note'+(nm?' for '+esc((nm.ha==='A'?'at ':'v ')+(nm.opp||'opponent')):'')+'</h3>'+(nm?pickNote(nm.date):'<p class="small muted">Plan the next match in Match and the note for that week shows here.</p>')+'</div>';
  var all=s.att||{},ds=Object.keys(all).sort().slice(-10);
- if(ds.length){h+='<div class="card"><h3 style="margin-top:0">Last '+ds.length+' sessions</h3>'+pl.map(function(p){var n=ds.filter(function(d){return all[d][p.id];}).length;return '<div class="it"><div class="grow">'+esc(shortName(p))+'</div><b>'+n+' of '+ds.length+'</b></div>';}).join('')+'</div>';}
+ if(ds.length){h+='<div class="card"><h3 style="margin-top:0">Last '+ds.length+' sessions</h3>'+pl.map(function(p){var n=ds.filter(function(d){return all[d][p.id];}).length;return '<div class="it"><div class="grow">'+esc(shortName(p))+'</div><b>'+n+' of '+ds.length+' ('+Math.round(n/ds.length*100)+'%)</b></div>';}).join('')+'</div>';}
  return h;}
 Object.assign(ACT,{
  painTog:function(d){var s=S.settings,pn=s.pain=s.pain||{},td=isoToday();if(pn[d.id]&&pn[d.id]>=addDays(td,-7))delete pn[d.id];else pn[d.id]=td;touch('settings',s);sync();render(true);},
@@ -2242,6 +2247,81 @@ Object.assign(ACT,{
   say('Saving…');call('squad.set',{meta:meta,rows:rows}).then(function(d){if(d&&d.stale){say('The sheet already has a newer export. Refreshing.',1);PV.fresh=0;ctLoad(true);return;}PV.sq={meta:meta,rows:rows};faPut('p:sq',PV.sq).catch(function(){});toast('Squad list updated');render(true);}).catch(function(e){say(e.message,1);});}
 });
 window.TLX_sq={parse:sqParse};
+/* ---------- Attendance requests, stats and the team pick note (release 77). Coaches only. ---------- */
+var PUSHW='https://touchline-push.wardyboy11.workers.dev/send';
+function famPush(body,url){return fetch(PUSHW,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({code:CODE,title:'Wigan Junior Latics U15 Blues',body:String(body).trim().slice(0,180),url:url||'/family.html'})}).then(function(r){return r.json();}).then(function(j){if(!j.ok)throw new Error(j.error==='code'?'Code not accepted':'Not sent');return j;});}
+function ukDay(iso){if(!iso)return '';var p=String(iso).split('-');var d=new Date(+p[0],+p[1]-1,+p[2]);return d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});}
+function nextTrainPost(){var td=isoToday();return posts().filter(function(x){return x.type==='training'&&x.date>=td;}).sort(function(a,b){return a.date<b.date?-1:1;})[0]||null;}
+function nextMatch(){var td=isoToday();return Object.keys(S.matches).map(function(k){return S.matches[k];}).filter(function(m){return !m.deleted&&m.status==='plan'&&m.date&&m.date>=td;}).sort(function(a,b){return a.date<b.date?-1:1;})[0]||null;}
+function nextWed(){var d=new Date();d.setDate(d.getDate()+((3-d.getDay()+7)%7));return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function ansRow(id,pid){var o=null;(view.answers||[]).forEach(function(r){if(r.postId===id&&r.playerId===pid)o=r;});return o;}
+function postMatch(m){var id=m.postId||(m.postId=uid());var arr=posts(),o=arr.filter(function(x){return x.id===id;})[0];if(!o){o={id:id};arr.push(o);}
+ o.type='match';o.date=m.date;o.time=m.ko;o.place=m.addr||m.venue||(m.ha==='H'?'Home':'Away');o.title='Match '+(m.ha==='A'?'at ':'v ')+(m.opp||'opponent');o.why='';o.bring='Kit, shin pads, boots and a water bottle';o.status='published';if(!o.publishedAt)o.publishedAt=now();
+ S.settings.posts=arr;touch('settings',S.settings);saveM(m);return sync(true).then(function(){return o;});}
+function gameMsg(m){var o=(m.ha==='A'?'at ':'v ')+(m.opp||'opponent');return 'Wigan Junior Latics U15 Blues '+o+'\n'+ukDay(m.date)+(m.ko&&m.ko!=='TBA'?', kick off '+m.ko+(meetBy(m.ko)?' (be there by '+meetBy(m.ko)+')':''):'')+((m.addr||m.venue)?'\n'+(m.addr||m.venue):'')+'\nBring kit, shin pads, boots and a water bottle.\n\nPlaying? Please tap Yes or No in Touchline: https://touchline.cipher-training.co.uk/family.html';}
+function trainMsg(p){return 'Training '+ukDay(p.date)+(p.time?', '+p.time:'')+'. Can you make it? Tap Yes or No in Touchline. If not, you can tell us why, but you do not have to.';}
+function ansSumR(id){var r=ansSum(id);return '<div class="bar"><span style="background:#14532d">Yes '+r.Y.length+'</span><span style="background:#6b4a0a">Maybe '+r.M.length+'</span><span style="background:#7f1d33">No '+r.N.length+'</span><span style="background:#26407a">Waiting '+r.none.length+'</span></div>';}
+function attReqCard(){var tp=nextTrainPost(),nm=nextMatch(),mp=nm&&nm.postId?posts().filter(function(x){return x.id===nm.postId&&x.status==='published';})[0]:null;
+ var h='<div class="card" id="attreq" style="border-color:#FFB81C"><h3 style="margin-top:0">Attendance requests</h3><p class="small muted">A push to every family with alerts on, and a Yes or No card on their home page. If they say No they can add a reason, but it is never required. Answers and reasons are coaches only and save to the private sheet.</p>';
+ h+='<h4 style="margin:10px 0 4px">Training</h4>';
+ if(tp){h+='<p class="small"><b>'+esc(tp.title||'Training')+'</b>, '+esc(ukDay(tp.date))+(tp.time?', '+esc(tp.time):'')+(tp.status==='published'?' <span class="tag good">On their page</span>':' <span class="tag warn">Draft</span>')+'</p>'+(tp.status==='published'?ansSumR(tp.id):'')+'<button class="btn pri block" data-act="attAskTrain" data-id="'+tp.id+'">'+(tp.status==='published'?'Send attendance reminder':'Post it and ask who is coming')+'</button>';}
+ else h+='<div class="row"><div class="grow"><input type="date" id="atrd" value="'+nextWed()+'"></div><div class="grow"><input type="time" id="atrt" value="20:00"></div></div><button class="btn pri block" style="margin-top:6px" data-act="attAskTrain">Ask who is coming to training</button>';
+ h+='<h4 style="margin:14px 0 4px">Match day</h4>';
+ if(nm){h+='<p class="small"><b>'+esc((nm.ha==='A'?'at ':'v ')+(nm.opp||'opponent'))+'</b>, '+esc(ukDay(nm.date))+(nm.ko?', '+esc(nm.ko):'')+(mp?' <span class="tag good">On their page</span>':'')+'</p>'+(mp?ansSumR(mp.id):'')+'<div class="row wrap2"><button class="btn pri grow" data-act="attAskMatch" data-id="'+nm.id+'">'+(mp?'Send Playing? reminder':'Send the game with Playing? Yes / No')+'</button><button class="btn grow" data-act="attWaMatch" data-id="'+nm.id+'">WhatsApp the game</button></div>';}
+ else h+='<p class="small muted">No match planned yet. Add one in Match and it shows here.</p>';
+ h+='<div class="row wrap2" style="margin-top:10px"><button class="btn grow" data-act="attPull">Pull in answers</button><button class="btn grow" data-act="tab" data-v="att">Attendance and team pick note</button></div></div>';
+ return h;}
+/* Clip views and the week window */
+function pickWin(md){var to=addDays(md,-1),fr=addDays(md,-7);return {fr:fr,to:to};}
+function loadAttW(fr,to){var k=fr+'|'+to;if(view.attW&&view.attW.k===k&&(view.attW.busy||now()-view.attW.at<120000))return;view.attW={k:k,busy:1,at:now(),views:(view.attW&&view.attW.k===k?view.attW.views:[])};
+ call('att.week',{from:fr,to:to}).then(function(d){view.attW={k:k,at:now(),views:d.views||[]};render(true);}).catch(function(){view.attW={k:k,at:now(),views:[],na:1};render(true);});
+ if(!view.answers)loadAnswers(true).then(function(){render(true);});}
+function pickData(md){var w=pickWin(md),s=S.settings,att=s.att||{},well=s.attWell||{};
+ var tps=posts().filter(function(x){return x.type==='training'&&x.date>=w.fr&&x.date<=w.to;});
+ var ds={};Object.keys(att).forEach(function(d){if(d>=w.fr&&d<=w.to)ds[d]=1;});tps.forEach(function(x){ds[x.date]=1;});ds=Object.keys(ds).sort();
+ var mt=Object.keys(S.matches).map(function(k){return S.matches[k];}).filter(function(m){return !m.deleted&&m.date===md;})[0],mpid=mt&&mt.postId;
+ var vw=(view.attW&&view.attW.views)||[];
+ var revs=rvAll().filter(function(r){return !r.del&&r.kind==='train'&&r.date>=w.fr&&r.date<=w.to;});
+ var rows=plist().map(function(p){var o={p:p,s:[],seen:{},well:[]};ds.forEach(function(d){var tp=tps.filter(function(x){return x.date===d;})[0],a=tp?ansRow(tp.id,p.id):null,reg=att[d]?(att[d][p.id]?'in':'out'):'';o.s.push({d:d,reg:reg,ans:a?a.answer:'',why:a?a.reason:''});if(well[d]&&well[d][p.id])o.well.push({d:d,t:well[d][p.id]});});
+  vw.forEach(function(v){if(v.playerId===p.id)o.seen[v.clipId]=v.title||'clip';});
+  var ma=mpid?ansRow(mpid,p.id):null;o.md=ma?ma.answer:'';o.mdWhy=ma?ma.reason:'';o.inj=!!ccRec(p.id);return o;});
+ return {w:w,ds:ds,rows:rows,revs:revs,mt:mt,clipNa:view.attW&&view.attW.na};}
+function pickNote(md){var w=pickWin(md);loadAttW(w.fr,w.to);var D=pickData(md);
+ var h='<p class="small muted">Training from '+esc(ukDay(w.fr))+' to '+esc(ukDay(w.to))+' for the game on '+esc(ukDay(md))+'. Coaches only. Evidence for selection, never a ranking, and never shown to parents or players.</p>';
+ if(!D.ds.length)h+='<p class="small muted">No training recorded or posted that week yet. Tick who was there in Attendance.</p>';
+ h+='<table class="small" style="width:100%"><tr><th style="text-align:left">Player</th><th>Training</th><th>Clips</th><th style="text-align:left">Did well</th><th>Saturday</th></tr>'+D.rows.map(function(r){
+  var tr=D.ds.length?r.s.map(function(x){var t=x.reg==='in'?'<span style="color:var(--good)">'+esc(ukDay(x.d).split(' ')[0])+' in</span>':x.reg==='out'?'<span style="color:#ff8a8a">'+esc(ukDay(x.d).split(' ')[0])+' missed</span>':(x.ans==='Y'?esc(ukDay(x.d).split(' ')[0])+' said yes':x.ans==='N'?'<span style="color:#ff8a8a">'+esc(ukDay(x.d).split(' ')[0])+' said no</span>':esc(ukDay(x.d).split(' ')[0])+' no answer');return t+(x.why?' <i>('+esc(x.why)+')</i>':'');}).join('<br>'):'';
+  var nc=Object.keys(r.seen).length,ct=D.clipNa?'?':(nc?nc+'':'0');
+  var wl=r.well.map(function(x){return esc(x.t===1||x.t==='1'?'Yes':x.t);}).join('; ');
+  var sat=r.inj?'<span style="color:#ff8a8a">Not available (welfare)</span>':r.md==='Y'?'<span style="color:var(--good)">Yes</span>':r.md==='N'?'<span style="color:#ff8a8a">No</span>'+(r.mdWhy?' <i>('+esc(r.mdWhy)+')</i>':''):r.md==='M'?'Maybe':(D.mt&&D.mt.postId?'Waiting':'Not asked');
+  return '<tr style="border-top:1px solid var(--line)"><td>'+esc(r.p.num||'')+' '+esc(shortName(r.p))+'</td><td>'+tr+'</td><td style="text-align:center"'+(nc?' title="'+esc(Object.keys(r.seen).map(function(k){return r.seen[k];}).join(', '))+'"':'')+'>'+ct+'</td><td>'+wl+'</td><td>'+sat+'</td></tr>';}).join('')+'</table>';
+ if(D.clipNa)h+='<p class="small muted">Clip views need backend version 28. Until it is live this column shows ?.</p>';else h+='<p class="small muted">Clips counts how many different highlights his parent or player code opened that week. Counting started with release 77.</p>';
+ if(D.revs.length)h+='<h4 style="margin:10px 0 4px">From Reflect</h4>'+D.revs.map(function(r){var t=r.tx||{};return '<p class="small"><b>'+esc(ukDay(r.date))+'</b>'+(r.by?' ('+esc(r.by)+')':'')+(t.std?'<br>Stand out: '+esc(t.std):'')+(t.well?'<br>What worked: '+esc(t.well):'')+(t.sat?'<br>Saturday: '+esc(t.sat):'')+'</p>';}).join('');
+ return h;}
+function pickNoteCard(md){if(!md)return '';return '<details class="card" id="picknote"'+(view.pnOpen?' open':'')+'><summary style="cursor:pointer;font-weight:700" data-act="pnTog">Team pick note</summary>'+(view.pnOpen?pickNote(md):'')+'</details>';}
+function attStats(){var s=S.settings,att=s.att||{},ds=Object.keys(att).filter(function(d){return d<=isoToday();}),o={};
+ plist(true).forEach(function(p){o[p.id]={n:0,of:0,my:0,mn:0};});
+ ds.forEach(function(d){Object.keys(o).forEach(function(pid){o[pid].of++;if(att[d][pid])o[pid].n++;});});
+ var mps={};posts().forEach(function(x){if(x.type==='match')mps[x.id]=1;});
+ (view.answers||[]).forEach(function(r){if(mps[r.postId]&&o[r.playerId]){if(r.answer==='Y')o[r.playerId].my++;else if(r.answer==='N')o[r.playerId].mn++;}});
+ return o;}
+Object.assign(ACT,{
+ pnTog:function(d,b){view.pnOpen=!view.pnOpen;setTimeout(function(){render(true);},0);},
+ attPull:function(){loadAnswers(true).then(function(){toast('Answers updated');render(true);});},
+ attAskTrain:function(d){var p=d.id?posts().filter(function(x){return x.id===d.id;})[0]:null;
+  if(!p){var dt=($('#atrd')||{}).value,tm=($('#atrt')||{}).value||'20:00';if(!dt){toast('Pick the training date');return;}p={id:uid(),type:'training',date:dt,time:tm,place:TRAINADDR,title:'Training',why:'',bring:'Boots, shin pads, a water bottle and a warm top',status:'draft'};posts().push(p);}
+  var t=prompt('Check the message. Edit it if you like, then press OK to send to every family with alerts on.',trainMsg(p));if(t===null||t.trim().length<5)return;
+  p.status='published';if(!p.publishedAt)p.publishedAt=now();touch('settings',S.settings);
+  sync(true).then(function(){return famPush(t);}).then(function(j){toast('Sent to '+j.sent+' of '+j.total+' phones');render(true);}).catch(function(e){toast('Posted on their page. Push: '+e.message);render(true);});},
+ attAskMatch:function(d){var m=S.matches[d.id];if(!m)return;var t=prompt('Check the message. The Playing? Yes / No goes at the bottom. Press OK to send to every family with alerts on.',gameMsg(m).replace(/https:\/\/\S+/,'').trim());if(t===null||t.trim().length<5)return;
+  postMatch(m).then(function(){return famPush(t);}).then(function(j){toast('Sent to '+j.sent+' of '+j.total+' phones');render(true);}).catch(function(e){toast('Posted on their page. Push: '+e.message);render(true);});},
+ attWaMatch:function(d){var m=S.matches[d.id];if(!m)return;postMatch(m).then(function(){render(true);});waShare(gameMsg(m));},
+ attFill:function(){var s=S.settings,dt=view.attDate||isoToday(),p=posts().filter(function(x){return x.type==='training'&&x.date===dt;})[0];if(!p){toast('No training posted for that date');return;}
+  loadAnswers(true).then(function(){var at=s.att=s.att||{},a=at[dt]=at[dt]||{},n=0;plist().forEach(function(q){var r=ansRow(p.id,q.id);if(r&&r.answer==='Y'){a[q.id]=1;n++;}});if(!Object.keys(a).length)delete at[dt];touch('settings',s);sync();render(true);toast('Ticked '+n+' who said Yes. Untick anyone who did not turn up.');});},
+ attWell:function(d){var s=S.settings,dt=view.attDate||isoToday(),w=s.attWell=s.attWell||{},a=w[dt]=w[dt]||{};
+  if(a[d.id]){if(confirm('Clear the did well note?'))delete a[d.id];else return;}else{var t=prompt('What did he do well? Optional, coaches only. Leave empty to just mark it.','');if(t===null)return;a[d.id]=t.trim().slice(0,160)||1;}
+  if(!Object.keys(a).length)delete w[dt];var ks=Object.keys(w).sort();while(ks.length>40)delete w[ks.shift()];touch('settings',s);sync();render(true);}
+});
 takeShare();
 document.addEventListener('click',function(e){var t=e.target;if(t&&t.tagName==='INPUT'&&(t.type==='date'||t.type==='time')&&t.showPicker){try{t.showPicker();}catch(x){}}});
 try{rvMigrate();}catch(e){}
