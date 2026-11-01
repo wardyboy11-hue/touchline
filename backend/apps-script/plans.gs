@@ -12,7 +12,9 @@
  * First run: in the Apps Script editor run planGetTest once and accept the Drive permission,
  * then Deploy, Manage deployments, edit, New version.
  */
-var PLAN_ROOT_DEFAULT = '1ahr5GNZuGK2t9S0Wnl9tDkFpPfTY8nI4';
+// Superseded: live Code.gs routes plan.get to fileGet_ (VIEW_ROOTS). Kept for reference.
+var PLAN_ROOT_DEFAULT = '1qDJbUMhzccy974MLF0xuj8q9-RQrF-aJ'; // main Footy Coaching (My laptop)
+var PLAN_ROOT_FALLBACK = '1ahr5GNZuGK2t9S0Wnl9tDkFpPfTY8nI4'; // old cloud copy, during the merge only
 var PLAN_MAX_BYTES = 8 * 1024 * 1024;
 
 function planGet_(b) {
@@ -22,7 +24,7 @@ function planGet_(b) {
   var f;
   try { f = DriveApp.getFileById(id); } catch (e) { throw new Error('Plan not found in Drive.'); }
   if (f.getMimeType() !== MimeType.PDF) throw new Error('Only PDF plans can be shown here.');
-  if (!planInRoot_(f, root)) throw new Error('That file is not in the Footy Coaching folder.');
+  if (!planInRoot_(f, root) && !planInRoot_(f, PLAN_ROOT_FALLBACK)) throw new Error('That file is not in the Footy Coaching folder.');
   var bytes = f.getBlob().getBytes();
   if (bytes.length > PLAN_MAX_BYTES) throw new Error('That plan is too big to show here. Open it in Drive.');
   return { name: f.getName(), mime: 'application/pdf', size: bytes.length, b64: Utilities.base64Encode(bytes) };

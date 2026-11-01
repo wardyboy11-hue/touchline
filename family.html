@@ -643,7 +643,7 @@ function r(){var el=document.getElementById('root'),h='<header><img src="badge.p
  if(selfPage&&SD){el.innerHTML=h+selfForm();return;}
  if(showKit){el.innerHTML=h+kitPage();return;}
  if(resImg){h+='<div class="card"><h2>'+esc(resTitle)+'</h2>'+(resImg==='loading'?'<p class="muted">Loading</p>':resBody(resTitle,resImg))+'<button class="btn block" style="margin-top:10px" onclick="resImg=\'\';r()">Back</button></div>';el.innerHTML=h;return;}
- h+=tab==='games'?intro('Every fixture and result. Tap Add to calendar or WhatsApp on a game. On away games you can offer or ask for a lift.')+bodyGames():tab==='events'?bodyEvents():tab==='media'?mediaTab():tab==='contacts'?contactsPage():tab==='faq'?faqPage():tab==='voice'?voicePage():tab==='child'?childPage():tab==='lib'?libPage():tab==='data'?dataPage():tab==='own'?ownPage():tab==='me'?intro('Your picture, calendar, kit, contacts and settings live here.')+selfLink()+ownLink()+bodyMe()+SPONX:(tourCard()+hcCard()+headCard()+rsCard('home')+fmCard()+workCard()+glCard()+rcPlayerCard()+mdpCard()+wk3dCard()+shapeCard()+selfPrompt()+voiceCard()+todayCard()+(D&&D.role==='player'?ownLink()+libLink():'')+(D&&D.role==='parent'?childCard()+subsCard()+c100Card():'')+carousel()+intro('Your home page: news and reminders from Tim, your next game and your answers for sessions and matches.')+bodyHome()+playerBox()+bodyHomePosts()+SPONX);
+ h+=tab==='games'?intro('Every fixture and result. Tap Add to calendar or WhatsApp on a game. On away games you can offer or ask for a lift.')+bodyGames():tab==='events'?bodyEvents():tab==='media'?mediaTab():tab==='contacts'?contactsPage():tab==='faq'?faqPage():tab==='pq'?(window.pqPage?pqPage():''):tab==='voice'?voicePage():tab==='child'?childPage():tab==='lib'?libPage():tab==='data'?dataPage():tab==='own'?ownPage():tab==='me'?intro('Your picture, calendar, kit, contacts and settings live here.')+selfLink()+ownLink()+bodyMe()+SPONX:(tourCard()+hcCard()+headCard()+rsCard('home')+fmCard()+workCard()+glCard()+rcPlayerCard()+mdpCard()+(window.posCard?posCard()+prepCard():'')+wk3dCard()+shapeCard()+selfPrompt()+voiceCard()+todayCard()+(D&&D.role==='player'?ownLink()+libLink():'')+(D&&D.role==='parent'?childCard()+subsCard()+c100Card()+(window.pqCard?pqCard():''):'')+carousel()+intro('Your home page: news and reminders from Tim, your next game and your answers for sessions and matches.')+bodyHome()+playerBox()+bodyHomePosts()+SPONX);
  el.innerHTML=h+((tab==='faq'||tab==='voice')?'':quickHelp())+navBar();fillImgs();startCar();}
 function voteCards(){var V=D.vote||{},h=(D.role==='parent'?'<p class="small" style="margin:8px 0 0">'+wh('motm','Watch how to vote, under a minute')+'</p>':'');
  [['motm','Man of the match','Parents vote for the man of the match, one player each. Coaches vote too.'],['poty','Player of the year','Parents, players and coaches each vote for their own player of the year.']].forEach(function(x){var v=V[x[0]]||{open:false};
@@ -712,7 +712,9 @@ function pushCard(){
 function out(){CODE='';D=null;s(CK,'');s('fam.cache','');r();}
 if(CODE){var cc=null;try{cc=JSON.parse(g('fam.cache')||'null');}catch(x){}if(cc&&cc.c===CODE&&cc.d){D=cc.d;r();splashDone();}load();}else{r();splashDone();}
 </script>
-<script src="acct.js?v=72" defer></script>
-<script src="update.js?v=72" defer></script>
+<script src="positions.js?v=76" defer></script>
+<script src="acct.js?v=76" defer></script>
+<script src="update.js?v=76" defer></script>
+<script src="pq.js?v=76" defer></script>
 </body>
 </html>

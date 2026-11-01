@@ -11,15 +11,11 @@
  * exported to PDF. PDFs, images and videos are served as they are. Files stay private in Drive.
  */
 var VIEW_ROOTS_DEFAULT = [
-  '1qDJbUMhzccy974MLF0xuj8q9-RQrF-aJ', // My laptop / Footy Coaching (the live working folder)
-  '1ahr5GNZuGK2t9S0Wnl9tDkFpPfTY8nI4', // My Drive / Footy Coaching
-  '1c5vQj9NemzUsDj7ZyQlHYkt0tcpjJCk2', // Footy Coaching (copy)
-  '1qNEWXFh-hTHBCJOs-R_GIDbAJRJHnzlE', // Footy Coaching (copy)
-  '1t0zC3Pa4sSk0t85stOmC_eYCQYaYm3tG', // Footy Coaching (copy)
-  '1p3Gz3Uv3hWOMOKqidKQfStY3_GfZk0rP', // Footy Coaching (copy)
+  '1qDJbUMhzccy974MLF0xuj8q9-RQrF-aJ', // My laptop / Footy Coaching (main; everything is being merged here)
+  '1ahr5GNZuGK2t9S0Wnl9tDkFpPfTY8nI4', // Footy Coaching - cloud copy (fallback only while the merge finishes; remove after)
   '1I1mZb8lWx5VFJ0bWrLh-0Yq87FajtHal', // Coaches Voice
   '1ls1UXGWhNTqdVGWf1ljrYe3QjlFD6e1g', // X Sessions
-  '1iRW4kqiISUgRd_DiH-Zq4FkgTP3P0Snx'  // Sessions
+  '1iRW4kqiISUgRd_DiH-Zq4FkgTP3P0Snx'  // 02 Sessions
 ];
 var VIEW_MAX_BYTES = 30 * 1024 * 1024;
 function viewMime_(f) {
