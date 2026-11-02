@@ -1,0 +1,20 @@
+// r79: fixture change planner. Made-up fixtures only, no player data.
+const fs=require('fs'),path=require('path'),assert=require('assert');
+const src=fs.readFileSync(path.join(__dirname,'../../coach/app.js'),'utf8');
+const a=src.indexOf('function fcUk('),b=src.indexOf('Object.assign(ACT,{\n fcOpen');assert.ok(a>0&&b>a,'fixture change block present');
+const S={matches:{},settings:{}};let n=0;
+const mk=(id,date,opp)=>S.matches[id]={id,date,ko:'10:00',opp,ha:'H',status:'plan'};
+mk('a','2026-11-07','Alpha');mk('b','2026-11-14','Bravo');mk('c','2026-12-12','Charlie');mk('d','2027-01-09','Delta');mk('e','2027-01-16','Echo');
+const f=new Function('S','touch','isoToday',src.slice(a,b)+';return {fcCompute,fcXmas,fcMsg,fcUk};');
+const P=f(S,()=>n++,()=> '2026-11-02');
+assert.deepStrictEqual(P.fcXmas(),{from:'2026-12-13',to:'2027-01-08',auto:1});
+assert.strictEqual(P.fcUk('2026-11-07'),'07/11/2026');
+let r=P.fcCompute({id:'a',date:'2026-11-07',ko:'10:00',venue:'',opp:'Alpha',pp:true,push:true});
+const m=Object.fromEntries(r.map(x=>[x.id,x.nw]));
+assert.ok(m.a.pp,'postponed');assert.strictEqual(m.b.date,'2026-11-21');
+assert.strictEqual(m.c.date,'2027-01-09','game pushed into break lands first Saturday after it');
+assert.strictEqual(m.d.date,'2027-01-16');assert.strictEqual(m.e.date,'2027-01-23');
+assert.ok(/\d\d\/\d\d\/\d{4}/.test(P.fcMsg(r))&&P.fcMsg(r).length<=180,'short UK-date alert');
+r=P.fcCompute({id:'b',date:'2026-11-15',ko:'11:00',venue:'',opp:'Bravo',pp:false,push:false});
+assert.strictEqual(r.length,1);assert.strictEqual(r[0].nw.date,'2026-11-15');
+console.log('fixture-change ok');
