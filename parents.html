@@ -205,7 +205,7 @@ function tourCard(always){if(!TOUR_ON())return '';var hid=g('fam.tour')==='1';if
 function voiceCard(){var h='';if(D&&D.role==='parent')h+='<div class="card" style="border-color:#FFB81C"><h2>Ask the coaches</h2><p>Got a question, or something we should add or change? Ask Tim and Deano here. We will answer on this page.</p><button class="btn pri block" onclick="vcOpen()">Ask a question</button>'+wh('questions')+'</div>';if(D&&D.role==='player')h+='<div class="card" style="border-color:#FFB81C"><h2>Your voice</h2><p>Pick a shape and a starting 11, or ask the coaches a question. It goes to Tim and Deano with no name on it.</p><button class="btn pri block" onclick="vcOpen()">Open Your voice</button></div>';
  if(VC.pub&&VC.pub.length)h+='<div class="card"><h2>You asked, we answered</h2>'+VC.pub.slice(0,3).map(function(x){return '<p style="margin:10px 0 2px"><b>'+esc(x.q)+'</b></p><p class="small" style="margin:0">'+esc(x.a)+'</p>';}).join('')+(VC.pub.length>3?'<button class="btn block" style="margin-top:8px" onclick="vcOpen()">See all answers</button>':'')+'</div>';return h;}
 function vcNamed(v){var y=vcSave();VC.named=!!v;if(v&&!VC.mine&&!VC.mineLoading){VC.mineLoading=1;call('f.voice.mine').then(function(d){VC.mine=d.rows||[];r();}).catch(function(){VC.mine=[];r();});}r();window.scrollTo(0,y);}
-function vcMineQ(){if(!VC.mine||!VC.mine.length)return '';return '<div class="card"><h2>Your replies</h2>'+VC.mine.map(function(x){return '<p style="margin:10px 0 2px"><b>'+esc(x.q)+'</b></p><p class="small" style="margin:0">'+(x.a?esc(x.a):'<span class="muted">Waiting for an answer</span>')+'</p>';}).join('')+'</div>';}
+function vcMineQ(){if(!VC.mine||!VC.mine.length)return '';return '<div class="card"><h2>Your replies</h2><p class="small muted">Anonymous questions stay anonymous. Coaches never see who asked.</p>'+VC.mine.map(function(x){return '<p style="margin:10px 0 2px"><b>'+esc(x.q)+'</b>'+(x.anon?' <span class="tag">Anonymous</span>':'')+'</p><p class="small" style="margin:0">'+(x.a?esc(x.a):'<span class="muted">Waiting for an answer</span>')+'</p>'+attList(x.att);}).join('')+'</div>';}
 function vcOpen(){VC.msg='';VC.done='';goTab('voice');}
 function vcSave(){var y=window.scrollY;VC.why=(document.getElementById('vwhy')||{value:VC.why}).value;VC.q=(document.getElementById('vq')||{value:VC.q}).value;return y;}
 function vcSet(k,v){var y=vcSave();if(k==='tab'){VC.tab=v;VC.msg='';VC.done='';}if(k==='form'){VC.form=v;VC.pick=[];}if(k==='pick'){VC.pick[v[0]]=v[1];}r();window.scrollTo(0,y);}
@@ -603,11 +603,11 @@ function ownPage(){var h='<div class="card"><h2>My own training</h2><p class="mu
 function r(){var el=document.getElementById('root'),h='<header><img src="badge.png" alt=""><h1>Wigan Junior Latics U15 Blues</h1>'+((D&&D.role)?'<span class="tag" style="margin-left:auto;font-size:13px" aria-label="Signed in as">'+(D.role==='player'?'Player':'Parent')+'</span>':'')+SPONH+'</header>'+updLine();
  if(!CODE||!D){h+='<div class="card"><h2>Team page</h2><p class="muted">Type the code Tim sent you. Parents have a parent code and players have their own player code.</p><input id="code" placeholder="ABC 123" autocapitalize="characters" autocomplete="off"><div class="err" id="err">'+esc(msg)+'</div><button class="btn pri block" onclick="login()">Open</button></div>'+SPONX+''+lostBox()+'<p class="small"><a href="#" onclick="showPriv=!showPriv;r();return false">Privacy</a></p>'+(showPriv?'<div class="card">'+PRIV+'</div>':'');el.innerHTML=h;return;}
  if(g(OK)!=='1'){h+='<div class="card">'+PRIV+'<button class="btn pri block" style="margin-top:14px" onclick="s(OK,\'1\');r()">I have read this and I am happy to carry on</button></div>';el.innerHTML=h;return;}
- if(!_sl){_sl=1;loadSelf();loadMdp();loadRc();loadFm();loadVoicePub();}
+ if(!_sl){_sl=1;pushRefresh();loadSelf();loadMdp();loadRc();loadFm();loadVoicePub();}
  if(selfPage&&SD){el.innerHTML=h+selfForm();return;}
  if(showKit){el.innerHTML=h+kitPage();return;}
  if(resImg){h+='<div class="card"><h2>'+esc(resTitle)+'</h2>'+(resImg==='loading'?'<p class="muted">Loading</p>':resBody(resTitle,resImg))+'<button class="btn block" style="margin-top:10px" onclick="resImg=\'\';r()">Back</button></div>';el.innerHTML=h;return;}
- h+=tab==='games'?intro('Every fixture and result. Tap Add to calendar or WhatsApp on a game. On away games you can offer or ask for a lift.')+bodyGames():tab==='events'?bodyEvents():tab==='media'?mediaTab():tab==='contacts'?contactsPage():tab==='faq'?faqPage():tab==='pq'?(window.pqPage?pqPage():''):tab==='voice'?voicePage():tab==='child'?childPage():tab==='lib'?libPage():tab==='data'?dataPage():tab==='own'?ownPage():tab==='me'?intro('Your picture, calendar, kit, contacts and settings live here.')+selfLink()+ownLink()+bodyMe()+SPONX:(hcCard()+headCard()+rsCard('home')+tourCard()+fmCard()+workCard()+glCard()+rcPlayerCard()+mdpCard()+wk3dCard()+shapeCard()+selfPrompt()+voiceCard()+todayCard()+(D&&D.role==='player'?ownLink()+libLink():'')+(D&&D.role==='parent'?childCard()+subsCard()+c100Card()+(window.pqCard?pqCard():''):'')+carousel()+intro('Your home page: news and reminders from Tim, your next game and your answers for sessions and matches.')+bodyHome()+playerBox()+bodyHomePosts()+SPONX);
+ h+=tab==='games'?intro('Every fixture and result. Tap Add to calendar or WhatsApp on a game. On away games you can offer or ask for a lift.')+bodyGames():tab==='events'?bodyEvents():tab==='media'?mediaTab():tab==='contacts'?contactsPage():tab==='faq'?faqPage():tab==='pq'?(window.pqPage?pqPage():''):tab==='voice'?voicePage():tab==='child'?childPage():tab==='lib'?libPage():tab==='data'?dataPage():tab==='own'?ownPage():tab==='me'?intro('Your picture, calendar, kit, contacts and settings live here.')+selfLink()+ownLink()+bodyMe()+SPONX:(hcCard()+headCard()+rsCard('home')+tourCard()+fmCard()+workCard()+glCard()+rcPlayerCard()+mdpCard()+wk3dCard()+shapeCard()+selfPrompt()+notifCard()+voiceCard()+todayCard()+landVotes()+feedCard()+(D&&D.role==='player'?ownLink()+libLink():'')+(D&&D.role==='parent'?childCard()+subsCard()+c100Card()+(window.pqCard?pqCard():''):'')+carousel()+intro('Your home page: news and reminders from Tim, your next game and your answers for sessions and matches.')+bodyHome()+playerBox()+bodyHomePosts()+SPONX);
  el.innerHTML=h+((tab==='faq'||tab==='voice')?'':quickHelp())+navBar();fillImgs();startCar();}
 function voteCards(){var V=D.vote||{},h=(D.role==='parent'?'<p class="small" style="margin:8px 0 0">'+wh('motm','Watch how to vote, under a minute')+'</p>':'');
  [['motm','Man of the match','Parents vote for the man of the match, one player each. Coaches vote too.'],['poty','Player of the year','Parents, players and coaches each vote for their own player of the year.']].forEach(function(x){var v=V[x[0]]||{open:false};
@@ -650,8 +650,9 @@ function pushOK(){return 'serviceWorker' in navigator&&'PushManager' in window&&
 function isStd(){return (window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;}
 function isIOS(){return /iPad|iPhone|iPod/.test(navigator.userAgent);}
 function u8(k){var p='='.repeat((4-k.length%4)%4),b=atob((k+p).replace(/-/g,'+').replace(/_/g,'/')),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a;}
-function pushOn(){
- pushMsg='Switching on';r();
+var pushQuiet=false;
+function pushOn(q){pushQuiet=!!q;
+ if(!q){pushMsg='Switching on';r();}
  navigator.serviceWorker.register('fsw.js').then(function(){return navigator.serviceWorker.ready;}).then(function(reg){
   return Notification.requestPermission().then(function(p){
    if(p!=='granted'){pushMsg='Alerts are blocked in your phone settings for this page.';r();return;}
@@ -659,28 +660,35 @@ function pushOn(){
     return reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:u8(k.key)});
    }).then(function(sub){
     return fetch(PUSH+'/subscribe',{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({code:CODE,sub:sub.toJSON()})}).then(function(x){return x.json();}).then(function(j){
-     if(!j.ok)throw new Error('Not saved');s('fam.push','1');pushMsg='Alerts are on for this phone.';r();});
+     if(!j.ok)throw new Error('Not saved');s('fam.push','1');call('f.push',{on:true}).catch(function(){});if(!pushQuiet){pushMsg='Notifications are on for this phone.';r();}});
    });
   });
  }).catch(function(e){pushMsg='Could not switch on alerts. '+(e&&e.message?e.message:'');r();});
 }
-function pushOff(){
+function pushOff(){call('f.push',{on:false}).catch(function(){});
  navigator.serviceWorker.getRegistration('fsw.js').then(function(reg){return reg&&reg.pushManager.getSubscription();}).then(function(sub){
   if(sub){fetch(PUSH+'/unsubscribe',{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({endpoint:sub.endpoint})}).catch(function(){});return sub.unsubscribe();}
  }).then(function(){s('fam.push','');pushMsg='Alerts are off.';r();}).catch(function(){s('fam.push','');pushMsg='Alerts are off.';r();});
 }
 function pushCard(){
  var on=g('fam.push')==='1';
- var h='<div class="card"><h2>Match day alerts</h2><p class="small muted">A short message to your phone if a game is off, a kick off time changes or there is something you need to know. Rare, never marketing.</p>';
+ var h='<div class="card"><h2>Notifications</h2><p class="small muted">A short message to your phone if a game is off, a kick off time changes or there is something you need to know. Rare, never marketing.</p>';
  if(!pushOK()||(isIOS()&&!isStd())){h+='<p class="small">'+(isIOS()?'On iPhone, first tap the Share button, choose Add to Home Screen, then open Touchline from your Home Screen and come back here.':'Your browser does not support phone alerts.')+'</p>';}
- else h+=on?'<button class="btn block" onclick="pushOff()">Turn alerts off</button>':'<button class="btn pri block" onclick="pushOn()">Turn on alerts</button>';
+ else h+=on?'<button class="btn block" onclick="pushOff()">Turn notifications off</button>':'<button class="btn pri block" onclick="pushOn()">Turn on notifications</button>';
  return h+(pushMsg?'<p class="small" role="status">'+esc(pushMsg)+'</p>':'')+wh('alerts')+'</div>';
 }
+/* Release 81: notifications prompt, silent refresh, open votes and the player profile feed on the landing page */
+function attList(a){a=a||[];if(!a.length)return '';return '<ul class="small" style="margin:4px 0 0 18px;padding:0">'+a.map(function(x){return '<li>'+(x.u&&/^https:\/\//.test(x.u)?'<a target="_blank" rel="noopener" href="'+esc(x.u)+'">'+esc(x.t)+'</a>':esc(x.t))+'</li>';}).join('')+'</ul>';}
+function notifOn(){return g('fam.push')==='1'&&'Notification' in window&&Notification.permission==='granted';}
+function notifCard(){if(!D||notifOn())return '';return '<div class="card" style="border:2px solid #FFB81C"><span class="tag" style="background:#FFB81C;color:#1b1200">Action needed</span>'+pushCard().replace(/^<div class="card">/,'').replace(/<h2>Notifications<\/h2>/,'<h2 style="margin-top:8px">Turn on notifications</h2><p><b>Without this you will not hear about training, games or attendance requests.</b></p>');}
+function pushRefresh(){try{if(!pushOK()||g('fam.push')!=='1'||Notification.permission!=='granted')return;navigator.serviceWorker.getRegistration('fsw.js').then(function(reg){return reg&&reg.pushManager.getSubscription();}).then(function(sub){if(!sub)pushOn(true);else call('f.push',{on:true}).catch(function(){});}).catch(function(){});}catch(e){}}
+function landVotes(){var V=(D&&D.vote)||{};if(!['motm','poty'].some(function(k){return V[k]&&V[k].open&&V[k].elig;}))return '';return voteCards().replace(/<div class="card"><h2>[^<]*<\/h2><p class="muted">[^<]*<\/p><\/div>/g,'');}
+function feedCard(){var f=(D&&D.feed)||[];if(!f.length)return '';return '<div class="card"><h2>From your coaches</h2>'+f.slice(0,6).map(function(x){return '<div style="margin:8px 0"><b>'+(x.u&&/^https:\/\//.test(x.u)?'<a target="_blank" rel="noopener" href="'+esc(x.u)+'">'+esc(x.t)+'</a>':esc(x.t))+'</b>'+(x.squad?' <span class="tag">Whole squad</span>':'')+(x.note?'<p class="small" style="margin:2px 0 0;white-space:pre-wrap">'+esc(x.note)+'</p>':'')+'</div>';}).join('')+'</div>';}
 function out(){CODE='';D=null;s(CK,'');s('fam.cache','');r();}
 if(CODE){var cc=null;try{cc=JSON.parse(g('fam.cache')||'null');}catch(x){}if(cc&&cc.c===CODE&&cc.d){D=cc.d;r();splashDone();}load();}else{r();splashDone();}
 </script>
-<script src="acct.js?v=80" defer></script>
-<script src="update.js?v=80" defer></script>
-<script src="pq.js?v=80" defer></script>
+<script src="acct.js?v=81" defer></script>
+<script src="update.js?v=81" defer></script>
+<script src="pq.js?v=81" defer></script>
 </body>
 </html>

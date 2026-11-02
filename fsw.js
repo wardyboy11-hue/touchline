@@ -1,4 +1,4 @@
-/* family service worker, release 65 */
+/* family service worker, release 65, r81: parents page focus */
 self.addEventListener('install',function(){self.skipWaiting();});
 self.addEventListener('activate',function(e){e.waitUntil(self.clients.claim());});
 self.addEventListener('push',function(e){
@@ -10,7 +10,7 @@ self.addEventListener('notificationclick',function(e){
  e.notification.close();
  var u=(e.notification.data&&e.notification.data.url)||'/family.html';
  e.waitUntil(self.clients.matchAll({type:'window',includeUncontrolled:true}).then(function(l){
-  for(var i=0;i<l.length;i++){if(l[i].url.indexOf('family')>-1&&'focus' in l[i])return l[i].focus();}
+  for(var i=0;i<l.length;i++){if((l[i].url.indexOf('family')>-1||l[i].url.indexOf('parents')>-1)&&'focus' in l[i])return l[i].focus();}
   return self.clients.openWindow(u);
  }));
 });
