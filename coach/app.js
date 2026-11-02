@@ -193,13 +193,17 @@ function SPONC(){return '<div class="spn"><span>Proudly sponsored by</span><img 
 function vMatches(){
  var ms=Object.keys(S.matches).map(function(k){return S.matches[k];}).filter(function(m){return !m.deleted;});
  var live=ms.filter(function(m){return m.status==='live'||m.status==='ht';});
- var up=ms.filter(function(m){return m.status==='plan';}).sort(function(a,b){return a.date<b.date?-1:1;});
+ var srt=function(a,b){return (a.date||'9')<(b.date||'9')?-1:(a.date||'9')>(b.date||'9')?1:String(a.ko||'').localeCompare(String(b.ko||''));};
+ var up=ms.filter(function(m){return m.status==='plan'&&!m.pp;}).sort(srt),rl=ms.filter(function(m){return m.status==='plan'&&m.pp;}).sort(srt);
  var done=ms.filter(function(m){return m.status==='done';}).sort(function(a,b){return a.date<b.date?1:-1;});
  var h=intro('Plan matches, run them live with the clock and subs, and add results. Tap a match to open it.')+'<div class="row" style="margin:6px 0"><h2 class="grow" style="margin:0">Matches</h2><button class="btn" data-act="newResult">Add result</button><button class="btn pri" data-act="newMatch">New match</button></div>';
  function item(m){var sc=score(m);return '<div class="it" data-act="openMatch" data-id="'+m.id+'"><div class="grow"><b>'+(m.ha==='A'?'at ':'')+esc(m.opp||'Opponent TBC')+'</b><div class="small muted">'+niceDate(m.date)+' · '+esc(m.ko)+' · '+esc(m.comp)+'</div></div>'+(m.status==='plan'?(m.pp?'<span class="tag tagpp">Postponed</span>':'<span class="tag">'+FORMS[m.formation].n+'</span>'):'<b>'+(m.ha==='A'?sc[0]+' to '+sc[1]:sc[0]+' to '+sc[1])+'</b>')+'</div>';}
  if(live.length)h+='<div class="card"><h3>Live now</h3><div class="list">'+live.map(item).join('')+'</div></div>';
+ if(view.fc&&S.matches[view.fc.id])h+=vFixChange();
  h+='<div class="card"><h3>Coming up</h3><div class="list">'+(up.length?up.map(item).join(''):'<p class="muted">Nothing planned. Tap New match.</p>')+'</div></div>';
+ if(rl.length)h+='<div class="card"><h3>Unscheduled / to relist ('+rl.length+')</h3><p class="small muted">Postponed games. Tap Relist when you have the new date.</p><div class="list">'+rl.map(function(m){return '<div class="it"><div class="grow"><b>'+(m.ha==='A'?'at ':'v ')+esc(m.opp||'Opponent TBC')+'</b><div class="small muted">Was '+esc(fcUk(m.date))+(m.ppnote?' · '+esc(m.ppnote):'')+'</div></div><button class="btn sm pri" data-act="fcOpen" data-relist="1" data-id="'+m.id+'">Relist</button></div>';}).join('')+'</div></div>';
  if(done.length)h+='<div class="card"><h3>Results</h3><div class="list">'+done.map(item).join('')+'</div></div>';
+ h+=vXmasCard()+vFcHist();
  return h;
 }
 
@@ -228,7 +232,7 @@ function vPlan(m){
  if(m.ha==='H')h+='<div class="row wrap2" style="margin-top:8px"><button class="btn grow" data-act="vtFromMatch" data-id="'+m.id+'">Send the visiting teams guide</button></div>';
  if(mapLink)h+='<p><a class="btn sm pur" href="'+mapLink+'" target="_blank" rel="noopener">Open in Google Maps</a></p>';
  h+='<div class="row"><div class="grow"><label>Half length (minutes)</label><input type="number" min="10" max="45" data-f="half" value="'+esc(m.half)+'"></div><div class="grow">'+formSel(m)+'</div></div></div>';
- h+=viCard(m);h+=scoutCard(m);h+='<div class="card"><h3>Postponed?</h3><div class="row"><div class="grow"><select data-f="pp"><option value=""'+(m.pp?'':' selected')+'>On as planned</option><option value="1"'+(m.pp?' selected':'')+'>Postponed</option></select></div></div><label>Note for parents and players</label><input data-f="ppnote" value="'+esc(m.ppnote||'')+'" placeholder="For example: pitch waterlogged, new date to follow"></div>';
+ h+=viCard(m);h+=scoutCard(m);h+='<div class="card"><h3>Fixture change</h3><p class="small muted">Moved, postponed, new time, venue or opposition. Can push later games back a week, skipping Christmas, and tells families once.</p><button class="btn pri" data-act="fcOpen" data-id="'+m.id+'">Fixture change</button></div>';h+='<div class="card"><h3>Postponed?</h3><div class="row"><div class="grow"><select data-f="pp"><option value=""'+(m.pp?'':' selected')+'>On as planned</option><option value="1"'+(m.pp?' selected':'')+'>Postponed</option></select></div></div><label>Note for parents and players</label><input data-f="ppnote" value="'+esc(m.ppnote||'')+'" placeholder="For example: pitch waterlogged, new date to follow"></div>';
  h+=pickNoteCard(m.date);h+='<div class="card"><h3>Who is available ('+inCount+' of '+avail.length+')</h3><div class="chips">'+avail.map(function(p){var on=m.avail[p.id]!==false&&!ccRec(p.id);return '<button class="chip'+(on?' on':'')+'" data-act="avail" data-id="'+p.id+'"'+(ccRec(p.id)?' style="opacity:.55"':'')+'>'+esc(p.num||'')+' '+esc(shortName(p))+(ccRec(p.id)?' (not available)':'')+'</button>';}).join('')+'</div></div>';
  var mp=m.postId?posts().filter(function(x){return x.id===m.postId;})[0]:null;
  h+='<div class="card"><h3>Ask the parents</h3>'+(mp&&mp.status==='published'?'<p class="small" style="color:var(--good)">Posted. Parents can answer now.</p><div class="row wrap2"><button class="btn grow" data-act="matchAns">Pull in answers</button><button class="btn grow" data-act="matchUnpost">Take it down</button></div>'+ansCard(m.postId):'<p class="small muted">Posts the date, kick off and place, with a Yes, No or Maybe button for each parent.</p><button class="btn pri block" data-act="matchPost">Post this match to parents</button>')+'</div>';
@@ -2359,6 +2363,74 @@ Object.assign(ACT,{
   if(a[d.id]){if(confirm('Clear the did well note?'))delete a[d.id];else return;}else{var t=prompt('What did he do well? Optional, coaches only. Leave empty to just mark it.','');if(t===null)return;a[d.id]=t.trim().slice(0,160)||1;}
   if(!Object.keys(a).length)delete w[dt];var ks=Object.keys(w).sort();while(ks.length>40)delete w[ks.shift()];touch('settings',s);sync();render(true);}
 });
+/* ===================== Fixture change (release 79) =====================
+ * Coach only. Move or postpone a game, optionally push every later game back a week,
+ * skipping the Christmas break. Preview old v new, then one family alert and a fresh
+ * Playing? Yes / No for each changed game. History stays in coach settings only. */
+function fcUk(iso){if(!iso||!/^\d{4}-\d{2}-\d{2}$/.test(iso))return 'date to follow';var p=iso.split('-');return p[2]+'/'+p[1]+'/'+p[0];}
+function fcAdd(iso,n){var p=iso.split('-'),d=new Date(Date.UTC(+p[0],+p[1]-1,+p[2]+n));return d.toISOString().slice(0,10);}
+function fcDow(iso){var p=iso.split('-');return new Date(Date.UTC(+p[0],+p[1]-1,+p[2])).getUTCDay();}
+function fcPlan(){return Object.keys(S.matches).map(function(k){return S.matches[k];}).filter(function(m){return !m.deleted&&m.status==='plan';});}
+function fcSort(a,b){return (a.date||'9')<(b.date||'9')?-1:(a.date||'9')>(b.date||'9')?1:String(a.ko||'').localeCompare(String(b.ko||''));}
+/* default break: day after the last December game to the day before the first January game */
+function fcXmasDefault(){var ds=fcPlan().map(function(m){return m.date||'';}).filter(Boolean).sort(),dec='',jan='';
+ ds.forEach(function(d){if(d.slice(5,7)==='12')dec=d;});
+ if(dec){var ny=String(+dec.slice(0,4)+1);ds.forEach(function(d){if(!jan&&d.slice(0,4)===ny&&d.slice(5,7)==='01')jan=d;});}
+ var y=dec?dec.slice(0,4):(function(){var t=isoToday();return t.slice(5,7)<'07'?String(+t.slice(0,4)-1):t.slice(0,4);})();
+ return {from:dec?fcAdd(dec,1):y+'-12-21',to:jan?fcAdd(jan,-1):(+y+1)+'-01-03'};}
+function fcXmas(){var s=S.settings;if(!s.xmas||!s.xmas.from||!s.xmas.to){s.xmas=fcXmasDefault();s.xmas.auto=1;touch('settings',s);}return s.xmas;}
+function fcInBreak(d){var x=fcXmas();return d>=x.from&&d<=x.to;}
+function fcFirstSatAfter(d){var n=fcAdd(d,1);while(fcDow(n)!==6)n=fcAdd(n,1);return n;}
+function fcSnap(m){return {date:m.date||'',ko:m.ko||'',venue:m.addr||m.venue||'',opp:m.opp||'',ha:m.ha||'H',pp:m.pp?1:0};}
+/* pure planner: returns rows {id,old,nw,moved} */
+function fcCompute(f){var all=fcPlan().sort(fcSort),t=S.matches[f.id];if(!t)return [];var rows=[],used={};
+ var o=fcSnap(t),n={date:f.pp?o.date:(f.date||o.date),ko:f.ko,venue:f.venue,opp:f.opp,ha:o.ha,pp:f.pp?1:0};
+ rows.push({id:t.id,old:o,nw:n,main:1});
+ if(!f.pp&&n.date)used[n.date]=1;
+ if(f.push&&o.date){all.forEach(function(m){if(m.id===t.id||m.pp||!m.date||m.date<=o.date)return;var s=fcSnap(m),d=fcAdd(s.date,7),g=0;
+   while(g++<60){if(fcInBreak(d)){d=fcFirstSatAfter(fcXmas().to);continue;}if(used[d]){d=fcAdd(d,7);continue;}break;}
+   used[d]=1;var nw=JSON.parse(JSON.stringify(s));nw.date=d;rows.push({id:m.id,old:s,nw:nw});});}
+ else all.forEach(function(m){if(m.id!==t.id&&m.date&&!m.pp)used[m.date]=1;});
+ rows.forEach(function(r){var a=r.old,b=r.nw;r.moved=a.date!==b.date||a.ko!==b.ko||a.venue!==b.venue||a.opp!==b.opp||a.pp!==b.pp;});
+ return rows.filter(function(r){return r.moved;});}
+function fcLine(s){return (s.ha==='A'?'at ':'v ')+(s.opp||'opponent')+', '+(s.pp?'postponed, new date to follow':fcUk(s.date)+(s.ko&&s.ko!=='TBA'?' '+s.ko:''));}
+function fcMsg(rows){if(!rows.length)return '';var m=rows[0],more=rows.length-1;
+ var t='Fixture change: '+(m.nw.pp?((m.old.ha==='A'?'at ':'v ')+(m.old.opp||'opponent')+' on '+fcUk(m.old.date)+' is postponed, new date to follow.'):fcLine(m.old)+' is now '+fcUk(m.nw.date)+(m.nw.ko&&m.nw.ko!=='TBA'?' '+m.nw.ko:'')+'.');
+ if(more)t+=' '+more+' later game'+(more>1?'s':'')+' moved back a week.';
+ return t+' See Games, then tap Playing? Yes or No.';}
+function fcNews(rows){return rows.map(function(r){return r.nw.pp?fcLine(r.old)+' is postponed, new date to follow':fcLine(r.old)+' moves to '+fcUk(r.nw.date)+(r.nw.ko&&r.nw.ko!=='TBA'?' '+r.nw.ko:'');}).join('. ');}
+function fcForm(){var f=view.fc;['date','ko','venue','opp'].forEach(function(k){var e=$('#fc_'+k);if(e)f[k]=e.value.trim();});var p=$('#fc_pp');if(p)f.pp=p.value==='1';var q=$('#fc_push');if(q)f.push=q.checked;return f;}
+function vFixChange(){var f=view.fc,m=S.matches[f.id];if(!m)return '';var x=fcXmas();
+ var h='<div class="card" style="border-color:#FFB81C"><h3>Fixture change: '+(m.ha==='A'?'at ':'v ')+esc(m.opp||'opponent')+'</h3><p class="small muted">Was '+esc(fcUk(m.date))+(m.ko?' '+esc(m.ko):'')+'. Change what you need, check the preview, then save.</p>';
+ h+='<label>What is happening</label><select id="fc_pp"><option value="">Moved (new date, time, venue or opposition)</option><option value="1"'+(f.pp?' selected':'')+'>Postponed, no new date yet (goes to the relist list)</option></select>';
+ if(!f.pp)h+='<div class="row"><div class="grow"><label>New date</label><input type="date" id="fc_date" value="'+esc(f.date)+'"></div><div class="grow"><label>Kick off</label><input type="time" id="fc_ko" value="'+esc(f.ko)+'"></div></div><label>Venue</label><input id="fc_venue" value="'+esc(f.venue)+'"><label>Opposition</label><input id="fc_opp" value="'+esc(f.opp)+'">';
+ h+='<label style="display:flex;gap:8px;align-items:center;margin-top:10px"><input type="checkbox" id="fc_push"'+(f.push?' checked':'')+'> Push later fixtures back a week</label><p class="small muted">Skips the Christmas break ('+esc(fcUk(x.from))+' to '+esc(fcUk(x.to))+'). A game landing in it moves to the first Saturday after. Change the break in the box below.</p>';
+ h+='<div class="row wrap2"><button class="btn grow" data-act="fcPrev">Show preview</button><button class="btn" data-act="fcClose">Cancel</button></div>';
+ if(f.rows){h+='<h3 style="margin-top:12px">Preview</h3>'+(f.rows.length?'<div class="list">'+f.rows.map(function(r){return '<div class="it"><div class="grow"><b>'+esc((r.old.ha==='A'?'at ':'v ')+(r.old.opp||'opponent'))+'</b><div class="small muted">Was '+esc(fcUk(r.old.date))+(r.old.ko?' '+esc(r.old.ko):'')+(r.old.opp!==r.nw.opp?' v '+esc(r.old.opp):'')+'</div><div class="small">Now '+(r.nw.pp?'<b>postponed, to relist</b>':esc(fcUk(r.nw.date))+(r.nw.ko?' '+esc(r.nw.ko):'')+(r.nw.opp!==r.old.opp?' v '+esc(r.nw.opp):'')+(r.nw.venue!==r.old.venue?'<br>'+esc(r.nw.venue):''))+'</div></div></div>';}).join('')+'</div><p class="small muted">Families get one alert:<br>'+esc(fcMsg(f.rows))+'</p><button class="btn pri block" data-act="fcSave">Save, tell families and ask Playing? again</button>':'<p class="muted">Nothing changes.</p>');}
+ return h+'</div>';}
+function vXmasCard(){var x=fcXmas();return '<div class="card"><h3>Christmas break</h3><p class="small muted">No fixtures are moved into these dates. Starts as the gap between the last December game and the first January game.</p><div class="row"><div class="grow"><label>From</label><input type="date" id="xm_from" value="'+esc(x.from)+'"></div><div class="grow"><label>To</label><input type="date" id="xm_to" value="'+esc(x.to)+'"></div></div><button class="btn sm" data-act="xmasSave">Save break dates</button></div>';}
+function vFcHist(){var hs=(S.settings.fxHist||[]).slice(0,8);if(!hs.length)return '';return '<div class="card"><h3>Fixture change history (coaches only)</h3>'+hs.map(function(e){return '<p class="small">'+esc(fcUk(new Date(e.at).toISOString().slice(0,10)))+(e.who?' by '+esc(e.who):'')+': '+esc(e.txt)+'</p>';}).join('')+'</div>';}
+Object.assign(ACT,{
+ fcOpen:function(d){var m=S.matches[d.id];if(!m)return;var s=fcSnap(m);view.fc={id:m.id,date:d.relist?'':s.date,ko:s.ko,venue:s.venue,opp:s.opp,pp:false,push:!d.relist,relist:!!d.relist};setMid(null);view.tab='match';render();window.scrollTo(0,0);},
+ fcClose:function(){view.fc=null;render(true);},
+ fcPrev:function(){var f=fcForm();if(!f.pp&&!/^\d{4}-\d{2}-\d{2}$/.test(f.date||'')){f.rows=null;render(true);toast('Pick the new date');return;}f.rows=fcCompute(f);render(true);},
+ fcSave:function(){var f=fcForm(),rows=fcCompute(f);if(!rows.length){toast('Nothing changes');return;}
+  var msg=prompt('Check the alert. It goes to every family with alerts on. Press OK to save and send, or Cancel to stop.',fcMsg(rows));if(msg===null)return;
+  var arr=posts();
+  rows.forEach(function(r){var m=S.matches[r.id];if(!m)return;
+   if(m.postId){arr.forEach(function(p){if(p.id===m.postId)p.status='removed';});delete m.postId;}
+   m.date=r.nw.date;m.ko=r.nw.ko;m.opp=r.nw.opp;if(r.nw.venue!==r.old.venue){m.addr=r.nw.venue;m.venue=r.nw.venue;}
+   m.pp=r.nw.pp?1:0;m.ppnote=r.nw.pp?'New date to follow':'';m.relist=r.nw.pp?1:0;saveM(m);});
+  S.settings.posts=arr;
+  var s=S.settings,hs=s.fxHist=s.fxHist||[];hs.unshift({at:now(),who:who()||'',txt:fcNews(rows)});while(hs.length>60)hs.pop();
+  news().unshift({id:uid(),t:('Fixture change. '+fcNews(rows)).slice(0,400),d:isoToday()});touch('settings',s);
+  var ask=rows.filter(function(r){return !r.nw.pp&&r.nw.date>=isoToday();}).map(function(r){return S.matches[r.id];});
+  view.fc=null;
+  ask.reduce(function(p,m){return p.then(function(){return postMatch(m);});},sync(true)).then(function(){return msg.trim().length>4?famPush(msg):{sent:0,total:0};})
+   .then(function(j){toast('Saved. Sent to '+j.sent+' of '+j.total+' phones');render(true);}).catch(function(e){toast('Saved. Push: '+e.message);render(true);});},
+ xmasSave:function(){var a=($('#xm_from')||{}).value,b=($('#xm_to')||{}).value;if(!a||!b||b<a){toast('Pick a start and an end after it');return;}S.settings.xmas={from:a,to:b};touch('settings',S.settings);sync();render(true);toast('Break saved: '+fcUk(a)+' to '+fcUk(b));}
+});
+document.addEventListener('change',function(e){if(e.target&&e.target.id==='fc_pp'&&view.fc){fcForm();view.fc.rows=null;render(true);}});
 takeShare();
 document.addEventListener('click',function(e){var t=e.target;if(t&&t.tagName==='INPUT'&&(t.type==='date'||t.type==='time')&&t.showPicker){try{t.showPicker();}catch(x){}}});
 try{rvMigrate();}catch(e){}

@@ -255,9 +255,10 @@ function bodyHome(){var x=X(),h='';
  var nx=x.fixtures.filter(function(m){return !m.done&&m.date>=today();})[0];
  if(x.matchDay)h+=matchHelp();
  return h;}
-function bodyGames(){var x=X(),up=x.fixtures.filter(function(m){return !m.done;}),dn=x.fixtures.filter(function(m){return m.done;}).reverse();
+function bodyGames(){var x=X(),srt=function(a,b){return String(a.date||'9').localeCompare(String(b.date||'9'))||String(a.ko||'').localeCompare(String(b.ko||''));},all=x.fixtures.filter(function(m){return !m.done;}).sort(srt),up=all.filter(function(m){return !m.pp;}),ppl=all.filter(function(m){return m.pp;}),dn=x.fixtures.filter(function(m){return m.done;}).reverse();
  var h='<div class="card"><h2>Games</h2><p class="small muted">Fixtures, results and Man of the match so far. Away games have a lift board. For the league table use FA Full Time.</p></div>';
  h+=(up.length?up.map(fxCard).join(''):'<div class="card"><p class="muted">No games listed yet.</p></div>');
+ if(ppl.length)h+='<h2 style="margin:18px 0 0">Postponed, new date to follow</h2>'+ppl.map(fxCard).join('');
  if(dn.length)h+='<h2 style="margin:18px 0 0">Results</h2>'+dn.map(fxCard).join('');
  h+='<div class="card"><a class="btn block" href="'+FT+'" target="_blank" rel="noopener">Open FA Full Time for the table</a></div>';
  return h;}
@@ -715,9 +716,9 @@ function pushCard(){
 function out(){CODE='';D=null;s(CK,'');s('fam.cache','');r();}
 if(CODE){var cc=null;try{cc=JSON.parse(g('fam.cache')||'null');}catch(x){}if(cc&&cc.c===CODE&&cc.d){D=cc.d;r();splashDone();}load();}else{r();splashDone();}
 </script>
-<script src="positions.js?v=78" defer></script>
-<script src="acct.js?v=78" defer></script>
-<script src="update.js?v=78" defer></script>
-<script src="pq.js?v=78" defer></script>
+<script src="positions.js?v=79" defer></script>
+<script src="acct.js?v=79" defer></script>
+<script src="update.js?v=79" defer></script>
+<script src="pq.js?v=79" defer></script>
 </body>
 </html>
