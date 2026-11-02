@@ -532,7 +532,7 @@ h+='<div class="card"><h3>Coaches</h3>'+coachPhotoBox('coach:tim','Tim')+'<div c
  h+='<div class="card"><h3>Role cards</h3><p class="small muted">Starting wording. Change it to match your playing model.</p>'+POS.map(function(p){return '<label>'+p+'</label><textarea data-role="'+p+'" style="min-height:70px">'+esc(role(p))+'</textarea>';}).join('')+'</div>';
  h+=voteCard('poty','Player of the year vote','season','this season');
  h+=vCodes();
- h+=vHelp();
+ h+=vHowTo();h+=vHelp();
  h+='<div class="card"><h3>Data</h3><p class="small muted">Everything saves on this phone first, then syncs to your private sheet when there is signal. '+Object.keys(S.dirty).length+' item(s) waiting.</p><div class="row wrap2"><button class="btn grow" data-act="sync">Sync now</button><button class="btn bad grow" data-act="logout">Sign out</button></div></div>';
  return h;
 }
@@ -1280,6 +1280,7 @@ function vFamNotes(){var f=fam();
  return '<div class="card"><h3>Game day tips and what we are working on</h3><p class="small muted">Shown to every parent and player. Keep it short and positive. Personal objectives are set on each player in the Squad tab.</p><label>Game day tips</label><textarea data-fam="tips" placeholder="Eat two to three hours before. Drink water all day. Boots and shin pads in the bag the night before. Talk early and loud.">'+esc(f.tips)+'</textarea><label>What we have been working on</label><textarea data-fam="working" placeholder="This block: finding a free player quickly under pressure, and staying calm when we lose it.">'+esc(f.working)+'</textarea><div class="row" style="margin-top:10px"><button class="btn pri grow" data-act="famSave">Save and publish</button></div></div>';}
 function bdays(){var t=new Date(),out=[];plist().forEach(function(p){if(!p.dob)return;var q=p.dob.split('-'),n=new Date(t.getFullYear(),+q[1]-1,+q[2]);if(n<new Date(t.getFullYear(),t.getMonth(),t.getDate()))n=new Date(t.getFullYear()+1,+q[1]-1,+q[2]);var d=Math.round((n-new Date(t.getFullYear(),t.getMonth(),t.getDate()))/86400000);if(d<=21)out.push({p:p,d:d,age:n.getFullYear()-(+q[0])});});out.sort(function(a,b){return a.d-b.d;});return out;}
 function vBdays(){var b=bdays();if(!b.length)return '';return '<div class="card"><h3>Birthdays coming up</h3>'+b.map(function(x){return '<p class="small"><b>'+esc(shortName(x.p))+'</b> turns '+x.age+(x.d===0?' today':x.d===1?' tomorrow':' in '+x.d+' days')+'</p>';}).join('')+'<p class="small muted">Parents and players see a happy birthday message when they open their page that day.</p></div>';}
+function vHowTo(){var V=[['01-tour','Tour of the coach tabs'],['02-match-day','Match day'],['03-training','Training'],['04-comms','Sending comms']];return '<details class="card" open><summary style="cursor:pointer;font-weight:700">How to videos (coaches only)</summary><p class="small muted">Short guides with sound and captions. Made with made-up players.</p>'+V.map(function(x){return '<p class="small" style="margin:12px 0 4px"><b>'+x[1]+'</b></p><video controls playsinline preload="none" style="width:100%;max-height:70vh;border-radius:10px;background:#000" poster="howto/'+x[0]+'.jpg?v=81"><source src="howto/'+x[0]+'.mp4?v=81" type="video/mp4"><track kind="captions" srclang="en-GB" label="English" src="howto/'+x[0]+'.vtt?v=81" default></video>';}).join('')+'</details>';}
 function vHelp(){return '<div class="card"><h3>How to use Touchline</h3><p class="small"><b>Match tab:</b> make a match, post it to parents, pull in their answers, suggest a starting 11, then run the live match with the clock, subs and goals.</p><p class="small"><b>Squad tab:</b> tap a player to set positions, private notes, personal objectives for the lad and his parents, FAN number and birthday.</p><p class="small"><b>Plan tab:</b> choose a focus, write the why, publish the session for parents, then make the brief for Claude. Add game day tips and what we are working on.</p><p class="small"><b>Ask tab:</b> ask about a term, a drill or a set piece and get a diagram.</p><p class="small"><b>More tab:</b> parent and player codes, questions parents asked, role cards, sync and sign out.</p><p class="small"><b>Hub tab:</b> welcome message and reminders for the team home page, events (approve ones parents post), lift requests, phone alerts, pictures, calendar link and WhatsApp sharing.</p><p class="small"><b>Results:</b> tap Add result on the Match tab for games already played. Open a planned match to mark it postponed or set Man of the match.</p><p class="small muted">Everything saves on the phone first, then syncs when there is signal. Share the coach code only with Deano.</p></div>';}
 
 function who(){return lsGet('tl.who')||'';}
@@ -2436,8 +2437,6 @@ document.addEventListener('change',function(e){if(e.target&&e.target.id==='fc_pp
 takeShare();
 document.addEventListener('click',function(e){var t=e.target;if(t&&t.tagName==='INPUT'&&(t.type==='date'||t.type==='time')&&t.showPicker){try{t.showPicker();}catch(x){}}});
 try{rvMigrate();}catch(e){}
-render();sync();loadPhotos(true);splashDone();
-})();
 
 /* ---- r80: opposition managers log and league info. Coaches only.
    Names, phones and emails come ONLY from the coach-authenticated backend (private sheet tabs OppContacts / LeagueContacts).
@@ -2499,7 +2498,7 @@ function pushStats(){return call('push.stats').then(function(d){PSTATS=d;return 
 function pushTxt(j){var t='Sent to '+(j.sent||0)+' of '+(j.total||0)+' device'+(j.total===1?'':'s');if(PSTATS&&PSTATS.missing)t+=' · '+PSTATS.missing.length+' famil'+(PSTATS.missing.length===1?'y has':'ies have')+' not turned alerts on';pushStats();return t;}
 function votesToday(){
  var tp=nextTrainPost(),nm=nextMatch(),mp=nm&&nm.postId?posts().filter(function(x){return x.id===nm.postId;})[0]:null;
- if(!view.answers&&!view._r81a){view._r81a=1;loadAnswers(true).then(function(){render(true);});}
+ if(!view._r81a){view._r81a=1;loadAnswers(true).then(function(){render(true);});}
  if(!PSTATS&&!view._r81p){view._r81p=1;pushStats().then(function(d){if(d)render(true);});}
  var one=function(lbl,p){if(!p)return '<p class="small muted"><b>'+lbl+':</b> no attendance request posted yet.</p>';var r=ansSum(p.id);
   var no=r.N.map(function(x){var a=ansRow(p.id,x.id);return '#'+esc(String(x.num||'?'))+' '+esc(shortName(x))+(a&&a.reason?': '+esc(a.reason):'');});
@@ -2526,3 +2525,6 @@ window.sendToProfile=function(item){
    if(!all&&!ids.length){toast('Pick a player or the whole squad');return;}
    call('feed.send',{all:all,pids:ids,item:{t:item.t,u:item.u||'',kind:item.kind||'link',note:(w.querySelector('#r81n').value||item.note||'').trim()}}).then(function(d){w.remove();toast('Sent to '+(all?'the whole squad':d.n+' player profile'+(d.n===1?'':'s')));}).catch(function(e){toast(e.message);});}});};
 Object.assign(ACT,{fitProfile:function(){var t=fitText();window.sendToProfile({t:'Fitness plan',kind:'plan',note:t.slice(0,400)});}});
+/* r81 fix: r80 and r81 blocks now sit inside the app scope so ACT, call, view and S are reachable. */
+render();sync();loadPhotos(true);splashDone();
+})();
