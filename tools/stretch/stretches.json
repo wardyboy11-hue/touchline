@@ -1,0 +1,313 @@
+{
+ "welcome": "Right lads, cool down stretches. About fifteen minutes. Ease into every stretch, a gentle pull, never pain, and no bouncing. If anything feels sharp, stop and tell a coach.",
+ "finish": "That's you done. Good work. Get a drink of water, get some food in you, and get a proper sleep tonight. See you at training.",
+ "count": "Three. Two. One. Relax.",
+ "items": [
+  {
+   "id": "quad",
+   "name": "Standing quad stretch",
+   "side": "L",
+   "secs": 30,
+   "pose": "quad",
+   "prop": "wall",
+   "vo": "Standing quad stretch, left leg. Hand on a wall, grab your left ankle and bring your heel towards your bum. Knees together, stand tall. Good for sprinting and shooting.",
+   "how": [
+    "One hand on a wall or a mate's shoulder.",
+    "Hold your ankle, heel towards your bum.",
+    "Knees side by side, hips pushed forward a touch.",
+    "Stand tall. Don't yank it."
+   ],
+   "why": "Your quads power every sprint, jump and strike of the ball.",
+   "more": "Helps with stiff knees after a growth spurt.",
+   "note": "Sore just below the kneecap? That can be Osgood-Schlatter. Go gentle, ease off, and tell a coach."
+  },
+  {
+   "id": "quad",
+   "name": "Standing quad stretch",
+   "side": "R",
+   "secs": 30,
+   "pose": "quad",
+   "prop": "wall",
+   "vo": "Switch to the right leg. Same again. Heel to your bum, knees together, and keep breathing.",
+   "how": [
+    "Swap hands on the wall.",
+    "Hold your right ankle, heel to bum.",
+    "Knees together, stand tall."
+   ],
+   "why": "Your quads power every sprint, jump and strike of the ball.",
+   "more": "Helps with stiff knees after a growth spurt.",
+   "note": "Sore just below the kneecap? Go gentle and tell a coach."
+  },
+  {
+   "id": "calf",
+   "name": "Calf stretch on the wall",
+   "side": "L",
+   "secs": 30,
+   "pose": "calf",
+   "prop": "wall",
+   "vo": "Calf stretch, left leg back. Hands on the wall, left leg straight behind you, heel pressed into the floor. Lean in slowly. Your calves do all the work when you push off and change direction.",
+   "how": [
+    "Hands on the wall at shoulder height.",
+    "Back leg straight, heel down, toes forward.",
+    "Front knee bends.",
+    "Lean in slowly till you feel the calf."
+   ],
+   "why": "Calves push you off the mark and keep you on your toes when you jockey.",
+   "more": "Helps stop tight calves and cramp late in games.",
+   "note": "Sore heels when you're growing can be Sever's. Ease off and tell a coach."
+  },
+  {
+   "id": "calf",
+   "name": "Calf stretch on the wall",
+   "side": "R",
+   "secs": 30,
+   "pose": "calf",
+   "prop": "wall",
+   "vo": "Swap legs. Right leg back, straight, heel down, and lean in nice and slowly.",
+   "how": [
+    "Right leg back, straight.",
+    "Heel stays on the floor.",
+    "Lean in slowly."
+   ],
+   "why": "Calves push you off the mark and keep you on your toes when you jockey.",
+   "more": "Helps stop tight calves and cramp late in games.",
+   "note": "Sore heels can be Sever's. Ease off and tell a coach."
+  },
+  {
+   "id": "flexor",
+   "name": "Kneeling hip flexor lunge",
+   "side": "L",
+   "secs": 30,
+   "pose": "flexor",
+   "vo": "Kneeling lunge. Left knee down, right foot in front. Stand your body up tall and push your hips forward gently. This opens up the front of your hip, the muscle that lifts your knee when you run.",
+   "how": [
+    "Back knee on the floor, use a jumper if it's hard ground.",
+    "Front knee over your ankle.",
+    "Body tall, squeeze your bum.",
+    "Push your hips forward slowly."
+   ],
+   "why": "Hip flexors lift your knee for every stride and swing your leg to strike.",
+   "more": "Helps with a tight lower back from sitting at school.",
+   "note": "Front knee never goes miles past your toes."
+  },
+  {
+   "id": "flexor",
+   "name": "Kneeling hip flexor lunge",
+   "side": "R",
+   "secs": 30,
+   "pose": "flexor",
+   "vo": "Switch sides. Right knee down, left foot forward. Tall body, hips forward.",
+   "how": [
+    "Right knee down, left foot forward.",
+    "Body tall.",
+    "Hips forward slowly."
+   ],
+   "why": "Hip flexors lift your knee for every stride and swing your leg to strike.",
+   "more": "Helps with a tight lower back from sitting at school.",
+   "note": "Keep it gentle."
+  },
+  {
+   "id": "ham",
+   "name": "Sitting hamstring stretch",
+   "side": "L",
+   "secs": 30,
+   "pose": "ham",
+   "vo": "Sitting hamstring stretch. Sit down, left leg straight out, right foot tucked in. Reach towards your left foot with a flat back. Only go as far as feels comfy. Hamstrings help you sprint and strike the ball.",
+   "how": [
+    "Sit tall, left leg straight, toes up.",
+    "Other foot against your inside thigh.",
+    "Lean forward from your hips, flat back.",
+    "Reach for your shin or foot. No bouncing."
+   ],
+   "why": "Hamstrings drive your sprint and control your leg when you strike the ball.",
+   "more": "Tight hamstrings are a common cause of pulls in growing lads.",
+   "note": "Feel it in the back of the thigh, not behind the knee."
+  },
+  {
+   "id": "ham",
+   "name": "Sitting hamstring stretch",
+   "side": "R",
+   "secs": 30,
+   "pose": "ham",
+   "vo": "Other leg. Right leg straight, left foot tucked in. Flat back, reach forward gently.",
+   "how": [
+    "Right leg straight, toes up.",
+    "Left foot tucked in.",
+    "Flat back, reach forward."
+   ],
+   "why": "Hamstrings drive your sprint and control your leg when you strike the ball.",
+   "more": "Tight hamstrings are a common cause of pulls in growing lads.",
+   "note": "Feel it in the back of the thigh, not behind the knee."
+  },
+  {
+   "id": "adductor",
+   "name": "Side lunge groin stretch",
+   "side": "",
+   "secs": 30,
+   "pose": "adductor",
+   "vo": "Side lunge. Feet wide, toes forward. Bend one knee and sit to that side, keeping the other leg straight. Hold, then we'll go the other way halfway. Good for your groin when you stretch for a tackle.",
+   "how": [
+    "Feet wide apart, toes forward.",
+    "Bend one knee, sit back to that side.",
+    "Other leg straight, foot flat.",
+    "Switch sides halfway."
+   ],
+   "why": "Your groin muscles work every time you pass with the inside of your foot or stretch for a block.",
+   "more": "Groin strains are common in footballers, this helps keep them away.",
+   "note": "Bent knee follows your toes.",
+   "mid": 1
+  },
+  {
+   "id": "butterfly",
+   "name": "Butterfly stretch",
+   "side": "",
+   "secs": 30,
+   "pose": "butterfly",
+   "vo": "Butterfly. Sit down, soles of your feet together, hold your ankles. Sit tall and let your knees drop slowly towards the floor. Don't push them down hard.",
+   "how": [
+    "Sit tall, soles of your feet together.",
+    "Hold your ankles.",
+    "Let your knees drop slowly.",
+    "Use your elbows gently, never force it."
+   ],
+   "why": "Loosens your hips and inner thighs for passing, turning and shielding.",
+   "more": "Good for flexible hips as you grow.",
+   "note": "No bouncing your knees."
+  },
+  {
+   "id": "glute",
+   "name": "Lying glute stretch",
+   "side": "L",
+   "secs": 30,
+   "pose": "glute",
+   "vo": "Lying glute stretch. On your back, cross your left ankle over your right knee. Hold behind your right thigh and pull it gently towards you. Your glutes are your engine for sprinting and jumping.",
+   "how": [
+    "Lie on your back, knees bent.",
+    "Left ankle on top of your right knee.",
+    "Hold behind your right thigh.",
+    "Pull it gently towards your chest."
+   ],
+   "why": "Glutes are your engine for sprinting, jumping and holding players off.",
+   "more": "Helps hips and lower back feel looser.",
+   "note": "Head stays on the floor."
+  },
+  {
+   "id": "glute",
+   "name": "Lying glute stretch",
+   "side": "R",
+   "secs": 30,
+   "pose": "glute",
+   "vo": "Switch. Right ankle over your left knee, and pull it in gently.",
+   "how": [
+    "Right ankle on top of your left knee.",
+    "Hold behind your left thigh.",
+    "Pull it in gently."
+   ],
+   "why": "Glutes are your engine for sprinting, jumping and holding players off.",
+   "more": "Helps hips and lower back feel looser.",
+   "note": "Head stays on the floor."
+  },
+  {
+   "id": "knee",
+   "name": "Knee to chest",
+   "side": "L",
+   "secs": 30,
+   "pose": "knee",
+   "vo": "Knee to chest. On your back, hug your left knee in towards your chest. Other leg long. Relax your shoulders and breathe. Lovely for your lower back.",
+   "how": [
+    "Lie on your back, legs long.",
+    "Hug one knee in to your chest.",
+    "Other leg stays long and relaxed.",
+    "Shoulders down, slow breaths."
+   ],
+   "why": "Eases your lower back and hips after running and kicking.",
+   "more": "Slow breathing here helps you calm down after a hard session.",
+   "note": "Hold under the knee if it's sore on top."
+  },
+  {
+   "id": "knee",
+   "name": "Knee to chest",
+   "side": "R",
+   "secs": 30,
+   "pose": "knee",
+   "vo": "Other leg. Hug your right knee in. Nice slow breaths.",
+   "how": [
+    "Hug the right knee in.",
+    "Left leg long.",
+    "Slow breaths."
+   ],
+   "why": "Eases your lower back and hips after running and kicking.",
+   "more": "Slow breathing helps you calm down after a hard session.",
+   "note": "Hold under the knee if it's sore on top."
+  },
+  {
+   "id": "twist",
+   "name": "Lying hip rotation",
+   "side": "L",
+   "secs": 30,
+   "pose": "twist",
+   "vo": "Lying twist. Arms out wide, bend your left knee and let it fall across your body towards the floor. Keep both shoulders down. Good for turning and twisting in games.",
+   "how": [
+    "Lie on your back, arms out wide.",
+    "Bend one knee.",
+    "Let it drop across your body.",
+    "Both shoulders stay on the floor."
+   ],
+   "why": "Helps you turn, twist and look over your shoulder in games.",
+   "more": "Loosens your back and hips together.",
+   "note": "Let gravity do it, don't push."
+  },
+  {
+   "id": "twist",
+   "name": "Lying hip rotation",
+   "side": "R",
+   "secs": 30,
+   "pose": "twist",
+   "vo": "Other side. Right knee across, shoulders flat, breathe out and relax.",
+   "how": [
+    "Right knee across.",
+    "Shoulders flat.",
+    "Breathe out and relax."
+   ],
+   "why": "Helps you turn, twist and look over your shoulder in games.",
+   "more": "Loosens your back and hips together.",
+   "note": "Let gravity do it."
+  },
+  {
+   "id": "dog",
+   "name": "Downward dog",
+   "side": "",
+   "secs": 30,
+   "pose": "dog",
+   "vo": "Downward dog. Hands and feet on the floor, push your hips up high, like an upside down V. Bend your knees if you need to, and slowly pedal your heels towards the floor.",
+   "how": [
+    "Hands shoulder width, feet hip width.",
+    "Push your hips up and back.",
+    "Bend your knees if your hamstrings are tight.",
+    "Pedal your heels down one at a time."
+   ],
+   "why": "Stretches calves, hamstrings and shoulders all in one.",
+   "more": "Builds body control and strong shoulders for throw ins and keepers.",
+   "note": "Come down onto your knees for a rest any time."
+  },
+  {
+   "id": "wall",
+   "name": "Legs up the wall",
+   "side": "",
+   "secs": 60,
+   "pose": "wall",
+   "prop": "wall",
+   "vo": "Last one. Legs up the wall. Lie on your back with your legs resting up the wall. Arms out, eyes closed, slow breaths. A full minute. This helps your legs recover for next time.",
+   "how": [
+    "Sit side on to a wall, then swing your legs up it.",
+    "Bum close to the wall.",
+    "Arms out, eyes shut.",
+    "Slow breaths in through your nose."
+   ],
+   "why": "Helps tired legs recover faster after training or a match.",
+   "more": "Calms you down, good before sleep. Sleep is when you grow and recover.",
+   "note": "Bend your knees if your hamstrings pull."
+  }
+ ],
+ "switch": "Switch sides."
+}
