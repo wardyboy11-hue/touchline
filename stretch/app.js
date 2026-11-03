@@ -8,7 +8,7 @@ function sideTxt(x){return x.side==='L'?'Left':x.side==='R'?'Right':'';}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 /* list */
 $('cnt').textContent=IT.length;$('total').textContent=mmss(TOTAL)+' total';
-$('items').innerHTML=IT.map(function(x,i){return '<li data-i="'+i+'"><div class="th">'+figSVG(x.pose,x.side,'hold',0)+'</div><div class="nm">'+esc(x.name)+(x.side?' <span class="sd">'+sideTxt(x)+'</span>':'')+'</div><div class="tm">'+mmss(x.secs)+'</div></li>';}).join('');
+$('items').innerHTML=IT.map(function(x,i){return '<li data-i="'+i+'"><div class="th"><img src="img/'+x.pose+'_t.webp?v=84" alt=""'+(x.side==='R'?' class="mr"':'')+'></div><div class="nm">'+esc(x.name)+(x.side?' <span class="sd">'+sideTxt(x)+'</span>':'')+'</div><div class="tm">'+mmss(x.secs)+'</div></li>';}).join('');
 /* state */
 var t=0,playing=false,last=0,how=false,fired={},ac=null,cur=-1;
 function segAt(tt){for(var i=SEG.length-1;i>=0;i--)if(tt>=SEG[i].t0)return i;return 0;}
@@ -25,7 +25,9 @@ function cues(si,local){var s=SEG[si],key;
 function render(){
  var si=segAt(t),s=SEG[si],local=t-s.t0,rem=s.d-local,ix=s.i!=null?s.i:(s.k==='welcome'?0:IT.length-1),x=IT[ix];
  var pl=playing||window.__rec,mode=(s.k==='hold'&&!how&&pl)?'hold':'demo';
- $('fig').innerHTML=s.k==='done'?'<svg viewBox="0 0 200 200"><text x="100" y="105" text-anchor="middle" font-size="22" font-weight="800" fill="#1d4ed8">Well done!</text></svg>':figSVG(x.pose,x.side,mode,t);
+ var fk=s.k==='done'?'done':x.pose+x.side,fg=$('fig');
+ if(fg.dataset.k!==fk){fg.dataset.k=fk;fg.innerHTML=s.k==='done'?'<div class="wd">Well done!</div>':'<img id="pimg" src="img/'+x.pose+'.webp?v=84" alt="'+esc(x.name)+' demo">';}
+ var pi=$('pimg');if(pi&&s.k!=='done'){var z=mode==='hold'?1.03+.05*Math.min(1,local/s.d):1.03+.03*Math.sin(t*.9);pi.style.transform='scale('+(x.side==='R'?-z:z)+','+z+')';}
  var ph=$('phase');ph.className='phase'+(s.k==='hold'?' hold':'');ph.textContent=s.k==='welcome'?'Get ready':s.k==='intro'?(ix&&IT[ix-1].id===x.id?'Switch':'Next up'):s.k==='hold'?'Hold':'Finished';
  $('pname').textContent=s.k==='done'?'All done':x.name;$('pside').textContent=s.k==='done'?'':sideTxt(x)+(x.side?' side':'');
  var ck=$('clock');ck.textContent=s.k==='hold'&&rem<=3.2&&rem>0.2?String(Math.ceil(rem-.2)):mmss(rem);ck.className='big'+(s.k==='hold'?' go':'');
