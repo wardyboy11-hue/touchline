@@ -3,12 +3,13 @@
    this phone is running, it refreshes the app by itself. It will not refresh while you are typing,
    or while there are changes on this phone not yet synced. Bump version.json with every release. */
 (function(){
-var RUN='82',KEY='tl.ver.try',GAP=5*60*1000;
+var RUN='83',KEY='tl.ver.try',GAP=5*60*1000;
 var hiddenAt=0;
 function g(k){try{return localStorage.getItem(k)||'';}catch(e){return '';}}
 function s(k,v){try{localStorage.setItem(k,v);}catch(e){}}
 function busy(){
  var a=document.activeElement;if(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&a.type!=='button')return true;
+ try{var f=document.querySelectorAll('input,textarea');for(var i=0;i<f.length;i++){var e=f[i];if(!/^(button|submit|checkbox|radio|file|hidden|password|range)$/i.test(e.type||'')&&e.value&&e.value!==e.defaultValue)return true;}}catch(e){}
  try{var st=JSON.parse(g('tl.state.v1')||'{}');if(st.dirty&&Object.keys(st.dirty).length)return true;}catch(e){}
  return false;
 }
