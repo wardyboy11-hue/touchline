@@ -1,0 +1,49 @@
+{"slug":"w1_shape_to_receive_session","title":"Week 1 session: Shape to receive, first pass forward","date":"2026-11-04","week":"Block 3, week 1","pdf":"../../plans/w1_shape_to_receive_session.pdf",
+ "theme":"Show, Support, Stretch, then Spring","cue":"Open, look, forward.",
+ "parents":"Watch how the players move before the ball arrives: someone shows short, others give width, and the first pass goes forward.",
+ "phases":[
+ {"phase":"Warm up","slug":"w1_warm","title":"Open, Look, Forward rondo","theme":"Warm up","age":"U14 / U15","format":"5v2 rondo","area":"14m x 14m box","kit":"4 cones, blue and red bibs, plenty of balls","start":"Number 4 starts with the ball on the edge of the box","L":14,"W":14,"nums":true,"ball":"B4",
+  "key":[["B","Us (blue)"],["R","Defenders (red)"]],"cones":[[0,0],[14,0],[0,14],[14,14]],
+  "players":[{"id":"B4","team":"B","x":7,"y":13.5},{"id":"B5","team":"B","x":0.5,"y":6},{"id":"B6","team":"B","x":13.5,"y":6},{"id":"B8","team":"B","x":4,"y":0.5},{"id":"B10","team":"B","x":10,"y":0.5},{"id":"R1","team":"R","x":6,"y":8},{"id":"R2","team":"R","x":8,"y":5}],
+  "intro_vo":"Warm up. Open, look, forward. A five against two rondo, so every pass is about showing for the ball and getting on the half turn.",
+  "steps":[
+   {"dur":7,"say":"4 has it. 5 and 6 open up an angle either side.","vo":"Four has the ball. Five and six move along the line to open up an angle either side, so four always has two passes.","moves":{"B5":[0.5,10],"B6":[13.5,10],"R1":[6,10]}},
+   {"dur":7,"say":"4 plays to 5. 5 is side on, on the half turn.","vo":"Four plays into five. Five is side on, back foot to the ball, so he can see the whole box.","moves":{"R1":[3,9],"R2":[6,6]},"pass":"B5"},
+   {"dur":7,"say":"5 scans and splits the two reds into 10.","vo":"Five has a look before it arrives, sees the gap, and plays the split pass between the two reds into ten.","moves":{"R2":[5,4.5],"B10":[10,0.5]},"pass":"B10"},
+   {"dur":7,"say":"10 opens up and plays on to 6. Two touches.","vo":"Ten opens his body and plays on to six. Two touches: one to set it, one to pass.","moves":{"R1":[9,5],"R2":[8,9],"B6":[13.5,8]},"pass":"B6"},
+   {"dur":7,"say":"6 splits them again, back to 4. That is a point.","vo":"Six splits them again, back to four. A pass through the middle is a point. Open, look, forward.","moves":{"R1":[11,8],"R2":[7,6],"B4":[7,13.5]},"pass":"B4"}],
+  "setup":["5 blues around a 14m box, 2 reds in the middle.","Swap the reds every 60 seconds."],"rules":["Two touches.","A pass that splits the two reds scores a point."],"start":"Number 4 starts with the ball on the edge of the box","restart":["Ball out or won: the red who won it swaps with the blue who lost it."],
+  "points":["Open your body: back foot to the ball.","Look before it arrives, two looks.","Pass through the middle when it is on."],"progress":["One touch for a split pass.","Make the box smaller, 12m."]},
+
+ {"phase":"Practice 1","slug":"w1_p1","title":"Through the middle: three zones","theme":"Receive on the half turn","age":"U14 / U15","format":"6v3 across three zones","area":"36m x 24m, three zones of 12m","kit":"Cones for the zones, blue and red bibs","start":"Number 4 starts with the ball in the end zone","L":36,"W":24,"nums":true,"ball":"B4",
+  "key":[["B","Us (blue)"],["R","Defenders (red)"]],"lines":[[12,0,12,24],[24,0,24,24]],
+  "zones":[{"x0":0,"y0":0,"x1":12,"y1":24,"label":"End zone","fill":"rgba(255,255,255,0.05)"},{"x0":12,"y0":0,"x1":24,"y1":24,"label":"Middle","fill":"rgba(255,184,28,0.08)"},{"x0":24,"y0":0,"x1":36,"y1":24,"label":"End zone","fill":"rgba(255,255,255,0.05)"}],
+  "players":[{"id":"B4","team":"B","x":5,"y":12},{"id":"B6","team":"B","x":7,"y":20},{"id":"B8","team":"B","x":17,"y":8},{"id":"B10","team":"B","x":20,"y":17},{"id":"B9","team":"B","x":31,"y":8},{"id":"B11","team":"B","x":30,"y":18},{"id":"R1","team":"R","x":16,"y":10},{"id":"R2","team":"R","x":19,"y":15},{"id":"R3","team":"R","x":28,"y":12}],
+  "intro_vo":"Practice one. Through the middle. The ball has to go through the middle zone, and the player in the middle has to receive on the half turn and play forward.",
+  "steps":[
+   {"dur":7,"say":"8 checks away from his marker, then shows.","vo":"Eight takes his marker away first, then checks back into the space to show for the ball.","moves":{"B8":[15,15],"R1":[17,10],"B10":[21,6]}},
+   {"dur":7,"say":"4 plays into 8. 8 is on the half turn.","vo":"Four plays into eight. Eight is side on, so he can already see forward.","moves":{"R2":[18,15]},"pass":"B8"},
+   {"dur":7,"say":"First pass forward into 9.","vo":"First look is forward. Eight plays straight into nine, who has moved off his marker to show.","moves":{"B9":[29,15],"R3":[28,10]},"pass":"B9"},
+   {"dur":7,"say":"SPRING: 8 runs beyond for the set. 10 drops in.","vo":"Spring! Eight runs beyond into the end zone, nine sets it back to him, and ten drops into the middle to fill the space.","moves":{"B8":[27,19],"R1":[21,14],"B10":[19,9]},"pass":"B8"},
+   {"dur":7,"say":"Now back the other way: 10 shows, receives, turns.","vo":"Now back the other way. Ten shows on the half turn, takes it across his body and turns.","moves":{"R2":[17,14],"B10":[20,10]},"pass":"B10"},
+   {"dur":6,"say":"10 plays forward into 6. Point.","vo":"Ten plays forward into six. Through the middle and forward, that is a point.","moves":{"B6":[6,15]},"pass":"B6"}],
+  "setup":["Three zones of 12m. Two blues in each end zone, two blues and two reds in the middle, one red in one end zone."],"rules":["The ball must go through the middle zone.","Middle player: receive and play forward in two touches for a point."],"start":"Number 4 starts with the ball in the end zone","restart":["Reds win it: play it out to the coach and go again.","Rotate the middle players every 2 minutes."],
+  "points":["Check away, then show.","Receive side on, on the back foot.","First look forward, then spring beyond."],"progress":["Add a third red in the middle.","One touch in the end zones."]},
+
+ {"phase":"Practice 2","slug":"w1_p2","title":"Out from the back, find the wing back, then forward","theme":"Show, support, stretch","age":"U14 / U15","format":"10v5 phase of play to goal","area":"Half pitch, 50m x 46m","kit":"Blue bibs for our 3-5-2, two small gates at our end for the reds","start":"Our keeper (1) starts with the ball","L":50,"W":46,"nums":true,"ball":"B1",
+  "key":[["B","Us (blue, 3-5-2)"],["R","Opponents"],["K","Goalkeeper"]],
+  "goals":[{"x":50,"y":23,"w":7,"side":"right"},{"x":0,"y":10,"w":4,"side":"gate"},{"x":0,"y":36,"w":4,"side":"gate"}],
+  "players":[{"id":"B1","team":"K","x":3,"y":23},{"id":"B5","team":"B","x":12,"y":12},{"id":"B4","team":"B","x":10,"y":23},{"id":"B6","team":"B","x":12,"y":34},{"id":"B3","team":"B","x":20,"y":6},{"id":"B2","team":"B","x":20,"y":40},{"id":"B8","team":"B","x":20,"y":23},{"id":"B7","team":"B","x":28,"y":16},{"id":"B10","team":"B","x":28,"y":30},{"id":"B9","team":"B","x":40,"y":21},{"id":"R1","team":"R","x":24,"y":23},{"id":"R2","team":"R","x":22,"y":12},{"id":"R3","team":"R","x":22,"y":34},{"id":"R4","team":"R","x":42,"y":26},{"id":"KR","team":"K","x":48,"y":23}],
+  "intro_vo":"Practice two. Out from the back, find the wing back, then forward. Our back three split wide, the wing backs stretch the pitch, and we look forward as soon as we can.",
+  "steps":[
+   {"dur":7,"say":"SHOW: 5, 4 and 6 split wide. 1 plays out to 5.","vo":"Show! The back three split wide so the keeper has easy passes. One plays out to five.","moves":{"B5":[10,8],"B6":[10,38],"B4":[8,23]},"pass":"B5"},
+   {"dur":7,"say":"Red presses 5. STRETCH: 3 stays wide and high, 7 shows inside.","vo":"Their winger presses five. Stretch: three stays really wide and high, and seven shows inside to give another angle.","moves":{"R2":[14,9],"B3":[24,3],"B7":[25,13]}},
+   {"dur":7,"say":"5 plays the line pass to 3.","vo":"Five plays the pass down the line into three, the wing back.","moves":{"R2":[16,7]},"pass":"B3"},
+   {"dur":7,"say":"3 opens up and plays forward into 9.","vo":"Three opens his body, looks forward first, and plays into nine, who has come short to show.","moves":{"B9":[38,14],"R4":[40,18]},"pass":"B9"},
+   {"dur":7,"say":"SPRING: 7 runs beyond. 9 lays it off.","vo":"Spring! Seven runs beyond, and nine lays it off into his path.","moves":{"B7":[39,19],"B10":[36,28]},"pass":"B7"},
+   {"dur":5,"say":"7 shoots. Goal!","vo":"Seven hits it early. Goal! Show, support, stretch, spring.","moves":{},"shoot":[50,21]}],
+  "setup":["Half pitch with a full size goal. Our keeper and ten against five reds and their keeper.","Two small gates at our end for the reds to counter into."],"rules":["Restart from our keeper each time.","Reds win it: they can score in either small gate."],"start":"Our keeper (1) starts with the ball","restart":["Ball out: back to our keeper."],
+  "points":["Back three: split wide early.","Wing backs: width and height.","First look forward, then spring."],"progress":["Add a sixth red to press.","Centre backs have two touches."]},
+
+ {"ref":"06_shape_to_receive_first_pass_forward","phase":"The game","intro_vo":"The game. Show, support, stretch, spring. Now our three five two puts it all together on a big pitch."}
+ ]}

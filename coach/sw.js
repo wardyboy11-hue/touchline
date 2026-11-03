@@ -1,8 +1,8 @@
 /* Touchline coach app shell service worker (P0).
    Precache: shell only. Runtime: cache first for versioned static, network first for pages,
    Apps Script and other origins are never touched. No PDFs, video or audio are cached here. */
-var V='touchline-shell-v82',RT='touchline-run-v82';
-var SHELL=['./','index.html','app.css?v=66','topics.js?v=66','topic-bank.js?v=66','guide.js?v=66','app.js?v=66','gui.js?v=66','positions.js?v=82','positions.json','cdev.js?v=82','../pod.js','../acct.js?v=66','../update.js?v=66','manifest.webmanifest','../badge.png','../icon-192.png','../icon-512.png'];
+var V='touchline-shell-v83',RT='touchline-run-v83';
+var SHELL=['./','index.html','app.css?v=66','topics.js?v=66','topic-bank.js?v=66','guide.js?v=66','app.js?v=66','gui.js?v=66','positions.js?v=83','positions.json','cdev.js?v=83','../pod.js','../acct.js?v=66','../update.js?v=66','manifest.webmanifest','../badge.png','../icon-192.png','../icon-512.png'];
 var SKIP=/\.(pdf|mp4|mp3|m4a|webm|mov)$|version\.json$/i;
 self.addEventListener('install',function(e){e.waitUntil(caches.open(V).then(function(c){return c.addAll(SHELL);}).then(function(){return self.skipWaiting();}));});
 self.addEventListener('activate',function(e){e.waitUntil(caches.keys().then(function(ks){return Promise.all(ks.filter(function(k){return k!==V&&k!==RT;}).map(function(k){return caches.delete(k);}));}).then(function(){return self.clients.claim();}));});
@@ -11,7 +11,11 @@ self.addEventListener('fetch',function(e){
  var r=e.request,u=new URL(r.url);
  if(r.method!=='GET'||u.origin!==location.origin||SKIP.test(u.pathname)||r.headers.has('range'))return;
  if(r.mode==='navigate'){
-  /* network first, shell as the offline fallback. Never block first paint on an update check. */
+  /* Pages other than the coach app (animations, plans) must never fall back to the app shell:
+     a slow first load used to swap the clip for the coach app after 3.5s. Network first, same URL from cache offline. */
+  if(!/\/coach\/(index\.html)?$/.test(u.pathname)){
+   e.respondWith(caches.open(RT).then(function(c){return fetch(r).then(function(res){if(res&&res.ok)c.put(r,res.clone());return res;}).catch(function(){return c.match(r,{ignoreSearch:true}).then(function(hit){return hit||Response.error();});});}));return;}
+  /* coach app: network first, shell as the offline fallback. Never block first paint on an update check. */
   var cached=function(){return caches.match('index.html',{ignoreSearch:true}).then(function(h){return h||caches.match('./');});};
   e.respondWith(Promise.race([fetch(r),new Promise(function(_,no){setTimeout(no,3500);})]).catch(function(){return cached().then(function(h){return h||fetch(r);});}));return;}
  /* library index: network first so new links show up, cached copy when offline */
