@@ -75,7 +75,9 @@
       { act: 'go', to: '#/match', ic: 'ball', t: 'Match day', s: 'Clock, goals, subs' },
       { act: 'go', to: '#/sessions', ic: 'whistle', t: 'Plan session', s: 'Blocks and drills' },
       { act: 'go', to: '#/library', ic: 'library', t: 'Find a drill', s: 'Library and clips' },
-      { act: 'comms', ic: 'message', t: 'Message team', s: 'Templates that fill in' }
+      { act: 'comms', ic: 'message', t: 'Message team', s: 'Templates that fill in' },
+      { act: 'go', to: '#/attendance', ic: 'check', t: 'Attendance', s: 'Who was there' },
+      { act: 'go', to: '#/guides', ic: 'star', t: 'How-to guides', s: 'Videos, start here' }
     ];
     return '<div class="grid two">' + items.map(function (i) {
       return '<button class="card tight clickable" data-act="' + i.act + '"' + (i.to ? ' data-to="' + i.to + '"' : '') + ' style="text-align:left;display:flex;gap:12px;align-items:center">' +

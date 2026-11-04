@@ -16,6 +16,7 @@
       sessionEdits: {},   // sessionId -> session override
       sessionDone: {},    // sessionId -> {blockId: true}
       messages: [],       // {id, at, name, body}
+      att: {},            // session date -> playerId -> {p: 1, s: 1}
       prefs: {}
     };
   }

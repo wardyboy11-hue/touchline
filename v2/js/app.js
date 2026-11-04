@@ -7,9 +7,9 @@
   var TABS = [
     { id: 'today', t: 'Today', ic: 'today' },
     { id: 'match', t: 'Match', ic: 'ball' },
-    { id: 'sessions', t: 'Sessions', ic: 'whistle' },
+    { id: 'sessions', t: 'Train', ic: 'whistle' },
     { id: 'library', t: 'Library', ic: 'library' },
-    { id: 'squad', t: 'Squad', ic: 'squad' }
+    { id: 'squad', t: 'Team', ic: 'squad' }
   ];
 
   function viewFor(parts) {
@@ -21,7 +21,11 @@
   }
 
   function activeTab(parts) {
-    return viewFor(parts);
+    var v = viewFor(parts);
+    if (v === 'attendance') return 'sessions';
+    if (v === 'roles') return 'squad';
+    if (v === 'guides' || v === 'more') return 'more';
+    return v;
   }
 
   function buildNav() {
@@ -36,6 +40,7 @@
       TABS.map(function (t) {
         return '<a class="railnav" href="#/' + t.id + '" data-nav="' + t.id + '">' + TP.ui.icon(t.ic) + t.t + '</a>';
       }).join('') +
+      '<a class="railnav" href="#/more" data-nav="more">' + TP.ui.icon('menu') + 'More</a>' +
       '<div class="rail-foot">Demo club data on this phone.<br>Match clock, availability and work set stay local.</div>';
     document.getElementById('rail').innerHTML = rail;
     document.getElementById('clubName').textContent = club.short || 'Latics Blues U15';
@@ -118,6 +123,16 @@
     comms: function () { TP.views.comms.open(); },
     demo: function () { app.demo(); },
     closeSheet: function () { TP.ui.closeSheet(); },
+
+    /* guides, roles and attendance */
+    guideVideo: function (el) { TP.views.guides.video(el.getAttribute('data-id')); },
+    openRole: function (el) { TP.views.roles.open(el.getAttribute('data-k')); },
+    attPick: function (el) { TP.views.attendance.pick(el.getAttribute('data-id')); },
+    attToggle: function (el) { TP.views.attendance.toggle(el.getAttribute('data-id'), 'p'); },
+    attStar: function (el) { TP.views.attendance.star(el.getAttribute('data-id')); },
+    attAll: function () { TP.views.attendance.all(); },
+    attClear: function () { TP.views.attendance.clear(); },
+    attMsg: function () { TP.views.attendance.message(); },
     closePlayer: function () { TP.views.library.closePlayer(); },
     resetDemo: function () {
       TP.store.reset();
