@@ -8,12 +8,12 @@ function sideTxt(x){return x.side==='L'?'Left':x.side==='R'?'Right':'';}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 /* list */
 $('cnt').textContent=IT.length;$('total').textContent=mmss(TOTAL)+' total';
-$('items').innerHTML=IT.map(function(x,i){return '<li data-i="'+i+'"><div class="th"><img src="img/'+x.pose+'_t.webp?v=84" alt=""'+(x.side==='R'?' class="mr"':'')+'></div><div class="nm">'+esc(x.name)+(x.side?' <span class="sd">'+sideTxt(x)+'</span>':'')+'</div><div class="tm">'+mmss(x.secs)+'</div></li>';}).join('');
+$('items').innerHTML=IT.map(function(x,i){return '<li data-i="'+i+'"><div class="th"><img src="img/'+x.pose+'_t.webp?v=85" alt=""'+(x.side==='R'?' class="mr"':'')+'></div><div class="nm">'+esc(x.name)+(x.side?' <span class="sd">'+sideTxt(x)+'</span>':'')+'</div><div class="tm">'+mmss(x.secs)+'</div></li>';}).join('');
 /* state */
 var t=0,playing=false,last=0,how=false,fired={},ac=null,cur=-1;
 function segAt(tt){for(var i=SEG.length-1;i>=0;i--)if(tt>=SEG[i].t0)return i;return 0;}
 function beep(){try{if(!ac)return;var o=ac.createOscillator(),g=ac.createGain();o.frequency.value=880;g.gain.setValueAtTime(.18,ac.currentTime);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+.35);o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+.36);}catch(e){}}
-function say(a,off){if(window.__silent)return;vo.src='audio/'+a+'.mp3?v=84';try{vo.currentTime=off||0;}catch(e){}var p=vo.play();if(p&&p.catch)p.catch(function(){});}
+function say(a,off){if(window.__silent)return;vo.src='audio/'+a+'.mp3?v=85';try{vo.currentTime=off||0;}catch(e){}var p=vo.play();if(p&&p.catch)p.catch(function(){});}
 function cues(si,local){var s=SEG[si],key;
  function once(k,f){key=si+':'+k;if(!fired[key]){fired[key]=1;f();}}
  if(s.k==='welcome')once('w',function(){say('welcome');});
@@ -26,7 +26,7 @@ function render(){
  var si=segAt(t),s=SEG[si],local=t-s.t0,rem=s.d-local,ix=s.i!=null?s.i:(s.k==='welcome'?0:IT.length-1),x=IT[ix];
  var pl=playing||window.__rec,mode=(s.k==='hold'&&!how&&pl)?'hold':'demo';
  var fk=s.k==='done'?'done':x.pose+x.side,fg=$('fig');
- if(fg.dataset.k!==fk){fg.dataset.k=fk;fg.innerHTML=s.k==='done'?'<div class="wd">Well done!</div>':'<img id="pimg" src="img/'+x.pose+'.webp?v=84" alt="'+esc(x.name)+' demo">';}
+ if(fg.dataset.k!==fk){fg.dataset.k=fk;fg.innerHTML=s.k==='done'?'<div class="wd">Well done!</div>':'<img id="pimg" src="img/'+x.pose+'.webp?v=85" alt="'+esc(x.name)+' demo">';}
  var pi=$('pimg');if(pi&&s.k!=='done'){var z=mode==='hold'?1.03+.05*Math.min(1,local/s.d):1.03+.03*Math.sin(t*.9);pi.style.transform='scale('+(x.side==='R'?-z:z)+','+z+')';}
  var ph=$('phase');ph.className='phase'+(s.k==='hold'?' hold':'');ph.textContent=s.k==='welcome'?'Get ready':s.k==='intro'?(ix&&IT[ix-1].id===x.id?'Switch':'Next up'):s.k==='hold'?'Hold':'Finished';
  $('pname').textContent=s.k==='done'?'All done':x.name;$('pside').textContent=s.k==='done'?'':sideTxt(x)+(x.side?' side':'');
