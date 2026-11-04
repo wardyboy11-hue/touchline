@@ -111,7 +111,7 @@ function vRefs(){
  return h;
 }
 var HOMEADDR='Orrell St James ARLFC, Bankes Avenue, Orrell, Wigan WN5 8HU',TRAINADDR="St Peter's Catholic High School, Howards Lane, Orrell WN5 8NU";
-function newMatch(){var s=S.settings;return {id:uid(),opp:'',date:isoToday(),ko:'10:30',ha:'H',venue:'',addr:HOMEADDR,comp:'League',formation:'4231',half:s.half||35,avail:{},lineup:{},status:'plan',period:1,clock:{acc:0,running:false,t0:0},stints:{},events:[],ratings:{},notes:'',lastWin:0,updatedAt:0};}
+function newMatch(){var s=S.settings;return {id:uid(),opp:'',date:isoToday(),ko:'10:30',ha:'H',venue:'',addr:HOMEADDR,comp:'League',formation:'352',half:s.half||35,avail:{},lineup:{},status:'plan',period:1,clock:{acc:0,running:false,t0:0},stints:{},events:[],ratings:{},notes:'',lastWin:0,updatedAt:0};}
 function isoToday(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 /* UK dates: shared helper. Display only; stored dates stay yyyy-mm-dd. */
 function ukD(s,o){if(!s)return '';var m=/^(\d{4})-(\d\d)-(\d\d)/.exec(String(s)),d=m?new Date(Date.UTC(+m[1],+m[2]-1,+m[3],12)):new Date(s);if(isNaN(d))return String(s);return d.toLocaleDateString('en-GB',Object.assign({timeZone:'Europe/London'},o||{day:'numeric',month:'short',year:'numeric'}));}
@@ -198,7 +198,7 @@ function render0(keepScroll){try{ccSync();}catch(e){}setTimeout(function(){try{d
  var body;
  if(view.mid&&M(view.mid)){var m=M(view.mid);body=m.status==='plan'?vPlan(m):(m.status==='done'?vDone(m):vLive(m));}
  else body=view.tab==='today'?vToday():subnav()+(view.tab==='squad'?vSquad():view.tab==='ct'?vCt():view.tab==='mday'?vMday():view.tab==='fa'?vFATab():view.tab==='em'?vEm():view.tab==='conc'?vConc():view.tab==='goals'?vGoals():view.tab==='priv'?vPriv():view.tab==='lab'?vLab():view.tab==='sb'?vSb():view.tab==='rev'?vRev():view.tab==='fit'?vFit():view.tab==='pod'?vPod():view.tab==='plan'?vSession():view.tab==='run'?vRun():view.tab==='sess'?vSessLib():view.tab==='rl'?vRL():view.tab==='pos'?(window.vPos?window.vPos():'<p class="muted">Loading</p>'):view.tab==='lib'?vLib():view.tab==='res'?vRes():view.tab==='anim'?vAnim():view.tab==='ig'?vIg():view.tab==='x'?vX():view.tab==='hub'?vHub():view.tab==='refs'?vRefs():view.tab==='opp'?vOpp():view.tab==='lg'?vLg():view.tab==='ask'?vAsk():view.tab==='cdev'?(CDV?CDV.vCdev():''):view.tab==='stats'?vStats():view.tab==='more'?vMore():view.tab==='admin'?vAdmin():view.tab==='att'?vAtt():view.tab==='board'?vBoard():vMatches());
- r.innerHTML=header()+body+((!view.mid&&(view.tab==='today'||view.tab==='hub'))?SPONC():'')+tabHelp()+tabs();paintStatus();if(!view.mid&&view.tab==='board')bInit();if(!view.mid&&view.tab==='lab')labAfter();if(!view.mid&&(view.tab==='sess'||view.tab==='run')){anStop();anInit();}if(!view.mid&&view.tab==='sess')planInit();if(keepScroll)window.scrollTo(0,y);
+ r.innerHTML=header()+body+((!view.mid&&(view.tab==='today'||view.tab==='hub'))?SPONC():'')+tabHelp()+tabs();paintStatus();if(!view.mid&&view.tab==='board')bInit();if(!view.mid&&view.tab==='lab')labAfter();else labS.ent=0;if(!view.mid&&(view.tab==='sess'||view.tab==='run')){anStop();anInit();}if(!view.mid&&view.tab==='sess')planInit();if(keepScroll)window.scrollTo(0,y);
 }
 function vLogin(){return '<div class="login"><img src="'+BADGE+'" alt="Wigan Junior Latics"><h1 style="margin:14px 0 4px">Touchline</h1><p class="muted">Coaches only. Enter your code.</p><div class="card"><input id="code" type="password" autocomplete="off" placeholder="Coach code" style="text-align:center"><button class="btn pri block" style="margin-top:12px" data-act="login">Open</button><p class="small muted" id="lerr"></p></div>'+SPONC()+'</div>';}
 function SPONC(){return '<div class="spn"><span>Proudly sponsored by</span><img src="mfs.png" alt="MFS Limited"></div>';}
@@ -1594,8 +1594,8 @@ function bSquad(){var L=plist();if(!L.length)return '';var on={};BD.items.forEac
  function chip(p,isOn){var u=view.photos[p.id],ring=BD.bench===p.id?'#FFB81C':(isOn?'#4ADE80':'#fff');return '<button data-ba="sq" data-pid="'+p.id+'" style="flex:0 0 auto;width:66px;background:none;border:0;color:var(--ink);padding:0;text-align:center;opacity:'+(isOn?'.5':'1')+'">'+(u?'<img src="'+u+'" alt="" style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:3px solid '+ring+'">':'<span style="display:inline-flex;width:52px;height:52px;border-radius:50%;background:#1d3fb5;border:3px solid '+ring+';align-items:center;justify-content:center;font-weight:700">'+esc(p.num||'')+'</span>')+'<div class="small" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(shortName(p))+'</div><div class="small muted" style="font-size:11px">'+esc(bPos(p))+'</div></button>';}
  var bench=L.filter(function(p){return !on[p.id];}),pit=L.filter(function(p){return on[p.id];});
  var h='<div class="card" style="padding:10px"><b>Your squad</b><div class="small muted" style="margin:2px 0 8px">Pick a shape above and the best fit players go on the pitch. To swap: tap a bench player, then tap the counter he replaces. Or tap a counter first, then the bench player.</div>';
- h+='<div class="small muted" style="margin:4px 0">Bench ('+bench.length+')</div><div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:6px">'+(bench.length?bench.map(function(p){return chip(p,false);}).join(''):'<span class="small muted">Everyone is on the pitch.</span>')+'</div>';
- if(pit.length)h+='<div class="small muted" style="margin:4px 0">On the pitch ('+pit.length+')</div><div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:6px">'+pit.map(function(p){return chip(p,true);}).join('')+'</div>';
+ h+='<div class="small muted" style="margin:4px 0">Bench ('+bench.length+')</div><div style="display:flex;flex-wrap:wrap;gap:6px;padding-bottom:6px">'+(bench.length?bench.map(function(p){return chip(p,false);}).join(''):'<span class="small muted">Everyone is on the pitch.</span>')+'</div>';
+ if(pit.length)h+='<div class="small muted" style="margin:4px 0">On the pitch ('+pit.length+')</div><div style="display:flex;flex-wrap:wrap;gap:6px;padding-bottom:6px">'+pit.map(function(p){return chip(p,true);}).join('')+'</div>';
  h+='<div class="row" style="margin-top:6px"><button class="btn" data-ba="lineup">Use my Builder lineup</button><button class="btn'+(BD.chem?' pri':'')+'" data-ba="chem">Chemistry lines: '+(BD.chem?'On':'Off')+'</button></div><div class="small muted" style="margin-top:6px">Chemistry lines need a shape from the list. Green fits, amber is a stretch, red needs a rethink. Coaches only, never in a shared picture.</div></div>';return h;}
 function bAssign(c,pid){var p=P(pid);if(!p)return;var ex=BD.items.filter(function(i){return i.pid===pid&&i.team==='b'&&i!==c;})[0];if(ex){ex.pid=c.pid||'';var q=P(ex.pid);if(q&&Number(q.num))ex.n=Number(q.num);}c.pid=pid;if(Number(p.num))c.n=Number(p.num);}
 function bSqClick(pid){var p=P(pid);if(!p)return;bSnap();var ex=BD.items.filter(function(i){return i.pid===pid&&i.team==='b';})[0];var sel=BD.items.filter(function(i){return i.id===BD.sel&&i.t==='p'&&i.team==='b';})[0];
@@ -1654,11 +1654,11 @@ var BUNDO=[];
 function bSnap(){BUNDO.push(JSON.stringify({i:BD.items,d:BD.draw}));if(BUNDO.length>30)BUNDO.shift();}
 function bInit(){var c=bCanvas();if(!c)return;bSize();window.onresize=bSize;c.style.touchAction='none';
  c.onpointerdown=function(e){if(BD.play)return;e.preventDefault();c.setPointerCapture(e.pointerId);var p=bPt(e);
-  if(BD.tool==='move'){var h=bHit(p);if(h&&h.t==='p'&&h.team==='b'&&BD.bench){bSnap();bAssign(h,BD.bench);BD.bench='';BD.sel=null;render(true);setTimeout(function(){bDraw();},60);return;}BD.sel=h?h.id:null;if(h){bSnap();BD.drag=h;}bDraw();return;}
+  if(BD.tool==='move'){var h=bHit(p);if(h&&h.t==='p'&&h.team==='b'&&BD.bench){bSnap();bAssign(h,BD.bench);BD.bench='';BD.sel=null;render(true);setTimeout(function(){bDraw();},60);return;}var pv=BD.items.filter(function(i){return i.id===BD.sel;})[0];BD.tap={x:p.x,y:p.y,pv:pv,h:h};BD.sel=h?h.id:null;if(h){bSnap();BD.drag=h;}bDraw();return;}
   if(BD.tool==='text'){var t=prompt('Text on the board');if(t){bSnap();BD.draw.push({k:'text',c:BD.col,p:[p],t:t.slice(0,24)});}bDraw();return;}
   BD.cur={k:BD.tool,c:BD.col,p:[p,p]};};
  c.onpointermove=function(e){var p=bPt(e);if(BD.drag){BD.drag.x=p.x;BD.drag.y=p.y;bDraw();}else if(BD.cur){if(BD.cur.k==='pen')BD.cur.p.push(p);else BD.cur.p[1]=p;bDraw();}};
- c.onpointerup=function(){if(BD.drag){BD.drag=null;}if(BD.cur){var d=BD.cur;BD.cur=null;var a=d.p[0],b=d.p[d.p.length-1];if(Math.abs(a.x-b.x)+Math.abs(a.y-b.y)>.02){bSnap();BD.draw.push(d);}}bDraw();};
+ c.onpointerup=function(e){var tp=BD.tap;BD.tap=null;if(BD.drag&&tp&&tp.pv&&tp.h&&tp.pv!==tp.h&&tp.pv.t==='p'&&tp.h.t==='p'&&tp.pv.team===tp.h.team){var q=bPt(e);if(Math.abs(q.x-tp.x)+Math.abs(q.y-tp.y)<.02){var a=tp.pv,b=tp.h,ax=a.x,ay=a.y,ak=a.k;a.x=b.x;a.y=b.y;a.k=b.k;b.x=ax;b.y=ay;b.k=ak;BD.sel=null;BD.drag=null;toast('Swapped');}}if(BD.drag){BD.drag=null;}if(BD.cur){var d=BD.cur;BD.cur=null;var a=d.p[0],b=d.p[d.p.length-1];if(Math.abs(a.x-b.x)+Math.abs(a.y-b.y)>.02){bSnap();BD.draw.push(d);}}bDraw();};
  bTools();}
 function bTools(){var els=document.querySelectorAll('[data-bt]');for(var i=0;i<els.length;i++){els[i].classList.toggle('on',els[i].dataset.bt===BD.tool);}var cs=document.querySelectorAll('[data-bc]');for(var j=0;j<cs.length;j++){cs[j].style.outline=cs[j].dataset.bc===BD.col?'3px solid #FFB81C':'none';}var f=document.getElementById('bfi');if(f)f.textContent=BD.frames.length?('Frame '+(BD.fi+1)+' of '+BD.frames.length):'No frames yet';}
 function bSnapFrame(){return {i:JSON.parse(JSON.stringify(BD.items)),d:JSON.parse(JSON.stringify(BD.draw))};}
@@ -1701,7 +1701,6 @@ document.addEventListener('change',function(e){var t=e.target;if(t.id==='bpt'){B
 function vBoard(){var T=[['move','Move'],['arrow','Arrow'],['dash','Dashed'],['line','Line'],['pen','Pen'],['box','Box'],['zone','Zone'],['text','Text']];
  var h='<h2 style="margin:6px 0">Tactics board</h2><p class="small muted">Pick Move to drag players and the ball. Pick a tool to draw. Frames let you animate a move.</p><div class="chips" style="margin-bottom:8px">'+T.map(function(t){return '<button class="chip" style="min-height:44px" data-bt="'+t[0]+'">'+t[1]+'</button>';}).join('')+'</div>';
  h+='<div class="row" style="margin:6px 0"><button class="btn" data-ba="pb" style="background:'+BD.tm.b.c+'">Add '+esc(BD.tm.b.n)+'</button><button class="btn" data-ba="pr" style="background:'+BD.tm.r.c+'">Add '+esc(BD.tm.r.n)+'</button><button class="btn" data-ba="del">Remove</button><button class="btn" data-ba="undo">Undo</button></div>';
- h+=bSquad();
  h+='<div class="row" style="align-items:center;margin:6px 0"><span class="small muted">Colour</span>'+['#ffffff','#FFB81C','#FFF200','#4ADE80','#60A5FA','#1d3fb5','#FB7185','#ff0000','#444444','#000000'].map(function(c){return '<button aria-label="Colour" data-bc="'+c+'" style="width:36px;height:36px;border-radius:50%;border:2px solid #fff;background:'+c+'"></button>';}).join('')+'</div>';
  h+='<div class="row" style="margin:6px 0"><div class="grow"><label class="small" style="margin:0">'+esc(BD.tm.b.n)+' shape</label><select id="bfb" class="pl" style="width:100%;min-height:48px;background:#0A173A;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px"><option value="">'+(BD.bform?'Shape: '+BD.bform+' (pick to change)':'Choose')+'</option><option>352</option><option>4231</option><option>433</option><option>442</option><option>4141</option><option>343</option></select></div><div class="grow"><label class="small" style="margin:0">'+esc(BD.tm.r.n)+' shape</label><select id="bfr" class="pl" style="width:100%;min-height:48px;background:#0A173A;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px"><option value="">Choose</option><option>352</option><option>4231</option><option>433</option><option>442</option><option value="off">None</option></select></div></div>';
   h+='<details class="pl" style="margin:10px 0"><summary>Board settings</summary>'+
@@ -1710,7 +1709,7 @@ function vBoard(){var T=[['move','Move'],['arrow','Arrow'],['dash','Dashed'],['l
  '<label class="small">Pitch</label><select id="bpt" class="pl" style="width:100%;min-height:48px;background:#0A173A;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px">'+[['full','Full pitch'],['top','Top half'],['bottom','Bottom half'],['third','Attacking third'],['box','Penalty area'],['blank','Plain grass']].map(function(o){return '<option value="'+o[0]+'"'+(BD.pitch===o[0]?' selected':'')+'>'+o[1]+'</option>';}).join('')+'</select>'+
  '<div class="row" style="margin-top:8px"><button class="btn" data-ba="orient">'+(BD.land?'Switch to portrait':'Switch to landscape')+'</button></div>'+
  '<label class="small">Your own picture as the background (a photo of your pitch, say)</label><div class="row"><label class="btn" style="cursor:pointer">My image<input type="file" accept="image/*" id="bbg" style="display:none"></label><button class="btn" data-ba="bgoff">Remove picture</button></div><p class="small muted">The picture stays on this phone and is not saved with boards.</p></details>';
- h+='<div style="margin:8px 0"><canvas id="bdc" style="border-radius:12px;display:block;margin:0 auto;max-width:100%" aria-label="Tactics pitch"></canvas></div>';
+ h+='<div style="margin:8px 0"><canvas id="bdc" style="border-radius:12px;display:block;margin:0 auto;max-width:100%" aria-label="Tactics pitch"></canvas></div>';h+=bSquad();
  h+='<div class="card"><h3 style="margin-top:0">Frames</h3><div class="row"><button class="btn" data-ba="fadd">Add frame</button><button class="btn" data-ba="fupd">Update frame</button><button class="btn" data-ba="fdel">Delete</button></div><div class="row" style="align-items:center"><button class="btn" data-ba="fprev">Back</button><span id="bfi" class="grow small" style="text-align:center"></span><button class="btn" data-ba="fnext">Next</button></div><button class="btn pri block" style="margin-top:8px" data-ba="play">Play or stop</button></div>';
  h+='<div class="row"><button class="btn" data-ba="cleard">Clear lines</button><button class="btn" data-ba="clear">Clear all</button></div><div class="row"><button class="btn pri" data-ba="save">Save on phone</button><button class="btn" data-ba="png">Save picture</button><button class="btn" data-ba="share">Share to Media</button></div><p class="small muted">Share to Media puts the picture on the team page with numbers only, never photos. Check the title has no children\'s names.</p>';
  var L=bLib();h+='<div class="card"><h3 style="margin-top:0">Saved boards</h3>'+(L.length?L.map(function(x,i){return '<div class="it"><div class="grow"><b>'+esc(x.n)+'</b><div class="small muted">'+(x.f&&x.f.length?x.f.length+' frames':'one frame')+'</div></div><button class="btn" data-ba="lib" data-i="'+i+'">Open</button><button class="btn" data-ba="libdel" data-i="'+i+'">Delete</button></div>';}).join(''):'<p class="muted">Nothing saved yet.</p>')+'</div>';
@@ -1871,11 +1870,12 @@ function labChem(m){var sl=slotsOf(m),E=labEdges(m.formation),N={},L=[];
  return {N:N,L:L,per:per,team:n?Math.round(tot/n*100):0,n:n};}
 function labPool(){return Object.keys(S.matches).map(function(k){return S.matches[k];}).filter(function(m){return !m.deleted&&m.status==='plan'&&m.date>=isoToday();}).sort(function(a,b){return a.date<b.date?-1:1;});}
 function labM(){var pool=labPool(),id=labS.mid||(pool[0]&&pool[0].id)||'';if(id!=='scratch'){var m=id&&S.matches[id];if(m&&m.status==='plan'&&!m.deleted){labS.mid=id;return m;}}
- var sc=S.settings.lab;if(!sc){sc=S.settings.lab={formation:'4231',lineup:{},avail:{}};}if(!sc.avail)sc.avail={};labS.mid='scratch';return sc;}
+ var sc=S.settings.lab;if(!sc){sc=S.settings.lab={formation:'352',lineup:{},avail:{}};}if(!sc.v86){sc.v86=1;if(!Object.keys(sc.lineup||{}).length)sc.formation='352';}if(!sc.avail)sc.avail={};labS.mid='scratch';return sc;}
 function labSave(m){if(m===S.settings.lab)touch('settings',S.settings);else saveM(m);}
 function labAvail(m,p){return m.avail[p.id]!==false&&!ccRec(p.id);}
-function labPlace(pid,k){var m=labM(),old=slotOfPlayer(m,pid),prev=m.lineup[k];if(old===k)return;if(old){if(prev)m.lineup[old]=prev;else delete m.lineup[old];}m.lineup[k]=pid;labS.sel='';labSave(m);render(true);}
-function labRemove(pid){var m=labM(),k=slotOfPlayer(m,pid);if(k){delete m.lineup[k];labSave(m);render(true);}}
+function labPush(m){labS.und=labS.und||[];labS.und.push({f:m.formation,l:JSON.stringify(m.lineup)});if(labS.und.length>40)labS.und.shift();}
+function labPlace(pid,k){var m=labM(),old=slotOfPlayer(m,pid),prev=m.lineup[k];if(old===k)return;labPush(m);if(old){if(prev)m.lineup[old]=prev;else delete m.lineup[old];}m.lineup[k]=pid;labS.sel='';labSave(m);render(true);}
+function labRemove(pid){var m=labM(),k=slotOfPlayer(m,pid);if(k){labPush(m);delete m.lineup[k];labS.sel='';labSave(m);render(true);}}
 function labRemap(m,f){var old=m.lineup,ids=Object.keys(old).map(function(k){return old[k];}),nl={},used={};m.formation=f;
  slotsOf(m).forEach(function(s){if(old[s.k]){nl[s.k]=old[s.k];used[old[s.k]]=1;}});
  slotsOf(m).forEach(function(s){if(nl[s.k])return;var best=null,bf=0;ids.forEach(function(id){if(used[id]||!P(id))return;var ft=fit(P(id),s.pos);if(ft>bf){bf=ft;best=id;}});if(best){nl[s.k]=best;used[best]=1;}});m.lineup=nl;}
@@ -1884,7 +1884,7 @@ function roleRate(p,line){var a=ROLEW[line],t=0,n=0;a.forEach(function(k){var v=
 function labAuto(){var m=labM(),pl=plist().filter(function(p){return labAvail(m,p);}),used={},lu={};
  var order=slotsOf(m).slice().sort(function(a,b){return (a.pos==='GK'?0:1)-(b.pos==='GK'?0:1);});
  order.forEach(function(s){var best=null,bs=-1;pl.forEach(function(p){if(used[p.id])return;var f=fit(p,s.pos);if(s.pos==='GK'&&f<3)return;if(s.pos!=='GK'&&effPos(p).length===1&&effPos(p)[0]==='GK')return;var rr=roleRate(p,LINE[s.pos]);var sc=f*10+(rr===null?4:rr)+nodeScore(p,s).v*4;if(sc>bs){bs=sc;best=p;}});if(best){lu[s.k]=best.id;used[best.id]=1;}});
- m.lineup=lu;labSave(m);render(true);}
+ labPush(m);m.lineup=lu;labS.sel='';labSave(m);render(true);}
 /* ---- selection review ---- */
 function avgOf(list,k){var t=0,n=0;list.forEach(function(p){var v=rateAny(p,k);if(v!==null){t+=v;n++;}});return n?t/n:null;}
 function labReview(m,ch){var sl=slotsOf(m),xi=[],bylnes={0:[],1:[],2:[],3:[]};
@@ -1934,27 +1934,43 @@ function ratingsBrief(m,xi,ch,overall){return 'Review this U15 selection for me.
 LABACT.labAsk=function(){view.askq=labS.ask||'';view.askA='';view.tab='ask';render();window.scrollTo(0,0);toast('Edit it if you like, then tap send');};
 /* ---- view ---- */
 function labAv(p){var u=view.photos[p.id];return u?'<img class="av" src="'+u+'" alt="">':'<span class="num">'+esc(p.num||'')+'</span>';}
-function vLab(){loadSelfAll();var m=labM(),pool=labPool(),ch=labChem(m),sl=slotsOf(m),sel=labS.sel?P(labS.sel):null;
- var h=intro('Build the side. Hold a player and drag him onto the pitch, or tap him then tap a spot. Lines show chemistry between neighbours: green fits, amber is a stretch, red needs a rethink. Coaches only.');
- h+='<div class="card"><div class="row"><div class="grow"><label style="margin-top:0">Building for</label><select data-lab="mid">'+pool.map(function(x){return '<option value="'+x.id+'"'+(labS.mid===x.id?' selected':'')+'>'+(x.ha==='A'?'at ':'v ')+esc(x.opp||'opponent')+', '+esc(niceDate(x.date))+'</option>';}).join('')+'<option value="scratch"'+(labS.mid==='scratch'?' selected':'')+'>Practice team (not tied to a game)</option></select></div><div style="width:110px"><label style="margin-top:0">Shape</label><select data-lab="form">'+Object.keys(FORMS).map(function(k){return '<option value="'+k+'"'+(m.formation===k?' selected':'')+'>'+FORMS[k].n+'</option>';}).join('')+'</select></div></div><div class="row" style="margin-top:8px"><button class="btn grow" data-act="labAuto">Suggest a side</button><button class="btn grow" data-act="labClear">Clear</button></div></div>';
+function vLab(){loadSelfAll();var m=labM(),pool=labPool(),ch=labChem(m),sl=slotsOf(m),sel=labS.sel||'',selK=sel.indexOf('k:')===0?sel.slice(2):'',selP=(!selK&&sel)?P(sel):null,selOn=selP?slotOfPlayer(m,selP.id):null,tgtPos=selK?(sl.filter(function(x){return x.k===selK;})[0]||{}).pos:selOn?(sl.filter(function(x){return x.k===selOn;})[0]||{}).pos:'';
+ var h=intro('Pick the side. Tap a bench player to put him on. Tap a player on the pitch, then another player or a bench player, to swap. Tap him twice to take him off. Coaches only.');
+ h+='<div class="card labbar"><select data-lab="mid" aria-label="Building for">'+pool.map(function(x){return '<option value="'+x.id+'"'+(labS.mid===x.id?' selected':'')+'>'+(x.ha==='A'?'at ':'v ')+esc(x.opp||'opponent')+', '+esc(niceDate(x.date))+'</option>';}).join('')+'<option value="scratch"'+(labS.mid==='scratch'?' selected':'')+'>Practice team</option></select><select data-lab="form" aria-label="Shape" class="labf">'+Object.keys(FORMS).map(function(k){return '<option value="'+k+'"'+(m.formation===k?' selected':'')+'>'+FORMS[k].n.split('').join('-')+'</option>';}).join('')+'</select><button class="btn" data-act="labUndo"'+((labS.und&&labS.und.length)?'':' disabled')+'>Undo</button><button class="btn" data-act="labAuto">Suggest</button><button class="btn" data-act="labClear">Clear</button></div>';
  var inIds={};Object.keys(m.lineup).forEach(function(k){inIds[m.lineup[k]]=1;});
- var strip=plist().map(function(p){var off=!labAvail(m,p),used=inIds[p.id];return '<div class="lp'+(used?' used':'')+(off?' off':'')+(labS.sel===p.id?' sel':'')+'" data-act="lpick" data-id="'+p.id+'" data-drag="pl" data-pid="'+p.id+'">'+labAv(p)+'<span class="lpn">'+esc(shortName(p))+'</span><span class="lpp">'+esc(effPos(p)[0]||'')+(effFoot(p)?' '+effFoot(p):'')+'</span></div>';}).join('');
+ var bl=plist().filter(function(p){return !inIds[p.id];}).sort(function(a,b){return (labAvail(m,a)?0:1)-(labAvail(m,b)?0:1)||(Number(a.num)||99)-(Number(b.num)||99);});
+ var strip=bl.map(function(p){var off=!labAvail(m,p),cls='lp'+(off?' off':'')+(sel===p.id?' sel':'');if(tgtPos&&!off){var f=fit(p,tgtPos);cls+=f>=3?' hg':f>=1?' ha':'';}return '<button class="'+cls+'" data-act="lpick" data-id="'+p.id+'" data-drag="pl" data-pid="'+p.id+'">'+labAv(p)+'<span class="lpn">'+esc(shortName(p))+'</span><span class="lpp">'+esc(effPos(p)[0]||'')+(effFoot(p)?' '+effFoot(p):'')+'</span></button>';}).join('')||'<p class="small muted" style="margin:6px">Everyone is on the pitch.</p>';
  var svg='<svg class="lk" viewBox="0 0 100 100" preserveAspectRatio="none">'+ch.L.map(function(l){return '<line x1="'+l.a.x+'" y1="'+(l.a.y*0.97+1)+'" x2="'+l.b.x+'" y2="'+(l.b.y*0.97+1)+'" class="'+l.c+'"/>';}).join('')+'</svg>';
  var slots=sl.map(function(s){var pid=m.lineup[s.k],p=pid?P(pid):null,pr=p?ch.per[s.k]:null,cls='lsl'+(p?'':' empty');
-  if(!p&&sel){var f=fit(sel,s.pos);cls+=f>=3?' hg':f>=1?' ha':'';}
-  return '<button class="'+cls+'" data-act="lslot" data-k="'+s.k+'"'+(p?' data-drag="slot" data-pid="'+pid+'"':'')+' style="left:'+s.x+'%;top:'+(s.y*0.97+1)+'%"><span class="lav '+(pr?pr.cls:'')+'">'+(p?labAv(p):'<span class="num">'+s.pos+'</span>')+'</span>'+(pr?'<span class="chm '+pr.cls+'">'+pr.n+'</span>':'')+'<span class="nm">'+(p?esc(shortName(p)):s.k)+'</span></button>';}).join('');
- h+='<div class="lab" id="labroot"><div class="stripw"><div class="strip" id="labstrip">'+strip+'</div></div><div class="labp"><div class="pitch"><svg viewBox="0 0 100 124" preserveAspectRatio="none"><rect x="2" y="2" width="96" height="120"/><line x1="2" y1="62" x2="98" y2="62"/><circle cx="50" cy="62" r="11"/><rect x="24" y="2" width="52" height="20"/><rect x="38" y="2" width="24" height="8"/><rect x="24" y="102" width="52" height="20"/><rect x="38" y="114" width="24" height="8"/></svg>'+svg+slots+'</div></div></div>';
- h+='<p class="small muted" style="margin:6px 0">Dim = already picked. Grey = not available this week. The number on each badge is his chemistry out of 10. Tap a player on the pitch to see why.</p>';
+  if(selP&&!selOn){var f=fit(selP,s.pos);cls+=f>=3?' hg':f>=1?' ha':' tg';}
+  else if(selOn||selK){if(s.k===selOn||s.k===selK)cls+=' on';else cls+=' tg';}
+  return '<button class="'+cls+'" data-act="lslot" data-k="'+s.k+'"'+(p?' data-drag="slot" data-pid="'+pid+'"':'')+' style="left:'+s.x+'%;top:'+(s.y*0.97+1)+'%"><span class="lav '+(pr?pr.cls:'')+'">'+(p?labAv(p):'<span class="num">'+s.pos+'</span>')+'</span>'+(pr?'<span class="chm '+pr.cls+'">'+pr.n+'</span>':'')+'<span class="nm">'+(p?esc(shortName(p)):'+ '+s.pos)+'</span></button>';}).join('');
+ var n=Object.keys(m.lineup).length,act;
+ if(selOn)act='<span class="grow small"><b>#'+esc(selP.num||'')+' '+esc(shortName(selP))+'</b> at '+esc(tgtPos)+'. Tap another player to swap.</span><button class="btn" data-act="labTake" data-id="'+selP.id+'">Take off</button><button class="btn" data-act="labWhy" data-k="'+selOn+'">Why</button><button class="btn" data-act="labDesel">Cancel</button>';
+ else if(selP)act='<span class="grow small"><b>#'+esc(selP.num||'')+' '+esc(shortName(selP))+'</b>. Tap a spot. Green suits him.</span><button class="btn" data-act="labDesel">Cancel</button>';
+ else if(selK)act='<span class="grow small">Empty '+esc(tgtPos)+'. Tap a bench player. Green suits the spot.</span><button class="btn" data-act="labDesel">Cancel</button>';
+ else act='<span class="grow small muted">'+n+' of 11 picked. Tap any player to start.</span>';
+ h+='<div class="lab" id="labroot"><div class="labp"><div class="pitch"><svg viewBox="0 0 100 124" preserveAspectRatio="none"><rect x="2" y="2" width="96" height="120"/><line x1="2" y1="62" x2="98" y2="62"/><circle cx="50" cy="62" r="11"/><rect x="24" y="2" width="52" height="20"/><rect x="38" y="2" width="24" height="8"/><rect x="24" y="102" width="52" height="20"/><rect x="38" y="114" width="24" height="8"/></svg>'+svg+slots+'</div></div><div class="labside"><div class="labact" id="labact">'+act+'</div><div class="small muted labbh">Bench ('+bl.length+')</div><div class="strip" id="labstrip">'+strip+'</div></div></div>';
+ h+='<p class="small muted" style="margin:6px 0">Green ring = suits that spot. Amber = can do a job. Grey = not available this week. The badge number is chemistry out of 10. You can still hold and drag if you prefer.</p>';
  h+=labReview(m,ch);
  if(m!==S.settings.lab)h+=scoutCard(m);
  return h;}
-LABACT.lpick=function(d){if(DGX.just)return;labS.sel=(labS.sel===d.id?'':d.id);render(true);};
-LABACT.lslot=function(d){if(DGX.just)return;var m=labM(),pid=m.lineup[d.k];
- if(labS.sel){labPlace(labS.sel,d.k);return;}
- if(!pid){toast('Pick a player on the left first, or hold one and drag him here');return;}
- labDetail(m,d.k);};
+LABACT.lpick=function(d){if(DGX.just)return;var m=labM(),sel=labS.sel||'',id=d.id,p=P(id);
+ if(sel.indexOf('k:')===0){labPlace(id,sel.slice(2));return;}
+ if(sel&&sel!==id&&slotOfPlayer(m,sel)){labPlace(id,slotOfPlayer(m,sel));return;}
+ if(sel===id){labS.sel='';render(true);return;}
+ var empt=slotsOf(m).filter(function(s){return !m.lineup[s.k];});
+ if(!sel&&p&&labAvail(m,p)&&empt.length){var best=empt[0],bf=-1;empt.forEach(function(s){var f=fit(p,s.pos)*10+nodeScore(p,s).v;if(s.pos==='GK'&&fit(p,'GK')<3)f-=40;if(f>bf){bf=f;best=s;}});labPlace(id,best.k);toast('#'+(p.num||'')+' on at '+best.pos+'. Tap him to move him.');return;}
+ labS.sel=id;render(true);};
+LABACT.lslot=function(d){if(DGX.just)return;var m=labM(),pid=m.lineup[d.k],sel=labS.sel||'';
+ if(sel.indexOf('k:')===0){var k0=sel.slice(2);if(k0===d.k||!pid){labS.sel=(k0===d.k)?'':'k:'+d.k;render(true);return;}labPlace(pid,k0);return;}
+ if(sel){if(sel===pid){labRemove(pid);toast('Taken off. Undo puts him back.');return;}labPlace(sel,d.k);return;}
+ labS.sel=pid?pid:'k:'+d.k;render(true);};
+LABACT.labDesel=function(){labS.sel='';render(true);};
+LABACT.labWhy=function(d){labDetail(labM(),d.k);};
+LABACT.labUndo=function(){var u=labS.und&&labS.und.pop();if(!u)return;var m=labM();m.formation=u.f;m.lineup=JSON.parse(u.l);labS.sel='';labSave(m);render(true);};
 LABACT.labAuto=function(){var m=labM();if(Object.keys(m.lineup).length>3&&!confirm('Replace the current side with a suggestion?'))return;labAuto();};
-LABACT.labClear=function(){var m=labM();m.lineup={};labS.sel='';labSave(m);render(true);};
+LABACT.labClear=function(){var m=labM();labPush(m);m.lineup={};labS.sel='';labSave(m);render(true);};
 function labDetail(m,k){var ch=labChem(m),sl=slotsOf(m),s=sl.filter(function(x){return x.k===k;})[0],p=P(m.lineup[k]),nd=ch.N[k];view.sheet={lab:k};
  var h='<h2>'+esc(p.name)+(nickOf(p)?' ('+esc(nickOf(p))+')':'')+' at '+esc(s.pos)+'</h2><p class="small muted">Plays: '+esc(effPos(p).join(', ')||'not set')+(effFoot(p)?'. Foot: '+({R:'right',L:'left',B:'both'}[effFoot(p)]):'')+'</p>';
  h+='<div class="card"><h3 style="margin-top:0">In this position</h3><p class="small">'+(nd&&nd.why.length?esc(nd.why.join('. '))+'.':'Natural fit.')+'</p></div>';
@@ -1963,7 +1979,7 @@ function labDetail(m,k){var ch=labChem(m),sl=slotsOf(m),s=sl.filter(function(x){
  h+='<div class="row"><button class="btn grow" data-act="profOpen" data-id="'+p.id+'">Profile and ratings</button><button class="btn grow" data-act="labTake" data-id="'+p.id+'">Take off pitch</button></div><div class="row"><button class="btn grow" data-act="profClose">Close</button></div>';
  openSheet(h);}
 LABACT.labTake=function(d){closeSheet();labRemove(d.id);};
-document.addEventListener('change',function(e){var t=e.target;if(!t.dataset||!t.dataset.lab)return;var m=labM();if(t.dataset.lab==='mid'){labS.mid=t.value;labS.sel='';render(true);}else if(t.dataset.lab==='form'){labRemap(m,t.value);labSave(m);render(true);}});
+document.addEventListener('change',function(e){var t=e.target;if(!t.dataset||!t.dataset.lab)return;var m=labM();if(t.dataset.lab==='mid'){labS.mid=t.value;labS.sel='';render(true);}else if(t.dataset.lab==='form'){labPush(m);labRemap(m,t.value);labSave(m);render(true);}});
 /* ---- drag and drop ---- */
 var DGX={g:null,just:0,timer:null,sx:0,sy:0,src:null,over:null};
 function dgTarget(x,y){var el=document.elementFromPoint(x,y);if(!el)return null;var sl=el.closest('.lsl');if(sl)return {t:'slot',k:sl.dataset.k,el:sl};if(el.closest('.strip'))return {t:'strip'};return null;}
@@ -1980,7 +1996,8 @@ document.addEventListener('pointercancel',function(){dgClean();});
 document.addEventListener('touchmove',function(e){if(DGX.active)e.preventDefault();},{passive:false});
 document.addEventListener('contextmenu',function(e){if(e.target.closest&&e.target.closest('#labroot'))e.preventDefault();});
 document.addEventListener('click',function(e){if(DGX.just&&e.target.closest&&e.target.closest('[data-drag]')){e.stopPropagation();e.preventDefault();}},true);
-function labAfter(){var s=document.getElementById('labstrip');if(s&&labS.st)s.scrollTop=labS.st;if(s)s.addEventListener('scroll',function(){labS.st=s.scrollTop;});}
+function labFit(){var bar=document.querySelector('.labbar'),pt=document.querySelector('.labp .pitch'),sd=document.querySelector('.labside'),nv=document.querySelector('nav.tabs');if(!bar||!pt||!sd)return;var wide=window.innerWidth>=900,av=window.innerHeight-(nv?nv.offsetHeight:0)-bar.offsetHeight-(wide?0:sd.offsetHeight+6)-22,w=Math.max(220,Math.floor(av*100/124));pt.style.width=wide?Math.min(w,640)+'px':'min(100%,'+w+'px)';}
+function labAfter(){labFit();if(!labS.ent)labS.ent=Date.now();if(Date.now()-labS.ent<1500)setTimeout(function(){var bar=document.querySelector('.labbar');if(bar)window.scrollTo(0,bar.getBoundingClientRect().top+window.scrollY-6);},0);if(!labS.rz){labS.rz=1;window.addEventListener('resize',labFit);}}
 
 Object.keys(LABACT).forEach(function(k){ACT[k]=LABACT[k];});Object.keys(LIBACT).forEach(function(k){ACT[k]=LIBACT[k];});
 
