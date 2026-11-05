@@ -30,7 +30,7 @@ await p.reload();await p.waitForTimeout(800);await p.click('nav.tabs >> text=Tea
 t=await p.innerText('#root');T('emergency card opens with the network blocked',/Mum A/.test(t)&&/Works with no signal/.test(t));
 // sign out clears
 const hasLogout=await p.evaluate(()=>!!document.querySelector('[data-act=logout]'));
-await p.click('nav.tabs >> text=Comms');await p.click('.seg button:has-text("More")');await p.waitForTimeout(500);
+await p.click('header.tl-top [aria-label="More"]');await p.waitForTimeout(500);
 console.log(await p.evaluate(()=>[...new Set([...document.querySelectorAll('[data-act]')].map(e=>e.dataset.act))].join(',')));console.log('logout button present',await p.evaluate(()=>!!document.querySelector('[data-act=logout]')));
 p.on('dialog',d=>d.accept());
 await p.evaluate(()=>{const e=document.querySelector('[data-act=logout]');if(e)e.click();});await p.waitForTimeout(300);
