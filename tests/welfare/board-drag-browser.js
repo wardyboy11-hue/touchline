@@ -31,20 +31,47 @@ const state={ideas:{},players,matches:{},settings:{id:'main',half:35,subEvery:17
   const cb=await cv.boundingBox();
   const before=await c.evaluate(()=>TLX.BD.items.filter(i=>i.t==='p'&&i.team==='b'&&i.pid).length);
   // Use PointerEvents so document-level BDG listeners fire reliably
+  // UX QA: no long-press; activate after ~5px move; ghost appears; pitch gets drop highlight; tap still picks
+  const ux=await c.evaluate(()=>{
+   const el=document.querySelector('[data-ba="sq"]');
+   const cs=getComputedStyle(el);
+   return {touchAction:cs.touchAction,cursor:cs.cursor,hasClass:el.classList.contains('bdg-chip')};
+  });
+  T('bench chip has touch-action none (dnd-kit / Chrome guidance)',ux.touchAction==='none'&&ux.hasClass);
+  T('bench chip uses grab cursor',/grab/.test(ux.cursor));
   const res=await c.evaluate(({sx,sy,ex,ey})=>{
    const el=document.querySelector('[data-ba="sq"]');
    el.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true,clientX:sx,clientY:sy,pointerId:1,pointerType:'mouse',button:0,buttons:1}));
-   return new Promise(resolve=>{
-    setTimeout(()=>{
-     document.dispatchEvent(new PointerEvent('pointermove',{bubbles:true,clientX:ex,clientY:ey,pointerId:1,pointerType:'mouse',buttons:1}));
-     setTimeout(()=>{
-      document.dispatchEvent(new PointerEvent('pointerup',{bubbles:true,clientX:ex,clientY:ey,pointerId:1,pointerType:'mouse',button:0,buttons:0}));
-      setTimeout(()=>resolve(TLX.BD.items.filter(i=>i.t==='p'&&i.team==='b'&&i.pid).length),500);
-     },40);
-    },220);
-   });
+   // sub-threshold move must NOT start a drag
+   el.dispatchEvent(new PointerEvent('pointermove',{bubbles:true,clientX:sx+2,clientY:sy+1,pointerId:1,pointerType:'mouse',buttons:1}));
+   const earlyGhost=!!document.querySelector('.bdg');
+   // past 5px threshold
+   el.dispatchEvent(new PointerEvent('pointermove',{bubbles:true,clientX:sx+8,clientY:sy+4,pointerId:1,pointerType:'mouse',buttons:1}));
+   const midGhost=!!document.querySelector('.bdg');
+   el.dispatchEvent(new PointerEvent('pointermove',{bubbles:true,clientX:ex,clientY:ey,pointerId:1,pointerType:'mouse',buttons:1}));
+   const over=!!document.querySelector('#bdc.bdg-over');
+   el.dispatchEvent(new PointerEvent('pointerup',{bubbles:true,clientX:ex,clientY:ey,pointerId:1,pointerType:'mouse',button:0,buttons:0}));
+   return new Promise(resolve=>setTimeout(()=>resolve({
+     earlyGhost, midGhost, over,
+     after:TLX.BD.items.filter(i=>i.t==='p'&&i.team==='b'&&i.pid).length,
+     leftoverGhost:!document.querySelector('.bdg'),
+     leftoverOver:!document.querySelector('#bdc.bdg-over')
+   }),500));
   },{sx:box.x+box.width/2,sy:box.y+box.height/2,ex:cb.x+cb.width*0.5,ey:cb.y+cb.height*0.55});
-  T('drag from bench places a blue player on the pitch',res>before);
+  T('sub-threshold move does not start a drag',!res.earlyGhost);
+  T('past 5px threshold shows a ghost',res.midGhost);
+  T('pitch shows drop highlight while over',res.over);
+  T('drag from bench places a blue player on the pitch',res.after>before);
+  T('ghost and highlight clear after drop',res.leftoverGhost&&res.leftoverOver);
+  // tap-to-pick still works (WCAG 2.5.7 single-pointer alternative)
+  const tap=await c.evaluate(()=>{
+   const beforeBench=TLX.BD.bench||'';
+   const el=document.querySelector('[data-ba="sq"]');
+   const pid=el.dataset.pid;
+   el.click();
+   return {pid,picked:TLX.BD.bench===pid||TLX.BD.sel};
+  });
+  T('tap-to-pick still works alongside drag',!!tap.picked);
   if(SHOTS){fs.mkdirSync(SHOTS,{recursive:true});await c.screenshot({path:path.join(SHOTS,'r89_board_drag.png')});}
  }
  await c.evaluate(()=>{TLX.view.tab='hub';TLX.render(true);});
