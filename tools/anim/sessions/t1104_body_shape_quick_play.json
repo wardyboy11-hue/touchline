@@ -1,0 +1,63 @@
+{"slug":"t1104_body_shape_quick_play","title":"Tonight 04/11: body shape and quick play (60 min)","date":"2026-11-04","week":"Block 3, week 1","pdf":"../../plans/t1104_body_shape_quick_play.pdf",
+ "theme":"Look, open, forward, quick","cue":"Look, open, forward, quick.",
+ "running":[["0 to 5","Warm up and tonight's focus",5],["5 to 15","Half turn and third man diamond",10],["15 to 25","PSV rondo to counter",10],["25 to 37","Scan and play 4v4 plus 3",12],["37 to 39","Drinks",2],["39 to 49","6v4 counter attack with a free zone",10],["49 to 57","3-5-2 game with a touch limit",8],["57 to 60","Stretching card and 3 questions",3]],
+ "parents":"Watch for players looking over their shoulder before the ball arrives, opening their body on the half turn, and moving the ball on in one or two touches. When we win it, the first pass goes forward.",
+ "phases":[
+ {"phase":"Part 1, 5 to 15 min","slug":"t1104_p1","title":"Half turn and third man diamond","theme":"Open up, forward first","age":"U14 / U15","format":"Passing pattern, 2 groups of 7 or 8","area":"Diamond of 4 cones, 15 yards apart","kit":"4 cones per group, 2 balls per group","start":"Number 4 starts with the ball at the bottom cone","L":24,"W":24,"nums":true,"ball":"B4",
+  "key":[["B","Us (blue)"]],"cones":[[3,12],[12,4],[12,20],[21,12]],
+  "players":[{"id":"B4","team":"B","x":3,"y":12},{"id":"B5","team":"B","x":1,"y":13.5},{"id":"B8","team":"B","x":12,"y":3},{"id":"B10","team":"B","x":12,"y":21},{"id":"B9","team":"B","x":22,"y":12}],
+  "intro_vo":"Part one. The half turn and third man diamond. Open up, look, and play forward first.",
+  "steps":[
+   {"dur":7,"say":"4 plays into 8. 8 opens up on the half turn.","vo":"Four plays into eight. Eight opens his body on the half turn, back foot to the ball, so he can see forward.","moves":{"B8":[12,5]},"pass":"B8"},
+   {"dur":7,"say":"8 plays forward into 9. Two touches. 4 follows his pass.","vo":"Eight plays forward into nine in two touches. Four follows his pass.","moves":{"B4":[11,6],"B10":[14,17]},"pass":"B9"},
+   {"dur":7,"say":"10 is already moving. 9 sets it back to the third man.","vo":"Ten is already moving before nine gets it. Nine sets it back to ten, the third man.","moves":{"B10":[15,15],"B8":[19,10]},"pass":"B10"},
+   {"dur":7,"say":"10 plays into 5 at the start. Go again.","vo":"Ten plays into five at the start, and we go again. Look, open, forward, quick.","moves":{"B5":[3,12]},"pass":"B5"}],
+  "setup":["2 groups. A diamond of 4 cones, 15 yards apart.","2 at the bottom cone, 1 or 2 at each other cone."],"rules":["Two touches, then one touch for the set.","Follow your pass."],"restart":["Mirror the pattern to the right after 4 minutes."],
+  "points":["Open your body, receive on the back foot.","Two looks before the ball arrives.","The third man moves early, not after the pass."],"progress":["A coach behind 8 shouts turn or man on.","One touch for the set."]},
+
+ {"phase":"Part 2, 15 to 25 min","slug":"t1104_p2","title":"PSV rondo to counter","theme":"Win it, forward, go","age":"U14 / U15","format":"4v2 rondo, then 3v2 to goal","area":"10 x 10 yard square at the edge of the box","kit":"Cones, blue and red bibs, a keeper","start":"The reds start with the ball in the square","L":40,"W":30,"nums":true,"ball":"R1",
+  "key":[["B","Us (blue)"],["R","Opponents"],["K","Goalkeeper"]],
+  "zones":[{"x0":4,"y0":10,"x1":14,"y1":20,"label":"Rondo","fill":"rgba(255,184,28,0.10)"}],
+  "goals":[{"x":40,"y":15,"w":7,"side":"right"}],
+  "players":[{"id":"R1","team":"R","x":4.5,"y":15},{"id":"R2","team":"R","x":9,"y":10.5},{"id":"R3","team":"R","x":13.5,"y":15},{"id":"R4","team":"R","x":9,"y":19.5},{"id":"B8","team":"B","x":8,"y":14},{"id":"B10","team":"B","x":10,"y":16},{"id":"B9","team":"B","x":27,"y":15},{"id":"B7","team":"B","x":17,"y":24},{"id":"R5","team":"R","x":31,"y":11},{"id":"R6","team":"R","x":31,"y":19},{"id":"KR","team":"K","x":38.5,"y":15}],
+  "intro_vo":"Part two. The PSV rondo to counter. Four keep it against our two pressers. The moment we win it, the first pass goes forward and we go.",
+  "steps":[
+   {"dur":7,"say":"Reds keep it. 10 passes is a point. 8 and 10 press.","vo":"The reds keep the ball. Ten passes is a point. Eight and ten press together.","moves":{"B8":[7,13],"B10":[9,12.5]},"pass":"R2"},
+   {"dur":7,"say":"8 wins it.","vo":"Eight reads the pass and wins it.","moves":{"B8":[11,12.5]},"pass":"B8"},
+   {"dur":7,"say":"First pass forward, straight into 9.","vo":"First pass forward, straight into nine, who shows early.","moves":{"B9":[24,15],"R5":[27,13]},"pass":"B9"},
+   {"dur":7,"say":"10 and 7 break. 9 lays it off to 10.","vo":"Ten and seven break the moment we win it. Nine lays it off into ten's path.","moves":{"B10":[29,9],"B7":[29,22],"R6":[32,17]},"pass":"B10"},
+   {"dur":5,"say":"10 hits it early. Goal!","vo":"Ten hits it early. Goal! Win it, forward, go.","moves":{},"shoot":[40,14]}],
+  "setup":["A 10 x 10 yard square at the edge of the box: 4 reds against our 2.","Outside: our striker against 2 centre backs and a keeper, runners waiting."],"rules":["Reds: 10 passes is a point.","Blues: win it and score within 10 seconds."],"restart":["Swap the pressers every 2 minutes."],
+  "points":["Press together, cut the inside pass.","First pass forward and quick.","Runners go on the regain, not after."],"progress":["Add a red recovery runner.","Score within 8 seconds."]},
+
+ {"phase":"Part 3, 25 to 37 min","slug":"t1104_p3","title":"Scan and play 4v4 plus 3","theme":"Look before it arrives","age":"U14 / U15","format":"4v4 plus 2 end players and 1 neutral","area":"25 x 20 yards","kit":"Blue, red and yellow bibs, plenty of balls","start":"An end player (E) starts with the ball","L":23,"W":18,"nums":true,"ball":"NE",
+  "key":[["B","Us (blue)"],["R","Opponents"],["Y","End players and neutral (yellow)"]],
+  "players":[{"id":"NE","team":"Y","x":0.5,"y":9},{"id":"XE","team":"Y","x":22.5,"y":9},{"id":"NN","team":"Y","x":11.5,"y":9},{"id":"B4","team":"B","x":5,"y":4},{"id":"B5","team":"B","x":5,"y":14},{"id":"B6","team":"B","x":16,"y":4},{"id":"B8","team":"B","x":16,"y":14},{"id":"R1","team":"R","x":7,"y":8},{"id":"R2","team":"R","x":9,"y":13},{"id":"R3","team":"R","x":14,"y":6},{"id":"R4","team":"R","x":15,"y":11}],
+  "intro_vo":"Part three. Scan and play, four against four plus three. Go from one end player to the other. Look before it arrives.",
+  "steps":[
+   {"dur":7,"say":"E plays in. 5 looks over his shoulder first.","vo":"The end player plays in. Five has a look over his shoulder before it arrives.","moves":{"B5":[6,12],"R2":[8,12.5]},"pass":"B5"},
+   {"dur":7,"say":"5 is open, so he plays forward first time to N.","vo":"Five is already open, so he plays forward first time into the neutral.","moves":{"NN":[11,10]},"pass":"NN"},
+   {"dur":7,"say":"The neutral sets to 8, who is already moving.","vo":"The neutral sets it, one touch, to eight, who is already moving into space.","moves":{"B8":[17,12],"R4":[15,9]},"pass":"B8"},
+   {"dur":6,"say":"8 plays to the far end player. Point.","vo":"Eight plays to the far end player. End to end, that is a point. Then move again.","moves":{"B5":[10,15]},"pass":"XE"}],
+  "setup":["25 x 20 yards. 4 blues against 4 reds inside.","One end player at each end and one neutral in the middle, in yellow."],"rules":["Inside players two touches, end players and the neutral one touch.","End to end is a point. Lose it and the other team goes end to end."],"restart":["3 x 3 minutes. Rotate the end players and the neutral."],
+  "points":["Check before you get it.","Open up so you can see the far end.","Pass, then move to make a new angle."],"progress":["Coach calls a colour, the next receiver shouts it.","A point through a third man counts double."]},
+
+ {"phase":"Part 4, 39 to 49 min","slug":"t1104_p4","title":"6v4 counter attack with a free zone","theme":"Win it and go","age":"U14 / U15","format":"6v4 to goal, then counter to the other goal","area":"25 x 55 yards, 5 yard free zone in the middle","kit":"2 goals, keepers, blue, red and yellow bibs","start":"The reds start with the ball in their half","L":50,"W":23,"nums":true,"ball":"R1",
+  "key":[["B","Us (blue)"],["R","Opponents"],["Y","Wide neutrals"],["K","Goalkeeper"]],
+  "zones":[{"x0":22.5,"y0":0,"x1":27.5,"y1":23,"label":"Free zone","fill":"rgba(255,184,28,0.10)"}],"lines":[[22.5,0,22.5,23],[27.5,0,27.5,23]],
+  "goals":[{"x":0,"y":11.5,"w":6,"side":"left"},{"x":50,"y":11.5,"w":6,"side":"right"}],
+  "players":[{"id":"B1","team":"K","x":1,"y":11.5},{"id":"B5","team":"B","x":9,"y":6},{"id":"B4","team":"B","x":7,"y":11.5},{"id":"B6","team":"B","x":9,"y":17},{"id":"B8","team":"B","x":13,"y":11.5},{"id":"R1","team":"R","x":19,"y":9},{"id":"R2","team":"R","x":19,"y":15},{"id":"R3","team":"R","x":13,"y":4},{"id":"R4","team":"R","x":13,"y":19},{"id":"YW","team":"Y","x":15,"y":1},{"id":"YV","team":"Y","x":15,"y":22},{"id":"KR","team":"K","x":49,"y":11.5}],
+  "intro_vo":"Part four. Six against four counter attack. The blues defend compact, and the moment they win it, they break through the free zone to score at the other end.",
+  "steps":[
+   {"dur":7,"say":"Reds and the wide players attack. Blues stay compact.","vo":"The reds and the two wide players attack. Our four stay compact and shift together.","moves":{"B5":[8,5],"B4":[7,9],"B6":[9,14],"B8":[12,8]},"pass":"YW"},
+   {"dur":7,"say":"The ball comes inside. 4 steps in and wins it.","vo":"The ball comes inside. Four reads it, steps in and wins it.","moves":{"R3":[9,6],"B4":[10,8]},"pass":"B4"},
+   {"dur":7,"say":"First pass forward into 8.","vo":"First look forward. Four plays straight into eight.","moves":{"B8":[20,11]},"pass":"B8"},
+   {"dur":7,"say":"GO! 5 and 6 sprint through the free zone.","vo":"Go! Five and six sprint through the free zone. Eight slips five in.","moves":{"B5":[37,7],"B6":[36,17],"B8":[29,11],"R1":[24,10]},"pass":"B5"},
+   {"dur":5,"say":"5 hits it early. Goal!","vo":"Five hits it early. Goal! Compact, win it, and go.","moves":{},"shoot":[50,11]}],
+  "setup":["25 x 55 yards with a 5 yard free zone in the middle and a goal at each end.","4 reds plus 2 wide neutrals attack our 4 defenders."],"rules":["Win it: break and score at the other end.","No offside in the free zone."],"restart":["2 x 4 minutes, then swap roles."],
+  "points":["Stay compact, then go at full speed.","First pass forward.","Reds: react the instant you lose it."],"progress":["Score within 10 seconds.","Wide neutrals join the blue break as wing backs."]},
+
+ {"ref":"11_shape_and_transition_game","phase":"Part 5, 49 to 57 min","title":"3-5-2 game with a touch limit","format":"Game, 7v7 or 8v8","area":"About 70 x 45 yards","intro_vo":"Part five. The game. Three touches at most. Win it, ten seconds to shoot. Lose it, five seconds to win it back. Then the stretching card for the cool down.",
+  "setup":["About 70 x 45 yards, two full sized goals and keepers.","Play 7v7 or 8v8 with whatever numbers turn up."],"rules":["Three touches at most. The coach can call two touch.","Win it: 10 seconds to shoot. Lose it: 5 seconds to win it back."],"restart":["Normal restarts. 57 to 60: Stretching card and 3 questions."],
+  "points":["Look before you get it.","Open on the half turn, forward first.","React instantly when it turns over."],"progress":["Goals from a third man pass count double.","Last 2 minutes free play."]}
+ ]}
