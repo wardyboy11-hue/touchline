@@ -107,14 +107,23 @@ body.ps .vi,body.ps .intro,body.ps .ans,body.ps details.pl{background:#fff;color
 .tl-cd-item{flex:0 0 78%;max-width:280px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:12px}
 .tl-cd-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--amber);margin-bottom:4px}
 .tl-cd-title{font-weight:700;font-size:16px;margin-bottom:4px}
-.tl-cd-left{font-size:26px;margin:4px 0}
+.tl-cd-left{font-size:28px;font-weight:800;margin:4px 0;color:var(--amber);font-variant-numeric:tabular-nums}
+.tl-cd-abs{font-size:13px;opacity:.8;margin:0 0 6px}
 .tl-cd-meta{font-size:13px;opacity:.85;margin-bottom:8px}
+.tl-cd-meet{margin:6px 0 8px}
 .tl-cd-act .btn{min-height:44px}
+.tl-meet-chip{display:inline-block;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;background:rgba(255,184,28,.18);border:1px solid var(--amber);color:#ffe3a3}
+.tl-cd-pulse{animation:tl-cd-pulse 1.2s ease-in-out infinite}
+@keyframes tl-cd-pulse{0%,100%{opacity:1;text-shadow:0 0 0 transparent}50%{opacity:.85;text-shadow:0 0 12px rgba(255,184,28,.85)}}
+@media (prefers-reduced-motion:reduce){.tl-cd-pulse{animation:none}}
 .tl-md-screen{position:fixed;inset:0;z-index:100000;background:linear-gradient(165deg,#021945 0%,#0b1330 55%,#06102B 100%);display:flex;align-items:center;justify-content:center;padding:20px;transition:opacity .35s}
 .tl-md-screen.off{opacity:0;pointer-events:none}
 .tl-md-inner{width:min(420px,100%);background:rgba(255,255,255,.06);border:2px solid var(--amber);border-radius:18px;padding:22px 18px;box-shadow:0 12px 40px rgba(0,0,0,.45)}
 .tl-md-greet{font-size:18px;font-weight:600;margin:10px 0 0;color:#fff}
-@media (min-width:900px){.tl-cd-item{flex-basis:46%}}
+.tl-md-pinned{outline:2px solid var(--amber);outline-offset:2px}
+.tl-late-sheet{position:fixed;inset:0;z-index:100001;background:rgba(0,0,0,.72);display:flex;align-items:flex-end;justify-content:center;padding:16px}
+.tl-late-inner{width:min(420px,100%);background:#0b1330;border:1px solid var(--line);border-radius:18px 18px 12px 12px;padding:18px;margin-bottom:env(safe-area-inset-bottom)}
+@media (min-width:900px){.tl-cd-item{flex-basis:46%}.tl-late-sheet{align-items:center}}
 
 </style>
 <script src="cd.js?v=90"></script>
@@ -452,7 +461,7 @@ function bodyHomePosts(){var h='';
  if(D.obj)h+='<div class="card"><h2>'+esc(D.first)+'\'s objectives</h2><p>'+esc(D.obj).replace(/\n/g,'<br>')+'</p><p class="small muted">Chosen by Tim and Deano. Just things to try, never a mark out of ten.</p></div>';
  if(D.working)h+='<div class="card"><h2>What we have been working on</h2><p>'+esc(D.working).replace(/\n/g,'<br>')+'</p></div>';
  if(!D.posts.length)h+='<div class="card"><h2>Nothing posted yet</h2><p class="muted">The next session will appear here once Tim has posted it.</p></div>';
- D.posts.forEach(function(p){var a=D.mine[p.id]||'';var fx=p.type==='match'?X().fixtures.filter(function(m){return m.date===p.date&&!m.done;})[0]:null;
+ D.posts.forEach(function(p){var a=(D.mine||{})[p.id]||'';var fx=p.type==='match'?X().fixtures.filter(function(m){return m.date===p.date&&!m.done;})[0]:null;
   h+='<div class="card"><span class="tag">'+(p.type==='match'?'Match':'Training')+'</span><h2 style="margin-top:8px">'+esc(p.title)+'</h2><p><b>'+esc(nice(p.date))+'</b>'+(p.time?', '+esc(p.time):'')+(p.place?'<br>'+esc(p.place):'')+'</p>'+
   (wcClean(p.why)?'<h3>Why we are doing it</h3><p>'+esc(wcClean(p.why)).replace(/\n/g,'<br>')+'</p>':'')+(p.bring?'<h3>Bring</h3><p>'+esc(p.bring)+'</p>':'')+
   ynBtns(p,a)+(fx&&(a==='Y'||a==='M')?liftBox(fx.id,fxTitle(fx),fx.date):'')+'</div>';});
@@ -472,22 +481,26 @@ function viBox(m){var v=m.vi;if(!v||(!v.pc&&!v.pk&&!v.tp))return '<div class="vi
 function venueBlock(m){if(!(m.venue||(m.vi&&m.vi.pc)))return '<h3>Getting there</h3><p class="small muted">Venue and parking to be confirmed. This page updates as soon as we know.</p>';return '<h3>Getting there</h3>'+viBox(m)+travelLinks(m);}
 
 function famCdItems(){var x=X(),td=today(),items=[],nx=(x.fixtures||[]).filter(function(m){return !m.done&&m.date>=td&&!m.pp;})[0];
- if(nx)items.push({kind:'game',date:nx.date,ko:nx.ko,opp:nx.opp,ha:nx.ha,venue:nx.venue||nx.addr,go:'games'});
+ if(nx)items.push({kind:'game',date:nx.date,ko:nx.ko,opp:nx.opp,ha:nx.ha,venue:nx.venue||nx.addr,meet:nx.meet,id:nx.id||('g-'+nx.date),go:'games',late:true});
  var tr=(D.posts||[]).filter(function(p){return (p.type==='train'||p.type==='training')&&p.date>=td;}).sort(function(a,b){return a.date<b.date?-1:1;})[0];
- if(tr)items.push({kind:'train',date:tr.date,time:tr.time||'19:00',title:tr.title||'Training',venue:tr.place,go:'train'});
+ if(tr)items.push({kind:'train',date:tr.date,time:tr.time||'19:00',title:tr.title||'Training',venue:tr.place,meet:tr.meet,id:tr.id||('t-'+tr.date),go:'train',late:true});
  return items;}
 function famShirtNum(){if(D&&D.role==='parent'&&CHD&&CHD.num)return String(CHD.num);if(D&&D.num)return String(D.num);if(SELF&&SELF.num)return String(SELF.num);return '';}
-function famMatchdayMaybe(){try{if(!window.TLCD||!D)return;var x=X(),td=today();var nx=(x.fixtures||[]).filter(function(m){return !m.done&&m.date===td&&!m.pp;})[0];if(!nx)return;if(D.role==='parent')loadChild();TLCD.showMatchday(nx,{role:D.role||'parent',anim:'12_352_in_transition',animHref:'coach/anim/12_352_in_transition.html?v=90',onGo:function(){try{goTab('home');}catch(e){}},onCard:function(){try{goTab('home');}catch(e){}}});}catch(e){}}
 
-function todayCard(){var x=X(),td=today();var pend=(D.posts||[]).filter(function(p){return p.date>=td&&!D.mine[p.id];}).sort(function(a,b){return a.date<b.date?-1:1;})[0];
+window.tlLateNum=function(){return famShirtNum();};
+window.tlLateSend=function(row){if(!row)return Promise.resolve();var act=row.op==='undo'?'f.late.undo':'f.late';return call(act,{id:row.id,num:row.num,mins:row.mins,kind:row.kind,ref:row.ref,date:row.date}).then(function(){alertMsg=row.op==='undo'?'Late notice cleared.':'Told the coaches: '+(window.TLCD?TLCD.lateLabel(row.num,row.mins):('No. '+row.num+' running late'));try{r();}catch(e){}}).catch(function(e){alertMsg=(e&&e.message)||'Saved on this phone. Will send when you are back online.';try{r();}catch(x){};});};
+window.addEventListener('online',function(){try{if(window.TLCD)TLCD.flushLate();}catch(e){}});
+function famMatchdayMaybe(){try{if(!window.TLCD||!D)return;var x=X(),td=today();var nx=(x.fixtures||[]).filter(function(m){return !m.done&&m.date===td&&!m.pp;})[0];if(!nx)return;if(D.role==='parent')loadChild();TLCD.showMatchday(nx,{role:D.role||'parent',anim:'12_352_in_transition',animHref:'coach/anim/12_352_in_transition.html?v=90',onGo:function(){try{goTab('home');}catch(e){}try{TLCD.pinToday(nx);}catch(e2){}},onCard:function(){try{goTab('home');}catch(e){}}});}catch(e){}}
+
+function todayCard(){var x=X(),td=today();var pend=(D.posts||[]).filter(function(p){return p.date>=td&&!(D.mine||{})[p.id];}).sort(function(a,b){return a.date<b.date?-1:1;})[0];
  var nx=x.fixtures.filter(function(m){return !m.done&&m.date>=td&&!m.pp;})[0];var who=D.role==='player'?'you':esc(D.first);
  var md=nx&&nx.date===td;var h='';try{if(window.TLCD){if(D&&D.role==='parent')loadChild();h+=TLCD.rail(famCdItems());}}catch(e){}
- if(md){h+='<div class="card today md"><span class="tag" style="background:#FFB81C;color:#1b1200">Match day</span><h2 style="margin-top:8px">'+(nx.ha==='A'?'at ':'v ')+esc(nx.opp)+'</h2><p>Kick off <b>'+esc(nx.ko||'TBC')+'</b>'+(meetBy(nx.ko)?'. Please be there by <b>'+meetBy(nx.ko)+'</b>.':'')+'</p>'+venueBlock(nx)+'<h3>Need us?</h3><p class="small">Running late or stuck in traffic? Use Match day help below. Lifts are on the Games tab.</p><div class="row"><button class="btn" onclick="goTab(\'games\')">Games and lifts</button><button class="btn" onclick="document.getElementById(\'mdh\')&&document.getElementById(\'mdh\').scrollIntoView({behavior:\'smooth\'})">Match day help</button></div></div>';}
+ if(md){var _meet=(window.TLCD&&TLCD.meetChip)?TLCD.meetChip(nx.ko,nx.meet):(meetBy(nx.ko)?'<span class="tl-meet-chip">Meet by '+esc(meetBy(nx.ko))+'</span>':'');var _lateAct=window.TLCD&&TLCD.getActive?TLCD.getActive(nx.date,nx.id||('g-'+nx.date)):null;var _lateBtn=_lateAct&&!_lateAct.undone?'<button class="btn" type="button" data-late-undo="1" data-late-ref="'+esc(nx.id||('g-'+nx.date))+'" data-late-date="'+esc(nx.date)+'">Undo late notice</button>':'<button class="btn" type="button" data-cd-late="1" data-late-kind="game" data-late-ref="'+esc(nx.id||('g-'+nx.date))+'" data-late-date="'+esc(nx.date)+'" data-late-ko="'+esc(nx.ko||'')+'">Running late</button>';h+='<div class="card today md" id="tl-md-pin"><span class="tag" style="background:#FFB81C;color:#1b1200">Match day</span><h2 style="margin-top:8px">'+(nx.ha==='A'?'at ':'v ')+esc(nx.opp)+'</h2>'+(_meet?'<div class="tl-cd-meet">'+_meet+'</div>':'')+'<p>Kick off <b>'+esc(nx.ko||'TBC')+'</b></p>'+venueBlock(nx)+'<div class="row" style="flex-wrap:wrap;gap:8px;margin-top:8px">'+_lateBtn+'<button class="btn" onclick="goTab(\'games\')">Games and lifts</button><button class="btn" onclick="document.getElementById(\'mdh\')&&document.getElementById(\'mdh\').scrollIntoView({behavior:\'smooth\'})">Match day help</button></div></div>';}
  if(pend){var fx=pend.type==='match'?x.fixtures.filter(function(m){return m.date===pend.date&&!m.done;})[0]:null;var pl=pend.place||(fx&&(fx.venue))||'';
   h+='<div class="card today"><span class="tag">Needs your answer</span><h2 style="margin-top:8px">'+esc(pend.title)+'</h2><p><b>'+esc(nice(pend.date))+'</b>'+(pend.time?', '+esc(pend.time):'')+(pl?'<br>'+esc(pl):'')+'</p><h3>'+(pend.type==='match'?(D.role==='player'?'Playing?':'Is '+who+' playing?'):(D.role==='player'?'Can you come?':'Can '+who+' come?'))+'</h3><div class="ybig"><button class="btn" style="background:#14532d;border-color:#4ADE80" onclick="ans(\''+pend.id+'\',\'Y\')">Yes</button><button class="btn" style="background:#7f1d33;border-color:#FB7185" onclick="ans(\''+pend.id+'\',\'N\')">No</button></div>'+(pend.type==='match'?'':'<button class="btn block" style="margin-top:8px" onclick="ans(\''+pend.id+'\',\'M\')">Maybe</button>')+''+(pl?'<div class="row"><a class="btn" target="_blank" rel="noopener" href="'+mapUrl(pl)+'">Directions</a><a class="btn" target="_blank" rel="noopener" href="'+wxUrl(pl)+'">Weather</a></div>':'')+'</div>';return h;}
  if(nx&&!md){h+='<div class="card today"><span class="tag">You are sorted</span><h2 style="margin-top:8px">Next: '+(nx.ha==='A'?'at ':'')+esc(nx.opp)+'</h2><p><b>'+esc(nice(nx.date))+'</b>'+(nx.ko?', '+koTxt(nx):'')+(meetBy(nx.ko)?'<br>Be there by '+meetBy(nx.ko):'')+'</p>'+venueBlock(nx)+'<button class="btn block" style="margin-top:8px" onclick="goTab(\'games\')">Games and lifts</button></div>';}
  return h;}
-function unans(){var td=today();return (D&&D.posts?D.posts:[]).filter(function(p){return p.date>=td&&!D.mine[p.id];}).length;}
+function unans(){var td=today();return (D&&D.posts?D.posts:[]).filter(function(p){return p.date>=td&&!(D.mine||{})[p.id];}).length;}
 var ROLES={'Goalkeeper':['Talk early and loud. Tell them where to go.','Take a touch away from pressure, then pass.','Start in the right spot when we have the ball.','Try: one pass a game that breaks a line.'],
 'Centre back':['Stay compact. Squeeze up, do not drop off.','Win it early or stay on your feet.','Scan before the ball arrives.','Try: step out and play the pass through the middle.'],
 'Wing back':['Get up and down. Stay wide when we have the ball.','Pick the moment: go or stay.','Tuck in when the ball is on the other side.','Try: a run beyond the winger.'],

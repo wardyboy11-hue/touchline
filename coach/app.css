@@ -186,11 +186,21 @@ header.tl-top .pill{padding:5px 9px}
 .tl-cd-item{flex:0 0 78%;max-width:280px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:12px}
 .tl-cd-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--amber);margin-bottom:4px}
 .tl-cd-title{font-weight:700;font-size:16px;margin-bottom:4px}
-.tl-cd-left{font-size:26px;margin:4px 0}
+.tl-cd-left{font-size:28px;font-weight:800;margin:4px 0;color:var(--amber);font-variant-numeric:tabular-nums}
+.tl-cd-abs{font-size:13px;opacity:.8;margin:0 0 6px}
 .tl-cd-meta{font-size:13px;opacity:.85;margin-bottom:8px}
+.tl-cd-meet{margin:6px 0 8px}
 .tl-cd-act .btn{min-height:44px}
+.tl-meet-chip{display:inline-block;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;background:rgba(255,184,28,.18);border:1px solid var(--amber);color:#ffe3a3}
+.tl-cd-pulse{animation:tl-cd-pulse 1.2s ease-in-out infinite}
+@keyframes tl-cd-pulse{0%,100%{opacity:1;text-shadow:0 0 0 transparent}50%{opacity:.85;text-shadow:0 0 12px rgba(255,184,28,.85)}}
+@media (prefers-reduced-motion:reduce){.tl-cd-pulse{animation:none}}
 .tl-md-screen{position:fixed;inset:0;z-index:100000;background:linear-gradient(165deg,#021945 0%,#0b1330 55%,#06102B 100%);display:flex;align-items:center;justify-content:center;padding:20px;transition:opacity .35s}
 .tl-md-screen.off{opacity:0;pointer-events:none}
 .tl-md-inner{width:min(420px,100%);background:rgba(255,255,255,.06);border:2px solid var(--amber);border-radius:18px;padding:22px 18px;box-shadow:0 12px 40px rgba(0,0,0,.45)}
 .tl-md-greet{font-size:18px;font-weight:600;margin:10px 0 0;color:#fff}
-@media (min-width:900px){.tl-cd-item{flex-basis:46%}}
+.tl-md-pinned{outline:2px solid var(--amber);outline-offset:2px}
+.tl-late-sheet{position:fixed;inset:0;z-index:100001;background:rgba(0,0,0,.72);display:flex;align-items:flex-end;justify-content:center;padding:16px}
+.tl-late-inner{width:min(420px,100%);background:#0b1330;border:1px solid var(--line);border-radius:18px 18px 12px 12px;padding:18px;margin-bottom:env(safe-area-inset-bottom)}
+.tl-late-banner{border-color:var(--amber)!important;background:rgba(255,184,28,.08)}
+@media (min-width:900px){.tl-cd-item{flex-basis:46%}.tl-late-sheet{align-items:center}}

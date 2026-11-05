@@ -65,6 +65,7 @@ function doPost(e) {
     if (b.action === 'lift.list') return out_({ ok: true, data: { rows: liftRows_() } });
     if (b.action === 'lift.close') return out_({ ok: true, data: liftClose_(b) });
     if (b.action === 'help.list') return out_({ ok: true, data: { rows: helpOpen_() } });
+    if (b.action === 'late.list') return out_({ ok: true, data: { rows: lateList_() } });
     if (b.action === 'hub.help.done') return out_({ ok: true, data: helpDone_(b.id) });
     if (b.action === 'plan.get' || b.action === 'file.get') return out_({ ok: true, data: fileGet_(b) });
     if (b.action === 'folder.list') return out_({ ok: true, data: folderList_(b) });
@@ -340,6 +341,8 @@ function fam_(b) {
   if (b.action === 'f.media.get') return mediaGet_(clean_(b.id, 40), pid, false);
   if (b.action === 'f.photo') return famPhotoSet_(pid, b);
   if (b.action === 'f.alert') return famAlert_(pid, role, pl, b);
+  if (b.action === 'f.late') return famLate_(pid, role, pl, b, false);
+  if (b.action === 'f.late.undo') return famLate_(pid, role, pl, b, true);
   if (b.action === 'f.lift') {
     var lr = liftSet_(pid, firstName_(me, pl), b);
     if (lr.fresh) notify_('Lift ' + (b.type === 'offer' ? 'offered' : 'wanted'), firstName_(me, pl) + ': ' + (b.type === 'offer' ? 'can give a lift' : 'needs a lift') + ' for ' + (lr.title || 'a game'), 'quiet');
@@ -788,6 +791,44 @@ function famAlert_(pid, role, pl, b) {
   var r = notify_('Match day: ' + label, me + (role === 'player' ? ' (player)' : ' (family)') + ': ' + label + (note ? '. ' + note : ''), kind === 'help' ? 'urgent' : 'normal');
   tab_('AlertLog', ['time', 'who', 'kind', 'note', 'sent']).appendRow([new Date(), role + ':' + pid, kind, note, r.sent]);
   return { ok: true, sent: r.sent };
+}
+
+/* r90: Running late — shirt number only, coaches only. Works for match day and training. */
+function lateTab_() {
+  return tab_('Late', ['id', 'pid', 'role', 'num', 'mins', 'kind', 'ref', 'date', 'at', 'undone']);
+}
+function lateList_() {
+  var sh = lateTab_(), last = sh.getLastRow(), t = today_();
+  if (last < 2) return [];
+  var rows = sh.getRange(2, 1, last - 1, 10).getValues(), out = [], seen = {};
+  for (var i = rows.length - 1; i >= 0; i--) {
+    var r = rows[i], id = String(r[0] || ''), num = String(r[3] || ''), date = String(r[7] || ''), undone = String(r[9] || '') === '1';
+    if (!id || date !== t) continue;
+    var key = num + '|' + String(r[6] || '') + '|' + date;
+    if (seen[key]) continue;
+    seen[key] = 1;
+    if (undone) continue;
+    out.push({ id: id, num: num, mins: String(r[4] || ''), kind: String(r[5] || 'game'), ref: String(r[6] || ''), date: date, at: Number(r[8]) || 0 });
+  }
+  return out;
+}
+function famLate_(pid, role, pl, b, undo) {
+  var num = String((pl[pid] && pl[pid].num) || '').replace(/\D/g, '');
+  if (!num) throw new Error('Add a shirt number first.');
+  var mins = String(b.mins || '').trim();
+  if (!undo && !/^(5|10|15|20\+)$/.test(mins)) throw new Error('Pick how late: 5, 10, 15 or 20+ minutes.');
+  var kind = clean_(b.kind, 10) || 'game';
+  if (kind !== 'game' && kind !== 'train') kind = 'game';
+  var ref = clean_(b.ref, 40), date = clean_(b.date, 12) || today_();
+  var id = clean_(b.id, 40) || ('L' + Date.now().toString(36));
+  var cache = CacheService.getScriptCache(), ck = 'late:' + pid + ':' + (undo ? 'u' : 's');
+  if (cache.get(ck)) throw new Error('You just sent one. Give us a few seconds.');
+  cache.put(ck, '1', 20);
+  lateTab_().appendRow([id, pid, role, num, undo ? String(b.mins || '') : mins, kind, ref, date, String(Date.now()), undo ? '1' : '0']);
+  var label = 'No. ' + num + ' running late' + (undo ? '' : (', about ' + mins + ' mins'));
+  if (undo) label = 'No. ' + num + ' late notice cleared';
+  var r = notify_('Running late', label + (kind === 'train' ? ' (training)' : ' (match day)'), 'normal');
+  return { ok: true, sent: r.sent, id: id, label: label };
 }
 
 /* ---------------- v7: media, contacts ---------------- */
