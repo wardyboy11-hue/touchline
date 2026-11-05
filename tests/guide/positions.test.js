@@ -22,3 +22,13 @@ const fh=fs.readFileSync(path.join(R,'family.html'),'utf8');assert(fh.includes('
 // family suggestions matched on the phone, using the shared tag list
 assert.deepStrictEqual(co.tags,fam.tags);
 console.log('positions: ok');
+
+/* r90 My role hub */
+assert(pj.includes('openMyRole')&&pj.includes('roleBtn')&&pj.includes('tl-roleview'),'My role hub exports');
+assert(pj.includes('ANIMS')&&pj.includes('LIBTH')&&pj.includes('profileSent'),'role hub sources');
+assert(pj.includes("it.src==='coachesvoice'")||pj.includes('libOk'),'filters Coaches Voice from library');assert(/stays coach-only|coach-only/.test(pj),'hub notes CV is coach-only');
+const fh2=fs.readFileSync(path.join(R,'family.html'),'utf8');
+const ph=fs.readFileSync(path.join(R,'parents.html'),'utf8');
+assert(fh2.includes('roleBtn')&&ph.includes('roleBtn'),'My role on player and family profiles');
+assert(fh2.includes('positions.js?v=')&&ph.includes('positions.js?v='));
+console.log('positions my role: ok');
