@@ -1,6 +1,44 @@
 /* Touchline stretching player, release 84. No player data, works offline once loaded. */
 (function(){
 var S=STRETCH,IT=S.items,$=function(i){return document.getElementById(i);},vo=$('vo');
+/* r90 pregame: filter + shorten holds from private programme on this phone */
+(function(){
+ var q=new URLSearchParams(location.search),mode=q.get('mode')||'';
+ if(mode!=='pregame')return;
+ var prog=null;try{prog=JSON.parse(localStorage.getItem('tl.prestretch')||'null');}catch(e){}
+ var ids=(prog&&prog.ids)||['flexor','ham','calf','twist','adductor'];
+ var hold=Math.max(6,Math.min(15,(prog&&prog.hold)||10));
+ var intro=Math.max(3,Math.min(8,(prog&&prog.intro)||4));
+ var want={};ids.forEach(function(id){want[id]=1;});
+ var filtered=[],seen={};
+ S.items.forEach(function(x){
+  if(!want[x.id])return;
+  /* Prefer one side then the other; skip long recovery (wall). */
+  if(x.id==='wall')return;
+  var key=x.id+(x.side||'');
+  if(seen[key])return;seen[key]=1;
+  var y={};for(var k in x)y[k]=x[k];
+  y.secs=hold;y.intro=intro;
+  filtered.push(y);
+ });
+ if(!filtered.length){S.items.forEach(function(x){if(x.id!=='wall'&&['flexor','ham','calf'].indexOf(x.id)>-1){var y={};for(var k in x)y[k]=x[k];y.secs=hold;y.intro=intro;filtered.push(y);}});}
+ IT=filtered.slice(0,8);
+ S.items=IT;
+ S.welcome={a:'welcome',d:Math.min(8,S.welcome.d||8)};
+ S.finish={a:'finish',d:Math.min(6,S.finish.d||6)};
+ /* Patch list chrome once DOM ready bits exist */
+ document.addEventListener('DOMContentLoaded',function(){});
+ try{
+  var tag=document.querySelector('header h1');
+  if(tag){tag.innerHTML='Pre-game stretch<small>About 2 minutes · If it hurts, stop and tell a coach</small>';}
+  var h2=document.querySelector('#list h2');
+  if(h2)h2.textContent='Pre-game stretch';
+  var lead=document.querySelector('#list .card p.muted');
+  if(lead)lead.textContent='Dynamic warm-up for match day. Weighted to the areas you picked. If it hurts, stop and tell a coach.';
+  document.title='Pre-game stretch | Wigan Junior Latics U15 Blues';
+ }catch(e){}
+})();
+
 var SEG=[{k:'welcome',d:Math.ceil(S.welcome.d+1)}];IT.forEach(function(x,i){SEG.push({k:'intro',i:i,d:x.intro});SEG.push({k:'hold',i:i,d:x.secs});});SEG.push({k:'done',d:Math.ceil(S.finish.d+1)});
 var st=0;SEG.forEach(function(s){s.t0=st;st+=s.d;});var TOTAL=st;
 function mmss(s){s=Math.max(0,Math.ceil(s));return Math.floor(s/60)+':'+('0'+s%60).slice(-2);}

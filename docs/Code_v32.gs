@@ -66,6 +66,7 @@ function doPost(e) {
     if (b.action === 'lift.close') return out_({ ok: true, data: liftClose_(b) });
     if (b.action === 'help.list') return out_({ ok: true, data: { rows: helpOpen_() } });
     if (b.action === 'late.list') return out_({ ok: true, data: { rows: lateList_() } });
+    if (b.action === 'niggle.list') return out_({ ok: true, data: { rows: niggleList_() } });
     if (b.action === 'hub.help.done') return out_({ ok: true, data: helpDone_(b.id) });
     if (b.action === 'plan.get' || b.action === 'file.get') return out_({ ok: true, data: fileGet_(b) });
     if (b.action === 'folder.list') return out_({ ok: true, data: folderList_(b) });
@@ -343,6 +344,8 @@ function fam_(b) {
   if (b.action === 'f.alert') return famAlert_(pid, role, pl, b);
   if (b.action === 'f.late') return famLate_(pid, role, pl, b, false);
   if (b.action === 'f.late.undo') return famLate_(pid, role, pl, b, true);
+  if (b.action === 'f.niggle') return famNiggle_(pid, role, pl, b);
+  if (b.action === 'f.prestretch.set') return famPrestretch_(pid, role, pl, b);
   if (b.action === 'f.lift') {
     var lr = liftSet_(pid, firstName_(me, pl), b);
     if (lr.fresh) notify_('Lift ' + (b.type === 'offer' ? 'offered' : 'wanted'), firstName_(me, pl) + ': ' + (b.type === 'offer' ? 'can give a lift' : 'needs a lift') + ' for ' + (lr.title || 'a game'), 'quiet');
@@ -831,6 +834,60 @@ function famLate_(pid, role, pl, b, undo) {
   return { ok: true, sent: r.sent, id: id, label: label };
 }
 
+/* r90: pre-game niggles + prestretch programme. Health data: Self / Niggle tabs only.
+ * Coaches see shirt numbers on matchday attendance. Never published to other families. */
+function niggleTab_() { return tab_('Niggle', ['id', 'playerId', 'role', 'num', 'areas', 'ids', 'date', 'at', 'kind']); }
+function famNiggle_(pid, role, pl, b) {
+  var num = String((pl[pid] && pl[pid].num) || b.num || '').replace(/\D/g, '');
+  if (!num) throw new Error('Add a shirt number first.');
+  var areas = Array.isArray(b.areas) ? b.areas.map(function (x) { return clean_(x, 20); }).filter(Boolean).slice(0, 8) : [];
+  if (!areas.length) throw new Error('Pick an area.');
+  if (areas.indexOf('none') > -1) areas = ['none'];
+  var ids = Array.isArray(b.ids) ? b.ids.map(function (x) { return clean_(x, 20); }).filter(Boolean).slice(0, 12) : [];
+  var date = clean_(b.date, 12) || today_();
+  var id = 'N' + Date.now().toString(36);
+  niggleTab_().appendRow([id, pid, role, num, areas.join(','), ids.join(','), date, String(Date.now()), 'matchday']);
+  /* Also stash on Self json under niggle (private profile). */
+  try {
+    var all = selfAll_(), cur = all[pid] || {};
+    cur.niggle = { areas: areas, ids: ids, date: date, at: Date.now() };
+    var sh = selfTab_(), last = sh.getLastRow(), row = 0;
+    if (last > 1) { var ids2 = sh.getRange(2, 1, last - 1, 1).getValues(); for (var i = 0; i < ids2.length; i++) { if (String(ids2[i][0]) === pid) { row = i + 2; break; } } }
+    if (!row) row = last + 1;
+    sh.getRange(row, 1, 1, 3).setNumberFormat('@').setValues([[pid, JSON.stringify(cur), String(Date.now())]]);
+  } catch (e) {}
+  if (areas.indexOf('none') < 0) {
+    notify_('Niggle', 'No. ' + num + ': ' + areas.join(', '), 'normal');
+  }
+  return { ok: true, id: id, num: num, areas: areas };
+}
+function famPrestretch_(pid, role, pl, b) {
+  var all = selfAll_(), cur = all[pid] || {};
+  cur.prestretch = {
+    areas: Array.isArray(b.areas) ? b.areas.map(function (x) { return clean_(x, 20); }).slice(0, 8) : [],
+    ids: Array.isArray(b.ids) ? b.ids.map(function (x) { return clean_(x, 20); }).slice(0, 12) : [],
+    hold: Number(b.hold) || 10,
+    date: clean_(b.date, 12) || today_(),
+    at: Date.now()
+  };
+  var sh = selfTab_(), last = sh.getLastRow(), row = 0;
+  if (last > 1) { var ids = sh.getRange(2, 1, last - 1, 1).getValues(); for (var i = 0; i < ids.length; i++) { if (String(ids[i][0]) === pid) { row = i + 2; break; } } }
+  if (!row) row = last + 1;
+  sh.getRange(row, 1, 1, 3).setNumberFormat('@').setValues([[pid, JSON.stringify(cur), String(Date.now())]]);
+  return { ok: true, prestretch: cur.prestretch };
+}
+function niggleList_() {
+  var sh = niggleTab_(), last = sh.getLastRow(), out = [], td = today_();
+  if (last < 2) return out;
+  sh.getRange(2, 1, last - 1, 9).getValues().forEach(function (r) {
+    var date = String(r[6] || '');
+    if (date && date !== td) return;
+    out.push({ id: String(r[0]), pid: String(r[1]), role: String(r[2]), num: String(r[3]), areas: String(r[4] || '').split(',').filter(Boolean), ids: String(r[5] || '').split(',').filter(Boolean), date: date, at: Number(r[7]) || 0 });
+  });
+  return out;
+}
+
+
 /* ---------------- v7: media, contacts ---------------- */
 function mediaTab_() { var sh = tab_('Media', ['id', 'src', 'title', 'kind', 'link', 'status', 'at', 'who', 'data', 'shirts']); if (sh.getMaxColumns() < 10) sh.insertColumnsAfter(sh.getMaxColumns(), 10 - sh.getMaxColumns()); if (!sh.getRange(1, 10).getValue()) sh.getRange(1, 10).setValue('shirts').setFontWeight('bold'); return sh; }
 function mediaMeta_() {
@@ -909,6 +966,9 @@ function selfSet_(pid, b) {
   var src = b.sr && typeof b.sr === 'object' ? b.sr : {};
   SELF_KEYS_.forEach(function (k) { var v = Math.round(Number(src[k])); if (v >= 1 && v <= 10) n.sr[k] = v; });
   n.done = true;
+  /* r90: keep private health fields (niggles / pre-game programme) across profile edits */
+  if (cur.niggle) n.niggle = cur.niggle;
+  if (cur.prestretch) n.prestretch = cur.prestretch;
   var at = Date.now(), sh = selfTab_(), last = sh.getLastRow(), row = 0;
   if (last > 1) { var ids = sh.getRange(2, 1, last - 1, 1).getValues(); for (var i = 0; i < ids.length; i++) { if (String(ids[i][0]) === pid) { row = i + 2; break; } } }
   if (!row) row = last + 1;

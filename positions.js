@@ -1,11 +1,11 @@
-/* Touchline release 74: player position resources (family.html, player code only).
+/* Touchline release 90: player position resources + My role hub (family.html / parents.html).
  * Reads positions.json (public, titles and links only, Coaches' Voice removed at build time).
  * Suggestions are matched on this phone from things already shown to this player
  * (their work ons and goals). Nothing about the player is sent anywhere.
  */
 (function(){
 'use strict';
-var P={d:null,err:'',slot:'',open:{},more:0,busy:false},CACHE={},PDFJS=null;
+var P={d:null,err:'',slot:'',open:{},more:0,busy:false,lib:null,libBusy:false,libErr:'',hub:false,hubK:''},CACHE={},PDFJS=null;
 var NUM={GK:1,RCB:2,CB:3,LCB:4,RWB:5,LWB:6,CDM:7,RCM:8,LCM:9,RST:10,LST:11};
 /* 352 slot from what the app already knows: next game role card, then the player's own picks */
 var MAP={GK:'GK',RB:'RCB',CB:'CB',LB:'LCB',RWB:'RWB',LWB:'LWB',CDM:'CDM',CM:'RCM',CAM:'LCM',RM:'RWB',LM:'LWB',RW:'RST',LW:'LST',ST:'RST',RCB:'RCB',LCB:'LCB',RCM:'RCM',LCM:'LCM',RST:'RST',LST:'LST',RS:'RST',LS:'LST',DM:'CDM'};
@@ -20,7 +20,9 @@ function E(t){return (window.esc||function(x){return String(x==null?'':x).replac
 function G(k){try{return localStorage.getItem(k)||'';}catch(e){return '';}}
 function S(k,v){try{localStorage.setItem(k,v);}catch(e){}}
 function rr(){if(window.r)window.r();}
-function load(){if(P.d||P.busy||P.err)return;P.busy=true;fetch('positions.json',{cache:'no-cache'}).then(function(x){if(!x.ok)throw new Error('x');return x.json();}).then(function(j){P.d=j;P.busy=false;rr();}).catch(function(){P.busy=false;P.err='Position videos could not load. Check your signal.';rr();});}
+function load(){if(P.d||P.busy||P.err)return;P.busy=true;fetch('positions.json',{cache:'force-cache'}).then(function(x){if(!x.ok)throw new Error('x');return x.json();}).then(function(j){P.d=j;P.busy=false;try{S('tl.pos.json',JSON.stringify(j));}catch(e){}rr();paintHub();}).catch(function(){try{var c=G('tl.pos.json');if(c){P.d=JSON.parse(c);P.busy=false;P.err='';rr();paintHub();return;}}catch(e){}P.busy=false;P.err='Position videos could not load. Check your signal.';rr();paintHub();});}
+function loadLib(){if(P.lib||P.libBusy)return;P.libBusy=true;fetch('library.json',{cache:'force-cache'}).then(function(x){if(!x.ok)throw new Error('x');return x.json();}).then(function(j){P.lib=j;P.libBusy=false;try{S('tl.lib.pub',JSON.stringify({items:(j.items||[]).filter(libOk).slice(0,120)}));}catch(e){}paintHub();}).catch(function(){try{var c=G('tl.lib.pub');if(c){P.lib=JSON.parse(c);P.libBusy=false;paintHub();return;}}catch(e){}P.libBusy=false;P.libErr='Library links could not load.';paintHub();});}
+function libOk(it){if(!it||!it.url)return false;if(it.private)return false;if(it.src==='coachesvoice')return false;return true;}
 function slotOf(v){v=String(v||'').toUpperCase().replace(/[^A-Z]/g,'');return MAP[v]||'';}
 function mySlot(){
  if(P.slot)return P.slot;var p=G('fam.pslot');if(NUM[p])return p;
@@ -28,6 +30,7 @@ function mySlot(){
  try{if(window.SELF&&SELF.pos&&SELF.pos.length&&slotOf(SELF.pos[0]))return slotOf(SELF.pos[0]);}catch(e){}
  try{var rl=window.myRole&&myRole();if(ROLEMAP[rl])return ROLEMAP[rl];}catch(e){}
  return '';}
+function childSlot(){try{var c=window.CHD;if(c&&c.pos&&c.pos.length){for(var i=0;i<c.pos.length;i++){var k=slotOf(c.pos[i]);if(k)return k;}}}catch(e){}return '';}
 function slotRow(k){var L=(P.d&&P.d.slots)||[];for(var i=0;i<L.length;i++)if(L[i].k===k)return L[i];return null;}
 /* Things already on this player's page: coach work ons (and agreed goals in them), their own goals. */
 function focusTexts(){var t=[];
@@ -53,7 +56,8 @@ function card(){
  if(!row)return '<div class="card" id="posCard"><span class="tag" style="background:#1e3a8a">My position</span><h2 style="margin-top:8px">Pick your position</h2><p class="small muted">Pick where you play in our 3-5-2 and you get the guide, clips and drills for it.</p>'+picker('')+'</div>';
  var sec=row.sec||{},clips=sec.clips||[],n=P.open.clips?clips.length:3,sg=suggested(row);
  var h='<div class="card" id="posCard" style="border-color:#60a5fa"><span class="tag" style="background:#1e3a8a">My position</span><h2 style="margin-top:8px">'+E(row.num.replace(/^0/,''))+' &middot; '+E(row.k)+' '+E(row.name)+'</h2>';
- h+='<button class="btn pri block" onclick="posGuide(\''+row.k+'\')">Open my role guide</button>';
+ h+='<button class="btn pri block" onclick="openMyRole(\''+row.k+'\')">My role</button>';
+ h+='<button class="btn block" style="margin-top:6px" onclick="posGuide(\''+row.k+'\')">Open my role guide</button>';
  if(sg.items.length)h+='<h3 style="margin:14px 0 2px">Suggested for you</h3><p class="small muted">Matches what you are working on: '+E(sg.tags.join(', '))+'.</p>'+sg.items.map(function(x){return x.it.yt||/x|instagram/.test(x.it.ty)?clipCard(x.it):linkRow(x.it);}).join('');
  if(clips.length)h+='<h3 style="margin:14px 0 2px">Top clips</h3>'+clips.slice(0,n).map(clipCard).join('')+(clips.length>3?'<button class="btn block" onclick="posMore(\'clips\')">'+(P.open.clips?'Show fewer':'Show all '+clips.length+' clips')+'</button>':'');
  if((sec.drills||[]).length)h+='<details style="margin-top:10px"'+(P.open.dr?' open':'')+' ontoggle="posTog(\'dr\',this.open)"><summary><b>Drills</b> <span class="small muted">'+sec.drills.length+'</span></summary>'+sec.drills.map(function(it){return it.yt?clipCard(it):linkRow(it);}).join('')+'</details>';
@@ -85,13 +89,65 @@ function showPdf(d,url){var body=d.querySelector('#pvbody'),zoom=1,doc=null,gen=
    doc.getPage(n).then(function(pg){if(my!==gen)return;var v0=pg.getViewport({scale:1}),dpr=Math.min(window.devicePixelRatio||1,2),v=pg.getViewport({scale:w*zoom/v0.width*dpr});c.width=v.width;c.height=v.height;c.style.width=(v.width/dpr)+'px';c.style.height=(v.height/dpr)+'px';return pg.render({canvasContext:c.getContext('2d'),viewport:v}).promise;}).catch(function(){});})(i);}}
  return pdfLib().then(function(lib){return lib.getDocument({url:url,isEvalSupported:false}).promise;}).then(function(p){doc=p;var z=d.querySelector('#pvz');z.style.display='flex';z.onclick=function(e){var b=e.target.closest('[data-z]');if(!b)return;zoom=Math.max(0.5,Math.min(4,zoom*(b.dataset.z==='1'?1.4:1/1.4)));paint();};paint();})
   .catch(function(){body.innerHTML='<iframe title="Guide" src="'+url+'" style="width:100%;height:100%;border:0;background:#fff"></iframe>';});}
+
+/* ---- r90 My role hub: animations, Positions, library tags, profile-sent ---- */
+var ANIMS={
+ GK:[{f:'09_build_from_keeper_then_break.html',t:'Build from the keeper, then break'},{f:'12_352_in_transition.html',t:'3-5-2 in transition'},{f:'11_shape_and_transition_game.html',t:'Shape and transition'}],
+ RCB:[{f:'03_defending_as_a_unit_shift_squeeze_hold.html',t:'Defending as a unit'},{f:'12_352_in_transition.html',t:'3-5-2 in transition'},{f:'11_shape_and_transition_game.html',t:'Shape and transition'},{f:'08_five_second_counter_press.html',t:'Five-second counter-press'}],
+ CB:[{f:'03_defending_as_a_unit_shift_squeeze_hold.html',t:'Defending as a unit'},{f:'12_352_in_transition.html',t:'3-5-2 in transition'},{f:'11_shape_and_transition_game.html',t:'Shape and transition'}],
+ LCB:[{f:'03_defending_as_a_unit_shift_squeeze_hold.html',t:'Defending as a unit'},{f:'12_352_in_transition.html',t:'3-5-2 in transition'},{f:'11_shape_and_transition_game.html',t:'Shape and transition'},{f:'08_five_second_counter_press.html',t:'Five-second counter-press'}],
+ RWB:[{f:'04_switching_play_pull_and_switch.html',t:'Switching play'},{f:'12_352_in_transition.html',t:'3-5-2 in transition'},{f:'07_counter_attack_three_runners.html',t:'Counter-attack three runners'},{f:'02_pressing_trap_and_spring.html',t:'Pressing trap and spring'}],
+ LWB:[{f:'04_switching_play_pull_and_switch.html',t:'Switching play'},{f:'12_352_in_transition.html',t:'3-5-2 in transition'},{f:'07_counter_attack_three_runners.html',t:'Counter-attack three runners'},{f:'02_pressing_trap_and_spring.html',t:'Pressing trap and spring'}],
+ CDM:[{f:'06_shape_to_receive_first_pass_forward.html',t:'Shape to receive'},{f:'08_five_second_counter_press.html',t:'Five-second counter-press'},{f:'12_352_in_transition.html',t:'3-5-2 in transition'},{f:'11_shape_and_transition_game.html',t:'Shape and transition'}],
+ RCM:[{f:'05_third_man_run_the_hidden_runner.html',t:'Third-man run'},{f:'06_shape_to_receive_first_pass_forward.html',t:'Shape to receive'},{f:'12_352_in_transition.html',t:'3-5-2 in transition'},{f:'10_rotate_roles_everyone_every_job.html',t:'Rotate roles'}],
+ LCM:[{f:'05_third_man_run_the_hidden_runner.html',t:'Third-man run'},{f:'06_shape_to_receive_first_pass_forward.html',t:'Shape to receive'},{f:'12_352_in_transition.html',t:'3-5-2 in transition'},{f:'10_rotate_roles_everyone_every_job.html',t:'Rotate roles'}],
+ RST:[{f:'01_counter_attacking_win_it_and_go.html',t:'Counter-attacking: win it and go'},{f:'07_counter_attack_three_runners.html',t:'Counter-attack three runners'},{f:'12_352_in_transition.html',t:'3-5-2 in transition'},{f:'05_third_man_run_the_hidden_runner.html',t:'Third-man run'}],
+ LST:[{f:'01_counter_attacking_win_it_and_go.html',t:'Counter-attacking: win it and go'},{f:'07_counter_attack_three_runners.html',t:'Counter-attack three runners'},{f:'12_352_in_transition.html',t:'3-5-2 in transition'},{f:'05_third_man_run_the_hidden_runner.html',t:'Third-man run'}]
+};
+var LIBTH={GK:['goalkeeping','playing out','build-up'],RCB:['centre-backs','defending','defending the box','defensive awareness','compactness','marking'],CB:['centre-backs','defending','defending the box','defensive awareness','compactness','marking'],LCB:['centre-backs','defending','defending the box','defensive awareness','compactness','marking'],RWB:['wing-backs','full-backs','crossing','wide play','overlaps','attacking'],LWB:['wing-backs','full-backs','crossing','wide play','overlaps','attacking'],CDM:['midfield','ball retention','build-up','breaking lines','defensive awareness','possession'],RCM:['midfield','combinations','breaking lines','build-up','third man','progression'],LCM:['midfield','combinations','breaking lines','build-up','third man','progression'],RST:['strikers','front two','finishing','creating chances','in behind','final third'],LST:['strikers','front two','finishing','creating chances','in behind','final third']};
+function libRow(it){var by=it.by||it.src||'';var paid=it.paid?' <span class="tag">Paid link</span>':'';return '<a href="'+E(it.url)+'" target="_blank" rel="noopener" data-ext="1" style="display:block;padding:10px;margin:6px 0;border-radius:12px;background:rgba(255,255,255,.06);color:inherit;text-decoration:none"><b style="font-size:14px">'+E(it.title)+'</b>'+paid+'<br><span class="small muted">'+E(by)+'</span></a>';}
+function animRow(a){return '<a class="btn block" href="coach/anim/'+E(a.f)+'" style="margin:6px 0;text-align:left">'+E(a.t)+'</a>';}
+function libFor(k){var th=LIBTH[k]||[],items=(P.lib&&P.lib.items)||[],out=[],seen={};items.forEach(function(it){if(!libOk(it))return;var tags=((it.tags||{}).theme)||[];var sys=((it.tags||{}).system)||[];var hit=th.some(function(t){return tags.indexOf(t)>-1;})||sys.indexOf('3-5-2')>-1;if(!hit||seen[it.url])return;seen[it.url]=1;out.push(it);});return out.slice(0,8);}
+function profileSent(forChild){var out=[],seen={};function add(tt,u,note){if(!tt)return;var key=u||tt;if(seen[key])return;seen[key]=1;out.push({t:tt,u:u||'',note:note||''});}
+ try{if(window.lbMine){lbMine().forEach(function(y){if(y&&y.r)add(y.r.title,y.r.url,y.r.by||'Library');});}}catch(e){}
+ try{(window.D&&D.feed||[]).forEach(function(x){add(x.t,x.u,x.note||'From your coaches');});}catch(e){}
+ try{var op=window.ownPack&&ownPack();((op&&op.home)||[]).forEach(function(x){add(x.t,x.u,'Home clip');});}catch(e){}
+ return out.slice(0,12);}
+function hubPicker(cur){return '<div class="chips tl-role-chips" role="group" aria-label="Pick a position">'+((P.d&&P.d.slots)||Object.keys(NUM).map(function(k){return {k:k};})).map(function(s){return '<button type="button" class="chip'+(s.k===cur?' on':'')+'" onclick="rolePick(\''+s.k+'\')">'+E(s.k)+'</button>';}).join('')+'</div>';}
+function hubBody(k){load();loadLib();var row=slotRow(k),name=row?row.name:(GROUP[k]||k),forChild=!!(window.D&&D.role==='parent'),shirt='';
+ try{if(forChild&&window.CHD&&CHD.num)shirt='No. '+CHD.num+' · ';}catch(e){}
+ var h='<div class="tl-role-head"><button type="button" class="btn" onclick="closeMyRole()">Back</button><div style="flex:1;min-width:0"><h2 style="margin:0">My role</h2><p class="small muted" style="margin:2px 0 0">'+E(shirt+name)+' <span class="tag">'+E(k)+'</span></p></div></div>';
+ h+='<div class="tl-role-body"><p class="small muted">Tap another chip to see that position\'s resources. Your picks stay on this phone.</p>'+hubPicker(k);
+ if(P.err&&!P.d){h+='<div class="card"><p class="small muted">'+E(P.err)+'</p></div></div>';return h;}
+ if(!P.d){h+='<div class="card"><p class="small muted">Loading position resources</p></div></div>';return h;}
+ if(row){h+='<div class="card"><h3>Role guide</h3><p class="small muted">Tim\'s Positions folder notes for this slot.</p><button type="button" class="btn pri block" onclick="posGuide(\''+E(row.k)+'\')">Open role guide</button></div>';}
+ h+='<div class="card"><h3>On the pitch</h3><a class="btn block" href="shape/index.html?mode=role&role='+E(k)+'">Open shape board for '+E(k)+'</a></div>';
+ var anims=ANIMS[k]||[{f:'12_352_in_transition.html',t:'3-5-2 in transition'}];
+ h+='<div class="card"><h3>Position animations</h3><p class="small muted">Local clips that work offline once opened. Includes 3-5-2 in transition where it helps this role.</p>'+anims.map(animRow).join('')+'</div>';
+ if(row&&row.sec){var sug=suggested(row);if(sug.items.length){h+='<div class="card"><h3>For you right now</h3><p class="small muted">Matched on this phone to your work ons and goals'+(sug.tags.length?' · '+E(sug.tags.join(', ')):'')+'.</p>'+sug.items.map(function(x){return (x.it.yt||/x|instagram/.test(x.it.ty)?clipCard(x.it):linkRow(x.it));}).join('')+'</div>';}
+ [['clips','Clips'],['drills','Drills'],['reading','Reading'],['free_pdf_links','Free PDFs']].forEach(function(pair){var list=(row.sec[pair[0]]||[]).slice(0,P.open[pair[0]]?99:4);if(!list.length)return;h+='<div class="card"><h3>'+pair[1]+'</h3>'+list.map(function(it){return it.yt?clipCard(it):linkRow(it);}).join('');if((row.sec[pair[0]]||[]).length>4&&!P.open[pair[0]])h+='<button type="button" class="btn block" onclick="posMore(\''+pair[0]+'\');paintHub()">Show more</button>';h+='</div>';});}
+ var libs=libFor(k);h+='<div class="card"><h3>From the library</h3><p class="small muted">Public links tagged for this role. Coaches\' Voice stays coach-only. Paid items are link-only.</p>';
+ if(P.libBusy&&!P.lib)h+='<p class="small muted">Loading library</p>';else if(P.libErr&&!P.lib)h+='<p class="small muted">'+E(P.libErr)+'</p>';else if(!libs.length)h+='<p class="small muted">Nothing tagged for this role yet.</p>';else h+=libs.map(libRow).join('');h+='</div>';
+ var sent=profileSent(forChild);h+='<div class="card"><h3>'+(forChild?'Sent to his profile':'Sent to your profile')+'</h3>';
+ if(!sent.length)h+='<p class="small muted">'+(forChild?'Nothing sent to him yet.':'Nothing sent to you yet. Ask the coaches from Library if you want something.')+'</p>';
+ else h+=sent.map(function(x){return x.u?'<a href="'+E(x.u)+'" target="_blank" rel="noopener" data-ext="1" style="display:block;padding:10px;margin:6px 0;border-radius:12px;background:rgba(255,255,255,.06);color:inherit;text-decoration:none"><b style="font-size:14px">'+E(x.t)+'</b><br><span class="small muted">'+E(x.note)+'</span></a>':'<p style="margin:8px 0"><b>'+E(x.t)+'</b><br><span class="small muted">'+E(x.note)+'</span></p>';}).join('');
+ h+='</div></div>';return h;}
+function paintHub(){if(!P.hub)return;var el=document.getElementById('tl-roleview');if(!el)return;el.innerHTML=hubBody(P.hubK||mySlot()||'CB');}
+function openMyRole(k){k=slotOf(k)||k||'';if(!NUM[k]){if(window.D&&D.role==='parent')k=childSlot()||'CB';else k=mySlot()||'CB';}P.hub=true;P.hubK=k;P.slot=k;S('fam.pslot',k);P.open={};load();loadLib();var ov=document.getElementById('tl-roleview');if(!ov){ov=document.createElement('div');ov.id='tl-roleview';ov.className='tl-roleview';ov.setAttribute('role','dialog');ov.setAttribute('aria-label','My role');document.body.appendChild(ov);}ov.style.display='flex';paintHub();try{document.body.style.overflow='hidden';}catch(e){}}
+function closeMyRole(){P.hub=false;var ov=document.getElementById('tl-roleview');if(ov)ov.style.display='none';try{document.body.style.overflow='';}catch(e){}rr();}
+function rolePick(k){if(!NUM[k])return;P.hubK=k;P.slot=k;S('fam.pslot',k);P.open={};paintHub();}
+function roleBtn(opts){opts=opts||{};load();var forChild=!!opts.child||(window.D&&D.role==='parent'&&opts.family);var k=opts.k||(forChild?childSlot():mySlot())||'';var label=opts.label||(forChild?'His role':'My role');var sub=opts.sub||(forChild?'Animations, Positions notes, library links and clips sent to his profile.':'Your 3-5-2 resources: animations, Positions notes, library links and clips sent to you.');var shirt='';try{if(forChild&&window.CHD&&CHD.num)shirt='<span class="tag">No. '+E(CHD.num)+'</span> ';}catch(e){}
+ var h='<div class="card tl-role"><h3>'+E(label)+'</h3>'+shirt+'<p class="small muted">'+E(sub)+'</p><button type="button" class="btn pri block" onclick="openMyRole(\''+(k||'')+'\')">'+E(label)+'</button>';
+ h+='<p class="small muted" style="margin-top:10px">Or look at another position:</p><div class="chips tl-role-chips" role="group" aria-label="Pick a position">'+((P.d&&P.d.slots)||Object.keys(NUM).map(function(kk){return {k:kk};})).map(function(s){return '<button type="button" class="chip'+(s.k===k?' on':'')+'" onclick="openMyRole(\''+s.k+'\')">'+E(s.k)+'</button>';}).join('')+'</div></div>';return h;}
+if(!document.getElementById('tl-role-css')){var st=document.createElement('style');st.id='tl-role-css';st.textContent='.tl-roleview{display:none;position:fixed;inset:0;z-index:9997;flex-direction:column;background:var(--bg,#0A173A);color:var(--ink,#fff);overflow:hidden}.tl-role-head{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line,rgba(255,255,255,.12));flex:none}.tl-role-body{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;padding:12px 14px 28px}.tl-role-chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 12px}body.ps .tl-roleview{background:#f4f6fb;color:#0A0F24}';document.head.appendChild(st);}
+
 window.posGuide=function(k){var row=slotRow(k);if(!row)return;var d=shell(row.k+' '+row.name+' guide');
  var go=CACHE[row.guide]?Promise.resolve(CACHE[row.guide]):window.call('f.pos.file',{id:row.guide}).then(function(x){var u=URL.createObjectURL(b64Blob(x.b64));CACHE[row.guide]=u;return u;});
  go.then(function(u){if(document.body.contains(d))return showPdf(d,u);}).catch(function(e){if(!document.body.contains(d))return;var m=/unknown/i.test(e.message)?'The guides are nearly ready. Tim needs to switch them on.':e.message;d.querySelector('#pvbody').innerHTML='<div style="padding:16px"><p>'+E(m)+'</p><button class="btn block" id="pvretry">Try again</button></div>';d.querySelector('#pvretry').onclick=function(){window.posGuide(k);};});};
 window.posPick=function(k){S('fam.pslot',k||'');P.slot='';P.open={};rr();var c=document.getElementById('posCard');if(c)c.scrollIntoView({block:'start'});};
-window.posMore=function(s){P.open[s]=!P.open[s];rr();};
+window.posMore=function(s){P.open[s]=!P.open[s];if(P.hub)paintHub();else rr();};
 window.posTog=function(s,o){P.open[s]=o;};
 window.posChk=function(i,v){var done={};try{done=JSON.parse(G('fam.pchk'))||{};}catch(e){}var td=(window.today?today():'');if(done.d!==td)done={d:td};done[i]=v?1:0;S('fam.pchk',JSON.stringify(done));};
-window.posCard=card;window.prepCard=prep;
+window.posCard=card;window.prepCard=prep;window.openMyRole=openMyRole;window.closeMyRole=closeMyRole;window.rolePick=rolePick;window.roleBtn=roleBtn;window.paintHub=paintHub;
 window.__posTest={slotOf:slotOf,wantTags:wantTags,suggested:suggested,P:P,mySlot:mySlot};
 })();

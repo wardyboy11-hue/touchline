@@ -18,7 +18,7 @@ const state={ideas:{},players,matches:{
 const shot=async(c,n)=>{if(SHOTS){await c.evaluate(()=>{const s=document.getElementById('splash');if(s)s.remove();});await c.screenshot({path:path.join(SHOTS,'r90_'+n+'.png')});}};
 async function open(b,dev,st,vid){const cc=await b.newContext({...dev,...(vid?{recordVideo:{dir:vid,size:{width:dev.viewport.width,height:dev.viewport.height}}}:{})});const c=await cc.newPage();const ce=[];c.on('pageerror',e=>ce.push(String(e.message)));
  await c.addInitScript(s=>{if(!sessionStorage.getItem('seeded')){sessionStorage.setItem('seeded','1');localStorage.setItem('tl.code','x');localStorage.setItem('tl.state.v1',s);}},JSON.stringify(st||state));
- await c.route('**/macros/**',async r=>{let a={};try{a=JSON.parse(r.request().postData()||'{}');}catch(e){}const H={'access-control-allow-origin':'*'};const ok=d=>r.fulfill({status:200,contentType:'application/json',headers:H,body:JSON.stringify({ok:true,data:d})});if(a.action==='late.list')return ok({rows:(globalThis.__LATE_ROWS||[])});if(a.action==='sync')return ok({docs:[],serverTime:Date.now()});if(a.action==='f.late'||a.action==='f.late.undo'){globalThis.__LATE_SENT=(globalThis.__LATE_SENT||[]).concat([a]);return ok({ok:true,id:a.id,sent:1,label:'No. '+(a.num||'?')+' running late'});}return ok({});});
+ await c.route('**/macros/**',async r=>{let a={};try{a=JSON.parse(r.request().postData()||'{}');}catch(e){}const H={'access-control-allow-origin':'*'};const ok=d=>r.fulfill({status:200,contentType:'application/json',headers:H,body:JSON.stringify({ok:true,data:d})});if(a.action==='late.list')return ok({rows:(globalThis.__LATE_ROWS||[])});if(a.action==='niggle.list')return ok({rows:(globalThis.__NIGGLE_ROWS||[])});if(a.action==='sync')return ok({docs:[],serverTime:Date.now()});if(a.action==='f.late'||a.action==='f.late.undo'){globalThis.__LATE_SENT=(globalThis.__LATE_SENT||[]).concat([a]);return ok({ok:true,id:a.id,sent:1,label:'No. '+(a.num||'?')+' running late'});}return ok({});});
  await c.goto(`http://localhost:${PORT}/coach/index.html`);await c.waitForTimeout(900);await c.evaluate(()=>{const s=document.getElementById('splash');if(s)s.remove();});return {cc,c,ce};}
 const w=ms=>new Promise(r=>setTimeout(r,ms));const H=c=>c.evaluate(()=>location.hash);
 (async()=>{const b=await chromium.launch();
@@ -119,6 +119,12 @@ const w=ms=>new Promise(r=>setTimeout(r,ms));const H=c=>c.evaluate(()=>location.
   await w(400);
   T('attendance marks shirt 7 as late',await C.c.evaluate(()=>{const b=document.querySelector('.tl-att [data-id="p6"]');return !!(b&&/late ~10m/.test(b.innerText));}));
   await shot(C.c,'phone_late_attendance');
+  // r90 niggle flag on attendance by shirt number
+  await C.c.evaluate((iso)=>{const S=window.TLX.S();S.niggle=[{id:'N1',num:'7',areas:['hamstrings'],date:iso,at:Date.now()}];const v=window.TLX.view;v.hub=v.hub||{};v.hub.niggle=S.niggle;v.hub.at=Date.now();window.TLX.render(true);},_iso);
+  await w(400);
+  T('attendance marks shirt 7 with niggle',await C.c.evaluate(()=>{const b=document.querySelector('.tl-att [data-id="p6"]');const ban=(document.querySelector('.tl-niggle-banner')||{}).innerText||'';return !!(b&&/niggle/i.test(b.innerText))||/No\. 7:/.test(ban);}));
+  await shot(C.c,'phone_niggle_attendance');
+
   // meet-by always 30 mins before KO
   T('meetBy is always 30 minutes before kick off',await C.c.evaluate(()=>window.TLCD.meetBy('15:00')==='14:30'&&window.TLCD.meetBy('10:05')==='09:35'&&window.TLCD.meetBy('15:00','14:00')==='14:00'));
   T('rail shows absolute UK date/time line',await C.c.evaluate(()=>{document.querySelector('nav.tabs [aria-label="Today"]')&&document.querySelector('nav.tabs [aria-label="Today"]').click();return true;}));
