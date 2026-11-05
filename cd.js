@@ -28,20 +28,26 @@
     var d = new Date(+p[0], +p[1] - 1, +p[2]);
     return d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
   }
-  /* Always 30 minutes before kick-off. Optional override (m.meet / it.meet) wins when set. */
+  /* Meet time = kick-off minus meetBefore (default 30). Team week setting or m.meet / it.meet override wins. */
+  function meetBeforeMins() {
+    try {
+      if (w.TLSched && w.TLSched.meetBefore != null) return Math.max(0, Math.min(90, +w.TLSched.meetBefore));
+    } catch (e) { }
+    return 30;
+  }
   function meetBy(ko, override) {
     var o = String(override || '').trim();
     if (/^\d{1,2}:\d{2}$/.test(o)) return o.length === 4 ? '0' + o : o;
     var m = String(ko || '').match(/(\d{1,2}):(\d{2})/);
     if (!m) return '';
-    var t = (+m[1]) * 60 + (+m[2]) - 30;
+    var t = (+m[1]) * 60 + (+m[2]) - meetBeforeMins();
     if (t < 0) t += 1440;
     return String(Math.floor(t / 60)).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0');
   }
   function meetChip(ko, override) {
     var m = meetBy(ko, override);
     if (!m) return '';
-    return '<span class="tl-meet-chip" title="Meet time is 30 minutes before kick-off">Meet by ' + esc(m) + '</span>';
+    return '<span class="tl-meet-chip" title="Meet time is kick-off minus the team meet setting (default 30 minutes)">Meet by ' + esc(m) + '</span>';
   }
   function whenMs(date, ko) {
     if (!date) return 0;
