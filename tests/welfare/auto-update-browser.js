@@ -10,9 +10,9 @@ async function run(name,setup,expectReload){
  if(/unsaved/.test(name))await q.evaluate(()=>{var i=document.createElement('input');i.id='tu';document.body.appendChild(i);i.value='half a sentence';i.blur();});
  if(/typing/.test(name))await q.evaluate(()=>{var i=document.createElement('input');i.id='tt';document.body.appendChild(i);i.focus();});
  await q.waitForTimeout(4500);T(name,expectReload?loads>=2:loads===1);await ctx.close();}
-VER='92';await run('newer version on the server refreshes the app',()=>{},true);
+VER='93';await run('newer version on the server refreshes the app',()=>{},true);
 VER='92';await run('same version does not refresh',()=>{},false);
-VER='92';await run('newer version waits while typing in a box',()=>{},false);
-VER='92';await run('newer version waits while a box has unsaved text',()=>{},false);
+VER='93';await run('newer version waits while typing in a box',()=>{},false);
+VER='93';await run('newer version waits while a box has unsaved text',()=>{},false);
 VER='92';await run('does not refresh with unsynced coach changes',()=>{localStorage.setItem('tl.state.v1',JSON.stringify({players:{},dirty:{a:1}}));},false);
 console.log(ok+' passed, '+bad+' failed');await b.close();srv.close();process.exit(bad?1:0);})();

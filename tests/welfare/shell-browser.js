@@ -166,10 +166,10 @@ const w=ms=>new Promise(r=>setTimeout(r,ms));const H=c=>c.evaluate(()=>location.
  await cc.close();
  // live match: no reload, Update ready button instead
  const live=JSON.parse(JSON.stringify(state));live.matches.m1={id:'m1',opp:'Test FC',date:'2026-11-07',ko:'10:30',ha:'H',formation:'352',half:35,avail:{},lineup:{},status:'live',period:1,clock:{acc:0,running:false,t0:0},stints:{},events:[],ratings:{},updatedAt:1};
- const L=await open(b,ph,live);let loads=0;L.c.on('load',()=>loads++);VER='92';
+ const L=await open(b,ph,live);let loads=0;L.c.on('load',()=>loads++);VER='93';
  await L.c.evaluate(()=>window.tlCheckUpdate());await w(1500);
  T('during a live match an update shows Update ready and does not reload',loads===0&&!!(await L.c.$('#tl-upd')));await shot(L.c,'phone_update_ready');
- await L.cc.close();VER='90';
+ await L.cc.close();VER='92';
  // PC
  const pc=await open(b,{viewport:{width:1366,height:800},deviceScaleFactor:1,isMobile:false,hasTouch:false});
  const nb=await pc.c.$eval('nav.tabs',e=>e.getBoundingClientRect());T('on a PC the tabs are a side rail',nb.left===0&&nb.width<120&&nb.height>700);await shot(pc.c,'pc_today');
