@@ -40,13 +40,30 @@ async function seedFamily(page,role){
  const loaded=await q.evaluate(()=>({fit:!!window.TLFit,build:!!(window.TLFit&&TLFit.buildPlan),card:!!(window.TLFit&&TLFit.familyCard)}));
  T('TLFit loaded on family',loaded.fit&&loaded.build&&loaded.card);
 
- // Build plan offline
+ // Build plan offline — Tim's week: Wed train, Sat match, Mon/Tue personal
  const plan=await q.evaluate(()=>{
+  const sch=TLFit.defaultSched();
+  TLFit.setSched(sch);
   const p=TLFit.buildPlan({goals:['speed','stamina'],focus:'mix',weeks:4,who:'player',num:'7'});
-  TLFit.upsertPlan(p);return {id:p.id,days:p.days.length,title:p.title,hasGame:p.days.some(d=>d.type==='game'),hasWed:p.days.some(d=>d.d===2&&d.type==='light'),save:!!localStorage.getItem('tl.fit.plans')};
+  TLFit.upsertPlan(p);
+  const week0=p.days.filter(d=>d.w===1);
+  const byD={};week0.forEach(d=>{byD[d.d]=d;});
+  const personal=week0.filter(d=>d.type==='gym'||d.type==='run').length;
+  return {
+   id:p.id,days:p.days.length,title:p.title,save:!!localStorage.getItem('tl.fit.plans'),
+   mon:byD[0]&&byD[0].type,tue:byD[1]&&byD[1].type,wed:byD[2]&&{type:byD[2].type,title:byD[2].title},
+   thu:byD[3]&&byD[3].type,fri:byD[4]&&byD[4].type,sat:byD[5]&&{type:byD[5].type,title:byD[5].title},sun:byD[6]&&byD[6].type,
+   personal:personal,sched:p.sched,note:p.note,
+   roles:TLFit.dayRoles(sch)
+  };
  });
  T('U15 plan has 28 days (4 weeks)',plan.days===28);
- T('plan has match day and training-night light session',plan.hasGame&&plan.hasWed);
+ T('Mon/Tue are main personal sessions',(plan.mon==='gym'||plan.mon==='run')&&(plan.tue==='gym'||plan.tue==='run'));
+ T('Wed is team training light only',plan.wed&&plan.wed.type==='light'&&/Team training/i.test(plan.wed.title));
+ T('Thu recovery / Fri pre-match / Sat game / Sun recovery',plan.thu==='recovery'&&plan.fri==='light'&&plan.sat&&plan.sat.type==='game'&&plan.sun==='recovery');
+ T('at most 2 to 3 personal sessions in week 1',plan.personal>=1&&plan.personal<=3);
+ T('plan note mentions 70 min / 35 and Wed training',/70 min|35 each way/i.test(plan.note)&&/20:00/i.test(plan.note));
+ T('default sched Wed 20:00-21:00 Sat half 35',plan.sched&&plan.sched.trainDay===2&&plan.sched.trainStart==='20:00'&&plan.sched.trainEnd==='21:00'&&plan.sched.matchDay===5&&plan.sched.half===35&&plan.sched.meetBefore===30);
  T('plan saved to local profile',!!plan.save);
 
  await q.evaluate(()=>{
@@ -156,6 +173,31 @@ async function seedFamily(page,role){
  });
  T('stretch routine saved',/Hips focus/i.test(await c.innerText('#r91-coach')));
  await shot(c,'r91_coach_stretch_saved.png');
+
+ // Team week designer + schedule adapts
+ await c.evaluate(()=>{TLFit.coachHandle('week',{getAttribute:()=>null});document.getElementById('r91-coach').innerHTML=TLFit.coachPanel('week');});
+ await w(200);
+ T('team week designer visible',/Team week/i.test(await c.innerText('#r91-coach'))&&/Training day/i.test(await c.innerText('#r91-coach')));
+ await shot(c,'r91_coach_team_week.png');
+ const moved=await c.evaluate(()=>{
+  TLFit.setSched({trainDay:1,trainStart:'19:30',trainEnd:'20:30',trainMins:60,matchDay:5,half:35,meetBefore:30,maxPersonal:2});
+  const p=TLFit.buildPlan({goals:['strength'],focus:'gym',weeks:1,who:'player',num:'7'});
+  const week=p.days.filter(d=>d.w===1);
+  return {tue:week.find(d=>d.d===1),wed:week.find(d=>d.d===2),personal:week.filter(d=>d.type==='gym'||d.type==='run').length};
+ });
+ T('moving training to Tue adapts plan',moved.tue&&moved.tue.type==='light'&&moved.wed&&moved.wed.type!=='light');
+ T('still at most 3 personal after move',moved.personal<=3);
+
+ // Meet = KO minus 30; half default 35 (70 min)
+ const times=await c.evaluate(()=>{
+  const def=TLFit.defaultSched();
+  TLFit.setSched(def);
+  const meet=window.TLCD&&TLCD.meetBy?TLCD.meetBy('10:30'):'10:00';
+  return {meet:meet,half:def.half,train:def.trainStart,end:def.trainEnd,mins:def.trainMins,matchDay:def.matchDay,trainDay:def.trainDay,meetBefore:def.meetBefore};
+ });
+ T('meet time is KO minus 30',times.meet==='10:00'&&times.meetBefore===30);
+ T('half length default 35 (70 min games)',times.half===35);
+ T('training default Wed 20:00-21:00 60 min',times.train==='20:00'&&times.end==='21:00'&&times.mins===60&&times.trainDay===2&&times.matchDay===5);
 
  // No heavy maxing / diet language
  const lib=await c.evaluate(()=>JSON.stringify(TLFit.EX.map(x=>x.n+' '+x.d).join(' ')));

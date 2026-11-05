@@ -106,8 +106,115 @@ function pickEx(kind,goals,n,seed){
  return out;
 }
 function dayLabel(i){return ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][i];}
-/* Build a progressive 4-week plan around Wed training and Sat game.
- * Rest / recovery on Tue and after Sat. No max lifts. Progressive volume. */
+/* Team week: coaches set training day/time, match day, half length. Defaults = Tim's winter week. */
+var SKEY='tl.fit.sched';
+function defaultSched(){
+ return {
+  trainDay:2, /* Mon=0 → Wednesday */
+  trainStart:'20:00',
+  trainEnd:'21:00',
+  trainMins:60,
+  matchDay:5, /* Saturday */
+  half:35, /* 70 min game, 35 each way */
+  meetBefore:30, /* meet = KO minus 30 */
+  maxPersonal:2 /* U15s: at most 2 to 3 personal sessions a week */
+ };
+}
+function clampDay(n){n=Number(n);if(!isFinite(n))return 2;n=Math.round(n)%7;return n<0?n+7:n;}
+function normSched(s){
+ var d=defaultSched();s=s||{};
+ var out={
+  trainDay:clampDay(s.trainDay!=null?s.trainDay:d.trainDay),
+  trainStart:String(s.trainStart||d.trainStart).slice(0,5),
+  trainEnd:String(s.trainEnd||d.trainEnd).slice(0,5),
+  trainMins:Math.max(30,Math.min(120,Number(s.trainMins)||d.trainMins)),
+  matchDay:clampDay(s.matchDay!=null?s.matchDay:d.matchDay),
+  half:Math.max(10,Math.min(45,Number(s.half)||d.half)),
+  meetBefore:Math.max(0,Math.min(90,Number(s.meetBefore)!=null?s.meetBefore:d.meetBefore)),
+  maxPersonal:Math.max(1,Math.min(3,Number(s.maxPersonal)||d.maxPersonal))
+ };
+ if(!/^\d{1,2}:\d{2}$/.test(out.trainStart))out.trainStart=d.trainStart;
+ if(!/^\d{1,2}:\d{2}$/.test(out.trainEnd))out.trainEnd=d.trainEnd;
+ return out;
+}
+function getSched(){
+ try{if(G.TLSched)return normSched(G.TLSched);}catch(e){}
+ try{if(G.S&&G.S.settings&&G.S.settings.sched)return normSched(G.S.settings.sched);}catch(e){}
+ try{var raw=g(SKEY);if(raw)return normSched(JSON.parse(raw));}catch(e){}
+ return defaultSched();
+}
+function setSched(raw){
+ var n=normSched(raw);s(SKEY,JSON.stringify(n));
+ try{G.TLSched=n;}catch(e){}
+ try{if(G.S&&G.S.settings){G.S.settings.sched=n;if(typeof G.touch==='function')G.touch('settings',G.S.settings);}}catch(e){}
+ return n;
+}
+/* JS getDay (Sun=0) ↔ Mon=0 index used by plans */
+function monToJs(d){return (clampDay(d)+1)%7;}
+function jsToMon(d){return (Number(d)+6)%7;}
+function nextTrainDate(from){
+ var sch=getSched(),js=monToJs(sch.trainDay);
+ var d=from?new Date(from):new Date();
+ var add=(js-d.getDay()+7)%7;d.setDate(d.getDate()+add);
+ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+/* Role per weekday from team schedule. Personal main sessions only on 'open' slots. */
+function dayRoles(sch){
+ sch=normSched(sch);
+ var t=sch.trainDay,m=sch.matchDay;
+ var afterT=(t+1)%7,beforeM=(m+6)%7,afterM=(m+1)%7;
+ var roles=[],d;
+ for(d=0;d<7;d++){
+  if(d===t)roles[d]='train';
+  else if(d===m)roles[d]='game';
+  else if(d===beforeM)roles[d]='prematch';
+  else if(d===afterM)roles[d]='recovery';
+  else if(d===afterT)roles[d]='recovery';
+  else roles[d]='open';
+ }
+ return roles;
+}
+function pickPersonalDays(roles,maxN){
+ var open=[];
+ for(var d=0;d<7;d++)if(roles[d]==='open')open.push(d);
+ /* Prefer earlier weekdays so load sits Mon/Tue when Wed/Sat are team days */
+ return open.slice(0,Math.max(1,Math.min(3,maxN||2)));
+}
+function personalSession(focus,goals,seed,w,vol,slot){
+ var day={type:'rest',title:'Rest',items:[]};
+ if(focus==='stretch'){
+  day.type='stretch';day.title=slot===0?'Mobility focus':'Full stretch set';
+  day.items=pickEx('stretch',goals,1,seed+w*3+slot);
+  return day;
+ }
+ if(focus==='run_dist'){
+  day.type='run';day.title=slot===0?'Easy distance':'Steady run';
+  day.items=pickEx('prep',goals,1+slot,seed).concat(pickEx('run',['stamina','recovery'],1,seed+w+slot));
+  return day;
+ }
+ if(focus==='run_int'){
+  day.type='run';day.title=slot===0?'Speed / intervals':'Agility and turns';
+  day.items=pickEx('prep',goals,2,seed+4).concat(pickEx('run',['speed','agility','stamina'],1+(slot?1:0),seed+5+w));
+  return day;
+ }
+ if(focus==='gym'){
+  day.type='gym';day.title=slot===0?'Bodyweight strength':'Strength and core';
+  day.items=pickEx('gym',goals,3+Math.min(1,vol),seed+8+w+slot).concat(slot===0?pickEx('prep',goals,1,seed+2):[]);
+  return day;
+ }
+ /* mix: first personal = gym, second = run or agility, third (if allowed) = light stretch */
+ if(slot===0){day.type='gym';day.title='Bodyweight strength';day.items=pickEx('gym',goals,3+Math.min(1,vol),seed+10+w).concat(pickEx('prep',goals,1,seed+2));}
+ else if(slot===1){
+  if(goals.indexOf('speed')>-1||goals.indexOf('agility')>-1){day.type='run';day.title='Speed and agility';day.items=pickEx('prep',goals,2,seed+4).concat(pickEx('run',['speed','agility'],2,seed+5+w));}
+  else{day.type='run';day.title='Easy engine run';day.items=pickEx('prep',goals,1,seed).concat(pickEx('run',['stamina','recovery'],1,seed+6+w));}
+ }
+ else{day.type='stretch';day.title='Optional mobility';day.items=pickEx('stretch',['flexibility','recovery'],1,seed+7+w);}
+ return day;
+}
+/* Build a progressive plan around the team's training and match days.
+ * U15: Wed (or set day) = team only + short optional mobility; Thu recovery; Fri pre-match light;
+ * Sat match + pre-game stretch; Sun recovery; Mon/Tue = main personal (moderate, progressive).
+ * At most 2 to 3 personal sessions a week. */
 function buildPlan(opts){
  opts=opts||{};
  var goals=(opts.goals||[]).slice(0,4);
@@ -115,47 +222,55 @@ function buildPlan(opts){
  var weeks=Math.max(2,Math.min(6,Number(opts.weeks)||4));
  var who=opts.who||'player'; /* player | parent */
  var title=opts.title||'';
- var seed=0;String(goals.join(',')+focus+who).split('').forEach(function(c){seed=seed*33+c.charCodeAt(0);});
+ var sch=normSched(opts.sched||getSched());
+ var seed=0;String(goals.join(',')+focus+who+sch.trainDay+sch.matchDay).split('').forEach(function(c){seed=seed*33+c.charCodeAt(0);});
  seed=Math.abs(seed)||7;
+ var roles=dayRoles(sch);
+ var personal=who==='player'?pickPersonalDays(roles,sch.maxPersonal):[];
+ var trainLab=dayLabel(sch.trainDay);
+ var matchLab=dayLabel(sch.matchDay);
+ var notePlayer='U15 plan around '+trainLab+' training ('+sch.trainStart+'-'+sch.trainEnd+', '+sch.trainMins+' min) and '+matchLab+' matches ('+(sch.half*2)+' min, '+sch.half+' each way). At most '+sch.maxPersonal+' personal sessions a week. Bodyweight and technique first. A grown up knows what you are doing at home. School and sleep come first. If it hurts, stop and tell a coach.';
+ var noteParent='Adult plan: build steadily. Rest when you need to. This sits separate from your lad\'s plan.';
  var plan={id:uid(),v:1,at:Date.now(),date:today(),who:who,role:opts.role||who,num:opts.num||(who==='player'?shirtNum():''),
   goals:goals,focus:focus,weeks:weeks,title:title||defaultTitle(goals,focus,who),
-  note:who==='player'?'U15 plan: bodyweight and technique first. A grown up knows what you are doing at home. School and sleep come first. If it hurts, stop and tell a coach.':'Adult plan: build steadily. Rest when you need to. This sits separate from your lad\'s plan.',
+  note:who==='player'?notePlayer:noteParent,
+  sched:{trainDay:sch.trainDay,trainStart:sch.trainStart,trainEnd:sch.trainEnd,trainMins:sch.trainMins,matchDay:sch.matchDay,half:sch.half,meetBefore:sch.meetBefore,maxPersonal:sch.maxPersonal},
   days:[],done:{},owner:'self'};
- var w,d,day,sess,vol;
+ var w,d,day,vol,slot;
  for(w=0;w<weeks;w++){
-  vol=1+(w>=2?1:0)+(w>=3?1:0); /* progressive */
+  vol=1+(w>=2?1:0)+(w>=3?1:0); /* progressive, still moderate */
   for(d=0;d<7;d++){
    day={w:w+1,d:d,lab:dayLabel(d),type:'rest',title:'Rest',items:[]};
-   /* Mon */
-   if(d===0){
-    if(focus==='gym'||focus==='mix'){day.type='gym';day.title='Bodyweight strength';day.items=pickEx('gym',goals,3+vol,seed+w*10+1).concat(pickEx('prep',goals,1,seed+2));}
-    else if(focus==='run_dist'||focus==='run_int'){day.type='run';day.title=focus==='run_int'?'Interval run':'Easy distance';day.items=pickEx('prep',goals,2,seed).concat(focus==='run_int'?pickEx('run',['speed','stamina'],1,seed+w):pickEx('run',['stamina','recovery'],1,seed+w));}
-    else{day.type='stretch';day.title='Mobility';day.items=pickEx('stretch',goals,1,seed+w);}
+   if(who==='parent'){
+    /* Parents: own week, no team load. Two to three moderate sessions, rest around the weekend. */
+    if(d===0||d===2||(d===4&&sch.maxPersonal>=3)){
+     slot=(d===0?0:d===2?1:2);
+     var ps=personalSession(focus,goals,seed,w,vol,slot);
+     day.type=ps.type;day.title=ps.title;day.items=ps.items;
+    }else if(d===5||d===6){day.type='rest';day.title=d===5?'Rest or easy walk':'Recovery';day.items=d===6?pickEx('stretch',['recovery','flexibility'],1,seed+11):[];}
+    else{day.type='stretch';day.title='Easy mobility';day.items=pickEx('stretch',['recovery','flexibility'],1,seed+3+w+d);}
+   }else{
+    var role=roles[d];
+    if(role==='train'){
+     day.type='light';day.title='Team training ('+sch.trainStart+'-'+sch.trainEnd+')';
+     day.items=[{id:'str_pre',kind:'stretch',n:'Optional short mobility',d:'Keep it short. No extra hard session on training night. Save the legs for the '+sch.trainMins+'-minute session. Skip if you feel tired.',dose:'About 2 minutes',stretchIds:['flexor','ham','calf']}];
+    }else if(role==='game'){
+     day.type='game';day.title='Match day ('+(sch.half*2)+' min, '+sch.half+' each way)';
+     day.items=[{id:'str_pre',kind:'stretch',n:'Pre-game stretch',d:'Dynamic only. Meet by kick-off minus '+sch.meetBefore+' minutes. If anything niggling, use the Pre-game stretch button and tell a coach.',dose:'About 2 minutes',stretchIds:['flexor','ham','calf','twist','adductor']}];
+    }else if(role==='prematch'){
+     day.type='light';day.title='Pre-match light / stretch only';
+     day.items=pickEx('stretch',['flexibility','recovery'],1,seed+10).concat([{id:'str_pre',kind:'stretch',n:'Activation',d:'Easy dynamic moves only. No gym, no intervals the day before a game.',dose:'About 5 minutes',stretchIds:['flexor','ham','calf','twist']}]);
+    }else if(role==='recovery'){
+     day.type='recovery';day.title='Recovery / light';
+     day.items=pickEx('stretch',['recovery','flexibility'],1,seed+11+d);
+    }else if(personal.indexOf(d)>-1){
+     slot=personal.indexOf(d);
+     var ps2=personalSession(focus,goals,seed,w,vol,slot);
+     day.type=ps2.type;day.title=ps2.title;day.items=ps2.items;
+    }else{
+     day.type='rest';day.title='Rest';day.items=[];
+    }
    }
-   /* Tue recovery / stretch */
-   else if(d===1){day.type='stretch';day.title='Recovery stretch';day.items=pickEx('stretch',['recovery','flexibility'],1,seed+3+w);}
-   /* Wed team training: light mobility only */
-   else if(d===2){day.type='light';day.title='Team training night';day.items=[{id:'str_pre',kind:'stretch',n:'Light mobility only',d:'Keep it short. Save the legs for training. Use Pre-game stretch if you like.',dose:'About 2 minutes',stretchIds:['flexor','ham','calf']}];}
-   /* Thu */
-   else if(d===3){
-    if(focus==='run_int'||(focus==='mix'&&goals.indexOf('speed')>-1)){day.type='run';day.title='Speed / intervals';day.items=pickEx('prep',goals,2,seed+4).concat(pickEx('run',['speed','agility'],2,seed+5+w));}
-    else if(focus==='run_dist'){day.type='run';day.title='Steady run';day.items=pickEx('prep',goals,1,seed).concat(pickEx('run',['stamina'],1,seed+6+w));}
-    else if(focus==='stretch'){day.type='stretch';day.title='Full stretch set';day.items=pickEx('stretch',goals,1,seed+7);}
-    else{day.type='gym';day.title='Strength and core';day.items=pickEx('gym',goals,3+Math.min(1,vol),seed+8+w);}
-   }
-   /* Fri activation */
-   else if(d===4){day.type='light';day.title='Pre-game activation';day.items=pickEx('prep',goals,2,seed+9).concat(pickEx('stretch',['flexibility'],1,seed+10));}
-   /* Sat game day */
-   else if(d===5){day.type='game';day.title='Match day';day.items=[{id:'str_pre',kind:'stretch',n:'Pre-game stretch',d:'Dynamic only. If anything niggling, use the Pre-game stretch button and tell a coach.',dose:'About 2 minutes',stretchIds:['flexor','ham','calf','twist','adductor']}];}
-   /* Sun recovery */
-   else{day.type='recovery';day.title='Recovery';day.items=pickEx('stretch',['recovery','flexibility'],1,seed+11).concat(who==='parent'?pickEx('run',['recovery'],1,seed+12):[]);}
-   /* Parents: replace Wed with their own session (no team training) */
-   if(who==='parent'&&d===2){
-    day.type=focus==='stretch'?'stretch':(focus.indexOf('run')===0?'run':'gym');
-    day.title='Your session';
-    day.items=focus==='stretch'?pickEx('stretch',goals,1,seed+20):focus.indexOf('run')===0?pickEx('prep',goals,1,seed).concat(pickEx('run',goals,1,seed+21+w)):pickEx('gym',goals,3,seed+22+w);
-   }
-   if(who==='parent'&&d===5){day.type='rest';day.title='Rest or easy walk';day.items=[];}
    plan.days.push(day);
   }
  }
@@ -173,7 +288,7 @@ function upsertPlan(plan){
  return plan;
 }
 function slim(p){
- return {id:p.id,v:p.v,at:p.at,date:p.date,who:p.who,role:p.role,num:p.num||'',goals:p.goals,focus:p.focus,weeks:p.weeks,title:p.title,note:p.note,days:p.days,done:p.done||{},owner:p.owner||'self'};
+ return {id:p.id,v:p.v,at:p.at,date:p.date,who:p.who,role:p.role,num:p.num||'',goals:p.goals,focus:p.focus,weeks:p.weeks,title:p.title,note:p.note,days:p.days,done:p.done||{},owner:p.owner||'self',sched:p.sched||null};
 }
 function getPlan(id){return loadAll().filter(function(p){return p.id===id;})[0]||null;}
 function removePlan(id){saveAll(loadAll().filter(function(p){return p.id!==id;}));enqueue('f.fit.del',{id:id});}
@@ -250,7 +365,7 @@ function builderHtml(draft,opts){
  draft=draft||{goals:[],focus:'mix',weeks:4,who:opts.who||'player'};
  var h='<div class="tl-fit-build card">';
  h+='<h2 style="margin-top:0">'+(draft.who==='parent'?'Build my fitness plan':'Build a fitness plan')+'</h2>';
- h+='<p class="small muted">Tap what you want to improve, pick a focus, then we build a plan like a PT would. U15 plans are bodyweight-led, progressive, with rest around training and games. No diet or weight tracking.</p>';
+ h+='<p class="small muted">Tap what you want to improve, pick a focus, then we build a plan like a PT would. U15 plans are bodyweight-led and progressive: personal sessions on Mon and Tue, team training night stays light, pre-match and recovery around the game. At most two or three personal sessions a week. No diet or weight tracking.</p>';
  h+='<label>What do you want to improve?</label>'+chipRow(GOALS,draft.goals||[],'goal');
  h+='<label style="margin-top:10px">Focus</label>'+chipRow(FOCUS,draft.focus||'mix','focus');
  h+='<label style="margin-top:10px">How many weeks?</label><div class="chips">'+[2,3,4,6].map(function(n){return '<button type="button" class="chip'+(Number(draft.weeks)===n?' on':'')+'" data-weeks="'+n+'">'+n+' weeks</button>';}).join('')+'</div>';
@@ -269,7 +384,7 @@ function listHtml(opts){
  var lad=opts.ladPlan||null;
  var h='<div class="tl-fit">';
  h+='<div class="card"><span class="tag" style="background:#16a34a">Fitness</span><h2 style="margin-top:8px">'+(who==='parent'?'My fitness':'Fitness plan')+'</h2>';
- h+='<p class="small muted">'+(who==='parent'?'Your own goals and plan. Separate from your lad\'s. You can still open his plan read only below.':'Tell us what you want to improve. We build a safe U15 plan around training and Saturday.')+'</p>';
+ h+='<p class="small muted">'+(who==='parent'?'Your own goals and plan. Separate from your lad\'s. You can still open his plan read only below.':'Tell us what you want to improve. We build a safe U15 plan around team training and match day (coaches set the days).')+'</p>';
  h+='<button type="button" class="btn pri block" data-fit="new" data-who="'+E(who)+'">New plan</button></div>';
  if(mine.length){
   h+='<h3 class="tl-mh">Saved plans</h3>';
@@ -310,8 +425,24 @@ function coachTabs(mode){
   ['session','Session fitness'],
   ['workout','Workout designer'],
   ['stretch','Stretch designer'],
-  ['plans','Squad plans']
+  ['plans','Squad plans'],
+  ['week','Team week']
  ].map(function(x){return '<button type="button" class="chip'+(mode===x[0]?' on':'')+'" data-act="fitC" data-op="'+x[0]+'">'+x[1]+'</button>';}).join('')+'</div>';
+}
+function weekDesignerHtml(){
+ var sch=getSched(),days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+ var h='<div class="card"><h3 style="margin-top:0">Team week</h3><p class="small muted">Training day and time, match day, and half length. Fitness plans follow this. Change it if the league moves you.</p>';
+ h+='<label>Training day</label><div class="chips">'+days.map(function(lab,i){return '<button type="button" class="chip'+(sch.trainDay===i?' on':'')+'" data-act="fitC" data-op="schedDay" data-k="trainDay" data-v="'+i+'">'+lab+'</button>';}).join('')+'</div>';
+ h+='<div class="row" style="margin-top:8px"><div class="grow"><label>Starts</label><input type="time" id="tl-fit-ts" value="'+E(sch.trainStart)+'"></div>';
+ h+='<div class="grow"><label>Ends</label><input type="time" id="tl-fit-te" value="'+E(sch.trainEnd)+'"></div>';
+ h+='<div class="grow"><label>Minutes</label><input type="number" min="30" max="120" id="tl-fit-tm" value="'+E(String(sch.trainMins))+'"></div></div>';
+ h+='<label style="margin-top:10px">Match day</label><div class="chips">'+days.map(function(lab,i){return '<button type="button" class="chip'+(sch.matchDay===i?' on':'')+'" data-act="fitC" data-op="schedDay" data-k="matchDay" data-v="'+i+'">'+lab+'</button>';}).join('')+'</div>';
+ h+='<div class="row" style="margin-top:8px"><div class="grow"><label>Half length (minutes)</label><input type="number" min="10" max="45" id="tl-fit-half" value="'+E(String(sch.half))+'"></div>';
+ h+='<div class="grow"><label>Meet before KO (min)</label><input type="number" min="0" max="90" id="tl-fit-meet" value="'+E(String(sch.meetBefore))+'"></div>';
+ h+='<div class="grow"><label>Max personal sessions / week</label><input type="number" min="1" max="3" id="tl-fit-maxp" value="'+E(String(sch.maxPersonal))+'"></div></div>';
+ h+='<p class="small muted" style="margin-top:8px">Defaults for this group: Wednesday 20:00-21:00 (60 min), Saturday 70 min games (35 each way), meet 30 minutes before kick-off. New plans use these.</p>';
+ h+='<button type="button" class="btn pri block" style="margin-top:10px" data-act="fitC" data-op="saveSched">Save team week</button></div>';
+ return h;
 }
 function workoutDesignerHtml(state){
  state=state||{name:'',items:[],mins:20};
@@ -453,7 +584,17 @@ document.addEventListener('click',onFitClick);
 var COACH={mode:'session',workout:{name:'',items:[]},stretch:{name:'',ids:[],hold:20}};
 function coachHandle(act,el,ctx){
  ctx=ctx||{};
- if(act==='session'||act==='workout'||act==='stretch'||act==='plans'){COACH.mode=act;return true;}
+ if(act==='session'||act==='workout'||act==='stretch'||act==='plans'||act==='week'){COACH.mode=act;return true;}
+ if(act==='schedDay'){var sch0=getSched();sch0[el.getAttribute('data-k')]=Number(el.getAttribute('data-v'));setSched(sch0);return true;}
+ if(act==='saveSched'){
+  var sch1=getSched();
+  var ts=(document.getElementById('tl-fit-ts')||{}).value,te=(document.getElementById('tl-fit-te')||{}).value;
+  var tm=(document.getElementById('tl-fit-tm')||{}).value,hf=(document.getElementById('tl-fit-half')||{}).value;
+  var mt=(document.getElementById('tl-fit-meet')||{}).value,mp=(document.getElementById('tl-fit-maxp')||{}).value;
+  if(ts)sch1.trainStart=ts;if(te)sch1.trainEnd=te;if(tm)sch1.trainMins=Number(tm);
+  if(hf)sch1.half=Number(hf);if(mt!=null&&mt!=='')sch1.meetBefore=Number(mt);if(mp)sch1.maxPersonal=Number(mp);
+  setSched(sch1);try{if(G.toast)G.toast('Team week saved');}catch(e){}return true;
+ }
  if(act==='addEx'){var id=el.getAttribute('data-ex');if(id&&COACH.workout.items.indexOf(id)<0)COACH.workout.items.push(id);return true;}
  if(act==='rmEx'){COACH.workout.items.splice(Number(el.getAttribute('data-i')||0),1);return true;}
  if(act==='hold'){COACH.stretch.hold=Number(el.getAttribute('data-v')||20);return true;}
@@ -501,6 +642,7 @@ function coachPanel(mode,plist){
  if(mode==='workout')h+=workoutDesignerHtml(COACH.workout);
  else if(mode==='stretch')h+=stretchDesignerHtml(COACH.stretch);
  else if(mode==='plans')h+=squadPlansHtml(plist);
+ else if(mode==='week')h+=weekDesignerHtml();
  return h;
 }
 
@@ -510,7 +652,8 @@ G.TLFit={
  familyCard:familyCard,listHtml:listHtml,builderHtml:builderHtml,planViewHtml:planViewHtml,
  open:openFit,close:closeFit,flush:flushQueue,
  coachPanel:coachPanel,coachHandle:coachHandle,coachState:function(){return COACH;},
- stretchHref:stretchHref
+ stretchHref:stretchHref,
+ getSched:getSched,setSched:setSched,defaultSched:defaultSched,dayRoles:dayRoles,nextTrainDate:nextTrainDate,monToJs:monToJs,jsToMon:jsToMon
 };
 try{flushQueue();}catch(e){}
 try{G.addEventListener('online',flushQueue);}catch(e){}
