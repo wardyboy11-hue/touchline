@@ -1,8 +1,8 @@
 /* Touchline coach app shell service worker (P0).
    Precache: shell only. Runtime: cache first for versioned static, network first for pages,
    Apps Script and other origins are never touched. No PDFs, video or audio are cached here. */
-var V='touchline-shell-v88',RT='touchline-run-v88';
-var SHELL=['./','index.html','app.css?v=88','topics.js?v=88','topic-bank.js?v=88','guide.js?v=88','app.js?v=88','gui.js?v=88','positions.js?v=88','positions.json','cdev.js?v=88','../pod.js','../acct.js?v=88','../update.js?v=88','../shop.css?v=88','../shop.js?v=88','../shop/img/ss-core-supporters-coat-navy.webp?v=88','../shop/img/ss-core-thermal-jacket-navy.webp?v=88','../shop/img/end-of-line-ss-bench-coat-navy.webp?v=88','../shop/img/ss-core-softshell-jacket-navy.webp?v=88','../shop/img/ss-core-padded-gilet-navy.webp?v=88','../shop/img/new-ss-core-rain-jacket-navy.webp?v=88','../shop/img/ss-core-softshell-gilet-navy.webp?v=88','manifest.webmanifest','../badge.png','../icon-192.png','../icon-512.png'];
+var V='touchline-shell-v89',RT='touchline-run-v89';
+var SHELL=['./','index.html','app.css?v=89','topics.js?v=89','topic-bank.js?v=89','guide.js?v=89','app.js?v=89','gui.js?v=89','positions.js?v=89','positions.json','cdev.js?v=89','../pod.js','../acct.js?v=89','../update.js?v=89','../shop.css?v=89','../shop.js?v=89','../shop/img/ss-core-supporters-coat-navy.webp?v=89','../shop/img/ss-core-thermal-jacket-navy.webp?v=89','../shop/img/end-of-line-ss-bench-coat-navy.webp?v=89','../shop/img/ss-core-softshell-jacket-navy.webp?v=89','../shop/img/ss-core-padded-gilet-navy.webp?v=89','../shop/img/new-ss-core-rain-jacket-navy.webp?v=89','../shop/img/ss-core-softshell-gilet-navy.webp?v=89','manifest.webmanifest','../badge.png','../icon-192.png','../icon-512.png'];
 var SKIP=/\.(pdf|mp4|mp3|m4a|webm|mov)$|version\.json$/i;
 self.addEventListener('install',function(e){e.waitUntil(caches.open(V).then(function(c){return c.addAll(SHELL);}).then(function(){return self.skipWaiting();}));});
 self.addEventListener('activate',function(e){e.waitUntil(caches.keys().then(function(ks){return Promise.all(ks.filter(function(k){return k!==V&&k!==RT;}).map(function(k){return caches.delete(k);}));}).then(function(){return self.clients.claim();}));});
@@ -15,7 +15,7 @@ self.addEventListener('fetch',function(e){
      a slow first load used to swap the clip for the coach app after 3.5s. Network first, same URL from cache offline. */
   if(!/\/coach\/(index\.html)?$/.test(u.pathname)){
    e.respondWith(caches.open(RT).then(function(c){return fetch(r).then(function(res){if(res&&res.ok)c.put(r,res.clone());return res;}).catch(function(){return c.match(r,{ignoreSearch:true}).then(function(hit){return hit||Response.error();});});}));return;}
-  /* coach app (r88): cached shell first, refreshed in the background. The old 3.5s race between network and cache
+  /* coach app (r89): cached shell first, refreshed in the background. The old 3.5s race between network and cache
      could hand back a half-loaded page on a weak signal at the ground. New releases arrive through update.js,
      which clears the caches and reloads, so serving the cached shell straight away never leaves you stuck. */
   var shell=function(){return caches.match('index.html',{ignoreSearch:true}).then(function(h){return h||caches.match('./');});};

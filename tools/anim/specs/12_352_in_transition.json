@@ -1,0 +1,209 @@
+{
+ "slug": "12_352_in_transition",
+ "theme": "3-5-2 shape and transition",
+ "title": "Our 3-5-2: Keep Shape, Win the Transition",
+ "age": "U14 / U15",
+ "format": "11v11 shape walk-through on a full pitch",
+ "area": "70m x 46m",
+ "kit": "Blue bibs for us, red for the opposition",
+ "start": "We start in our 3-5-2. Ball with the opposition midfielder.",
+ "intro_vo": "Right lads. Our 3-5-2. Keep your shape, pack the middle, and win the first five seconds when the ball turns over.",
+ "parents": "Blue is us in a 3-5-2. One sitting midfielder and two ahead make a triangle. Watch how we stay compact out of possession, open up in possession, and react in the first five seconds of a transition.",
+ "L": 70,
+ "W": 46,
+ "ball": "R4",
+ "key": [["B","Us (blue, 3-5-2)"],["R","Opponents"],["K","Goalkeeper"]],
+ "goals": [{"x":0,"y":23,"w":7,"side":"left"},{"x":70,"y":23,"w":7,"side":"right"}],
+ "lines": [[35,0,35,46]],
+ "cones": [[35,0],[35,46]],
+ "players": [
+  {"id":"B1","team":"K","x":3,"y":23},
+  {"id":"B4","team":"B","x":12,"y":12},
+  {"id":"B5","team":"B","x":10,"y":23},
+  {"id":"B6","team":"B","x":12,"y":34},
+  {"id":"B2","team":"B","x":24,"y":5},
+  {"id":"B3","team":"B","x":24,"y":41},
+  {"id":"B8","team":"B","x":22,"y":23},
+  {"id":"B10","team":"B","x":30,"y":15},
+  {"id":"B7","team":"B","x":30,"y":31},
+  {"id":"B9","team":"B","x":42,"y":18},
+  {"id":"B11","team":"B","x":42,"y":28},
+  {"id":"R1","team":"R","x":58,"y":12},
+  {"id":"R2","team":"R","x":58,"y":23},
+  {"id":"R3","team":"R","x":58,"y":34},
+  {"id":"R4","team":"R","x":40,"y":23},
+  {"id":"R5","team":"R","x":48,"y":10},
+  {"id":"R6","team":"R","x":48,"y":36}
+ ],
+ "setup": [
+  "Full pitch. Us in a 3-5-2 facing the right goal.",
+  "Midfield triangle: one CDM sitting, two CMs ahead.",
+  "Wing backs hold the width. Two strikers stay high.",
+  "Opposition start with the ball in midfield."
+ ],
+ "rules": [
+  "Out of possession: pack the middle, force play wide, then press the channel and cut it off.",
+  "In possession: triangle stays connected, wing backs get wide, strikers pin the centre backs.",
+  "On every turnover: first five seconds decide it. Secure, support, spring."
+ ],
+ "restart": ["Reset to the shape after each phase.", "Same eleven, same triangle."],
+ "points": [
+  "CDM sits. Do not chase. You are the lid on the box.",
+  "Two CMs form the triangle with him. Stay connected.",
+  "Pack the middle so they have to go wide.",
+  "Press the channel, then cut the ball off when it moves.",
+  "Transition both ways in the first five seconds. That is the game."
+ ],
+ "progress": [
+  "Add a condition: first goal after a turnover counts double.",
+  "Limit the CDM to three touches so the CMs have to rotate."
+ ],
+ "steps": [
+  {
+   "dur": 12,
+   "say": "Out of possession. Hold the shape. Back three connected, CDM sitting, triangle packed in the middle.",
+   "vo": "Out of possession. Hold your shape. Back three connected. CDM sitting. The two CMs make the triangle and we pack the middle.",
+   "moves": {
+    "B8": [22, 23],
+    "B10": [28, 16],
+    "B7": [28, 30],
+    "B4": [14, 13],
+    "B5": [12, 23],
+    "B6": [14, 33]
+   }
+  },
+  {
+   "dur": 12,
+   "say": "They have it central. We pack the middle so the channels are the only way on.",
+   "vo": "They have it central. Squeeze the middle. Force them wide. The channels are the only way on.",
+   "moves": {
+    "R4": [38, 23],
+    "B8": [24, 23],
+    "B10": [27, 18],
+    "B7": [27, 28],
+    "B9": [38, 19],
+    "B11": [38, 27]
+   },
+   "pass": "R4"
+  },
+  {
+   "dur": 12,
+   "say": "Ball goes into the right channel. Nearest CM presses. CDM and the other CM cut off the next pass.",
+   "vo": "Ball into the right channel. Nearest CM, you press. CDM and the other CM, cut the next pass off. Do not dive in.",
+   "moves": {
+    "R4": [36, 34],
+    "B7": [32, 33],
+    "B8": [26, 27],
+    "B10": [28, 22],
+    "B6": [16, 36],
+    "B3": [28, 42]
+   },
+   "pass": "R6"
+  },
+  {
+   "dur": 11,
+   "say": "They switch. The block slides across as one. Same shape, new side.",
+   "vo": "They switch it. Slide across together. Same shape, new side. Nobody leaves the triangle.",
+   "moves": {
+    "R4": [36, 12],
+    "B7": [28, 24],
+    "B8": [24, 20],
+    "B10": [30, 13],
+    "B4": [16, 10],
+    "B2": [28, 4],
+    "B5": [14, 20],
+    "B6": [16, 30]
+   },
+   "pass": "R5"
+  },
+  {
+   "dur": 13,
+   "say": "In possession. Triangle opens. CDM receives, two CMs ahead, wing backs get wide, strikers pin.",
+   "vo": "We win it. In possession now. Triangle opens. CDM receives. Two CMs ahead. Wing backs, get wide. Strikers, pin their centre backs.",
+   "moves": {
+    "B8": [28, 23],
+    "B10": [36, 14],
+    "B7": [36, 32],
+    "B2": [40, 4],
+    "B3": [40, 42],
+    "B9": [52, 18],
+    "B11": [52, 28],
+    "B4": [20, 12],
+    "B5": [18, 23],
+    "B6": [20, 34],
+    "R4": [44, 23],
+    "R5": [50, 10],
+    "R6": [50, 36]
+   },
+   "pass": "B8"
+  },
+  {
+   "dur": 12,
+   "say": "Play through the triangle. First thought forward, second switch, third back to the CDM.",
+   "vo": "Play through the triangle. First thought forward. Second, switch. Third, back to the CDM. Keep the shape while you move it.",
+   "moves": {
+    "B8": [30, 23],
+    "B10": [42, 16],
+    "B7": [40, 30],
+    "B9": [56, 20],
+    "B11": [54, 30],
+    "B2": [48, 6],
+    "B3": [46, 40]
+   },
+   "pass": "B10"
+  },
+  {
+   "dur": 13,
+   "say": "Key bit. We lose it. First five seconds. Nearest two squeeze the ball. Everyone else gets goal side.",
+   "vo": "Key bit. We lose it. First five seconds. Nearest two, squeeze the ball. Everyone else, get goal side and rebuild the shape. That is the transition.",
+   "moves": {
+    "R2": [48, 23],
+    "B10": [48, 20],
+    "B8": [42, 23],
+    "B7": [44, 28],
+    "B9": [50, 18],
+    "B11": [50, 28],
+    "B4": [28, 14],
+    "B5": [26, 23],
+    "B6": [28, 32],
+    "B2": [36, 8],
+    "B3": [36, 38]
+   },
+   "pass": "R2"
+  },
+  {
+   "dur": 12,
+   "say": "We win it back. First five seconds the other way. Secure it, support beyond, spring forward.",
+   "vo": "We win it back. First five seconds the other way. Secure it under your foot. Nearest lad supports beyond. Then spring. That is why it has to be quick.",
+   "moves": {
+    "B8": [40, 23],
+    "B10": [48, 16],
+    "B7": [48, 30],
+    "B9": [58, 20],
+    "B11": [58, 28],
+    "B2": [52, 6],
+    "B3": [52, 40],
+    "R2": [46, 26],
+    "R4": [42, 20]
+   },
+   "pass": "B8"
+  },
+  {
+   "dur": 10,
+   "say": "Finish. Shape, triangle, first five seconds. That is our 3-5-2.",
+   "vo": "Finish. Keep the shape. Trust the triangle. Win the first five seconds. That is our 3-5-2. Well done lads.",
+   "moves": {
+    "B8": [32, 23],
+    "B10": [40, 15],
+    "B7": [40, 31],
+    "B9": [55, 18],
+    "B11": [55, 28],
+    "B2": [44, 5],
+    "B3": [44, 41],
+    "B4": [18, 12],
+    "B5": [16, 23],
+    "B6": [18, 34]
+   }
+  }
+ ]
+}
