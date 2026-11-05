@@ -1,9 +1,11 @@
 /* Touchline self update. When the app is opened, or comes back to the front after a few minutes away,
    it asks the server which version is current (version.json, never cached). If it is newer than the one
    this phone is running, it refreshes the app by itself. It will not refresh while you are typing,
-   or while there are changes on this phone not yet synced. Bump version.json with every release. */
+   or while there are changes on this phone not yet synced. Bump version.json with every release.
+   r87: during a live match or a running session (window.tlHold) it never reloads by itself. It shows an
+   Update ready button instead and you tap it when you are ready. After a refresh the page address brings you back. */
 (function(){
-var RUN='86',KEY='tl.ver.try',GAP=5*60*1000;
+var RUN='87',KEY='tl.ver.try',GAP=5*60*1000;
 var hiddenAt=0;
 function g(k){try{return localStorage.getItem(k)||'';}catch(e){return '';}}
 function s(k,v){try{localStorage.setItem(k,v);}catch(e){}}
@@ -14,6 +16,8 @@ function busy(){
  return false;
 }
 function note(){var d=document.createElement('div');d.textContent='Updating Touchline';d.style.cssText='position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#ffb81c;color:#0b1330;padding:10px 16px;border-radius:12px;font:700 14px system-ui,sans-serif;z-index:99999';document.body.appendChild(d);}
+function ready(){if(document.getElementById('tl-upd'))return;var b=document.createElement('button');b.id='tl-upd';b.type='button';b.textContent='Update ready';b.setAttribute('aria-label','Update ready. Tap to update Touchline');b.style.cssText='position:fixed;right:14px;top:calc(62px + env(safe-area-inset-top));background:#ffb81c;color:#0b1330;border:0;padding:10px 14px;border-radius:999px;font:700 14px system-ui,sans-serif;z-index:99998;box-shadow:0 4px 14px rgba(0,0,0,.4);cursor:pointer';b.onclick=function(){b.remove();refresh();};document.body.appendChild(b);}
+function held(){try{return !!(window.tlHold&&window.tlHold());}catch(e){return false;}}
 function refresh(){
  s(KEY,String(Date.now()));note();
  var done=function(){location.reload();};
@@ -26,6 +30,7 @@ function check(){
  var last=+g(KEY)||0;if(Date.now()-last<60000)return;
  fetch('/version.json?'+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(j){
   if(!j||!j.v||String(j.v)===RUN)return;
+  if(held()){ready();return;}
   if(busy()){setTimeout(check,20000);return;}
   refresh();
  }).catch(function(){});

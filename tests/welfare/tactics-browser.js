@@ -19,7 +19,7 @@ const n=async c=>c.$$eval('.lsl:not(.empty)',x=>x.length),slot=k=>`.lsl[data-k="
 (async()=>{const b=await chromium.launch();const dev=devices['iPhone 13'];
  const {cc,c,ce}=await open(b,dev,VIDEO);const w=ms=>c.waitForTimeout(VIDEO?ms:60);
  T('3-5-2 is the default shape',await c.$eval('select[data-lab="form"]',e=>e.value)==='352');
- const fitsc=async(c,H)=>c.evaluate(H=>{const nv=document.querySelector('nav.tabs').getBoundingClientRect().top,r=s=>document.querySelector(s).getBoundingClientRect();return r('.labbar').top>=0&&r('.labp .pitch').bottom<=nv+2&&r('#labstrip').bottom<=nv+2;},H);
+ const fitsc=async(c,H)=>c.evaluate(H=>{const nt=document.querySelector('nav.tabs').getBoundingClientRect().top,nv=nt>innerHeight/2?nt:innerHeight,r=s=>document.querySelector(s).getBoundingClientRect();return r('.labbar').top>=0&&r('.labp .pitch').bottom<=nv+2&&r('#labstrip').bottom<=nv+2;},H);
  T('opening Builder shows the bar, pitch and bench on one phone screen, no scrolling',await fitsc(c));
  await shot(c,'r86_1_phone_empty.png');
  await c.click('.lp[data-id="p0"]');await w(700);T('tap a bench keeper puts him in goal',(await nm(c,'GK'))==='Alfie');

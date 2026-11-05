@@ -1,7 +1,7 @@
 /* r83: typing in a coach box must survive background syncs and re-renders (no wipe, no jump, focus kept). PORT env, default 8794. */
 const {chromium}=require('playwright');const http=require('http'),fs=require('fs'),path=require('path');
 const root=path.resolve(__dirname,'../..');const PORT=+process.env.PORT||8794;
-const srv=http.createServer((q,r)=>{const u=q.url.split('?')[0];if(u==='/version.json'){r.writeHead(200,{'content-type':'application/json'});r.end('{"v":"86"}');return;}let f=path.join(root,decodeURIComponent(u));if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,d)=>{if(e){r.writeHead(404);r.end();return;}r.writeHead(200,{'content-type':f.endsWith('.js')?'text/javascript':f.endsWith('.css')?'text/css':f.endsWith('.json')?'application/json':'text/html'});r.end(d);});}).listen(PORT);
+const srv=http.createServer((q,r)=>{const u=q.url.split('?')[0];if(u==='/version.json'){r.writeHead(200,{'content-type':'application/json'});r.end('{"v":"87"}');return;}let f=path.join(root,decodeURIComponent(u));if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,d)=>{if(e){r.writeHead(404);r.end();return;}r.writeHead(200,{'content-type':f.endsWith('.js')?'text/javascript':f.endsWith('.css')?'text/css':f.endsWith('.json')?'application/json':'text/html'});r.end(d);});}).listen(PORT);
 let ok=0,bad=0;const T=(n,c)=>{console.log((c?'PASS ':'FAIL ')+n);c?ok++:bad++;};
 (async()=>{const b=await chromium.launch();
 for(const vp of [{width:1366,height:800},{width:390,height:844}]){
@@ -11,7 +11,7 @@ for(const vp of [{width:1366,height:800},{width:390,height:844}]){
  await p.addInitScript(()=>{localStorage.setItem('tl.code','x');localStorage.setItem('tl.state.v1',JSON.stringify({ideas:{},players:{},matches:{},settings:{id:'main',half:35,subEvery:17,roles:{},updatedAt:0},dirty:{},lastSync:1}));});
  await p.goto('http://localhost:'+PORT+'/coach/index.html');await p.waitForTimeout(1500);
  await p.evaluate(()=>{const b=document.querySelector('[data-act=tab][data-v=train]');b&&b.click();});await p.waitForTimeout(300);
- await p.evaluate(()=>{const b=document.querySelector('[data-act=tmode][data-v=lib]');b&&b.click();});await p.waitForTimeout(300);
+ await p.evaluate(()=>{const b=document.querySelector('nav.tabs [data-act=tab][data-v=pos][data-m=lib]');b&&b.click();});await p.waitForTimeout(300);
  await p.evaluate(()=>{const b=[...document.querySelectorAll('[data-act=tab]')].find(x=>x.dataset.v==='sess');b&&b.click();});await p.waitForTimeout(500);
  let sel=await p.evaluate(()=>{const i=[...document.querySelectorAll('#root input:not([type]),#root input[type=text],#root textarea')].filter(x=>x.offsetParent)[0];if(!i)return null;i.scrollIntoView({block:'center'});return '#'+i.id;});
  T('found a text box to type in ('+vp.width+')',!!sel);if(!sel){await ctx.close();continue;}

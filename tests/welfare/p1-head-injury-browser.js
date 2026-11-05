@@ -54,7 +54,7 @@ await p.evaluate(()=>{});await p.reload();await p.waitForTimeout(1000);
 const ccAfter=await p.evaluate(()=>JSON.parse(localStorage.getItem('tl.conc')));
 T('closed record unblocks him',ccAfter.rows.length>=1&&!!ccAfter.rows.find(r=>r.pid==='a').closed||ccAfter.rows.length===0);
 // sign out clears
-await p.click('nav.tabs >> text=Comms');await p.click('.seg button:has-text("More")');p.on('dialog',d=>d.accept());await p.evaluate(()=>document.querySelector('[data-act=logout]').click());await p.waitForTimeout(300);
+await p.click('header.tl-top [aria-label="More"]');p.on('dialog',d=>d.accept());await p.evaluate(()=>document.querySelector('[data-act=logout]').click());await p.waitForTimeout(300);
 T('sign out clears head injury data',!(await p.evaluate(()=>localStorage.getItem('tl.conc'))));
 console.log('coach errors',errs);
 // ---- family

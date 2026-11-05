@@ -1,8 +1,8 @@
 /* Touchline coach app shell service worker (P0).
    Precache: shell only. Runtime: cache first for versioned static, network first for pages,
    Apps Script and other origins are never touched. No PDFs, video or audio are cached here. */
-var V='touchline-shell-v86',RT='touchline-run-v86';
-var SHELL=['./','index.html','app.css?v=66','topics.js?v=66','topic-bank.js?v=66','guide.js?v=66','app.js?v=66','gui.js?v=66','positions.js?v=86','positions.json','cdev.js?v=86','../pod.js','../acct.js?v=66','../update.js?v=66','manifest.webmanifest','../badge.png','../icon-192.png','../icon-512.png'];
+var V='touchline-shell-v87',RT='touchline-run-v87';
+var SHELL=['./','index.html','app.css?v=87','topics.js?v=87','topic-bank.js?v=87','guide.js?v=87','app.js?v=87','gui.js?v=87','positions.js?v=87','positions.json','cdev.js?v=87','../pod.js','../acct.js?v=87','../update.js?v=87','manifest.webmanifest','../badge.png','../icon-192.png','../icon-512.png'];
 var SKIP=/\.(pdf|mp4|mp3|m4a|webm|mov)$|version\.json$/i;
 self.addEventListener('install',function(e){e.waitUntil(caches.open(V).then(function(c){return c.addAll(SHELL);}).then(function(){return self.skipWaiting();}));});
 self.addEventListener('activate',function(e){e.waitUntil(caches.keys().then(function(ks){return Promise.all(ks.filter(function(k){return k!==V&&k!==RT;}).map(function(k){return caches.delete(k);}));}).then(function(){return self.clients.claim();}));});
@@ -15,9 +15,12 @@ self.addEventListener('fetch',function(e){
      a slow first load used to swap the clip for the coach app after 3.5s. Network first, same URL from cache offline. */
   if(!/\/coach\/(index\.html)?$/.test(u.pathname)){
    e.respondWith(caches.open(RT).then(function(c){return fetch(r).then(function(res){if(res&&res.ok)c.put(r,res.clone());return res;}).catch(function(){return c.match(r,{ignoreSearch:true}).then(function(hit){return hit||Response.error();});});}));return;}
-  /* coach app: network first, shell as the offline fallback. Never block first paint on an update check. */
-  var cached=function(){return caches.match('index.html',{ignoreSearch:true}).then(function(h){return h||caches.match('./');});};
-  e.respondWith(Promise.race([fetch(r),new Promise(function(_,no){setTimeout(no,3500);})]).catch(function(){return cached().then(function(h){return h||fetch(r);});}));return;}
+  /* coach app (r87): cached shell first, refreshed in the background. The old 3.5s race between network and cache
+     could hand back a half-loaded page on a weak signal at the ground. New releases arrive through update.js,
+     which clears the caches and reloads, so serving the cached shell straight away never leaves you stuck. */
+  var shell=function(){return caches.match('index.html',{ignoreSearch:true}).then(function(h){return h||caches.match('./');});};
+  var net=fetch(r).then(function(res){if(res&&res.ok){var cp=res.clone();caches.open(V).then(function(c){return c.put('index.html',cp);});}return res;});
+  e.respondWith(shell().then(function(h){if(h){e.waitUntil(net.catch(function(){}));return h;}return net.catch(function(){return Response.error();});}));return;}
  /* library index: network first so new links show up, cached copy when offline */
  if(/\/library\.json$/.test(u.pathname)){
   e.respondWith(caches.open(RT).then(function(c){return fetch(r).then(function(res){if(res&&res.ok)c.put(r,res.clone());return res;}).catch(function(){return c.match(r,{ignoreSearch:true}).then(function(hit){return hit||Response.error();});});}));return;}
