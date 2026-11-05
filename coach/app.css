@@ -204,3 +204,8 @@ header.tl-top .pill{padding:5px 9px}
 .tl-late-inner{width:min(420px,100%);background:#0b1330;border:1px solid var(--line);border-radius:18px 18px 12px 12px;padding:18px;margin-bottom:env(safe-area-inset-bottom)}
 .tl-late-banner{border-color:var(--amber)!important;background:rgba(255,184,28,.08)}
 @media (min-width:900px){.tl-cd-item{flex-basis:46%}.tl-late-sheet{align-items:center}}
+
+/* r94: board scroll workarounds */
+.tl-board-wrap{max-width:100%}
+.tl-board-wrap canvas{touch-action:pan-y}
+.tl-board-gutter{border-style:dashed}
