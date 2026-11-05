@@ -1,0 +1,25 @@
+const fs=require('fs'),path=require('path'),assert=require('assert');
+const root=path.resolve(__dirname,'../..');
+const app=fs.readFileSync(path.join(root,'coach','app.js'),'utf8');
+const m=app.match(/function vMore\(\)\{[\s\S]*?^function intro/m);
+assert.ok(m,'vMore present');
+const body=m[0];
+const iWho=body.indexOf('whoCard()');
+const iAcc=body.indexOf('accCard()');
+const iCodes=body.indexOf('vCodes()');
+const iGrid=body.indexOf('h+=GRIDH');
+const iFaq=body.indexOf('h+=faqCard()');
+assert.ok(iWho>=0&&iAcc>iWho&&iCodes>iAcc&&iGrid>iCodes&&iFaq>iGrid,
+  'More order must be who, site access, parent codes, then grid, FAQ last before Data');
+assert.ok(/id=\"tl-acc\"/.test(app),'Site access card has anchor');
+assert.ok(/id=\"tl-codes\"/.test(app),'Parent codes card has anchor');
+assert.ok(/function applySettings\(/.test(app),'settings.access merge protect present');
+assert.ok(/data-act=\"moreJump\"/.test(app),'Settings jump tiles present');
+assert.ok(/Where are the site access codes\?/.test(app),'FAQ covers site access');
+const ver=JSON.parse(fs.readFileSync(path.join(root,'version.json'),'utf8'));
+assert.strictEqual(ver.v,'93');
+const upd=fs.readFileSync(path.join(root,'update.js'),'utf8');
+assert.ok(/RUN='93'/.test(upd));
+const sw=fs.readFileSync(path.join(root,'coach','sw.js'),'utf8');
+assert.ok(/touchline-shell-v93/.test(sw)&&/app\.js\?v=93/.test(sw));
+console.log('access-codes-order: ok');
