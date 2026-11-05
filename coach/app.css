@@ -173,3 +173,8 @@ html{scroll-padding-bottom:calc(80px + env(safe-area-inset-bottom))}
 header.tl-top{gap:6px;flex-wrap:nowrap}
 header.tl-top .pill{padding:5px 9px}
 @media (max-width:440px){header.tl-top h1{display:none}}
+
+/* r89 board drag: chip is the drag handle (Chrome / dnd-kit). touch-action only on the chip so the page still scrolls elsewhere. */
+.bdg-chip{touch-action:none;-webkit-user-select:none;user-select:none;cursor:grab}
+.bdg-chip.bdg-src{cursor:grabbing;opacity:.45}
+#bdc.bdg-over{outline:3px solid var(--amber);outline-offset:2px;box-shadow:0 0 0 4px rgba(255,184,28,.25)}
