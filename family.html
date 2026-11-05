@@ -78,6 +78,27 @@ body.ps .clock,body.ps .mdbig{color:#8A5A00}
 body.ps header h1,body.ps h2{color:#0A0F24}
 body.ps .vi,body.ps .intro,body.ps .ans,body.ps details.pl{background:#fff;color:#0A0F24;border-color:#6B7699}body.ps .tag{color:#fff}
 @media (min-width:900px){.wrap{max-width:1040px;padding-left:24px;padding-right:24px}#root{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;align-items:start}#root>*{grid-column:1/-1}#root>.card{grid-column:auto}#root>.card:has(textarea),#root>.card:has(select),#root>.card:has(table),#root>.card:has(.mgrid),#root>.card:has(canvas),#root>.card:has(iframe){grid-column:1/-1}nav.tabs{justify-content:center;gap:12px}nav.tabs button{flex:0 1 190px}}
+
+/* r88 club shop */
+.tl-shop{padding-bottom:8px}
+.tl-shop-pitch p{margin:8px 0}
+.tl-shop-rail{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:4px 2px 12px;margin:0 -4px}
+.tl-shop-rail>div{flex:0 0 78%;max-width:320px;scroll-snap-align:start}
+@media (min-width:700px){.tl-shop-rail>div{flex-basis:42%;max-width:280px}}
+@media (min-width:1100px){.tl-shop-rail>div{flex-basis:30%;max-width:260px}}
+.tl-shop-card{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;min-height:0}
+.tl-shop-card img{width:100%;aspect-ratio:1;object-fit:cover;background:#0a1428;display:block}
+.tl-shop-meta{display:flex;flex-direction:column;gap:2px;padding:10px 12px 12px}
+.tl-shop-meta b{font-size:14px;line-height:1.25}
+.tl-shop-price{color:var(--amber);font-weight:800;font-size:15px}
+.tl-shop-was{color:var(--muted);font-weight:600;font-size:13px;margin-left:4px}
+.tl-shop-note{color:var(--muted);font-size:12px}
+.tl-shop-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:8px}
+.tl-shop-compact .tl-shop-meta b{font-size:12px}
+.tl-shop-compact .tl-shop-price{font-size:13px}
+@media (min-width:900px){.tl-shop-grid{grid-template-columns:repeat(4,1fr)}.tl-shop-compact{grid-template-columns:repeat(5,1fr)}}
+.tl-shop-empire .btn{text-align:center}
+
 </style>
 </head>
 <body>
@@ -110,7 +131,9 @@ var SPONH='<div style="display:flex;align-items:center;gap:5px;background:#fff;b
 var SPONX='';
 var SHOP='https://empirekits.co.uk/collections/wigan-junior-latics-blues',FT='https://fulltime.thefa.com/displayTeam.html?divisionseason=344446019&teamID=837121388',showKit=false,resImg='',resTitle='';
 function kitPage(){var k=[['home','Home kit'],['away','Away kit'],['gkgreen','Goalkeeper kit, green'],['gkgrey','Goalkeeper kit, grey'],['bundle','Player bundle']];
- return '<div class="card"><h2>Kit and club shop</h2><p class="small muted">Our kit is made by Empire Kits and sponsored by MFS Limited. Order through the club shop.</p><a class="btn pri block" href="'+SHOP+'" target="_blank" rel="noopener">Open the club shop</a></div>'+k.map(function(x){return '<div class="card"><h3 style="margin-top:0">'+x[1]+'</h3><img src="kit-'+x[0]+'.jpg" alt="'+x[1]+'" style="width:100%;border-radius:10px;display:block"></div>';}).join('')+'<button class="btn block" onclick="showKit=false;r();window.scrollTo(0,0)">Back</button>';}
+ var shop=window.TLShop?TLShop.html({root:'',kits:k}):'<div class="card"><p class="muted">Shop could not load. <a href="'+SHOP+'" target="_blank" rel="noopener">Open Empire Kits</a></p></div>';
+ try{if(navigator.serviceWorker&&navigator.serviceWorker.controller&&window.TLShop)navigator.serviceWorker.controller.postMessage({type:'prefetch',urls:TLShop.urls('')});}catch(e){}
+ return shop+'<button class="btn block" style="margin-top:12px" onclick="showKit=false;r();window.scrollTo(0,0)">Back</button>';}
 function decLink(u){try{var b=u.split(',')[1]||'';if(b.indexOf('TElOSzp7')!==0)return null;var s=decodeURIComponent(escape(atob(b)));var o=JSON.parse(s.slice(5));return /^https?:\/\//.test(o.u||'')?o:null;}catch(e){return null;}}
 function resBody(t,u){var L=decLink(u);if(L)return '<p>'+esc(L.n||'')+'</p><a class="btn pri block" href="'+esc(L.u)+'" target="_blank" rel="noopener">Open</a>';return '<img src="'+u+'" alt="'+esc(t)+'" style="width:100%;border-radius:10px;display:block"><p class="small muted">Pinch to zoom. Private to you and your son.</p>';}
 function openRes(t){resTitle=t;resImg='loading';r();call('f.res',{title:t}).then(function(d){resImg=d.dataUrl;r();}).catch(function(e){resImg='';alert(e.message);r();});}
@@ -386,7 +409,7 @@ function bodyMe(){var x=X(),cp=x.coachPhotos||{},h=cnCard()+rsCard('me')+(D&&D.r
  h+='<div class="card"><h2>2025/26 award winners</h2><p class="small">Players: Charlie Catterall<br>Parents: Andre Medeiros<br>Coaches: Tom Penistone and Jacob Daven</p></div>';
  h+='<div class="card"><h2>Your coaches</h2><div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">'+(cp.tim?'<img src="'+esc(cp.tim)+'" alt="Tim" style="width:72px;height:72px;border-radius:50%;object-fit:cover">':'')+'<div><b>Tim</b><div class="small muted">Manager</div></div></div><div style="display:flex;align-items:center;gap:12px"><img src="'+esc(cp.deano||'deano.jpg')+'" alt="Deano" style="width:72px;height:72px;border-radius:50%;object-fit:cover"><div><b>Deano</b><div class="small muted">Assistant coach</div></div></div></div>';
  h+='<div class="card"><h2>Contacts</h2><p class="small muted">Club, safeguarding and local FA contacts. Opens your email app.</p><button class="btn pri block" onclick="goTab(\'contacts\')">Open contacts</button><button class="btn block" style="margin-top:8px" onclick="goTab(\'faq\')">FAQ and help</button></div>';
- h+='<div class="card"><h2>Kit and club shop</h2><p class="small muted">See our kit and order from the club shop.</p><button class="btn pri block" onclick="showKit=true;r();window.scrollTo(0,0)">See the kit</button></div><div class="card"><h2>Fixtures, results and table</h2><p class="small muted">Opens our team page on FA Full Time. Sign in with your FA account if it asks.</p><a class="btn block" href="'+FT+'" target="_blank" rel="noopener">Open our team page</a><p class="small muted" style="margin-top:12px">Prefer an app? The FA Matchday app shows fixtures, results and league tables on your phone. Download it, then search for our team.</p><a class="btn block" href="https://www.englandfootball.com/explore/helpful-apps-and-websites/matchday" target="_blank" rel="noopener">Get the FA Matchday app</a></div>';
+ h+='<div class="card"><h2>Kit and club shop</h2><p class="small muted">Winter coats for the touchline, hats, training kit and our playing kit.</p><button class="btn pri block" onclick="showKit=true;r();window.scrollTo(0,0)">Open the club shop</button></div><div class="card"><h2>Fixtures, results and table</h2><p class="small muted">Opens our team page on FA Full Time. Sign in with your FA account if it asks.</p><a class="btn block" href="'+FT+'" target="_blank" rel="noopener">Open our team page</a><p class="small muted" style="margin-top:12px">Prefer an app? The FA Matchday app shows fixtures, results and league tables on your phone. Download it, then search for our team.</p><a class="btn block" href="https://www.englandfootball.com/explore/helpful-apps-and-websites/matchday" target="_blank" rel="noopener">Get the FA Matchday app</a></div>';
  h+='<div class="card"><h2>Ask a football question</h2><p class="small muted">Ask about a football term, practising at home, sleep, food and drink for sport, nerves and confidence. General advice only, no medical advice. Please do not type names or private details.</p><textarea id="q" placeholder="For example: what should we practise at home to improve first touch?"></textarea><button class="btn pri block" style="margin-top:10px" onclick="ask()"'+(askBusy?' disabled':'')+'>'+(askBusy?'Thinking':'Ask')+'</button>'+(askA?'<div class="ans">'+esc(askA).replace(/\n/g,'<br>')+'</div>':'')+'</div>';
  h+=tourCard(true);
  h+=pushCard();
@@ -726,9 +749,10 @@ function feedCard(){var f=(D&&D.feed)||[];if(!f.length)return '';return '<div cl
 function out(){CODE='';D=null;s(CK,'');s('fam.cache','');r();}
 if(CODE){var cc=null;try{cc=JSON.parse(g('fam.cache')||'null');}catch(x){}if(cc&&cc.c===CODE&&cc.d){D=cc.d;r();splashDone();}load();}else{r();splashDone();}
 </script>
-<script src="positions.js?v=87" defer></script>
-<script src="acct.js?v=87" defer></script>
-<script src="update.js?v=87" defer></script>
-<script src="pq.js?v=87" defer></script>
+<script src="positions.js?v=88" defer></script>
+<script src="acct.js?v=88" defer></script>
+<script src="shop.js?v=88" defer></script>
+<script src="update.js?v=88" defer></script>
+<script src="pq.js?v=88" defer></script>
 </body>
 </html>

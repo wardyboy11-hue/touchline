@@ -1,0 +1,19 @@
+/* r88 club shop */
+.tl-shop{padding-bottom:8px}
+.tl-shop-pitch p{margin:8px 0}
+.tl-shop-rail{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:4px 2px 12px;margin:0 -4px}
+.tl-shop-rail>div{flex:0 0 78%;max-width:320px;scroll-snap-align:start}
+@media (min-width:700px){.tl-shop-rail>div{flex-basis:42%;max-width:280px}}
+@media (min-width:1100px){.tl-shop-rail>div{flex-basis:30%;max-width:260px}}
+.tl-shop-card{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;min-height:0}
+.tl-shop-card img{width:100%;aspect-ratio:1;object-fit:cover;background:#0a1428;display:block}
+.tl-shop-meta{display:flex;flex-direction:column;gap:2px;padding:10px 12px 12px}
+.tl-shop-meta b{font-size:14px;line-height:1.25}
+.tl-shop-price{color:var(--amber);font-weight:800;font-size:15px}
+.tl-shop-was{color:var(--muted);font-weight:600;font-size:13px;margin-left:4px}
+.tl-shop-note{color:var(--muted);font-size:12px}
+.tl-shop-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:8px}
+.tl-shop-compact .tl-shop-meta b{font-size:12px}
+.tl-shop-compact .tl-shop-price{font-size:13px}
+@media (min-width:900px){.tl-shop-grid{grid-template-columns:repeat(4,1fr)}.tl-shop-compact{grid-template-columns:repeat(5,1fr)}}
+.tl-shop-empire .btn{text-align:center}
