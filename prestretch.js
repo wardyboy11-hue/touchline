@@ -105,10 +105,10 @@ function openSheet(){
    enqueue('f.prestretch.set',prog);
    if(areas.indexOf('none')<0)enqueue('f.niggle',prog);
    close();
-   location.href='stretch/index.html?mode=pregame&v=90&back='+encodeURIComponent(location.pathname+(location.search||''));
+   location.href='stretch/index.html?mode=pregame&v=92&back='+encodeURIComponent(location.pathname+(location.search||''));
   };
   var rp=ov.querySelector('#tl-pre-replay');
-  if(rp)rp.onclick=function(){close();location.href='stretch/index.html?mode=pregame&v=90&back='+encodeURIComponent(location.pathname+(location.search||''));};
+  if(rp)rp.onclick=function(){close();location.href='stretch/index.html?mode=pregame&v=92&back='+encodeURIComponent(location.pathname+(location.search||''));};
  }
  function close(){if(ov&&ov.parentNode)ov.parentNode.removeChild(ov);}
  document.body.appendChild(ov);paint();
@@ -119,7 +119,7 @@ function cardExtra(){
  h+='<p class="small muted" style="margin-top:6px">2-minute dynamic warm-up. Tell us any niggles (chips only), we weight the sequence, and save it on your profile to replay.</p>';
  if(prog&&prog.ids&&prog.ids.length){
   var labs=(prog.areas||[]).map(function(k){for(var i=0;i<AREAS.length;i++)if(AREAS[i].k===k)return AREAS[i].lab;return k;}).join(', ');
-  h+='<p class="small" style="margin-top:6px">Saved programme'+(labs?' · '+E(labs):'')+'. <a href="stretch/index.html?mode=pregame&v=90&back='+encodeURIComponent(location.pathname)+'">Replay</a></p>';
+  h+='<p class="small" style="margin-top:6px">Saved programme'+(labs?' · '+E(labs):'')+'. <a href="stretch/index.html?mode=pregame&v=92&back='+encodeURIComponent(location.pathname)+'">Replay</a></p>';
  }
  return h;
 }
@@ -133,7 +133,7 @@ function profileNiggleCard(forChild){
   '<p class="small muted">Private. Only you, your family and the coaches. Not shown to other families.</p>'+
   '<p><b>'+E(shirt)+E(labs.join(', '))+'</b></p>'+
   '<p class="small" style="margin:8px 0;padding:8px 10px;border-radius:10px;background:rgba(248,113,113,.12)"><b>If it hurts, stop and tell a coach.</b></p>'+
-  '<a class="btn block" href="stretch/index.html?mode=pregame&v=90&back='+encodeURIComponent(location.pathname)+'">Open pre-game stretch</a></div>';
+  '<a class="btn block" href="stretch/index.html?mode=pregame&v=92&back='+encodeURIComponent(location.pathname)+'">Open pre-game stretch</a></div>';
 }
 if(!document.getElementById('tl-pre-css')){
  var st=document.createElement('style');st.id='tl-pre-css';
