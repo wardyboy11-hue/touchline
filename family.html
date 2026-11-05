@@ -99,7 +99,25 @@ body.ps .vi,body.ps .intro,body.ps .ans,body.ps details.pl{background:#fff;color
 @media (min-width:900px){.tl-shop-grid{grid-template-columns:repeat(4,1fr)}.tl-shop-compact{grid-template-columns:repeat(5,1fr)}}
 .tl-shop-empire .btn{text-align:center}
 
+
+/* r90 countdown rail and matchday screen */
+.tl-cd-rail{padding:12px}
+.tl-cd-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.tl-cd-row{display:flex;gap:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+.tl-cd-item{flex:0 0 78%;max-width:280px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:12px}
+.tl-cd-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--amber);margin-bottom:4px}
+.tl-cd-title{font-weight:700;font-size:16px;margin-bottom:4px}
+.tl-cd-left{font-size:26px;margin:4px 0}
+.tl-cd-meta{font-size:13px;opacity:.85;margin-bottom:8px}
+.tl-cd-act .btn{min-height:44px}
+.tl-md-screen{position:fixed;inset:0;z-index:100000;background:linear-gradient(165deg,#021945 0%,#0b1330 55%,#06102B 100%);display:flex;align-items:center;justify-content:center;padding:20px;transition:opacity .35s}
+.tl-md-screen.off{opacity:0;pointer-events:none}
+.tl-md-inner{width:min(420px,100%);background:rgba(255,255,255,.06);border:2px solid var(--amber);border-radius:18px;padding:22px 18px;box-shadow:0 12px 40px rgba(0,0,0,.45)}
+.tl-md-greet{font-size:18px;font-weight:600;margin:10px 0 0;color:#fff}
+@media (min-width:900px){.tl-cd-item{flex-basis:46%}}
+
 </style>
+<script src="cd.js?v=90"></script>
 </head>
 <body>
 <div id="splash"><div class="spw"><svg viewBox="0 0 240 240" id="sprays"></svg><img src="badge.png" alt=""></div><p>Welcome to <b>Wigan Junior Latics Blues U15</b> Touchline Hub</p><div class="spn"><span>Proudly sponsored by</span><img src="coach/mfs.png" alt="MFS Limited"></div></div>
@@ -452,9 +470,18 @@ function travelLinks(m){var q=dest(m);if(!q)return '';return '<div class="row"><
 function viBox(m){var v=m.vi;if(!v||(!v.pc&&!v.pk&&!v.tp))return '<div class="vi"><span class="small muted">No parking tip for this ground yet. If you find a good one, tell Tim or Deano and we will add it.</span></div>';
  return '<div class="vi">'+(v.pc?'<div>Sat nav postcode: <b>'+esc(v.pc)+'</b></div>':'')+(v.pk?'<div>Parking: '+esc(v.pk)+'</div>':'')+(v.tp?'<div>Good to know: '+esc(v.tp)+'</div>':'')+'<div class="small muted" style="margin-top:4px">Tips from public information and local knowledge. Check before you travel.</div></div>';}
 function venueBlock(m){if(!(m.venue||(m.vi&&m.vi.pc)))return '<h3>Getting there</h3><p class="small muted">Venue and parking to be confirmed. This page updates as soon as we know.</p>';return '<h3>Getting there</h3>'+viBox(m)+travelLinks(m);}
+
+function famCdItems(){var x=X(),td=today(),items=[],nx=(x.fixtures||[]).filter(function(m){return !m.done&&m.date>=td&&!m.pp;})[0];
+ if(nx)items.push({kind:'game',date:nx.date,ko:nx.ko,opp:nx.opp,ha:nx.ha,venue:nx.venue||nx.addr,go:'games'});
+ var tr=(D.posts||[]).filter(function(p){return (p.type==='train'||p.type==='training')&&p.date>=td;}).sort(function(a,b){return a.date<b.date?-1:1;})[0];
+ if(tr)items.push({kind:'train',date:tr.date,time:tr.time||'19:00',title:tr.title||'Training',venue:tr.place,go:'train'});
+ return items;}
+function famShirtNum(){if(D&&D.role==='parent'&&CHD&&CHD.num)return String(CHD.num);if(D&&D.num)return String(D.num);if(SELF&&SELF.num)return String(SELF.num);return '';}
+function famMatchdayMaybe(){try{if(!window.TLCD||!D)return;var x=X(),td=today();var nx=(x.fixtures||[]).filter(function(m){return !m.done&&m.date===td&&!m.pp;})[0];if(!nx)return;if(D.role==='parent')loadChild();TLCD.showMatchday(nx,{role:D.role||'parent',anim:'12_352_in_transition',animHref:'coach/anim/12_352_in_transition.html?v=90',onGo:function(){try{goTab('home');}catch(e){}},onCard:function(){try{goTab('home');}catch(e){}}});}catch(e){}}
+
 function todayCard(){var x=X(),td=today();var pend=(D.posts||[]).filter(function(p){return p.date>=td&&!D.mine[p.id];}).sort(function(a,b){return a.date<b.date?-1:1;})[0];
  var nx=x.fixtures.filter(function(m){return !m.done&&m.date>=td&&!m.pp;})[0];var who=D.role==='player'?'you':esc(D.first);
- var md=nx&&nx.date===td;var h='';
+ var md=nx&&nx.date===td;var h='';try{if(window.TLCD){if(D&&D.role==='parent')loadChild();h+=TLCD.rail(famCdItems());}}catch(e){}
  if(md){h+='<div class="card today md"><span class="tag" style="background:#FFB81C;color:#1b1200">Match day</span><h2 style="margin-top:8px">'+(nx.ha==='A'?'at ':'v ')+esc(nx.opp)+'</h2><p>Kick off <b>'+esc(nx.ko||'TBC')+'</b>'+(meetBy(nx.ko)?'. Please be there by <b>'+meetBy(nx.ko)+'</b>.':'')+'</p>'+venueBlock(nx)+'<h3>Need us?</h3><p class="small">Running late or stuck in traffic? Use Match day help below. Lifts are on the Games tab.</p><div class="row"><button class="btn" onclick="goTab(\'games\')">Games and lifts</button><button class="btn" onclick="document.getElementById(\'mdh\')&&document.getElementById(\'mdh\').scrollIntoView({behavior:\'smooth\'})">Match day help</button></div></div>';}
  if(pend){var fx=pend.type==='match'?x.fixtures.filter(function(m){return m.date===pend.date&&!m.done;})[0]:null;var pl=pend.place||(fx&&(fx.venue))||'';
   h+='<div class="card today"><span class="tag">Needs your answer</span><h2 style="margin-top:8px">'+esc(pend.title)+'</h2><p><b>'+esc(nice(pend.date))+'</b>'+(pend.time?', '+esc(pend.time):'')+(pl?'<br>'+esc(pl):'')+'</p><h3>'+(pend.type==='match'?(D.role==='player'?'Playing?':'Is '+who+' playing?'):(D.role==='player'?'Can you come?':'Can '+who+' come?'))+'</h3><div class="ybig"><button class="btn" style="background:#14532d;border-color:#4ADE80" onclick="ans(\''+pend.id+'\',\'Y\')">Yes</button><button class="btn" style="background:#7f1d33;border-color:#FB7185" onclick="ans(\''+pend.id+'\',\'N\')">No</button></div>'+(pend.type==='match'?'':'<button class="btn block" style="margin-top:8px" onclick="ans(\''+pend.id+'\',\'M\')">Maybe</button>')+''+(pl?'<div class="row"><a class="btn" target="_blank" rel="noopener" href="'+mapUrl(pl)+'">Directions</a><a class="btn" target="_blank" rel="noopener" href="'+wxUrl(pl)+'">Weather</a></div>':'')+'</div>';return h;}
@@ -679,7 +706,7 @@ function voteCards(){var V=D.vote||{},h=(D.role==='parent'?'<p class="small" sty
   h+='<div class="card" style="border-color:#FFB81C"><h2>'+x[1]+(v.label?': '+esc(v.label):'')+'</h2><p class="small muted">'+x[2]+' '+(x[0]==='motm'?'Pick one player. ':'Pick your top three: 3 points for first, 2 for second, 1 for third. ')+(D.role==='player'?'Not yourself.':'Not your own player.')+' Vote for effort, attitude and team play, not just goals.</p>'+(x[0]==='motm'?[0]:[0,1,2]).map(function(i){return '<label class="small">'+(x[0]==='motm'?'Your choice':pts[i])+'</label><select id="v_'+x[0]+i+'" style="width:100%;margin-bottom:8px"><option value="">Choose</option>'+v.cands.map(function(c){return '<option value="'+c.id+'"'+(m[i]===c.id?' selected':'')+'>'+esc(c.name)+'</option>';}).join('')+'</select>';}).join('')+'<button class="btn pri block" onclick="vote(\''+x[0]+'\')">Save my vote</button>'+(m.length===(x[0]==='motm'?1:3)?'<p class="small">Vote saved. You can change it until voting closes.</p>':'')+'</div>';});
  return h;}
 function vote(k){var n=k==='motm'?1:3;var p=[0,1,2].slice(0,n).map(function(i){return document.getElementById('v_'+k+i).value;});if(p.some(function(x){return !x;})||new Set(p).size!==n){alert(n===1?'Pick one player.':'Pick three different players, one for each place.');return;}call('f.vote',{kind:k,picks:p}).then(function(){return load();}).catch(function(e){alert(e.message);});}
-function load(){return call('f.home').then(function(d){D=d;D.at=Date.now();try{s('fam.cache',JSON.stringify({c:CODE,d:d}));}catch(x){}r();splashDone();}).catch(function(e){if(/code/i.test(e.message)){CODE='';s(CK,'');s('fam.cache','');D=null;msg=e.message;}else if(!D){msg=e.message;}r();splashDone();});}
+function load(){return call('f.home').then(function(d){D=d;D.at=Date.now();try{s('fam.cache',JSON.stringify({c:CODE,d:d}));}catch(x){}r();splashDone();setTimeout(famMatchdayMaybe,500);}).catch(function(e){if(/code/i.test(e.message)){CODE='';s(CK,'');s('fam.cache','');D=null;msg=e.message;}else if(!D){msg=e.message;}r();splashDone();});}
 var LC={open:false,num:'',who:'',st:''};
 function lostBox(){if(!LC.open)return '<p class="small"><a href="#" onclick="LC.open=true;r();return false">Lost your code?</a></p>';
  if(LC.st==='sent')return '<div class="card"><h2>Sent to Tim and Deano</h2><p>They will get your code to you in person or by the team chat. We never show a code on this page.</p></div>';
@@ -747,12 +774,12 @@ function pushRefresh(){try{if(!pushOK()||g('fam.push')!=='1'||Notification.permi
 function landVotes(){var V=(D&&D.vote)||{};if(!['motm','poty'].some(function(k){return V[k]&&V[k].open&&V[k].elig;}))return '';return voteCards().replace(/<div class="card"><h2>[^<]*<\/h2><p class="muted">[^<]*<\/p><\/div>/g,'');}
 function feedCard(){var f=(D&&D.feed)||[];if(!f.length)return '';return '<div class="card"><h2>From your coaches</h2>'+f.slice(0,6).map(function(x){return '<div style="margin:8px 0"><b>'+(x.u&&/^https:\/\//.test(x.u)?'<a target="_blank" rel="noopener" href="'+esc(x.u)+'">'+esc(x.t)+'</a>':esc(x.t))+'</b>'+(x.squad?' <span class="tag">Whole squad</span>':'')+(x.note?'<p class="small" style="margin:2px 0 0;white-space:pre-wrap">'+esc(x.note)+'</p>':'')+'</div>';}).join('')+'</div>';}
 function out(){CODE='';D=null;s(CK,'');s('fam.cache','');r();}
-if(CODE){var cc=null;try{cc=JSON.parse(g('fam.cache')||'null');}catch(x){}if(cc&&cc.c===CODE&&cc.d){D=cc.d;r();splashDone();}load();}else{r();splashDone();}
+if(CODE){var cc=null;try{cc=JSON.parse(g('fam.cache')||'null');}catch(x){}if(cc&&cc.c===CODE&&cc.d){D=cc.d;r();splashDone();setTimeout(famMatchdayMaybe,500);}load();}else{r();splashDone();}
 </script>
-<script src="positions.js?v=89" defer></script>
-<script src="acct.js?v=89" defer></script>
-<script src="shop.js?v=89" defer></script>
-<script src="update.js?v=89" defer></script>
-<script src="pq.js?v=89" defer></script>
+<script src="positions.js?v=90" defer></script>
+<script src="acct.js?v=90" defer></script>
+<script src="shop.js?v=90" defer></script>
+<script src="update.js?v=90" defer></script>
+<script src="pq.js?v=90" defer></script>
 </body>
 </html>

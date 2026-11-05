@@ -86,7 +86,7 @@ const state={ideas:{},players,matches:{},settings:{id:'main',half:35,subEvery:17
  const an=await c.textContent('body');
  T('animation list includes 3-5-2 in transition',/3-5-2 in transition/i.test(an));
  if(SHOTS){await c.screenshot({path:path.join(SHOTS,'r89_anim_352.png')});}
- await c.goto('http://localhost:'+PORT+'/coach/anim/12_352_in_transition.html?v=89');
+ await c.goto('http://localhost:'+PORT+'/coach/anim/12_352_in_transition.html?v=90');
  await c.waitForTimeout(1400);
  if(SHOTS){await c.screenshot({path:path.join(SHOTS,'r89_anim_preview.png')});}
  const errs=ce.filter(x=>!/privToday|favicon|Failed to load/i.test(x));
