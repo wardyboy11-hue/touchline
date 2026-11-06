@@ -57,7 +57,7 @@
       ctx.fillText(a.winnerNum || '#', W / 2, 356);
     }
     return new Promise(function (resolve) {
-      if (!a.photo) { badge(); words(); resolve(); return; }
+      if (!a.photo || String(a.photo).indexOf('data:image/jpeg;base64,') !== 0) { badge(); words(); resolve(); return; }
       var img = new Image();
       img.onload = function () {
         ctx.save();
@@ -122,11 +122,28 @@
       showFallback();
     }, 'image/png');
   }
+  function acceptLocal(award, dataUrl, confirmed) {
+    if (!award || !award.photoLocal || award.photoFrom === 'server') return { ok: false, photo: '', note: 'A photo from this phone is not used for this result.' };
+    if (!confirmed) return { ok: false, photo: '', note: 'Tick that you have checked this photo is allowed. Nothing is added until you do.' };
+    var u = String(dataUrl || '');
+    if (u.indexOf('data:image/jpeg;base64,') !== 0 || u.length < 30 || u.length > 400000) return { ok: false, photo: '', note: 'That file is not a JPEG the card can use.' };
+    return { ok: true, photo: u, note: 'This photo stays on this phone. It has not been uploaded and it has not been sent to the assistant.' };
+  }
+  function showLocal(award) {
+    var box = document.getElementById('tl-motm-local');
+    if (!box) return;
+    box.hidden = !(award && award.photoLocal && award.photoFrom !== 'server');
+  }
   function paint(award) {
     var canvas = document.getElementById('tl-motm-card');
     var note = document.getElementById('tl-motm-photo-note');
+    showLocal(award);
     if (!canvas || !award) return;
-    if (note) note.textContent = award.photo ? '' : (award.photoNote || 'No photo is cleared. The card shows the shirt number only. No picture has been made up.');
+    if (note) {
+      if (award.photo && award.photoFrom === 'local') note.textContent = 'This photo stays on this phone. It has not been uploaded and it has not been sent to the assistant.';
+      else if (award.photo) note.textContent = '';
+      else note.textContent = award.photoNote || 'No photo is cleared. The card shows the shirt number only. No picture has been made up.';
+    }
     drawCard(canvas, award);
   }
   function showTie(tied) {
@@ -158,7 +175,11 @@
     state.tie = null;
     if (tieBox) { tieBox.hidden = true; tieBox.innerHTML = ''; }
     var award = data.award || (data.closed ? data : null);
-    if (award && award.closed) { state.award = award; paint(award); }
+    if (award && award.closed) {
+      award.photoFrom = award.photo ? 'server' : '';
+      state.award = award;
+      paint(award);
+    }
   }
   function call(action, extra) {
     var body = Object.assign({ matchId: state.matchId }, extra || {});
@@ -180,6 +201,16 @@
     }
     if (!act && !resolveId) return;
     if (!state.matchId) state.matchId = t.getAttribute('data-match') || state.matchId;
+    if (t.id === 'tl-motm-local-clear') {
+      if (state.award && state.award.photoFrom === 'local') {
+        state.award.photo = '';
+        state.award.photoFrom = '';
+        paint(state.award);
+        var cleared = document.getElementById('tl-motm-photo-note');
+        if (cleared) cleared.textContent = 'The phone photo was removed. The card shows the shirt number only.';
+      }
+      return;
+    }
     if (act === 'share') {
       if (!state.award) return;
       var canvas = document.getElementById('tl-motm-card');
@@ -225,7 +256,7 @@
   function matchHtml(matchId) {
     state.matchId = matchId || state.matchId;
     setTimeout(boot, 0);
-    return '<div class="card" id="tl-motm-box"><h3>Close the vote</h3><p class="small" id="tl-motm-status">Checking who has voted.</p><div class="row wrap2"><button type="button" class="btn grow" data-motm-act="status" data-match="' + esc(state.matchId) + '">Check votes</button><button type="button" class="btn pri grow" data-motm-act="close" data-match="' + esc(state.matchId) + '">Close vote</button></div><div id="tl-motm-tie" hidden></div><canvas id="tl-motm-card" width="800" height="1000" style="width:100%;height:auto;border-radius:12px;margin-top:12px;background:#06102B"></canvas><p class="small" id="tl-motm-photo-note"></p><button type="button" class="btn block" data-motm-act="share" style="margin-top:8px;min-height:48px">Share to WhatsApp</button><p class="small muted">You pick the chat and press Send. Closing the vote does not send anything.</p><div id="tl-motm-fallback" hidden></div><button type="button" class="btn block" data-motm-act="reopen" style="margin-top:8px">Reopen vote</button></div>';
+    return '<div class="card" id="tl-motm-box"><h3>Close the vote</h3><p class="small" id="tl-motm-status">Checking who has voted.</p><div class="row wrap2"><button type="button" class="btn grow" data-motm-act="status" data-match="' + esc(state.matchId) + '">Check votes</button><button type="button" class="btn pri grow" data-motm-act="close" data-match="' + esc(state.matchId) + '">Close vote</button></div><div id="tl-motm-tie" hidden></div><canvas id="tl-motm-card" width="800" height="1000" style="width:100%;height:auto;border-radius:12px;margin-top:12px;background:#06102B"></canvas><p class="small" id="tl-motm-photo-note"></p><div id="tl-motm-local" hidden><p class="small">The consent list is not on the server, so no stored photo is used. Add a JPEG you have already checked is allowed. It stays on this phone. It is not uploaded and it is not sent to the assistant.</p><label class="small" style="display:flex;gap:8px;align-items:center;min-height:44px"><input type="checkbox" id="tl-motm-local-ok"> I have checked this photo is allowed for the team.</label><input type="file" id="tl-motm-local-file" accept="image/jpeg,.jpg,.jpeg" style="min-height:44px"><button type="button" class="btn block" id="tl-motm-local-clear" style="margin-top:8px;min-height:44px">Remove the phone photo</button></div><button type="button" class="btn block" data-motm-act="share" style="margin-top:8px;min-height:48px">Share to WhatsApp</button><p class="small muted">You pick the chat and press Send. Closing the vote does not send anything.</p><div id="tl-motm-fallback" hidden></div><button type="button" class="btn block" data-motm-act="reopen" style="margin-top:8px">Reopen vote</button></div>';
   }
   function dashHtml() {
     return '<div class="card" id="tl-awards"><h3>Man of the match history</h3><p class="small muted">Coaches only. Totals by fixture and by season. No automatic player of the year.</p><button type="button" class="btn block" id="tl-awards-load">Show awards</button><div id="tl-awards-body"></div></div>';
@@ -239,7 +270,44 @@
     });
   }
   document.addEventListener('click', onClick);
-  w.TLMotm = { label: label, caption: caption, drawCard: drawCard, share: share, matchHtml: matchHtml, dashHtml: dashHtml, boot: boot };
+  document.addEventListener('change', function (e) {
+    var t = e.target;
+    if (!t || !state.award) return;
+    if (t.id === 'tl-motm-local-ok') {
+      if (!t.checked && state.award.photoFrom === 'local') {
+        state.award.photo = '';
+        state.award.photoFrom = '';
+        paint(state.award);
+        var gone = document.getElementById('tl-motm-photo-note');
+        if (gone) gone.textContent = 'The phone photo was removed. The card shows the shirt number only.';
+      }
+      return;
+    }
+    if (t.id !== 'tl-motm-local-file') return;
+    var file = t.files && t.files[0];
+    if (!file) return;
+    var confirmed = !!(document.getElementById('tl-motm-local-ok') && document.getElementById('tl-motm-local-ok').checked);
+    var reader = new FileReader();
+    reader.onload = function () {
+      var res = acceptLocal(state.award, reader.result, confirmed);
+      var note = document.getElementById('tl-motm-photo-note');
+      if (!res.ok) {
+        if (state.award.photoFrom === 'local') {
+          state.award.photo = '';
+          state.award.photoFrom = '';
+          paint(state.award);
+        }
+        if (note) note.textContent = res.note;
+        return;
+      }
+      state.award.photo = res.photo;
+      state.award.photoFrom = 'local';
+      if (note) note.textContent = res.note;
+      paint(state.award);
+    };
+    reader.readAsDataURL(file);
+  });
+  w.TLMotm = { label: label, caption: caption, drawCard: drawCard, share: share, acceptLocal: acceptLocal, matchHtml: matchHtml, dashHtml: dashHtml, boot: boot };
   var bootedFor = '';
   setInterval(function () {
     if (!document.getElementById('tl-motm-card') || !state.matchId || typeof w.tlCall !== 'function') return;

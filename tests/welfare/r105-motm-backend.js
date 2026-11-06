@@ -22,14 +22,20 @@ const players = {
 let votes = [];
 const photos = {};
 const consent = [];
+const outbound = [];
+let consentMode = 'list';
 const ctx = {
   tab_: sheet,
   players_: function () { return players; },
   votes_: function () { return votes.slice(); },
   allDocs_: function () { return { matches: [{ id: 'fx1', date: '2026-11-07', opp: 'Rivals Athletic', status: 'done' }] }; },
   photo_: function (id) { return photos[id] || ''; },
-  consentSeason_: function () { return '2026/27'; },
-  consentRows_: function () { return consent.slice(); },
+  consentList_: function () {
+    if (consentMode === 'throw') throw new Error('sheet down');
+    if (consentMode === 'missing') throw new Error('consentList_ should not be called when it is removed');
+    return { season: '2026/27', at: 1, rows: consent.slice() };
+  },
+  UrlFetchApp: { fetch: function (url, opt) { outbound.push(String(url) + '\n' + JSON.stringify(opt || {})); return { getResponseCode: function () { return 200; }, getContentText: function () { return '{}'; } }; } },
   auth_: function (code) { if (code !== 'coach-test') throw new Error('That code did not work.'); },
   Utilities: { getUuid: function () { return 'id-' + (sheets.MotmAward || []).length + '-xxxx'; } },
   Date: Date, JSON: JSON, Math: Math, String: String, Object: Object, Number: Number
@@ -109,15 +115,47 @@ T('season total counts the latest result only', list.seasons.some(function (s) {
 T('family code cannot read awards', /code did not work/.test(call("motmAwards_({code:'parent-test'})").e || ''));
 T('family code cannot close', /code did not work/.test(call("motmClose_({code:'parent-test',matchId:'fx1',mode:'manual'})").e || ''));
 
-photos.p2 = 'data:image/jpeg;base64,abc';
-consent.push({ pid: 'p2', season: '2026/27', photo: 'yes' });
+const jpeg = 'data:image/jpeg;base64,' + 'abc'.repeat(20);
+photos.p2 = jpeg;
+consent.push({ pid: 'p2', photo: 'yes', med: 'SECRET-NOTE', c1: { n: 'Pat', p: '07000999888', r: 'Mum' } });
 let withPhoto = call("motmStatus_({code:'coach-test',matchId:'fx1'})").v;
 if (!withPhoto || !withPhoto.award) console.log('photo status', withPhoto);
-T('cleared photo is returned to the coach', withPhoto && withPhoto.award && withPhoto.award.photo.indexOf('data:image/jpeg;base64,') === 0);
+T('approved photo is the stored jpeg', withPhoto && withPhoto.award && withPhoto.award.photo === jpeg && withPhoto.award.photoLocal === false);
+T('approved photo does not carry the consent card', !/SECRET-NOTE|07000999888/.test(JSON.stringify(withPhoto)));
+consent[0].photo = 'team';
+let teamPhoto = call("motmStatus_({code:'coach-test',matchId:'fx1'})").v;
+T('team consent also selects the stored jpeg', teamPhoto.award.photo === jpeg && teamPhoto.award.photoLocal === false);
 consent[0].photo = 'no';
 let blocked = call("motmStatus_({code:'coach-test',matchId:'fx1'})").v;
-T('refused photo is not invented', blocked.award && blocked.award.photo === '' && /shirt number only/.test(blocked.award.photoNote));
+T('rejected consent returns no photo', blocked.award && blocked.award.photo === '' && blocked.award.photoLocal === false && /shirt number only/.test(blocked.award.photoNote));
+T('a stored jpeg is not used after rejection', blocked.award.photo !== jpeg);
 T('status hides who voted', !JSON.stringify(blocked).match(/parent:/));
+consent.length = 0;
+let missing = call("motmStatus_({code:'coach-test',matchId:'fx1'})").v;
+T('missing consent fails closed', missing.award.photo === '' && missing.award.photoLocal === false && /No photo choice/.test(missing.award.photoNote));
+photos.p2 = 'https://touchline.example/p2.jpg';
+consent.push({ pid: 'p2', photo: 'yes' });
+let remote = call("motmStatus_({code:'coach-test',matchId:'fx1'})").v;
+T('a remote photo address is not used', remote.award.photo === '' && /no approved photo/i.test(remote.award.photoNote));
+consentMode = 'throw';
+let unread = call("motmStatus_({code:'coach-test',matchId:'fx1'})").v;
+T('a consent read error fails closed', unread.award.photo === '' && unread.award.photoLocal === false && /could not be read/.test(unread.award.photoNote));
+consentMode = 'missing';
+ctx.consentList_ = undefined;
+photos.p2 = jpeg;
+let absent = call("motmStatus_({code:'coach-test',matchId:'fx1'})").v;
+T('missing consent function does not use the stored photo', absent.award.photo === '' && absent.award.photoLocal === true && /not uploaded/.test(absent.award.photoNote));
+T('no photo or private note was sent off the script', outbound.length === 0);
+const addon = fs.readFileSync(path.resolve(__dirname, '../../docs/r105-motm-addon.gs'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+T('addon does not call the missing consent helpers', !/consentRows_\s*\(|consentSeason_\s*\(/.test(addon) && /consentList_\s*\(/.test(addon));
+ctx.consentList_ = function () { return { season: '2026/27', rows: [{ pid: 'p2', photo: 'yes', med: 'SECRET-NOTE' }] }; };
+photos.p2 = jpeg;
+seedFamilies(['p1']);
+votes.push({ kind: 'motm', key: 'fx9', voter: 'parent:p1', cand: 'p2' });
+let auto = call("motmAuto_('fx9')").v;
+T('automatic close does not hand a photo back', auto && auto.closed === true && auto.photo === '' && !/SECRET-NOTE|data:image/.test(JSON.stringify(auto)));
+let coachStill = call("motmStatus_({code:'coach-test',matchId:'fx9'})").v;
+T('the coach card still receives the approved photo', coachStill.award && coachStill.award.photo === jpeg);
 
 console.log(ok + ' passed, ' + bad + ' failed');
 process.exit(bad ? 1 : 0);

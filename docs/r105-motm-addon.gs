@@ -28,8 +28,20 @@
  *    receives the tally, the voter list, or the photo.
  *
  * 4. Paste the functions below at the end of the script. They call helpers
- *    v36 already has: auth_, tab_, players_, votes_, allDocs_, photo_,
- *    consentRows_, consentSeason_. Do not paste replacements for those.
+ *    v36 already has: auth_, tab_, players_, votes_, allDocs_, and photo_.
+ *    Do not paste replacements for those. Do not paste consentRows_ or
+ *    consentSeason_. Production v36 does not define them. Those names live
+ *    only inside consent.gs, which may not be in the live project.
+ *
+ *    Photo consent uses the coach function consentList_ when that function
+ *    is already in the project. It returns { season, rows: [{ pid, photo }] }
+ *    and photo is yes, team, or no. This addon does not create a consent
+ *    sheet and does not invent a photo choice. If consentList_ is missing,
+ *    the card does not use a stored photo. The coach phone can then add a
+ *    JPEG the coach has already checked is allowed. That file stays on the
+ *    phone. It is not posted back to this script and it is not sent to the
+ *    assistant. If consentList_ exists and the choice is missing or no, the
+ *    card shows the shirt number only. A stored jpeg is not a substitute.
  *
  * 5. Deploy: Manage deployments, edit the current web app, New version.
  *    Do not create a new deployment. The website release 105 is not live
@@ -143,18 +155,21 @@ function motmFixture_(matchId) {
 }
 
 function motmPhoto_(pid) {
-  var choice = '';
-  try {
-    var s = consentSeason_();
-    consentRows_().forEach(function (r) { if (String(r.pid) === String(pid) && String(r.season) === String(s)) choice = String(r.photo || ''); });
-  } catch (e) {
-    return { photo: '', photoNote: 'Photo consent could not be read, so no picture is used.' };
+  if (typeof consentList_ !== 'function') {
+    return { photo: '', photoNote: 'The consent list is not on this script, so no stored photo is used. On this phone you can add a JPEG you have already checked is allowed. It stays on this phone. It is not uploaded and it is not sent to the assistant.', photoLocal: true };
   }
-  if (choice !== 'yes' && choice !== 'team') return { photo: '', photoNote: 'No photo is cleared for the team, so the card shows the shirt number only.' };
+  var list;
+  try { list = consentList_(); } catch (e) {
+    return { photo: '', photoNote: 'The consent list could not be read, so no picture is used.', photoLocal: false };
+  }
+  var choice = '', rows = (list && list.rows) || [];
+  rows.forEach(function (r) { if (r && String(r.pid) === String(pid)) choice = String(r.photo || ''); });
+  if (!choice) return { photo: '', photoNote: 'No photo choice is on file for this player, so the card shows the shirt number only.', photoLocal: false };
+  if (choice !== 'yes' && choice !== 'team') return { photo: '', photoNote: 'Photo consent for this player is no, so the card shows the shirt number only.', photoLocal: false };
   var u = '';
-  try { u = String(photo_(pid) || ''); } catch (e2) { u = ''; }
-  if (u.indexOf('data:image/jpeg;base64,') !== 0) return { photo: '', photoNote: 'No approved photo is on file. The card does not invent a picture.' };
-  return { photo: u, photoNote: '' };
+  try { if (typeof photo_ === 'function') u = String(photo_(pid) || ''); } catch (e2) { u = ''; }
+  if (u.indexOf('data:image/jpeg;base64,') !== 0) return { photo: '', photoNote: 'Photo consent is yes, but no approved photo is on file. The card does not invent a picture.', photoLocal: false };
+  return { photo: u, photoNote: '', photoLocal: false };
 }
 
 function motmShape_(row, repeat) {
@@ -178,7 +193,8 @@ function motmShape_(row, repeat) {
     winnerNum: row.winnerNum,
     totals: totals,
     photo: photo.photo,
-    photoNote: photo.photoNote
+    photoNote: photo.photoNote,
+    photoLocal: !!photo.photoLocal
   };
 }
 
@@ -274,7 +290,11 @@ function motmClose_(b) {
 }
 
 function motmAuto_(matchId) {
-  try { return motmCloseCore_({ matchId: matchId, mode: 'auto' }); } catch (e) { return { ok: false, closed: false }; }
+  try {
+    var r = motmCloseCore_({ matchId: matchId, mode: 'auto' });
+    if (r) { r.photo = ''; r.photoNote = ''; r.photoLocal = false; }
+    return r;
+  } catch (e) { return { ok: false, closed: false }; }
 }
 
 function motmReopen_(b) {
