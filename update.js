@@ -5,7 +5,7 @@
    r87: during a live match or a running session (window.tlHold) it never reloads by itself. It shows an
    Update ready button instead and you tap it when you are ready. After a refresh the page address brings you back. */
 (function(){
-var RUN='100',KEY='tl.ver.try',GAP=5*60*1000;
+var RUN='101',KEY='tl.ver.try',GAP=5*60*1000;
 var hiddenAt=0;
 function g(k){try{return localStorage.getItem(k)||'';}catch(e){return '';}}
 function s(k,v){try{localStorage.setItem(k,v);}catch(e){}}
