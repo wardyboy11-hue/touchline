@@ -229,3 +229,24 @@ header.tl-top .pill{padding:5px 9px}
 .tl-ib{flex:none;width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;border-radius:10px;border:1px solid var(--line);background:var(--card2);color:var(--ink);font-size:18px;text-decoration:none;cursor:pointer}
 .tl-ib.on{background:var(--purple);border-color:var(--purple2);color:var(--amber)}
 body.ps .tl-tile,body.ps .tl-sc,body.ps .tl-rl,body.ps .tl-rt{color:inherit}
+
+/* r100 poll bars and home bands */
+.tl-jump{position:sticky;top:0;z-index:40;display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:8px 0 6px;margin:0 0 4px;background:linear-gradient(var(--bg),rgba(6,16,43,.96));scrollbar-width:none}
+.tl-jump::-webkit-scrollbar{display:none}
+.tl-jump a{flex:0 0 auto;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);text-decoration:none;font-size:13px;font-weight:700;min-height:48px;display:inline-flex;align-items:center}
+.tl-sec{margin:10px 0 14px}
+.tl-sec>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:48px;padding:4px 2px;font-weight:800;font-size:17px}
+.tl-sec>summary::-webkit-details-marker{display:none}
+.tl-sec>summary:after{content:'';width:10px;height:10px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg)}
+.tl-sec[open]>summary:after{transform:rotate(-135deg);margin-top:6px}
+.tl-poll{margin:8px 0}
+.tl-poll .row{display:flex;align-items:center;gap:8px;margin:6px 0}
+.tl-poll .lab{width:100px;font-size:13px;font-weight:700;flex:0 0 auto}
+.tl-poll .track{flex:1;height:14px;background:#0A173A;border-radius:999px;overflow:hidden;border:1px solid var(--line)}
+.tl-poll .fill{height:100%;border-radius:999px}
+.tl-poll .pct{width:70px;text-align:right;font-size:12px;color:var(--muted);flex:0 0 auto}
+.tl-week{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 8px}
+.tl-week .tl-week-item{flex:0 0 auto;min-width:132px;max-width:180px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.tl-week .d{font-size:12px;color:var(--muted);font-weight:700}
+.tl-week .t{font-weight:800;margin-top:4px}
+.tl-week .m{font-size:12px;color:var(--muted);margin-top:4px}
