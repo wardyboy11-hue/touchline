@@ -1,6 +1,6 @@
-/* Touchline share helper. Vanilla JS, works offline once cached.
-   navigator.share when available; otherwise a small sheet with Copy link, WhatsApp and Email.
-   Paid or copyrighted items: pass the source URL only. Coach-only items: set coachOnly true. */
+/* Touchline share helper. Item Share opens the in-app recipient selector.
+   The phone share sheet is not the default. WhatsApp is only offered later,
+   and only for a public team page. Coach-only items are refused. */
 (function (w) {
   'use strict';
 
@@ -105,26 +105,22 @@
     }, 30);
   }
 
-  function share(opts) {
+  function inApp(opts) {
     opts = opts || {};
-    if (opts.blocked) { toast(opts.blocked); return Promise.resolve(); }
-    var title = opts.title || 'Touchline';
-    var text = opts.text || '';
-    var url = absUrl(opts.url);
-    var note = opts.note || '';
-    if (opts.coachOnly) {
-      note = (note ? note + ' ' : '') + 'Coach only. Do not share with parents or players.';
-    }
-    var body = text + (note ? ('\n' + note) : '');
-    var payload = { title: title, text: body, url: url };
-    if (typeof navigator.share === 'function') {
-      return navigator.share(payload).catch(function (err) {
-        if (err && err.name === 'AbortError') return;
-        openFallback({ title: title, text: body, url: url, note: note });
+    if (opts.blocked) { toast(opts.blocked); return; }
+    if (opts.coachOnly) { toast('This stays with the coaches. It is not sent to players or parents.'); return; }
+    if (w.TLInShare && typeof w.TLInShare.open === 'function') {
+      w.TLInShare.open({
+        kind: opts.kind || '',
+        ref: opts.ref || '',
+        title: opts.title || 'Touchline',
+        path: opts.path || opts.url || '',
+        url: opts.url || '',
+        coachOnly: false
       });
+      return;
     }
-    openFallback({ title: title, text: body, url: url, note: note });
-    return Promise.resolve();
+    toast('Share in Touchline is still loading. Nothing was sent.');
   }
 
   function pageUrl(hash) {
@@ -168,7 +164,7 @@
       if (pageBtn) {
         e.preventDefault();
         var o = typeof getPageOpts === 'function' ? (getPageOpts() || {}) : (getPageOpts || {});
-        share(Object.assign({ title: document.title || 'Touchline', text: '', url: pageUrl() }, o));
+        inApp(Object.assign({ title: document.title || 'Touchline', url: pageUrl(), kind: 'guide' }, o));
         return;
       }
       var item = e.target.closest('[data-tlshare]');
@@ -179,16 +175,20 @@
         title: item.getAttribute('data-title') || 'Touchline',
         text: item.getAttribute('data-text') || '',
         url: item.getAttribute('data-url') || pageUrl(),
+        path: item.getAttribute('data-path') || item.getAttribute('data-url') || pageUrl(),
+        kind: item.getAttribute('data-kind') || '',
+        ref: item.getAttribute('data-ref') || '',
         note: item.getAttribute('data-note') || '',
         coachOnly: item.getAttribute('data-coach-only') === '1'
       };
       if (item.getAttribute('data-blocked')) o.blocked = item.getAttribute('data-blocked');
-      share(o);
+      inApp(o);
     });
   }
 
   w.TLShare = {
-    share: share,
+    share: inApp,
+    inApp: inApp,
     copy: copyText,
     pageUrl: pageUrl,
     clipDeepLink: clipDeepLink,

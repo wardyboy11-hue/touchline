@@ -3,7 +3,7 @@ const {chromium,devices}=require('playwright');const http=require('http'),fs=req
 const root=path.resolve(__dirname,'../..'),PORT=+process.env.PORT||8813,SHOTS=process.env.SHOTS||'/workspace/shots',PRE=process.env.PRE||'r103_';
 fs.mkdirSync(SHOTS,{recursive:true});
 const MT={'.js':'text/javascript','.html':'text/html','.json':'application/json','.css':'text/css','.png':'image/png','.webmanifest':'application/json','.webp':'image/webp'};
-const srv=http.createServer((q,r)=>{let u=decodeURIComponent(q.url.split('?')[0]);if(u==='/version.json'){r.writeHead(200,{'content-type':'application/json'});r.end('{"v":"106"}');return;}let f=path.join(root,u);if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,d)=>{if(e){r.writeHead(404);r.end();return;}r.writeHead(200,{'content-type':MT[path.extname(f)]||'application/octet-stream'});r.end(d);});}).listen(PORT);
+const srv=http.createServer((q,r)=>{let u=decodeURIComponent(q.url.split('?')[0]);if(u==='/version.json'){r.writeHead(200,{'content-type':'application/json'});r.end('{"v":"108"}');return;}let f=path.join(root,u);if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,d)=>{if(e){r.writeHead(404);r.end();return;}r.writeHead(200,{'content-type':MT[path.extname(f)]||'application/octet-stream'});r.end(d);});}).listen(PORT);
 const BASE='http://localhost:'+PORT;let ok=0,bad=0;const T=(n,c)=>{console.log((c?'PASS ':'FAIL ')+n);c?ok++:bad++;};
 const H={'access-control-allow-origin':'*'};
 function errsOf(p){const e=[];p.on('pageerror',x=>e.push('pageerror: '+x.message));p.on('console',m=>{if(m.type()==='error'&&!/Failed to load resource|favicon|net::ERR|service.?worker/i.test(m.text()))e.push('console: '+m.text());});return e;}
@@ -19,7 +19,7 @@ function errsOf(p){const e=[];p.on('pageerror',x=>e.push('pageerror: '+x.message
    if(a.action==='f.clips')return r.fulfill({status:200,contentType:'application/json',headers:H,body:JSON.stringify({ok:true,data:clips})});
    if(a.action==='f.home')return r.fulfill({status:200,contentType:'application/json',headers:H,body:JSON.stringify({ok:true,data:{first:'Pat',role:'player',num:'7',mine:{},evMine:{},evAtt:{},at:Date.now(),posts:[],att:{},vote:{motm:{open:false},poty:{open:false}},x:{fixtures:[],news:[],events:[],lifts:[],media:[],contacts:[]}}})});
    r.fulfill({status:200,contentType:'application/json',headers:H,body:JSON.stringify({ok:true,data:{}})});});
-  await c.addInitScript(()=>{localStorage.setItem('fam.code','p');localStorage.setItem('fam.ok1','1');localStorage.setItem('fam.wel.P','1');localStorage.setItem('fam.tour','1');Object.defineProperty(navigator,'share',{configurable:true,get:()=>undefined});});
+  await c.addInitScript(()=>{localStorage.setItem('fam.code','p');localStorage.setItem('fam.ok1','1');localStorage.setItem('fam.wel.P','1');localStorage.setItem('fam.tour','1');Object.defineProperty(navigator,'share',{configurable:true,get:()=>undefined});try{Object.defineProperty(HTMLMediaElement.prototype,'src',{configurable:true,set:function(){},get:function(){return '';}});}catch(e){}});
   await c.goto(BASE+'/family.html');await c.waitForTimeout(2200);
   await c.evaluate(()=>{const s=document.getElementById('splash');if(s)s.remove();try{goTab('media');r();}catch(e){}});
   await c.waitForTimeout(900);
@@ -36,21 +36,20 @@ function errsOf(p){const e=[];p.on('pageerror',x=>e.push('pageerror: '+x.message
   await c.locator('.tl-share-bar [data-tlshare-page]').click({force:true});
   await c.waitForTimeout(400);
   const sheet=await c.evaluate(()=>{
-    const s=document.getElementById('tl-share-sheet');
+    const s=document.getElementById('tl-inshare');
     if(!s)return {ok:false};
-    const copy=s.querySelector('[data-a=copy]');
-    const wa=s.querySelector('[data-a=wa]');
-    const em=s.querySelector('[data-a=em]');
-    return {ok:true, copy:!!copy, wa:!!wa, em:!!em, copyH:copy?copy.getBoundingClientRect().height:0};
+    const text=s.innerText||'';
+    const send=s.querySelector('#tl-inshare-review, #tl-inshare-send');
+    return {ok:true, touchline:/Share in Touchline/.test(text), primary:!!s.querySelector('#tl-inshare-review'), wa:!!s.querySelector('#tl-inshare-wa'), h:send?send.getBoundingClientRect().height:0};
   });
-  T('family share sheet has Copy WhatsApp Email', sheet.ok && sheet.copy && sheet.wa && sheet.em);
-  T('family share Copy tap target >=44', sheet.copyH>=44);
+  T('family share opens Touchline and not WhatsApp first', sheet.ok && sheet.touchline && sheet.primary);
+  T('family share review tap target >=44', sheet.h>=44);
   await c.screenshot({path:path.join(SHOTS,PRE+'family_media_share_sheet.png'),fullPage:false});
-  await c.locator('#tl-share-sheet [data-a=close]').click({force:true});
+  await c.locator('#tl-inshare-cancel').click({force:true});
   await c.waitForTimeout(200);
   // clip overlay share
-  await c.locator('.mi.lk').first().click({force:true});
-  await c.waitForTimeout(500);
+  await c.evaluate(() => { var s=document.getElementById('tl-inshare'); if(s)s.remove(); clipPlay('c1'); });
+  await c.waitForTimeout(200);
   const ov=await c.evaluate(()=>({share:!!document.querySelector('[data-clclose]') && !!document.querySelector('[data-tlshare][aria-label="Share clip"]')}));
   T('family clip player has Share', ov.share);
   await c.screenshot({path:path.join(SHOTS,PRE+'family_clip_share.png'),fullPage:false});
@@ -151,10 +150,10 @@ function errsOf(p){const e=[];p.on('pageerror',x=>e.push('pageerror: '+x.message
  // unit-ish: share.js syntax + coach-only flag
  {
   const share=fs.readFileSync(path.join(root,'share.js'),'utf8');
-  T('share.js has navigator.share', /navigator\.share/.test(share));
-  T('share.js has wa.me fallback', /wa\.me\/\?text=/.test(share));
-  T('share.js has coach only note', /Coach only/.test(share));
-  T('version is 104', JSON.parse(fs.readFileSync(path.join(root,'version.json'),'utf8')).v==='106');
+  T('share.js default path does not call navigator.share', share.indexOf('navigator.share')<0);
+  T('share.js keeps an explicit WhatsApp link for the separate button', /wa\.me\/\?text=/.test(share));
+  T('share.js refuses coach-only items', /stays with the coaches/.test(share));
+  T('version is 104', JSON.parse(fs.readFileSync(path.join(root,'version.json'),'utf8')).v==='108');
  }
 
  await b.close();srv.close();
