@@ -185,7 +185,7 @@ function gBadge(){try{return !!(window.GUI&&GUI.badge());}catch(e){return false;
 function modeOf(t){var m=view.tm;if(m&&TM[m]&&TM[m].l.some(function(x){return x[0]===t;}))return m;if(t==='sess')return 'lib';var k=['plan','run','lib'];for(var i=0;i<3;i++)if(TM[k[i]].l.some(function(x){return x[0]===t;}))return k[i];return 'plan';}
 function trainLanding(){var td=isoToday(),e=addDays(td,6);var has=sessAll().some(function(x){return x.date>=td&&x.date<=e;});return has?{m:'run',t:'run'}:{m:'plan',t:'sb'};}
 function grpOf(t){for(var g in GRP)if(GRP[g].indexOf(t)>-1)return g;return 'today';}
-function ico(n){var P={home:'<path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>',cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/>',ball:'<circle cx="12" cy="12" r="9"/><path d="M12 7l4 3-1.5 5h-5L8 10z"/>',img:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M21 16l-5-5-8 9"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-3.5 3-5 7-5s7 1.5 7 5"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14c3 0 5 1.5 5 4"/>',clip:'<rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h6M9 14h6"/>',chat:'<path d="M4 5h16v11H9l-5 4z"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',book:'<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M8 7h7"/>',more:'<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>',bag:'<path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>'};return '<svg viewBox="0 0 24 24" aria-hidden="true">'+(P[n]||'')+'</svg>';}
+function ico(n){var P={home:'<path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>',cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/>',ball:'<circle cx="12" cy="12" r="9"/><path d="M12 7l4 3-1.5 5h-5L8 10z"/>',img:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M21 16l-5-5-8 9"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-3.5 3-5 7-5s7 1.5 7 5"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14c3 0 5 1.5 5 4"/>',clip:'<rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h6M9 14h6"/>',chat:'<path d="M4 5h16v11H9l-5 4z"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',book:'<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M8 7h7"/>',more:'<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>',bag:'<path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>',mic:'<path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>'};return '<svg viewBox="0 0 24 24" aria-hidden="true">'+(P[n]||'')+'</svg>';}
 function tabs(){var T=[['today','Today','clock'],['match','Match','ball'],['train','Train','clip'],['pos','Library','book'],['squad','Team','users']];var cg=grpOf(view.tab),lm=cg==='train'&&modeOf(view.tab)==='lib';return '<nav class="tabs tl-nav" aria-label="Main">'+T.map(function(t){var on=!view.mid&&(t[0]==='train'?cg==='train'&&!lm:t[0]==='pos'?lm:grpOf(t[0])===cg);return '<button aria-label="'+t[1]+'"'+(on?' aria-current="page"':'')+' class="'+(on?'on':'')+'" data-act="tab" data-v="'+t[0]+'"'+(t[0]==='pos'?' data-m="lib"':'')+'>'+ico(t[2])+'<span>'+t[1]+'</span></button>';}).join('')+'</nav>';}
 var HOW={"today": ["Your match day and week at a glance: next game, checklist, alerts, load watch, and anything parents or players have asked.", "Open it first thing. Work down the cards: do the checklist, send the quick messages, clear any Done buttons.", "It stops things getting missed. One screen, so you and Deano see the same thing."], "match": ["Fixtures, availability, lineups and the live match clock.", "Tap New match to add a game. Open a game, set who is available, build the lineup, then go live. Add the result afterwards.", "Fair minutes for every lad, and a record to pick from later. Nothing goes to parents until you post it."], "squad": ["The squad list with photos, positions and notes. Coaches only.", "Tap a lad to add his photo, positions, objectives and notes. Keep notes factual.", "One place for who plays where. Players and parents never see your notes."], "lab": ["The team builder. Drag players onto the pitch and see how well neighbours fit.", "Pick a formation, drag lads in. Green fits, amber is a stretch, red needs a rethink. Save the lineup for a match.", "Lets you test a side before Saturday and spot gaps in shape."], "stats": ["Minutes, goals and assists across the season.", "Open it to check who needs more minutes before you pick the next side.", "Development minutes beat a fixed best eleven. This shows who is behind."], "admin": ["Welfare: knocks and niggles, and renewals such as safeguarding and first aid dates.", "Add a knock for a lad and his photo and name show on Today. Check the renewal dates each month.", "So nobody is pushed through pain, and nothing lapses."], "sb": ["The six week block builder. Plan the theme, then fill each week with practices.", "Pick the block theme, open a week, choose practices from Resources or type your own, set who leads. Week six leads into the next block.", "Keeps sessions joined up instead of one off nights."], "plan": ["This week: plan Wednesday and post it to parents and players.", "Pick a focus, write the brief, then Post. Shirt numbers only.", "Gets the right message out once, in one place."], "run": ["Tonight: the run card to coach from on the grass.", "Open the session, read who leads what, use the coaching points and questions. Post the weekly card when you are happy.", "One screen for the night so Deano can lead his practice with confidence."], "sess": ["Saved sessions you can reopen, edit and print.", "Tap one to open it. Use the PDF button for a printable copy with a QR code.", "Reuse what worked and keep a record."], "rev": ["Reflect: review the night while it is fresh.", "Answer the few questions, note who stood out, and write one sentence for Saturday.", "Selection comes from evidence, not a gut feeling on Thursday."], "fit": ["The fitness planner for sessions and individuals.", "Pick the options, build the plan, and make the PDF. Cut jumping and sprinting for anyone with growth pain.", "Keeps load sensible for lads growing at different speeds."], "pod": ["Listen: audio to catch up on while you drive.", "Tap an episode to play.", "Learning time without sitting at a screen."], "res": ["The practice library: Coaches Voice, Football DNA, Elliot Hord, Instagram and X.", "Search, filter by source, topic or age, star the ones you like, then use them in the builder. Instagram and X open the original post.", "One search instead of five folders."], "anim": ["Animations of practices that you can play on the phone.", "Pick one and watch it. Use it to show Deano or the lads what a practice looks like.", "Seeing it beats explaining it."], "lib": ["Clips: match and training highlights.", "Upload, tag and approve clips. Only approved ones show to parents and players.", "Safeguarding first, and good clips for learning."], "ig": ["Instagram accounts and posts worth following.", "Browse by topic and tap through to the post.", "Fresh ideas from other coaches."], "x": ["X accounts and posts worth following.", "Browse by topic and tap through to the post.", "Fresh ideas from other coaches."], "att": ["Attendance for training.", "Tick who was there. It takes under a minute.", "It is evidence for selection and for load, never a ranking."], "board": ["The tactics board for drawing moves and setups.", "Pick Move to drag players and the ball. Use the drawing tools for runs and zones. Lock the board when you want to scroll past it. Frames let you animate, and you can save a picture.", "Show the lads the picture, not just words."], "hub": ["What parents and players see on their Home page.", "Write the welcome message, approve events and pictures, check lifts and contacts, send phone alerts.", "You control what goes out. Nothing publishes until you say so."], "refs": ["Referee contacts. Coaches only.", "Add a ref after a game so you know who you had.", "Handy for the next fixture and for any report."], "ask": ["A coaching helper for a term, a drill or a diagram.", "Type your question. Keep names and private details out of it.", "Quick answers without leaving the app."], "more": ["Settings, parent and player codes, votes and role cards.", "Use it to set up codes, open or close voting, and change settings.", "The admin that keeps the rest running."], "shop": ["Club shop: winter coats, hats and training kit from Serious Sport, plus the Empire Kits players kit.", "Tap a coat or item to open it on the shop site in a new tab. Prices were checked on 05/11/2026.", "Keeps the touchline warm and the Blues looking the part."]};
 function howCard(){var x=HOW[view.tab];if(!x)return '';return '<details class="card" style="margin:0 0 10px"><summary style="cursor:pointer;font-weight:700">How this page works</summary><p class="small"><b>What it does.</b> '+esc(x[0])+'</p><p class="small"><b>How to use it.</b> '+esc(x[1])+'</p><p class="small"><b>Why it matters.</b> '+esc(x[2])+'</p></details>';}
@@ -764,6 +764,8 @@ function vHub(){
  o+='<div class="card"><h3>Lifts</h3>'+(h.lifts.filter(function(l){return l.status==='open';}).length?h.lifts.filter(function(l){return l.status==='open';}).map(function(l){return '<div class="it" style="cursor:default"><div class="grow small"><b>'+esc(l.who)+'</b> '+(l.type==='offer'?'can give a lift':'needs a lift')+(l.seats&&l.type==='offer'?' ('+esc(l.seats)+' seats)':'')+'<div class="muted">'+esc(l.refTitle||l.ref)+' · '+esc(l.refDate)+'</div>'+(l.area?'<div>Area: '+esc(l.area)+'</div>':'')+(l.detail?'<div>'+esc(l.detail)+'</div>':'')+'</div><button class="btn sm" data-act="liftDone" data-id="'+l.id+'">Done</button></div>';}).join(''):'<p class="small muted">No open lift requests.</p>')+'<p class="small muted">Addresses and details are only shown here to coaches. Parents only see a first name and a general area.</p></div>';
  o+='<div class="card"><h3>Alert parents</h3><p class="small muted">Sends a push to every parent who switched on match day alerts. Keep it short and calm. Use sparingly.</p><input id="pat" placeholder="Short message, for example: Saturday is off, pitch waterlogged"><div class="row" style="margin-top:6px"><button class="btn pri grow" data-act="pushParents">Send to parents</button></div><p class="small muted" id="pst" role="status"></p></div>';
  o+='<div class="card"><h3>Phone alert</h3><p class="small muted">Goes to your phone and Deano\'s through Pushover. Urgent ones ring until you tap them, even on silent. See the how to guide to switch it on.</p><input id="alt" placeholder="Short message"><div class="row" style="margin-top:6px"><button class="btn grow" data-act="alertSend" data-l="quiet">Quiet</button><button class="btn grow" data-act="alertSend" data-l="normal">Normal</button><button class="btn bad grow" data-act="alertSend" data-l="urgent">Urgent</button></div></div>';
+ o+=commsDraftCard();
+ o+=travelCommsCard();
 
 
  o+=remindCard();o+=matchPackCard();o+=draftFeedCard();
@@ -2224,6 +2226,126 @@ function coachLateBannerHtml(){var L=coachLateList();if(!L.length)return '';retu
 function coachLateForNum(num){num=String(num||'');return coachLateList().filter(function(x){return String(x.num)===num;})[0]||null;}
 function loadLate(){if(!CODE||API.indexOf('__'+'API__')>-1){S.late=S.late||[];return Promise.resolve();};return call('late.list').then(function(r){S.late=(r&&r.rows)||[];view.hub=view.hub||{};view.hub.late=S.late;}).catch(function(){S.late=S.late||[];});}
 
+/* r104: matchday travel. Coach phones only (Tim and Deano via notify_ / alert.send).
+   Never the family web push. The shared list exists only when travel.send and travel.list
+   are on the server. A missing action does not write a synced list. */
+var TRAVEL={rows:[],seen:{},listOk:null};
+try{TRAVEL.seen=JSON.parse(localStorage.getItem('tl.travel.seen')||'{}')||{};}catch(e){TRAVEL.seen={};}
+function travelMark(id){if(!id)return;TRAVEL.seen[id]=1;try{localStorage.setItem('tl.travel.seen',JSON.stringify(TRAVEL.seen));}catch(e){}}
+function travelWho(){var w=who()||'Coach';return (w==='Tim'||w==='Deano')?w:'Coach';}
+function travelLine(row){
+ if(!row)return '';
+ if(row.line)return row.line;
+ var by=row.by||'Coach';
+ if(row.kind==='late')return by+' is running late'+(row.mins?', about '+row.mins+' minutes':'')+'.';
+ if(row.kind==='traffic')return by+' is stuck in traffic.';
+ if(row.kind==='cant')return by+' cannot make it.';
+ return by+': '+(row.text||'Travel note');
+}
+function travelMissing(e){return /unknown|not found|no such|action/i.test(String(e&&e.message||e||''));}
+function travelSpeak(row){
+ if(!row||!row.id||TRAVEL.seen[row.id])return;
+ travelMark(row.id);
+ var line=travelLine(row);
+ if(window.TLVoice&&TLVoice.speak)TLVoice.speak('Travel alert. '+line);
+ else say('Travel alert. '+line);
+}
+function travelMatch(){
+ var td=isoToday();
+ var ms=Object.keys(S.matches||{}).map(function(k){return S.matches[k];}).filter(function(m){
+  if(!m||m.deleted||m.pp||m.date!==td||m.status==='done')return false;
+  if(m.comp==='Training'||m.kind==='train'||/train/i.test(m.opp||''))return false;
+  return true;
+ });
+ return ms[0]||null;
+}
+function travelSendDo(kind){
+ var by=travelWho(),mins='',text='';
+ if(kind==='late'){mins=String((($('#tl-travel-eta')||{}).value)||'15').replace(/\D/g,'').slice(0,3)||'15';}
+ if(kind==='custom'){text=String((($('#tl-travel-custom')||{}).value)||'').trim().slice(0,160);if(text.length<3){toast('Type a short note first');return;}}
+ var id='T'+Date.now().toString(36);
+ var row={id:id,by:by,kind:kind,mins:mins,text:text,date:isoToday(),at:Date.now(),line:''};
+ row.line=travelLine(row);
+ travelMark(id);
+ var el=$('#tl-travel-st');if(el)el.textContent='Sending to Tim and Deano only';
+ function phoneOnly(sent){
+  TRAVEL.listOk=false;
+  if(el)el.textContent=sent
+   ?'Sent by coach phone alert to Tim and Deano only. The shared travel list is not on the server, so it is not stored for the other app.'
+   :'The coach phone alert did not go. Nothing was stored.';
+  toast(sent?'Sent to coaches only':'Not sent');
+  render(true);
+ }
+ call('travel.send',{id:id,by:by,kind:kind,mins:mins,text:text,date:row.date}).then(function(){
+  TRAVEL.listOk=true;
+  TRAVEL.rows=(TRAVEL.rows||[]).filter(function(r){return r.id!==id;}).concat([row]);
+  if(el)el.textContent='Sent to Tim and Deano only. Families do not get this.';
+  toast('Sent to coaches only');
+  render(true);
+ }).catch(function(e){
+  if(!travelMissing(e)){
+   if(el)el.textContent='Not sent. Check your signal and try again. Nothing was stored.';
+   toast('Not sent');
+   return;
+  }
+  /* alert.send is notify_ to the two coach phones. It does not write a travel row and does not call the family push. */
+  call('alert.send',{title:'Travel',msg:row.line,level:kind==='cant'?'urgent':'normal'}).then(function(r){
+   phoneOnly(!!(r&&r.sent));
+  }).catch(function(){phoneOnly(false);});
+ });
+}
+function travelPoll(){
+ if(!CODE||document.visibilityState==='hidden')return;
+ if(!API||String(API).indexOf('__'+'API__')>-1)return;
+ call('travel.list').then(function(d){
+  TRAVEL.listOk=true;
+  var rows=(d&&d.rows)||[];
+  TRAVEL.rows=rows;
+  rows.forEach(travelSpeak);
+ }).catch(function(e){if(travelMissing(e))TRAVEL.listOk=false;});
+}
+function travelCard(){
+ if(!travelMatch())return '';
+ var recent=(TRAVEL.rows||[]).slice(-4);
+ var h='<div class="card" id="tl-travel" style="border-color:#FFB81C"><span class="tag" style="background:#6b4a0a">Coaches only</span><h3 style="margin-top:8px">Travel issues</h3><p class="small muted">Matchday. Coach phone alert to Tim and Deano only. Families do not get this. When the shared list is on the server, an open app reads a new alert aloud.</p>';
+ if(TRAVEL.listOk===false)h+='<p class="small">The shared travel list is not on the server yet. A send uses the coach phone alert only. It is not stored for the other app.</p>';
+ h+='<label class="small" for="tl-travel-eta">Running late, ETA minutes</label><input id="tl-travel-eta" type="number" min="1" max="180" value="15" inputmode="numeric">';
+ h+='<div class="row wrap2" style="margin-top:8px"><button type="button" class="btn pri grow" data-act="travelSend" data-k="late">Running late</button><button type="button" class="btn grow" data-act="travelSend" data-k="traffic">Traffic</button><button type="button" class="btn grow" data-act="travelSend" data-k="cant">Can\'t make it</button></div>';
+ h+='<label class="small" for="tl-travel-custom">Custom</label><input id="tl-travel-custom" maxlength="160" placeholder="Short note for the other coach">';
+ h+='<button type="button" class="btn block" style="margin-top:8px" data-act="travelSend" data-k="custom">Send custom</button>';
+ h+='<p id="tl-travel-st" class="small" role="status"></p>';
+ if(recent.length)h+='<div class="small" style="margin-top:8px">'+recent.map(function(r){return '<div>'+esc(travelLine(r))+'</div>';}).join('')+'</div>';
+ return h+'</div>';
+}
+function travelCommsCard(){
+ var L=(TRAVEL.listOk?TRAVEL.rows:[]).slice(-6).reverse();
+ var h='<div class="card" id="tl-travel-comms"><h3>Travel alerts</h3><p class="small muted">Coach only. These do not go to parents or players. Shown from the server list only.</p>';
+ if(TRAVEL.listOk===false)h+='<p class="small">Shared list is not on the server. Phone alerts still go to Tim and Deano only, and nothing is stored here.</p>';
+ else if(!L.length)h+='<p class="small muted">None today.</p>';
+ else h+=L.map(function(r){return '<div class="it" style="cursor:default"><div class="grow small"><b>'+esc(travelLine(r))+'</b><div class="muted">'+esc(r.date||'')+'</div></div></div>';}).join('');
+ return h+'</div>';
+}
+function commsDrafts(){return S.settings.commsDrafts||(S.settings.commsDrafts=[]);}
+function commsDraftAdd(text){
+ text=String(text||'').replace(/[\u2013\u2014]/g,' - ').trim().slice(0,400);
+ if(!text)return null;
+ var d={id:'D'+Date.now().toString(36),text:text,at:Date.now(),status:'draft'};
+ commsDrafts().unshift(d);while(commsDrafts().length>20)commsDrafts().pop();
+ touch('settings',S.settings);
+ return d;
+}
+function commsDraftSend(id){
+ var d=commsDrafts().filter(function(x){return x.id===id;})[0];
+ if(!d||d.status==='sent')return;
+ call('alert.send',{title:'Latics message',msg:d.text,level:'normal'}).then(function(){d.status='sent';touch('settings',S.settings);toast('Sent to Tim and Deano');render(true);}).catch(function(e){toast((e&&e.message)||'Not sent. It is still a draft.');});
+}
+function commsDraftCard(){
+ var D=commsDrafts().filter(function(d){return d.status!=='gone';}).slice(0,8);
+ var h='<div class="card" id="tl-comms-drafts"><h3>Draft messages</h3><p class="small muted">From the voice assistant. Nothing is sent until you tap Confirm send. Confirm send goes to Tim and Deano only, not to families.</p>';
+ if(!D.length)h+='<p class="small muted">No drafts.</p>';
+ else h+=D.map(function(d){return '<div class="it" style="cursor:default;flex-wrap:wrap"><div class="grow small"><b>'+esc(d.text)+'</b><div class="muted">'+(d.status==='sent'?'Sent':'Draft')+'</div></div>'+(d.status==='sent'?'':'<button type="button" class="btn sm pri" data-act="commsDraftSend" data-id="'+esc(d.id)+'">Confirm send</button>')+'</div>';}).join('');
+ return h+'</div>';
+}
 function coachSec(id,title,inner){if(!inner)return '';return '<details class="tl-sec" id="sec-'+id+'" open><summary>'+title+'</summary><div class="tl-sec-body">'+inner+'</div></details>';}
 function coachJump(){return '<nav class="tl-jump" aria-label="Home sections"><a href="#sec-alerts">Alerts</a><a href="#sec-week">This week</a><a href="#sec-train">Training</a><a href="#sec-news">Comms</a><a href="#sec-players">Squad</a></nav>';}
 function vToday(){
@@ -2232,6 +2354,7 @@ function vToday(){
  var ms=Object.keys(S.matches).map(function(k){return S.matches[k];}).filter(function(m){return !m.deleted&&m.status==='plan'&&m.date>=td;}).sort(function(a,b){return a.date<b.date?-1:1;});
  var nm=ms[0], al='', wk='', tr='', nw='', sq='';
  try{if(window.TLCD){var _g=nextGame(),_t=nextTrain(),_ts=null,_items=[];try{_ts=(sessAll()||[]).filter(function(x){return x&&x.date>=td;}).reverse()[0];}catch(e2){}if(_g)_items.push({kind:'game',date:_g.date,ko:_g.ko,opp:_g.opp,ha:_g.ha,venue:_g.venue||_g.addr,meet:_g.meet,act:'openMatch',id:_g.id});if(_t)_items.push({kind:'train',date:_t.date,ko:_t.ko||_t.time||'19:00',title:_t.opp||'Training',venue:_t.venue||_t.addr,meet:_t.meet,act:'openMatch',id:_t.id});else if(_ts)_items.push({kind:'train',date:_ts.date,ko:'19:00',title:_ts.title||'Training',meet:_ts.meet,act:'todaySess',id:_ts.id});if(_items.length)al+=TLCD.rail(_items);} }catch(e){}
+ al+=travelCard();
  al+=coachLateBannerHtml();
  al+=privToday();
  try{al+=votesToday();}catch(e){}
@@ -2832,7 +2955,7 @@ function errCard(e){return '<div class="card tl-err" role="alert"><h3 style="mar
 window.addEventListener('error',function(ev){var r=$('#root');if(r&&!r.children.length&&lsGet(CKEY)){r.innerHTML=errCard(ev.error||ev.message);}});
 
 /* top bar and More */
-function topBar(){return '<header class="tl-top"><img src="'+BADGE+'" alt=""><h1>Touchline</h1><span class="sp"></span><button class="pill" data-act="ps" aria-label="Sunlight mode">Sun</button><button class="pill" id="st" data-act="sync"></button><button class="tl-ib'+(grpOf(view.tab)==='comms'&&view.tab!=='more'&&!view.mid?' on':'')+'" data-act="tab" data-v="hub" aria-label="Comms">'+ico('chat')+'</button><button class="tl-ib'+(view.tab==='more'&&!view.mid?' on':'')+'" data-act="tab" data-v="more" aria-label="More">'+ico('more')+'</button></header>';}
+function topBar(){return '<header class="tl-top"><img src="'+BADGE+'" alt=""><h1>Touchline</h1><span class="sp"></span><button class="pill" data-act="ps" aria-label="Sunlight mode">Sun</button><button class="pill" id="st" data-act="sync"></button><button type="button" class="tl-ib" data-act="voiceOpen" aria-label="Voice helper">'+ico('mic')+'</button><button class="tl-ib'+(grpOf(view.tab)==='comms'&&view.tab!=='more'&&!view.mid?' on':'')+'" data-act="tab" data-v="hub" aria-label="Comms">'+ico('chat')+'</button><button class="tl-ib'+(view.tab==='more'&&!view.mid?' on':'')+'" data-act="tab" data-v="more" aria-label="More">'+ico('more')+'</button></header>';}
 var MORE_L=[['Comms and the club',[['hub','Comms hub','chat'],['refs','Referees','user'],['opp','Opposition','ball'],['lg','League','cal'],['ask','Ask','chat'],['shop','Club shop','bag']]],
  ['Team',[['squad','Squad','users'],['lab','Team builder','users'],['stats','Stats','cal'],['ct','Contacts','user'],['goals','Goals','clip'],['priv','Privacy','user']]],
  ['Coaches only',[['admin','Welfare','user'],['mday','FA squad list','clip'],['fa','Team sheet','clip'],['em','Emergency','user'],['conc','Head injury','user']]],
@@ -2862,6 +2985,9 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'&&$('#sheet')
 
 Object.assign(ACT,{
  shClose:function(){closeSheet();},
+ voiceOpen:function(){var b=document.getElementById('tl-voice-fab');if(b)b.click();},
+ travelSend:function(d){travelSendDo(d.k||'custom');},
+ commsDraftSend:function(d){commsDraftSend(d.id);},
  errRetry:function(){render();},
  errReload:function(){location.reload();},
  guideOpen:function(d){var g=GUIDES[+d.i];if(!g)return;openSheet('<h3>'+esc(g[1])+'</h3><video controls playsinline autoplay preload="auto" style="width:100%;max-height:70vh;border-radius:10px;background:#000" poster="'+g[0]+'.jpg?v=82"><source src="'+g[0]+'.mp4?v=82" type="video/mp4"><track kind="captions" srclang="en-GB" label="English" src="'+g[0]+'.vtt?v=82" default></video>');},
@@ -2870,25 +2996,42 @@ Object.assign(ACT,{
  attClear:function(){var s=S.settings,at=s.att||{},dt=view.attDate||isoToday();if(!at[dt])return;if(!confirm('Clear every tick for this session?'))return;delete at[dt];touch('settings',s);sync();render(true);}
 });
 
-/* r95 voice helper */
+/* r104 conversational voice */
 setTimeout(function(){
  try{
   if(!window.TLVoice||document.getElementById('tl-voice-root'))return;
   TLVoice.mount({
-   context:function(){return {role:'coach',shirt:'',fixtures:Object.keys(S.matches||{}).map(function(k){var m=S.matches[k];return {date:m.date,ko:m.ko,opp:m.opp,ha:m.ha,venue:m.venue,pp:m.pp,done:m.status==='done'};}),trainingLine:'Open Train, then Run for tonight.'};},
+   context:function(){
+    var posts=[];
+    try{sessAll().forEach(function(x){if(x&&x.date)posts.push({date:x.date,time:x.time||'',title:x.title||'Training',place:x.place||'',type:'training'});});}catch(e){}
+    try{(S.settings.posts||[]).forEach(function(p){posts.push({date:p.date,time:p.time||'',title:p.title||'',place:p.place||'',type:p.type||'training'});});}catch(e){}
+    return {role:'coach',shirt:'',today:isoToday(),posts:posts,fixtures:Object.keys(S.matches||{}).map(function(k){var m=S.matches[k];return {date:m.date,ko:m.ko,opp:m.opp,ha:m.ha,venue:m.venue,pp:m.pp,done:m.status==='done',kind:m.kind,comp:m.comp};})};
+   },
    onIntent:function(intent){
-    if(intent.intent==='coach_att'||intent.intent==='attendance'){view.tab='att';render();return;}
-    if(intent.intent==='fixtures'||intent.intent==='kickoff'||intent.intent==='where'){view.tab='match';render();return;}
-    if(intent.intent==='stretch'){location.href='../stretch/index.html?v=96&back='+encodeURIComponent('/coach/');return;}
-    if(intent.intent==='shop'){view.tab='shop';render();return;}
-    if(intent.intent==='training'){view.tab='run';render();return;}
-    if(intent.intent==='clip'){view.tab='rl';render();return;}
-    if(intent.intent==='news'){view.tab='hub';render();return;}
-    if(intent.go==='att'){view.tab='att';render();}
+    if(!intent)return;
+    if(intent.intent==='draft'){
+     if(!intent.confirmed){commsDraftAdd(intent.text);view.tab='hub';render();return;}
+     var hit=commsDrafts().filter(function(d){return d.status==='draft'&&d.text===intent.text;})[0]||commsDrafts().filter(function(d){return d.status==='draft';})[0];
+     if(hit)commsDraftSend(hit.id);
+     return;
+    }
+    if(intent.intent==='attendance'&&!intent.confirmed)return;
+    if(intent.intent==='clip'&&intent.action==='share')return;
+    var go=intent.page||intent.go;
+    if(intent.intent==='coach_att'||intent.intent==='attendance')go='att';
+    if(intent.intent==='fixtures'||intent.intent==='kickoff'||intent.intent==='where')go='match';
+    if(intent.intent==='stretch'){location.href='../stretch/index.html?v=104&back='+encodeURIComponent('/coach/');return;}
+    if(intent.intent==='shop')go='shop';
+    if(intent.intent==='training')go=intent.span==='week'?'plan':'run';
+    if(intent.intent==='clip')go='rl';
+    if(intent.intent==='news')go='hub';
+    if(go&&ROUTABLE[go]){view.tab=go;if(grpOf(go)==='train')view.tm=modeOf(go);render();}
    }
   });
  }catch(e){}
 },800);
+setInterval(travelPoll,20000);
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')travelPoll();});
 
 render();sync();loadPhotos(true);splashDone();
 try{setTimeout(function(){if(!window.TLCD)return;var g=nextGame();if(g&&g.date===isoToday()){var mp=typeof matchPack==='function'?matchPack():{};TLCD.showMatchday(g,{role:'coach',who:who(),coach:true,anim:(mp&&mp.settings&&mp.settings.anim)||'12_352_in_transition',onGo:function(){try{A.go('today');}catch(e){}try{TLCD.pinToday(g);}catch(e2){}}});}},400);}catch(e){}
