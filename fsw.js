@@ -6,6 +6,11 @@ self.addEventListener('activate',function(e){e.waitUntil(caches.keys().then(func
 self.addEventListener('fetch',function(e){
  var r=e.request,u=new URL(r.url);
  if(r.method!=='GET'||u.origin!==location.origin)return;
+ /* network first for html/js so a broken r95 client can pick up the fix without a stuck cache */
+ if(r.mode==='navigate'||/\.(html|js)$/i.test(u.pathname)){
+  e.respondWith(fetch(r).then(function(res){if(res&&res.ok&&/voice\.js$/.test(u.pathname)){var cp=res.clone();caches.open(FV).then(function(c){c.put(r,cp);});}return res;}).catch(function(){return caches.match(r);}));
+  return;
+ }
  if(/\/shop\//.test(u.pathname)||/shop\.(js|css)$/.test(u.pathname)){
   e.respondWith(caches.match(r).then(function(hit){return hit||fetch(r).then(function(res){if(res&&res.ok){var cp=res.clone();caches.open(FV).then(function(c){c.put(r,cp);});}return res;});}));
  }
