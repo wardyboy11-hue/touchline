@@ -1,0 +1,63 @@
+/* r106 preview. Kit navy, gold, white. No purple fills. Loaded after each page's own styles. */
+:root{
+  --bg:#021945;
+  --card:#0C2A62;
+  --card2:#14367A;
+  --line:#8EA4D4;
+  --ink:#F7F8FC;
+  --muted:#E4E9F7;
+  --amber:#FFB81C;
+  --gold:#FFB81C;
+  --purple:#021945;
+  --purple2:#FFB81C;
+  --good:#7DFFB0;
+  --bad:#FF8FA3;
+}
+html,body{background:#021945;color:var(--ink)}
+body,button,input,select,textarea{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+h1{font-size:22px;line-height:1.2}
+header.tl-top,header{flex-wrap:wrap;align-items:center}
+header.tl-top h1,header h1{flex:1 1 180px;font-size:18px;line-height:1.15;margin:0}
+h2{font-size:20px;line-height:1.25}
+.card{padding:16px;margin:12px 0}
+.btn,.chip,button,nav.tabs button,.tl-ib,.tl-jump a,.tl-ftile,.tl-q{
+  min-height:44px;
+  min-width:44px;
+}
+.btn.sm{min-height:44px}
+.tl-ib{width:44px;height:44px}
+.tl-shirt span,.tl-shirt button{min-width:44px;min-height:44px}
+.btn.pur,.chip.on,.seg button.on,.num,.tl-ib.on{
+  background:#021945;
+  color:#F7F8FC;
+  border-color:#FFB81C;
+}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible,.tl-q:focus-visible{
+  outline:3px solid #FFB81C;
+  outline-offset:2px;
+  box-shadow:none;
+}
+.tl-quick{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0 12px}
+.tl-q{
+  display:flex;align-items:center;justify-content:center;
+  padding:10px 12px;border-radius:12px;border:2px solid #FFB81C;
+  background:#0C2A62;color:#F7F8FC;font-weight:800;font-size:16px;cursor:pointer;
+}
+.tl-role{margin:0 0 8px;font-size:14px;font-weight:700;color:#FFB81C}
+.tl-simple{background:#0C2A62;border:2px solid #FFB81C;border-radius:14px;padding:14px 16px;margin:8px 0 12px}
+.tl-simple h2{margin:0 0 6px;font-size:22px;color:#F7F8FC}
+#tl-spotify iframe{display:block;width:100%;max-width:100%;height:352px;border:0;border-radius:12px;margin-top:12px}
+.tl-simple p{margin:0;color:#E4E9F7}
+body.ps .tl-simple{background:#fff;color:#021945;border-color:#021945}
+body.ps .tl-simple h2,body.ps .tl-simple p{color:#021945}
+body.ps{background:#fff;color:#0A0F24}
+body.ps .tl-q{background:#fff;color:#021945;border-color:#021945}
+body.ps :focus-visible{outline-color:#021945}
+@media (min-width:900px){
+  .wrap{max-width:960px}
+  nav.tabs{max-width:960px;left:50%;right:auto;transform:translateX(-50%);border-radius:16px 16px 0 0}
+  .tl-quick{grid-template-columns:repeat(4,1fr)}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important;scroll-behavior:auto !important}
+}
