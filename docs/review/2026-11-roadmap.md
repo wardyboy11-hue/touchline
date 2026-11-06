@@ -10,7 +10,7 @@ Effort words: **small** is one careful change, **medium** is a release and a pho
 
 Signed off for this plan:
 
-- The app, and AI, may use the **shirt number** as the display label when personalising a player's Home.
+- The app, and AI, may use the **shirt number** as the display label when personalising a player's Home. A shirt number is not anonymous. Names stay visible because Tim has decided not to remove them.
 - AI may use that shirt's **positions, marks, and coaching reflections** to choose resources, a short tip, and which news item to pin.
 - AI never receives **names, welfare, health, or niggle data**, and never receives the private player code.
 - A player may pick a **Home background** from a fixed set. The choice is saved on the server for the player his code belongs to.
@@ -29,11 +29,23 @@ Tim, 6 November 2026: personalised content follows the private player code acros
 
 Personal data stays in the private Google Sheet. The phone asks Apps Script. Apps Script talks to Claude. The phone never talks to Claude itself.
 
+## Tim's decision on names (6 November 2026, later the same evening)
+
+This replaces the earlier suggestion to strip the public site.
+
+- Do not remove existing player names or numbers from the site.
+- Do not rewrite git history.
+- Man of the match voting shows the player's name and shirt number together. Parents vote for a person. The number sits beside the name.
+- Health, welfare, niggles and ratings stay private.
+- Player codes stay server-side. They are never shown, never placed in a shared link, and never sent to AI.
+
+The risk findings in the review still stand as a record of what is public. They are not a build instruction.
+
 ## Recommended order
 
 | Release | What you get | Effort | Do it after |
 | --- | --- | --- | --- |
-| 105 | Names and phone numbers off the public site. Family pages show shirt numbers. Calendar link no longer contains the login code. | Medium | 104, if 104 is still open. This one is urgent either way. |
+| 105 | Cancelled as a strip-the-site job. App release 105, after unmerged r104 (PR 54), is the man of the match close, history and card. Names stay. | Medium | r104 merged or stacked. Do not collide with r104's version 104. |
 | 106 | Quicker subs on match day. | Medium | 105. Uses the coach app only. |
 | 107 | Arrival notes you keep per ground, plus parent parking pins for that match. | Medium | 104 and 105. Hooks the travel alerts instead of a second ping system. |
 | 108 | The player's own Home: targets, role card, next match, background. No AI yet. | Medium | 105. |
@@ -42,7 +54,7 @@ Personal data stays in the private Google Sheet. The phone asks Apps Script. App
 | 111 | AI tips per shirt, with the safeguards below. | Medium | 105, 108, and 109. |
 | 112 | One family page, faster open, bigger taps, stronger offline. | Large | After the match-day tools, so a rewrite does not land on a Saturday. |
 
-If a run of games means you can only do one thing, do **105**. If you can do two, do **105** and **106**.
+If a run of games means you can only do one thing, do the man of the match close (app release 105, after r104). Do not spend that release deleting names.
 
 ---
 
@@ -212,7 +224,7 @@ Medium. **Release 106.** Build it inside `vLive` and `subSheet`. Do not make a s
 
 ### Fix first (these are the review, scheduled above)
 
-- 105 covers public names, public phone numbers, shirt numbers on family pages, and a calendar token that is not the login code. Referee names in `REFSEED` move to the private sheet in the same pass. Keep match-day alert text free of names and house addresses, because the latest alert can be read from the push worker without a code.
+- The old "105 deletes the public names" job is cancelled. Keep match-day alert text free of house addresses and of health detail, because the latest alert can be read from the push worker without a code. A calendar subscribe link should still avoid carrying the login code. That is separate from leaving names on the site.
 - 112 covers one family page, the 9 second splash, tiny tap targets, offline HTML, the push registration bug, and loading the library only when it is opened.
 
 ### AI you already have
@@ -381,7 +393,7 @@ If the key is missing, or Claude fails, Home still shows the rule-based list. Th
 
 ### Why the public squad list blocks this until release 105
 
-You have agreed that a shirt number may go to AI. That is safe only if the number cannot be turned back into a name from your own website. Today it can. Release 105 removes those lists from the published files. Turn the AI switch on after that release is live. Say so to the squad's parents in the privacy note: we may send your son's shirt number and his coaching targets to our writing tool, we do not send his name or health information, and you can ask us to switch it off for him.
+You have agreed that a shirt number may go to AI. Names stay on the website, so that number is not anonymous. The private player code must not go to AI. Health, welfare, niggles and ratings must not go to AI. Say so to parents in the privacy note: we may send the shirt number and the coaching targets you have allowed, we do not send the login code or health information, and you can ask us to switch it off for him.
 
 ### Preview habit
 

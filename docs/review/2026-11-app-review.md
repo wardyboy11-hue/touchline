@@ -22,9 +22,9 @@ Do the high impact, small and medium items first. The suggested order is in `doc
 
 ## Top 10
 
-1. **The public website contains the squad's full names, and other people's mobile numbers.** Anyone can open the files. Highest impact. Removing them from the current files is a small change. Old copies can remain in GitHub history, so treat the numbers as already seen.
-2. **Family and parent pages show other children's names.** Lifts, man of the match, the "your voice" team picker, and one vote list use first names. The coach guide already says shirt numbers only. High impact, medium effort, because the same screen exists twice.
-3. **A shirt number is not anonymous while that public squad list exists.** Release 111 must wait until finding 1 is done. Otherwise sending "shirt 8" to an AI service can be joined back to a name from the website.
+1. **Risk, not a task: the public website contains the squad's names and other adults' phone numbers.** Anyone can open the files. **Tim's decision, 6 November 2026: do not remove those names or numbers, and do not rewrite history.** Man of the match voting shows the name with the shirt number beside it. A shirt number is a label. It is not anonymous, and it is not a password. Health, welfare, niggles and ratings stay private. Player codes stay on the server: never on the public site, never in a shared link, never sent to AI.
+2. **Risk: some family screens show a name with no shirt number beside it, and the home man of the match chips show a number with no name.** Tim's decision: the man of the match ballot shows the name and the shirt number together, so a parent can vote for a player. Lifts and Your voice are unchanged by that decision. Health, welfare and ratings stay off those screens.
+3. **A shirt number is a label, not an anonymous id.** Names stay on the site by Tim's decision, so a shirt number can be read next to a name. AI may still receive a shirt number inside the scope already signed off. It must not receive the private player code, and it must not receive health, welfare, niggles or ratings.
 4. **The parent page and the family page are two copies of the same app.** About 200KB each. A fix in one is easy to miss in the other. High impact on every future change. Medium effort to make them one page.
 5. **The coach app is one 612KB file.** Slow to open on a touchline phone, and risky to change on a Friday. High impact, large effort. Split it only when you are not in a run of match days.
 6. **Offline is solid for the coach shell, and weak for parents.** A parent who loses signal can lose the page itself. Yes and No answers can queue. High impact on away days. Medium effort.
@@ -166,7 +166,7 @@ Checked live on 6 November 2026. These URLs returned HTTP 200 from GitHub Pages,
 - https://touchline.cipher-training.co.uk/backend/apps-script/Code.gs contains `seedSquad` (lines 134 to 162): shirt number, full name, and positions for the squad.
 - https://touchline.cipher-training.co.uk/docs/Code_v33.gs contains `setupR80` (lines 1623 to 1644): mobile numbers and email addresses for league referee contacts and two opposition managers. The same block is in `docs/Code_v32.gs`. The comment just above that function says the numbers live only in the private sheet and never in the public repo (around lines 1603 to 1606). The file is on the public site anyway.
 
-The digits are not repeated in this note. Take the files off the public site. Then tell the adults whose numbers were in them, because GitHub keeps history and anyone may already have saved a copy. Do not put a seed list of real people in the repo again. The private sheet is the right home.
+The digits are not repeated in this note. This is a risk finding. Tim's decision is to leave the existing names and numbers where they are, and not to rewrite Git history. New code must not add fresh personal data. The private sheet remains the place for health, welfare, ratings and player codes.
 
 Club welfare and county FA numbers in `parents.html`, `pq.js`, and `coach/app.js` are published safeguarding contacts. Those are meant to be found. They are a different case.
 
@@ -192,7 +192,7 @@ The family service worker asks `https://touchline-push.wardyboy11.workers.dev/la
 
 ### Names on family views
 
-The rule you already wrote for coaches: shirt numbers only on anything parents or players see (`coach/app.js` coach guide text, the "Shirt numbers only" line in the chapter 1 script).
+The coach guide text still says shirt numbers only (`coach/app.js`, the "Shirt numbers only" line in the chapter 1 script). That line is older than Tim's decision. For man of the match, the decision wins: show the name and the shirt number. Do not describe a shirt number as anonymous. Health, welfare, niggles and ratings stay off family screens. Player codes stay off the page and out of AI.
 
 What the pages do today:
 
@@ -220,8 +220,6 @@ The privacy note says the app holds no phone numbers, and also says emergency co
 
 ### What this means for the new ideas
 
-You have signed off that AI may see a shirt number, plus that player's positions, marks, and coaching reflections, so it can pick resources, tips, and news. Names, welfare, health, and niggles stay out. The private player code stays out of the AI note as well.
+You have signed off that AI may see a shirt number, plus that player's positions, marks, and coaching reflections, so it can pick resources, tips, and news. Names on the public site stay, by Tim's decision, so a shirt number in that note is not an anonymous token. Welfare, health, niggles and ratings stay out. The private player code stays out of the AI note, out of shared links, and off the public site.
 
 The personalised page follows that code across phones. The shirt number is the label on screen. The phone copy is temporary, and sign out or an account switch clears it. Details are in the roadmap.
-
-Do finding 1 before you switch AI on. Until the public squad list is gone, a shirt number on this website is a name.
