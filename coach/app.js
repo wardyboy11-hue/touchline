@@ -505,7 +505,7 @@ function coachBallot(kind,key){key=kind==='poty'?(vt().poty.season||'season'):ke
 function vt(){var v=S.settings.vote||(S.settings.vote={motm:{open:false},poty:{open:false}});if(!v.motm)v.motm={open:false};if(!v.poty)v.poty={open:false};return v;}
 function voteCard(kind,title,key,label){var v=vt()[kind],open=v.open&&(kind==='poty'||v.matchId===key);
  var who=kind==='motm'?'Parents and coaches vote.':'Parents, players and coaches vote.';
- return '<div class="card"><h3>'+title+'</h3><p class="small muted">'+who+' '+(kind==='motm'?'Everyone picks one player.':'Everyone picks a top three: 3 points for first, 2 for second, 1 for third.')+' Parents and players see a holding message until you open it. Right now it is '+(open?'<b>OPEN</b>':'closed')+'.</p><div class="row wrap2"><button class="btn '+(open?'bad':'pri')+' grow" data-act="voteToggle" data-k="'+kind+'" data-key="'+esc(key)+'" data-label="'+esc(label)+'">'+(open?'Close voting':'Open voting')+'</button><button class="btn grow" data-act="loadVotes">Load votes</button></div>'+tallyHTML(kind,key)+(view.votes?coachBallot(kind,key):'')+'</div>';}
+ return '<div class="card"><h3>'+title+'</h3><p class="small muted">'+who+' '+(kind==='motm'?'Everyone picks one player. Parents see the name and the shirt number.':'Everyone picks a top three: 3 points for first, 2 for second, 1 for third.')+' Parents and players see a holding message until you open it. Right now it is '+(open?'<b>OPEN</b>':'closed')+'.</p><div class="row wrap2"><button class="btn '+(open?'bad':'pri')+' grow" data-act="voteToggle" data-k="'+kind+'" data-key="'+esc(key)+'" data-label="'+esc(label)+'">'+(open?'Close voting':'Open voting')+'</button><button class="btn grow" data-act="loadVotes">Load votes</button></div>'+tallyHTML(kind,key)+(view.votes?coachBallot(kind,key):'')+'</div>'+(kind==='motm'&&window.TLMotm?TLMotm.matchHtml(key):'');}
 function summaryText(m){var sc=score(m),us=m.ha==='H'?sc[0]:sc[1],them=m.ha==='H'?sc[1]:sc[0];
  var res=us>them?'WIN':us<them?'DEFEAT':'DRAW';var g={},a={};m.events.forEach(function(e){if(e.type==='goal'){if(e.pid&&P(e.pid))g[e.pid]=(g[e.pid]||0)+1;if(e.aid&&P(e.aid))a[e.aid]=(a[e.aid]||0)+1;}});
  var gs=Object.keys(g).map(function(id){return shortName(P(id))+(g[id]>1?' ('+g[id]+')':'');}),as=Object.keys(a).map(function(id){return shortName(P(id))+(a[id]>1?' ('+a[id]+')':'');});
@@ -575,7 +575,7 @@ function vMore(){var GRIDH=vMoreGrid();
  h+=GRIDH;
 h+='<div class="card"><h3>Coaches</h3>'+coachPhotoBox('coach:tim','Tim')+'<div class="small muted" style="margin:-4px 0 8px 84px">Manager, Wigan Junior Latics U15 Blues</div>'+coachPhotoBox('coach:deano','Deano')+'<div class="small muted" style="margin:-4px 0 8px 84px">Assistant coach, Wigan Junior Latics U15 Blues</div><p class="small muted">Parents and players see these pictures on their page.</p></div>';
  h+='<div class="card"><h3>Role cards</h3><p class="small muted">Starting wording. Change it to match your playing model.</p>'+POS.map(function(p){return '<label>'+p+'</label><textarea data-role="'+p+'" style="min-height:70px">'+esc(role(p))+'</textarea>';}).join('')+'</div>';
- h+=voteCard('poty','Player of the year vote','season','this season');
+ h+=(window.TLMotm?TLMotm.dashHtml():'')+voteCard('poty','Player of the year vote','season','this season');
  h+=vHowTo();h+=vHelp();
  h+=faqCard();
  h+='<div class="card"><h3>Data</h3><p class="small muted">Everything saves on this phone first, then syncs to your private sheet when there is signal. '+Object.keys(S.dirty).length+' item(s) waiting.</p><div class="row wrap2"><button class="btn grow" data-act="sync">Sync now</button><button class="btn bad grow" data-act="logout">Sign out</button></div></div>';
@@ -3020,7 +3020,7 @@ setTimeout(function(){
     var go=intent.page||intent.go;
     if(intent.intent==='coach_att'||intent.intent==='attendance')go='att';
     if(intent.intent==='fixtures'||intent.intent==='kickoff'||intent.intent==='where')go='match';
-    if(intent.intent==='stretch'){location.href='../stretch/index.html?v=104&back='+encodeURIComponent('/coach/');return;}
+    if(intent.intent==='stretch'){location.href='../stretch/index.html?v=105&back='+encodeURIComponent('/coach/');return;}
     if(intent.intent==='shop')go='shop';
     if(intent.intent==='training')go=intent.span==='week'?'plan':'run';
     if(intent.intent==='clip')go='rl';
@@ -3035,5 +3035,6 @@ document.addEventListener('visibilitychange',function(){if(document.visibilitySt
 
 render();sync();loadPhotos(true);splashDone();
 try{setTimeout(function(){if(!window.TLCD)return;var g=nextGame();if(g&&g.date===isoToday()){var mp=typeof matchPack==='function'?matchPack():{};TLCD.showMatchday(g,{role:'coach',who:who(),coach:true,anim:(mp&&mp.settings&&mp.settings.anim)||'12_352_in_transition',onGo:function(){try{A.go('today');}catch(e){}try{TLCD.pinToday(g);}catch(e2){}}});}},400);}catch(e){}
+try{window.tlCall=call;if(/^(localhost|127\.0\.0\.1)$/.test(location.hostname)){window.__tlTest=function(fn){return fn(S,view,render);};}}catch(e){}
 
 })();
