@@ -3021,7 +3021,7 @@ setTimeout(function(){
     var go=intent.page||intent.go;
     if(intent.intent==='coach_att'||intent.intent==='attendance')go='att';
     if(intent.intent==='fixtures'||intent.intent==='kickoff'||intent.intent==='where')go='match';
-    if(intent.intent==='stretch'){location.href='../stretch/index.html?v=106&back='+encodeURIComponent('/coach/');return;}
+    if(intent.intent==='stretch'){location.href='../stretch/index.html?v=107&back='+encodeURIComponent('/coach/');return;}
     if(intent.intent==='shop')go='shop';
     if(intent.intent==='training')go=intent.span==='week'?'plan':'run';
     if(intent.intent==='clip')go='rl';
