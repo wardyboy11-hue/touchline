@@ -129,13 +129,18 @@
       '<div class="tl-cd-head"><b>Coming up</b><span class="small muted">Live countdown</span></div>' +
       '<div class="tl-cd-row">' + out.map(itemHtml).join('') + '</div></div>';
   }
+  /* Kit is only what a coach saved. Home or away venue never picks a kit. */
   function kitKey(m) {
-    if (!m) return 'H';
-    if (m.kit === 'A' || m.kit === 'T' || m.kit === 'H') return m.kit;
-    return m.ha === 'A' ? 'A' : 'H';
+    if (!m || m.kit == null || String(m.kit).trim() === '') return '';
+    var k = String(m.kit).trim().toLowerCase();
+    if (k === 'h' || k === 'home' || k === 'blue') return 'H';
+    if (k === 'a' || k === 'away') return 'A';
+    if (k === 't' || k === 'third') return 'T';
+    return '';
   }
   function kitText(m) {
     var k = kitKey(m), note = String((m && m.kitColours) || '').trim();
+    if (!k) return 'Kit to be confirmed';
     if (k === 'A') return note ? ('Away kit: ' + note) : 'Away kit';
     if (k === 'T') return note ? ('Third kit: ' + note) : 'Third kit';
     return note ? ('Home kit: ' + note) : 'Home kit: dark blue and white stripes, black shorts';

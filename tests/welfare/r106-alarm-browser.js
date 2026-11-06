@@ -7,7 +7,7 @@ const SHOTS = process.env.SHOTS || '/opt/cursor/artifacts';
 fs.mkdirSync(SHOTS, { recursive: true });
 const srv = http.createServer((q, r) => {
   const u = decodeURIComponent(q.url.split('?')[0]);
-  if (u === '/version.json') { r.writeHead(200, { 'content-type': 'application/json' }); r.end('{"v":"106"}'); return; }
+  if (u === '/version.json') { r.writeHead(200, { 'content-type': 'application/json' }); r.end('{"v":"109"}'); return; }
   let f = path.join(root, u);
   if (f.endsWith('/')) f += 'index.html';
   fs.readFile(f, (e, d) => {
