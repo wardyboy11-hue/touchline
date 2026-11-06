@@ -129,10 +129,20 @@
       '<div class="tl-cd-head"><b>Coming up</b><span class="small muted">Live countdown</span></div>' +
       '<div class="tl-cd-row">' + out.map(itemHtml).join('') + '</div></div>';
   }
+  function kitKey(m) {
+    if (!m) return 'H';
+    if (m.kit === 'A' || m.kit === 'T' || m.kit === 'H') return m.kit;
+    return m.ha === 'A' ? 'A' : 'H';
+  }
+  function kitText(m) {
+    var k = kitKey(m), note = String((m && m.kitColours) || '').trim();
+    if (k === 'A') return note ? ('Away kit: ' + note) : 'Away kit';
+    if (k === 'T') return note ? ('Third kit: ' + note) : 'Third kit';
+    return note ? ('Home kit: ' + note) : 'Home kit: dark blue and white stripes, black shorts';
+  }
   function kitLine(m) {
     if (!m) return 'Bring kit, shin pads, boots and a water bottle.';
-    if (m.ha === 'A') return 'Away kit. Shin pads, boots and a water bottle.';
-    return 'Home kit. Shin pads, boots and a water bottle.';
+    return kitText(m) + '. Shin pads, boots and a water bottle.';
   }
   function lateLabel(num, mins) {
     var n = String(num || '').replace(/\D/g, '') || '?';
@@ -513,6 +523,8 @@
     greet: greet,
     rail: rail,
     kitLine: kitLine,
+    kitText: kitText,
+    kitKey: kitKey,
     matchdayHtml: matchdayHtml,
     showMatchday: showMatchday,
     dismiss: dismiss,
