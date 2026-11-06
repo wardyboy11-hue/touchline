@@ -10,16 +10,24 @@ Effort words: **small** is one careful change, **medium** is a release and a pho
 
 Signed off for this plan:
 
-- The app, and AI, may use the **shirt number** to personalise a player's Home.
+- The app, and AI, may use the **shirt number** as the display label when personalising a player's Home.
 - AI may use that shirt's **positions, marks, and coaching reflections** to choose resources, a short tip, and which news item to pin.
-- AI never receives **names, welfare, health, or niggle data**.
-- A player may pick a **Home background** from a fixed set. The choice is stored against the shirt number.
+- AI never receives **names, welfare, health, or niggle data**, and never receives the private player code.
+- A player may pick a **Home background** from a fixed set. The choice is saved on the server for the player his code belongs to.
 - Parents may leave a **one-off parking pin** for a single match. It is opt-in, labelled with the shirt number only, and it expires after the game.
 
-Still true, and not reopened:
+### The page belongs to the player code, not the phone
 
-- The login stays the private code. A shirt number is not a password. Shirt numbers are easy to guess, and one lad must not be able to open another's page by typing a number.
-- Personal data stays in the private Google Sheet. The phone asks Apps Script. Apps Script talks to Claude. The phone never talks to Claude itself.
+Tim, 6 November 2026: personalised content follows the private player code across devices. It is not tied to a phone.
+
+- His Home, assigned resources, reflections, scores, supported club and background are stored in the private sheet against the player that code maps to. The same code on another phone shows the same page. A different code on this phone shows a different page.
+- The shirt number is what the page shows ("Number 8"). It is not the password, and it is not the key the records are stored under. Shirt numbers are easy to guess.
+- The code, and the map from code to player, stay on the server. The app does not print codes, and this note does not invent any.
+- Every read and write checks the code is allowed to see that record. A request that asks for another player's resources, marks, club or background is refused.
+- Codes do not go in shared links, calendar addresses, or AI prompts. AI may see the shirt number, inside the scope already signed off, and nothing else that identifies the login.
+- The phone may keep a temporary copy so the page still opens with no signal. That copy is not the record. Sign out, and switching account, clear it, so the next person on that phone cannot read the previous player's private content.
+
+Personal data stays in the private Google Sheet. The phone asks Apps Script. Apps Script talks to Claude. The phone never talks to Claude itself.
 
 ## Recommended order
 
@@ -42,12 +50,12 @@ If a run of games means you can only do one thing, do **105**. If you can do two
 
 ### How it would work
 
-The lad signs in with his player code, as now. The page greets him by shirt number ("Number 8") and shows only his stuff:
+The lad signs in with his player code, as now. The page greets him by shirt number ("Number 8") and shows only his stuff. Open the same code on a second phone and it is the same page, because the sheet is the record.
 
-- Resources you have assigned to that shirt (the library give list already works this way).
+- Resources you assign. You can still pick a shirt number when you hand something out. The server turns that into his player record and, when he opens the app, checks his code before it sends the list.
 - Your reflections on his games and training, once you have marked them as OK to show him. He sees your words, not a ranking against the others.
 - His scores and targets: the work-ons you publish (he already sees the words, never the raw scores, unless you later choose to show a score), and the goals he has set with you.
-- His role card for the next game, which is already shirt based.
+- His role card for the next game. The card is filed by shirt number for the team sheet, and he only receives his own card after the code check.
 
 You still see names on the coach screens. Parents still see their own child. Other families see shirt numbers.
 
@@ -58,17 +66,18 @@ The choosing is done in the app and in Apps Script from rules (his positions, wh
 Already in the private sheet:
 
 - Player doc: shirt `num`, positions `pos`, published objective `obj` when `objOn` is on, published `workon` items.
-- Library gives, keyed by shirt (`lib.give` with a list of numbers).
+- Library gives. You type shirt numbers. The server stores the give on the player record (`lib.give` resolves the numbers). His code is checked before the list is sent.
 - Role card on the match: `rc.cards[shirt]`.
 - His own full-time marks, if you want them on his page later: the five corners stored for that player id.
-- Coach reflections: `rev` docs. Add a simple "share with this shirt" tick so a private note does not leak by accident.
+- Coach reflections: `rev` docs. Add a simple "share with this player" tick so a private note does not leak by accident. The tick is stored on his record. The screen can show the shirt number.
 
-New: nothing that names him in the family payload. The code still maps to the player id on the server.
+New: nothing that names him in the family payload. Nothing in that payload is stored as "this phone's player". The server maps the code to the player id and checks it on every call.
 
 ### Privacy
 
-- Shirt number on his own screen is fine under your decision.
+- Shirt number on his own screen is the display label you signed off.
 - Do not build a login that is "type your shirt number".
+- Do not put his code in a link, a push, or an AI prompt.
 - Reflections are shared only when you tick them. A note that mentions a knock, a family worry, or another lad's name stays on the coach side.
 - Welfare, head injury stages, niggles, date of birth, FAN, and parent phone numbers stay off this page.
 
@@ -108,7 +117,7 @@ FA Full-Time is the right place for the official BBDFL table, and this app alrea
 
 - Existing match docs and `f.home` fixtures.
 - New settings field: `leagueLine` (short text) and `leagueUrl` (defaults to your Full-Time page).
-- New per player, stored by shirt number: `clubId` (a slug from a list you approve, not a free typed website).
+- Supported club, saved on his player record on the server: `clubId` (a slug from a list you approve, not a free typed website). The Home shows his shirt number. The club follows the code to any phone he signs in on.
 - Server cache of the BBC feed for a few hours, shared by every lad who picked that club, so you do not hit the BBC once per phone.
 
 ### Privacy
@@ -241,13 +250,13 @@ There is no photo upload. A photo of his bedroom, his mates, or himself is perso
 
 ### Data
 
-A short code stored against the shirt number in the private sheet, for example `theme: navy-gold`. The pictures are files in the app, the same for everyone. The sheet stores the code only.
+A theme name stored on his player record in the private sheet, for example `navy-gold`. The pictures are files in the app, the same for everyone. The sheet stores the theme name only. It is not a login, and it is not his player code.
 
-Offline: remember the code on the phone with the rest of his home cache.
+The phone may remember the theme with the rest of the temporary home copy. Sign out and account switch delete that copy. The next sign-in, on any phone, reads the theme from the sheet.
 
 ### Privacy
 
-The code is not a name. It is not sent to AI, to the BBC, or to Spotify. Another player cannot read it, because home data is loaded with his own code.
+The theme name is not a name and not a login. It is not sent to AI, to the BBC, or to Spotify. Another player cannot read it: the server only returns the theme for the player the code maps to.
 
 ### Effort and release
 
@@ -351,6 +360,7 @@ Web search stays **off** for this call. Coach Ask can keep web search. Personali
 
 ### What must not be in the note
 
+- The private player code, or any map from a code to a player.
 - Names of players, parents, coaches, or opponents' contacts.
 - Welfare notes, head injury records, niggles, injuries, medication, or anything from emergency contacts.
 - Date of birth, age, FAN number, photo, address, phone, email.

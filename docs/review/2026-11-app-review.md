@@ -210,7 +210,7 @@ Showing a lad his own first name, on a phone that is already signed in with his 
 
 The welcome step that asks a parent for their own name, stored for coaches only (`f.name.set`), can stay. It must not be copied onto the lift board or the pins in the roadmap.
 
-`fam.cache` stores the last home payload on the phone, including that first name, the lift names, and the login code in the same entry (`family.html` line 1031). After you stop sending other children's names, the old cache dies on the next online load. A shared or backed-up phone can still hold the code until then.
+`fam.cache` stores the last home payload on the phone, including that first name, the lift names, and the login code in the same entry (`family.html` line 1031). After you stop sending other children's names, the old cache dies on the next online load. A shared or backed-up phone can still hold the code until then. The roadmap treats that copy as temporary: sign out and account switch must clear it, and the sheet remains the record.
 
 ### Health, welfare, and niggles
 
@@ -220,6 +220,8 @@ The privacy note says the app holds no phone numbers, and also says emergency co
 
 ### What this means for the new ideas
 
-You have signed off that AI may see a shirt number, plus that player's positions, marks, and coaching reflections, so it can pick resources, tips, and news. Names, welfare, health, and niggles stay out.
+You have signed off that AI may see a shirt number, plus that player's positions, marks, and coaching reflections, so it can pick resources, tips, and news. Names, welfare, health, and niggles stay out. The private player code stays out of the AI note as well.
 
-Do finding 1 before you switch that on. Until the public squad list is gone, a shirt number on this website is a name.
+The personalised page follows that code across phones. The shirt number is the label on screen. The phone copy is temporary, and sign out or an account switch clears it. Details are in the roadmap.
+
+Do finding 1 before you switch AI on. Until the public squad list is gone, a shirt number on this website is a name.
