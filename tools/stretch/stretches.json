@@ -1,5 +1,5 @@
 {
- "welcome": "Right lads, cool down stretches. About fifteen minutes. Ease into every stretch, a gentle pull, never pain, and no bouncing. If anything feels sharp, stop and tell a coach.",
+ "welcome": "Welcome to your cool down stretches. About fifteen minutes. Ease into every stretch, a gentle pull, never pain, and no bouncing. If anything feels sharp, stop and tell a coach.",
  "finish": "That's you done. Good work. Get a drink of water, get some food in you, and get a proper sleep tonight. See you at training.",
  "count": "Three. Two. One. Relax.",
  "items": [
@@ -309,5 +309,6 @@
    "note": "Bend your knees if your hamstrings pull."
   }
  ],
- "switch": "Switch sides."
+ "switch": "And switch.",
+ "relax": "Relax. Take a slow breath out. Next stretch coming up."
 }

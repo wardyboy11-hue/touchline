@@ -1,4 +1,4 @@
-/* Touchline r90: Pre-game stretch. Niggle chips -> 2-minute dynamic sequence from stretch/ assets.
+/* Touchline r90: Pre-game stretch. Niggle chips -> short dynamic sequence from stretch/ assets.
  * Health data: niggles live only in private profile (local + Self sheet via f.niggle / f.prestretch).
  * Visible to that player, his family and coaches. Never on team feed or other family views.
  * Matchday: coaches see shirt-number flags on attendance. Offline queue then send when online.
@@ -47,13 +47,13 @@ function buildIds(areas){
   if(!want.twist){want.twist=1;order.push('twist');}
  }
  /* Cap to ~8 pose families so with L/R we stay near 2 minutes at 10s holds. */
- return order.slice(0,6);
+ return order.slice(0,3);
 }
 function makeProg(areas){
  areas=(areas||[]).slice();
  if(areas.indexOf('none')>-1)areas=['none'];
  var ids=buildIds(areas);
- return {v:1,areas:areas,ids:ids,hold:10,intro:4,at:Date.now(),date:today(),num:shirtNum()};
+ return {v:1,areas:areas,ids:ids,hold:15,intro:8,at:Date.now(),date:today(),num:shirtNum()};
 }
 function flushQueue(){
  var q=queueGet();if(!q.length)return;
@@ -80,11 +80,11 @@ function openSheet(){
   }).join('');
   ov.innerHTML='<div class="tl-pre-inner">'+
    '<h3 style="margin-top:0">Pre-game stretch</h3>'+
-   '<p class="small muted">Any niggles or areas that need a stretch? Tap all that apply. We build a 2-minute dynamic sequence for you.</p>'+
+   '<p class="small muted">Any niggles or areas that need a stretch? Tap all that apply. We build a short dynamic sequence for you.</p>'+
    '<div class="chips tl-pre-chips" role="group" aria-label="Areas">'+chips+'</div>'+
    '<p class="small" style="margin:10px 0;padding:8px 10px;border-radius:10px;background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.35)"><b>If it hurts, stop and tell a coach.</b> This is a stretch, not treatment.</p>'+
    '<p class="small muted">Niggle answers stay on your private profile. Only you, your family and the coaches can see them. Other families never see this. Coaches see shirt numbers on matchday attendance.</p>'+
-   '<button type="button" class="btn pri block" id="tl-pre-go"'+(Object.keys(sel).length?'':' disabled')+'>Build my 2-minute stretch</button>'+
+   '<button type="button" class="btn pri block" id="tl-pre-go"'+(Object.keys(sel).length?'':' disabled')+'>Build my short stretch</button>'+
    (cur.ids&&cur.ids.length?'<button type="button" class="btn block" id="tl-pre-replay" style="margin-top:8px">Replay my pre-game programme</button>':'')+
    '<button type="button" class="btn block" id="tl-pre-x" style="margin-top:8px">Cancel</button>'+
   '</div>';
@@ -116,7 +116,7 @@ function openSheet(){
 function cardExtra(){
  var prog=loadProg(),h='';
  h+='<button type="button" class="btn pri block" style="margin-top:8px" onclick="openPreStretch()">Pre-game stretch</button>';
- h+='<p class="small muted" style="margin-top:6px">2-minute dynamic warm-up. Tell us any niggles (chips only), we weight the sequence, and save it on your profile to replay.</p>';
+ h+='<p class="small muted" style="margin-top:6px">short dynamic warm-up. Tell us any niggles (chips only), we weight the sequence, and save it on your profile to replay.</p>';
  if(prog&&prog.ids&&prog.ids.length){
   var labs=(prog.areas||[]).map(function(k){for(var i=0;i<AREAS.length;i++)if(AREAS[i].k===k)return AREAS[i].lab;return k;}).join(', ');
   h+='<p class="small" style="margin-top:6px">Saved programme'+(labs?' · '+E(labs):'')+'. <a href="stretch/index.html?mode=pregame&v=92&back='+encodeURIComponent(location.pathname)+'">Replay</a></p>';

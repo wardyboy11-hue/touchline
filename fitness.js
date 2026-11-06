@@ -304,7 +304,7 @@ function markDone(planId,key,on){
  return p;
 }
 function stretchHref(ids){
- var q='stretch/index.html?v=94&mode=pregame&back='+encodeURIComponent(location.pathname);
+ var q='stretch/index.html?v=95&mode=pregame&back='+encodeURIComponent(location.pathname);
  /* stash a one-shot programme for the stretch player */
  try{localStorage.setItem('tl.prestretch',JSON.stringify({v:1,areas:['none'],ids:ids||['flexor','ham','calf'],hold:10,intro:4,at:Date.now(),date:today(),num:shirtNum()}));}catch(e){}
  return q;

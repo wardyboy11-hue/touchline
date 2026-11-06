@@ -1,14 +1,14 @@
 <!doctype html>
 <html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Stretching | Wigan Junior Latics U15 Blues</title><meta name="theme-color" content="#0f2a6b"><link rel="icon" href="../icon-192.png">
+<title>Stretching | Wigan Junior Latics U15 Blues</title><meta name="theme-color" content="#021945"><link rel="icon" href="../icon-192.png">
 <style>
 *{box-sizing:border-box}html,body{margin:0;height:100%}body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#eef2fb;color:#0f172a;-webkit-tap-highlight-color:transparent}
-header{background:#0f2a6b;color:#fff;display:flex;align-items:center;gap:10px;padding:10px 14px;padding-top:max(10px,env(safe-area-inset-top));position:sticky;top:0;z-index:5}
+header{background:#021945;color:#fff;display:flex;align-items:center;gap:10px;padding:10px 14px;padding-top:max(10px,env(safe-area-inset-top));position:sticky;top:0;z-index:5}
 header img{width:34px;height:34px}header h1{font-size:18px;margin:0;flex:1;line-height:1.1}header small{display:block;font-weight:400;opacity:.8;font-size:12px}
 .x{background:rgba(255,255,255,.15);color:#fff;border:0;border-radius:10px;padding:9px 12px;font-size:16px;font-weight:700;cursor:pointer}
 main{max-width:980px;margin:0 auto;padding:12px}
 .card{background:#fff;border-radius:16px;padding:14px;box-shadow:0 1px 3px rgba(15,23,42,.08);margin-bottom:12px}
-.btn{display:block;width:100%;border:0;border-radius:12px;padding:14px;font-size:18px;font-weight:700;cursor:pointer;background:#dbe4f7;color:#0f2a6b}
+.btn{display:block;width:100%;border:0;border-radius:12px;padding:14px;font-size:18px;font-weight:700;cursor:pointer;background:#dbe4f7;color:#021945}
 .pri{background:#1d4ed8;color:#fff}.muted{color:#64748b}.small{font-size:13px}
 .tot{display:flex;justify-content:space-between;align-items:center;margin:4px 0 10px}.tot b{font-size:22px}
 ol.list{list-style:none;margin:0;padding:0}ol.list li{display:flex;align-items:center;gap:12px;padding:8px 4px;border-bottom:1px solid #e2e8f0;cursor:pointer}
@@ -17,28 +17,58 @@ ol.list li .th{width:58px;height:58px;flex:none;background:#f1f5fe;border-radius
 #play{display:none}body.playing #list{display:none}body.playing #play{display:block}
 .stage{display:grid;grid-template-columns:1fr;gap:12px}
 @media(min-width:820px){.stage{grid-template-columns:1.1fr 1fr}}
-.demo{background:#fff;border-radius:16px;position:relative;cursor:pointer}.demo{overflow:hidden;background:#cfd9e8}.demo{align-self:start}#fig{aspect-ratio:1/1;max-height:70vh;margin:0 auto;overflow:hidden;border-radius:16px}#fig img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .25s linear}.wd{display:flex;height:100%;align-items:center;justify-content:center;font-size:30px;font-weight:800;color:#1d4ed8;background:#fff}ol.list li .th img{width:100%;height:100%;border-radius:12px;object-fit:cover}.mr{transform:scaleX(-1)}
-.phase{position:absolute;top:10px;left:10px;background:#0f2a6b;color:#fff;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:700}
-.phase.hold{background:#16a34a}.tap{position:absolute;bottom:8px;right:10px;font-size:12px;color:#64748b}
-.big{font-size:min(28vw,150px);font-weight:800;text-align:center;line-height:1;font-variant-numeric:tabular-nums;color:#0f2a6b}
-.big.go{color:#16a34a}.nm2{font-size:24px;font-weight:800;margin:4px 0 2px}.sd{color:#1d4ed8;font-weight:700}
+.demo{background:#fff;border-radius:16px;position:relative;cursor:pointer;overflow:hidden;background:#cfd9e8;align-self:start}
+#fig{aspect-ratio:1/1;max-height:70vh;margin:0 auto;overflow:hidden;border-radius:16px;position:relative}
+#fig img{display:block;width:100%;height:100%;object-fit:cover}
+.anim{position:relative;width:100%;height:100%}
+.anim img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.mr{transform:scaleX(-1)}.anim img.mr{transform:scaleX(-1)}
+.breathe{animation:breathe 2.4s ease-in-out infinite}.pulsein{animation:pulsein 1.2s ease-out}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+@keyframes pulsein{from{transform:scale(.96);opacity:.7}to{transform:scale(1);opacity:1}}
+.wd{display:flex;height:100%;align-items:center;justify-content:center;font-size:30px;font-weight:800;color:#1d4ed8;background:#fff}
+ol.list li .th img{width:100%;height:100%;border-radius:12px;object-fit:cover}
+.phase{position:absolute;top:10px;left:10px;background:#021945;color:#fff;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:700;z-index:2}
+.phase.hold{background:#16a34a}.phase.rest{background:#64748b}
+.tap{position:absolute;bottom:8px;right:10px;font-size:12px;color:#64748b;z-index:2;background:rgba(255,255,255,.75);padding:2px 8px;border-radius:8px}
+.big{font-size:min(28vw,150px);font-weight:800;text-align:center;line-height:1;font-variant-numeric:tabular-nums;color:#021945}
+.big.go{color:#16a34a}.big.restc{color:#64748b}.nm2{font-size:24px;font-weight:800;margin:4px 0 2px}.sd{color:#1d4ed8;font-weight:700}
 .bar{height:8px;background:#e2e8f0;border-radius:9px;overflow:hidden;margin:10px 0}.bar i{display:block;height:100%;background:#1d4ed8;width:0}
-.ctl{display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:8px;margin-top:8px}.ctl .btn{padding:16px 6px}
-.info h4{margin:10px 0 2px;color:#0f2a6b}.info p,.info li{margin:2px 0;font-size:15px}.info ul{padding-left:20px;margin:4px 0}
+.ctl{display:grid;grid-template-columns:1fr 1.6fr 1fr;gap:8px;margin-top:8px}.ctl .btn{padding:16px 6px}.ctl .pri{font-size:20px;min-height:58px}
+.info h4{margin:10px 0 2px;color:#021945}.info p,.info li{margin:2px 0;font-size:15px}.info ul{padding-left:20px;margin:4px 0}
 .next{font-size:14px;color:#475569;margin-top:6px}
+.restwrap{position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(165deg,#021945,#0b1330);color:#fff}
+.restbadge{width:88px;height:88px;border-radius:50%;z-index:1}
+.restclock{position:absolute;width:min(70%,280px);height:auto;top:50%;left:50%;transform:translate(-50%,-58%)}
+.restnum{font-size:48px;font-weight:800;margin-top:8px;z-index:2;font-variant-numeric:tabular-nums}
+.restlab{font-size:14px;opacity:.9;z-index:2}
+.restprev{display:flex;align-items:center;gap:10px;margin-top:12px;background:rgba(255,255,255,.1);padding:8px 12px;border-radius:12px;z-index:2}
+.restprev img{width:48px;height:48px;border-radius:10px;object-fit:cover}
+#howto{position:fixed;inset:0;z-index:40;background:rgba(2,10,30,.72);display:flex;align-items:flex-end;justify-content:center;padding:12px}
+#howto[hidden]{display:none!important}
+.howto-in{background:#fff;color:#0f172a;width:100%;max-width:560px;border-radius:16px 16px 12px 12px;padding:16px;max-height:92vh;overflow:auto}
+.howto-demo{position:relative;aspect-ratio:1/1;max-height:42vh;border-radius:14px;overflow:hidden;background:#cfd9e8;margin:8px 0 12px}
+.howto-demo img{width:100%;height:100%;object-fit:cover}
+.howto-demo.has-anim img{position:absolute;inset:0}
+.howto-demo.has-anim .hs{animation:howSlow 3.2s ease-in-out infinite}
+.howto-demo.has-anim .he{animation:howSlow2 3.2s ease-in-out infinite}
+@keyframes howSlow{0%,10%{opacity:1}45%,100%{opacity:0}}
+@keyframes howSlow2{0%,10%{opacity:0}45%,100%{opacity:1}}
+@media(min-width:720px){#howto{align-items:center}.howto-in{border-radius:16px}}
+@media(prefers-reduced-motion:reduce){.breathe,.pulsein,.howto-demo.has-anim .hs,.howto-demo.has-anim .he{animation:none}}
 </style></head><body>
 <header><img src="../badge.png" alt=""><h1>Stretching<small>Wigan Junior Latics U15 Blues</small></h1><button class="x" id="close" aria-label="Close">Close ✕</button></header>
 <main>
 <section id="list">
- <div class="card"><h2 style="margin:0 0 4px">Cool down stretches</h2><p class="muted" style="margin:0">After training or a match. Voice over tells you each stretch, then counts you down.</p>
+ <div class="card"><h2 style="margin:0 0 4px">Cool down stretches</h2><p class="muted" style="margin:0">After training or a match. Each stretch is held at least 15 seconds, with a 15 second rest between. Voice and pictures stay in step.</p>
  <div class="tot"><span class="muted"><span id="cnt"></span> stretches</span><b id="total"></b></div>
- <button class="btn pri" id="start">Start</button><p class="small muted" style="margin:8px 0 0">Turn your sound on. Tap any stretch below to start from there.</p></div>
+ <button class="btn pri" id="start">Start</button><p class="small muted" style="margin:8px 0 0">Turn your sound on. Tap any stretch below to start from there. Tap the picture any time for how to do it.</p></div>
  <div class="card safe"><b>Stay safe</b><ul style="margin:6px 0 0;padding-left:20px"><li>Ease in to a gentle pull. Never pain, never force it, no bouncing.</li><li>Stop if anything feels sharp and tell a coach.</li><li>Growing? Sore below the kneecap (Osgood-Schlatter) or in the heel (Sever's) means go gentler and tell a coach or your parents.</li><li>Breathe slowly the whole time.</li></ul></div>
  <div class="card"><ol class="list" id="items"></ol></div>
 </section>
 <section id="play">
  <div class="stage">
-  <div class="demo" id="demo" title="Tap to watch how to do it"><span class="phase" id="phase"></span><div id="fig"></div><span class="tap">Tap to watch how to</span></div>
+  <div class="demo" id="demo" title="Tap for how to do it"><span class="phase" id="phase"></span><div id="fig"></div><span class="tap">Tap for how to</span></div>
   <div>
    <div class="card"><div class="nm2" id="pname"></div><div class="sd" id="pside"></div>
     <div class="big" id="clock">0:15</div><div class="bar"><i id="prog"></i></div>
@@ -51,6 +81,7 @@ ol.list li .th{width:58px;height:58px;flex:none;background:#f1f5fe;border-radius
  <button class="btn" id="tolist" style="margin-top:4px">All stretches</button>
 </section>
 </main>
+<div id="howto" hidden></div>
 <audio id="vo" preload="auto"></audio>
-<script src="data.js?v=94"></script><script src="app.js?v=94"></script>
+<script src="data.js?v=95"></script><script src="app.js?v=95"></script>
 </body></html>

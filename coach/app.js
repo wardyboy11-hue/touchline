@@ -2766,6 +2766,27 @@ Object.assign(ACT,{
  attAll:function(){var s=S.settings,at=s.att=s.att||{},dt=view.attDate||isoToday(),a=at[dt]=at[dt]||{};plist().forEach(function(p){a[p.id]=1;});touch('settings',s);sync();render(true);toast('Everyone ticked. Untick anyone missing.');},
  attClear:function(){var s=S.settings,at=s.att||{},dt=view.attDate||isoToday();if(!at[dt])return;if(!confirm('Clear every tick for this session?'))return;delete at[dt];touch('settings',s);sync();render(true);}
 });
+
+/* r95 voice helper */
+setTimeout(function(){
+ try{
+  if(!window.TLVoice||document.getElementById('tl-voice-root'))return;
+  TLVoice.mount({
+   context:function(){return {role:'coach',shirt:'',fixtures:Object.keys(S.matches||{}).map(function(k){var m=S.matches[k];return {date:m.date,ko:m.ko,opp:m.opp,ha:m.ha,venue:m.venue,pp:m.pp,done:m.status==='done'};}),trainingLine:'Open Train, then Run for tonight.';};},
+   onIntent:function(intent){
+    if(intent.intent==='coach_att'||intent.intent==='attendance'){view.tab='att';render();return;}
+    if(intent.intent==='fixtures'||intent.intent==='kickoff'||intent.intent==='where'){view.tab='match';render();return;}
+    if(intent.intent==='stretch'){location.href='../stretch/index.html?v=95&back='+encodeURIComponent('/coach/');return;}
+    if(intent.intent==='shop'){view.tab='shop';render();return;}
+    if(intent.intent==='training'){view.tab='run';render();return;}
+    if(intent.intent==='clip'){view.tab='rl';render();return;}
+    if(intent.intent==='news'){view.tab='hub';render();return;}
+    if(intent.go==='att'){view.tab='att';render();}
+   }
+  });
+ }catch(e){}
+},800);
+
 render();sync();loadPhotos(true);splashDone();
 try{setTimeout(function(){if(!window.TLCD)return;var g=nextGame();if(g&&g.date===isoToday()){var mp=typeof matchPack==='function'?matchPack():{};TLCD.showMatchday(g,{role:'coach',who:who(),coach:true,anim:(mp&&mp.settings&&mp.settings.anim)||'12_352_in_transition',onGo:function(){try{A.go('today');}catch(e){}try{TLCD.pinToday(g);}catch(e2){}}});}},400);}catch(e){}
 

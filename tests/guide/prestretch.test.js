@@ -30,8 +30,8 @@ const sandbox={window:{},setTimeout(){},clearTimeout(){},localStorage:{_d:{},get
 sandbox.window=sandbox;sandbox.document.head=sandbox.document.head;
 vm.runInNewContext(ps+'\nthis.__out=this.__preStretch;',sandbox);
 const P=sandbox.__out;assert(P&&P.makeProg);
-const none=P.makeProg(['none']);assert.strictEqual(JSON.stringify(none.areas),JSON.stringify(['none']));assert(none.ids.length>=3&&none.ids.length<=6);
-const ham=P.makeProg(['hamstrings','calves']);assert(ham.ids.includes('ham')&&ham.ids.includes('calf'));assert(ham.hold===10);
+const none=P.makeProg(['none']);assert.strictEqual(JSON.stringify(none.areas),JSON.stringify(['none']));assert(none.ids.length>=3&&none.ids.length<=3);
+const ham=P.makeProg(['hamstrings','calves']);assert(ham.ids.includes('ham')&&ham.ids.includes('calf'));assert(ham.hold===15);
 const totHold=ham.ids.length*2*ham.hold; /* rough: L+R sides in stretch data */
-assert(ham.ids.length<=6,'cap near 2 minutes');
+assert(ham.ids.length<=3,'cap short pre-game');
 console.log('prestretch ok');

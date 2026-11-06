@@ -1,0 +1,26 @@
+/* r95 voice intent parser */
+const fs=require('fs'),path=require('path'),assert=require('assert'),vm=require('vm');
+const R=path.resolve(__dirname,'../..');
+const code=fs.readFileSync(path.join(R,'voice.js'),'utf8');
+const sandbox={window:{},document:{getElementById(){return null},createElement(){return {style:{},setAttribute(){},appendChild(){},innerHTML:''};},head:{appendChild(){}},body:{appendChild(){}}},speechSynthesis:null};
+sandbox.global=sandbox;sandbox.globalThis=sandbox;sandbox.window=sandbox;
+vm.runInNewContext(code,sandbox);
+const V=sandbox.window.TLVoice;assert(V&&V.parseIntent);
+const ctx={role:'parent',shirt:'7',fixtures:[{date:'2026-11-07',ko:'15:00',opp:'Demo FC',ha:'H',venue:'Christopher Park'}],trainingLine:'Pressing and winning it back at 20:00.'};
+assert.equal(V.parseIntent('show fixtures',ctx).intent,'fixtures');
+assert.equal(V.parseIntent('what time is the game on Saturday',ctx).intent,'kickoff');
+assert.ok(/15:00/.test(V.parseIntent('kick off',ctx).say));
+assert.ok(/14:30|Meet/.test(V.parseIntent('meet time',ctx).say+V.meetBy('15:00')));
+assert.equal(V.meetBy('15:00'),'14:30');
+assert.equal(V.parseIntent('confirm attendance',ctx).intent,'attendance');
+assert.equal(V.parseIntent('start the stretch',ctx).intent,'stretch');
+assert.equal(V.parseIntent('show me a clip of how to shoot',ctx).intent,'clip');
+assert.equal(V.parseIntent('show me a clip of how to shoot',ctx).topic,'shoot');
+assert.equal(V.parseIntent('running late',ctx).intent,'late');
+assert.equal(V.parseIntent('club shop',ctx).intent,'shop');
+assert.equal(V.parseIntent('what are we doing at training tonight',ctx).intent,'training');
+assert.equal(V.parseIntent('help',ctx).intent,'help');
+assert.equal(V.parseIntent('zzzz unknown xyz',ctx).intent,'unknown');
+assert(!/\u2014/.test(code),'no em dashes');
+for(const f of ['family.html','parents.html','coach/index.html'])assert(fs.readFileSync(path.join(R,f),'utf8').includes('voice.js'),f);
+console.log('voice ok');
