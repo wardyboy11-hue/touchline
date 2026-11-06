@@ -174,6 +174,22 @@ The Apps Script web app address is in `coach/app.js` line 3 and `parents.html` l
 
 No Claude API key, Pushover token, or sheet id was found in the website files. Those stay in Apps Script properties. Keep it that way.
 
+The script is deployed as "Execute as me, Who has access: Anyone" (`Code.gs` lines 1 to 4). That is normal for this kind of page. The code is the lock. Keep the lockout on wrong tries.
+
+### The calendar link contains the login code
+
+Add to Google Calendar for one match does not put the code in the link (`family.html` `gcal`, line 246). The subscribe link does. `calUrl()` is the Apps Script address plus `?cal=` and the family code (`family.html` line 245, and the same helper on `parents.html`). `doGet` hands the team calendar to anyone who has that address (`Code.gs` lines 9 to 12 and `calFeed_` lines 666 to 670). Phone calendars, and anyone a parent forwards the link to, keep that address. They can read fixtures until you change the code, which also locks the parent out of the app.
+
+Release 105 should use a calendar token that is not the login code, and that you can turn off on its own.
+
+### The latest alert can be read without a code
+
+The family service worker asks `https://touchline-push.wardyboy11.workers.dev/latest` with no code (`fsw.js` lines 18 to 21). The worker returns the last broadcast (`backend/cloudflare/push-worker.js` line 12). Sending an alert and subscribing still check a code. The risk is the wording. If a match-day alert names a child or a house, anyone who knows the worker address can read it. Keep those alerts to shirt numbers and places. A later hardening is a short-lived token on `/latest`. It is not ahead of the names on the public site.
+
+### Referee names in the coach script
+
+`REFSEED` (`coach/app.js` lines 100 to 108) puts adult referee names in the public coach file. The phone fields in that seed are empty, and the comment above it says numbers stay in the private sheet. Move the names into that sheet in the same pass as the other directory data.
+
 ### Names on family views
 
 The rule you already wrote for coaches: shirt numbers only on anything parents or players see (`coach/app.js` coach guide text, the "Shirt numbers only" line in the chapter 1 script).
@@ -194,7 +210,7 @@ Showing a lad his own first name, on a phone that is already signed in with his 
 
 The welcome step that asks a parent for their own name, stored for coaches only (`f.name.set`), can stay. It must not be copied onto the lift board or the pins in the roadmap.
 
-`fam.cache` stores the last home payload on the phone, including that first name and the lift names (`family.html` line 1031). After you stop sending other children's names, the old cache dies on the next online load.
+`fam.cache` stores the last home payload on the phone, including that first name, the lift names, and the login code in the same entry (`family.html` line 1031). After you stop sending other children's names, the old cache dies on the next online load. A shared or backed-up phone can still hold the code until then.
 
 ### Health, welfare, and niggles
 

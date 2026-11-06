@@ -25,7 +25,7 @@ Still true, and not reopened:
 
 | Release | What you get | Effort | Do it after |
 | --- | --- | --- | --- |
-| 105 | Names and phone numbers off the public site. Family pages show shirt numbers. | Medium | 104, if 104 is still open. This one is urgent either way. |
+| 105 | Names and phone numbers off the public site. Family pages show shirt numbers. Calendar link no longer contains the login code. | Medium | 104, if 104 is still open. This one is urgent either way. |
 | 106 | Quicker subs on match day. | Medium | 105. Uses the coach app only. |
 | 107 | Arrival notes you keep per ground, plus parent parking pins for that match. | Medium | 104 and 105. Hooks the travel alerts instead of a second ping system. |
 | 108 | The player's own Home: targets, role card, next match, background. No AI yet. | Medium | 105. |
@@ -203,7 +203,7 @@ Medium. **Release 106.** Build it inside `vLive` and `subSheet`. Do not make a s
 
 ### Fix first (these are the review, scheduled above)
 
-- 105 covers public names, public phone numbers, and shirt numbers on family pages.
+- 105 covers public names, public phone numbers, shirt numbers on family pages, and a calendar token that is not the login code. Referee names in `REFSEED` move to the private sheet in the same pass. Keep match-day alert text free of names and house addresses, because the latest alert can be read from the push worker without a code.
 - 112 covers one family page, the 9 second splash, tiny tap targets, offline HTML, the push registration bug, and loading the library only when it is opened.
 
 ### AI you already have
