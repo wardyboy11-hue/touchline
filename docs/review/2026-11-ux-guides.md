@@ -6,8 +6,24 @@ Written for the r106 preview. The filmed tours were not re-recorded. A silent wa
 
 Home for parents starts with Parent home, then Playing?, Fixtures, Emergency, Clips.
 Home for players starts with Player home, then Playing?, Fixtures, My page, Clips.
+Games is headed Parent matchday or Player matchday. The fixture cards, lifts, kit and directions are still there.
+Media is headed Parent resources or Player resources. Clips, listen, pictures and Share are still there.
+Coach matchday has a Coach matchday heading above the clock. Alerts and the checklist stay on the same screen.
+Coach resources has a Coach resources heading above search. Favourites and share stay on each practice.
 Man of the match still shows the name and the shirt number.
 Buttons are at least 44px. The kit colour is dark blue #021945 with gold, not purple fills.
+
+## Routes kept
+
+| Route | Still there |
+| --- | --- |
+| Parent and player: Home, Games, Events, Media, Me, contacts, help, voice, clips | Yes |
+| Attendance Yes, Maybe, No, including the offline queue | Yes |
+| Share bar and clip share | Yes |
+| Emergency contacts, including 999 | Yes |
+| Man of the match name and shirt number | Yes |
+| Coach: Today, Match, live clock, subs, goals, Resources, Favourites, Guides | Yes |
+| Offline family answer queue `fam.attq` | Yes |
 
 ## Pages that explain the app
 
@@ -27,7 +43,9 @@ Buttons are at least 44px. The kit colour is dark blue #021945 with gold, not pu
 | `guide_parents_new.mp4` plus captions | Tim's voice | Out of date for the new shortcuts. Not re-recorded. |
 | `guide_players.mp4` plus captions | Tim's voice | Out of date for Player home and My page. Not re-recorded. |
 | `coach/howto/01-tour.mp4` to `04-comms.mp4`, with captions and posters | Coach voice | Out of date wherever a button moved. Not re-recorded. |
-| `guide_preview_silent.webm` | None | New. Parent Home, then the shortcut row, with synthetic data. No claim of a voiceover. |
+| `guide_preview_silent.webm` | None | New silent Home. Not a replacement for Tim's voice. |
+| `guide_preview_matchday_silent.webm` | None | New silent matchday. Not a replacement for Tim's voice. |
+| `guide_preview_resources_silent.webm` | None | New silent resources. Not a replacement for Tim's voice. |
 
 Stretch clips, tactic animations, and podcast audio are practice material, not app tours. They were not changed.
 

@@ -73,6 +73,14 @@ function fam(role) {
     const q = await p.locator('.tl-q').allInnerTexts();
     T('player shortcuts', q.join('|') === 'Playing?|Fixtures|My page|Clips');
     await p.screenshot({ path: path.join(SHOTS, 'r106-player-home.png') });
+    await p.locator('nav.tabs button', { hasText: 'Games' }).click();
+    await p.waitForSelector('#tl-matchday');
+    T('player matchday heading', /Player matchday/.test(await p.locator('#tl-matchday').innerText()));
+    await p.screenshot({ path: path.join(SHOTS, 'r106-player-matchday.png') });
+    await p.locator('nav.tabs button', { hasText: 'Media' }).click();
+    await p.waitForSelector('#tl-resources');
+    T('player resources heading', /Player resources/.test(await p.locator('#tl-resources').innerText()));
+    await p.screenshot({ path: path.join(SHOTS, 'r106-player-resources.png') });
     T('player home zero console errors', E.length === 0);
     if (E.length) console.log(E);
     await ctx.close();
@@ -109,6 +117,108 @@ function fam(role) {
     const href = await p.locator('a[href="guide_preview_silent.webm"]').count();
     T('guide links the silent preview', href === 1);
     T('guide and other views zero console errors', E.length === 0);
+    if (E.length) console.log(E);
+    await ctx.close();
+  }
+  {
+    const ctx = await b.newContext({ ...phone, serviceWorkers: 'block', recordVideo: { dir: SHOTS, size: { width: 412, height: 915 } } });
+    const p = await ctx.newPage();
+    const E = errsOf(p);
+    await bootFamily(p, 'parent');
+    await p.goto(BASE + '/parents.html');
+    await p.waitForTimeout(1400);
+    await p.evaluate(() => { const s = document.getElementById('splash'); if (s) s.remove(); try { r(); } catch (e) {} });
+    await p.locator('.tl-q', { hasText: 'Fixtures' }).click();
+    await p.waitForSelector('#tl-matchday');
+    T('parent matchday heading', /Parent matchday/.test(await p.locator('#tl-matchday').innerText()));
+    T('fixture opponent still listed', /Rivals Athletic/.test(await p.locator('#root').innerText()));
+    T('share bar still on games', await p.locator('[data-tlshare], .tl-share-btn, button:has-text("Share")').count() > 0);
+    await p.screenshot({ path: path.join(SHOTS, 'r106-parent-matchday.png') });
+    await p.waitForTimeout(1200);
+    await ctx.close();
+    T('matchday flow zero console errors', E.length === 0);
+    if (E.length) console.log(E);
+  }
+  {
+    const ctx = await b.newContext({ ...phone, serviceWorkers: 'block', recordVideo: { dir: SHOTS, size: { width: 412, height: 915 } } });
+    const p = await ctx.newPage();
+    const E = errsOf(p);
+    await bootFamily(p, 'parent');
+    await p.goto(BASE + '/parents.html');
+    await p.waitForTimeout(1400);
+    await p.evaluate(() => { const s = document.getElementById('splash'); if (s) s.remove(); try { r(); } catch (e) {} });
+    await p.locator('.tl-q', { hasText: 'Clips' }).click();
+    await p.waitForSelector('#tl-resources');
+    T('parent resources heading', /Parent resources/.test(await p.locator('#tl-resources').innerText()));
+    T('listen still on resources', /Open the podcast list/.test(await p.locator('#root').innerText()));
+    await p.screenshot({ path: path.join(SHOTS, 'r106-parent-resources.png') });
+    await p.locator('nav.tabs button', { hasText: 'Home' }).click();
+    await p.locator('.tl-q', { hasText: 'Emergency' }).click();
+    await p.waitForTimeout(300);
+    T('emergency still lists 999', /999/.test(await p.locator('#root').innerText()));
+    await ctx.close();
+    T('resources flow zero console errors', E.length === 0);
+    if (E.length) console.log(E);
+  }
+  {
+    const ctx = await b.newContext({ ...phone, serviceWorkers: 'block' });
+    const p = await ctx.newPage();
+    await p.addInitScript(() => {
+      localStorage.setItem('fam.code', 'p');
+      localStorage.setItem('fam.ok1', '1');
+      localStorage.setItem('fam.wel.P', '1');
+      localStorage.setItem('fam.tour', '1');
+      try { Object.defineProperty(navigator, 'onLine', { get: function () { return false; } }); } catch (e) {}
+    });
+    await p.route('**/macros/**', r => r.fulfill({ status: 200, contentType: 'application/json', headers: H, body: JSON.stringify({ ok: true, data: fam('parent') }) }));
+    await p.goto(BASE + '/parents.html');
+    await p.waitForTimeout(1400);
+    await p.evaluate(() => { const s = document.getElementById('splash'); if (s) s.remove(); try { r(); } catch (e) {} });
+    const yes = p.locator('#att-top button', { hasText: 'Yes' }).first();
+    if (await yes.count()) await yes.click();
+    await p.waitForTimeout(300);
+    const queued = await p.evaluate(() => localStorage.getItem('fam.attq') || '');
+    T('offline attendance queues', /"a":"Y"/.test(queued) || /Y/.test(queued));
+    await ctx.close();
+  }
+  {
+    const ctx = await b.newContext({ ...phone, serviceWorkers: 'block' });
+    const p = await ctx.newPage();
+    const data = fam('parent');
+    data.vote.motm.open = true;
+    data.vote.motm.elig = true;
+    await p.addInitScript(() => { localStorage.setItem('fam.code', 'p'); localStorage.setItem('fam.ok1', '1'); localStorage.setItem('fam.wel.P', '1'); localStorage.setItem('fam.tour', '1'); });
+    await p.route('**/macros/**', r => r.fulfill({ status: 200, contentType: 'application/json', headers: H, body: JSON.stringify({ ok: true, data: data }) }));
+    await p.goto(BASE + '/parents.html');
+    await p.waitForTimeout(1400);
+    await p.evaluate(() => { const s = document.getElementById('splash'); if (s) s.remove(); try { r(); } catch (e) {} });
+    const motm = await p.locator('#motm-home').innerText();
+    T('MoM still shows name and number', /Alex Sample/.test(motm) && /9/.test(motm));
+    await ctx.close();
+  }
+  {
+    const ctx = await b.newContext({ ...desk, serviceWorkers: 'block', recordVideo: { dir: SHOTS, size: { width: 900, height: 700 } } });
+    const p = await ctx.newPage();
+    const E = errsOf(p);
+    await p.addInitScript(() => { localStorage.setItem('tl.code', 'coach-test'); localStorage.setItem('tl.who', 'Tim'); localStorage.setItem('tl.state.v1', JSON.stringify({ ideas: {}, players: {}, matches: {}, settings: { id: 'main', half: 35, subEvery: 17, roles: {}, updatedAt: 0 }, dirty: {}, lastSync: Date.now() })); });
+    await p.route('**/macros/**', r => r.fulfill({ status: 200, contentType: 'application/json', headers: H, body: JSON.stringify({ ok: true, data: { docs: [], serverTime: Date.now(), rows: [] } }) }));
+    await p.goto(BASE + '/coach/index.html');
+    await p.waitForFunction(() => window.__tlTest);
+    await p.evaluate(() => { const s = document.getElementById('splash'); if (s) s.remove(); });
+    await p.evaluate(() => window.__tlTest(function (S, view, render) {
+      S.players = { p9: { id: 'p9', name: 'Alex Sample', num: '9', active: true, pos: ['ST'] } };
+      S.matches.fx1 = { id: 'fx1', opp: 'Rivals Athletic', date: '2026-11-14', ko: '10:30', ha: 'H', comp: 'League', status: 'live', formation: '352', half: 35, avail: { p9: true }, lineup: {}, events: [], stints: {}, clock: { acc: 0, running: false, t0: 0 }, ratings: {}, notes: '', period: 1 };
+      view.mid = 'fx1';
+      render();
+    }));
+    await p.waitForSelector('#tl-coach-matchday');
+    T('coach matchday heading', /Coach matchday/.test(await p.locator('#tl-coach-matchday').innerText()));
+    await p.screenshot({ path: path.join(SHOTS, 'r106-coach-matchday.png') });
+    await p.evaluate(() => window.__tlTest(function (S, view, render) { view.mid = null; view.tab = 'res'; render(); }));
+    await p.waitForSelector('#tl-coach-resources');
+    T('coach resources heading', /Coach resources/.test(await p.locator('#tl-coach-resources').innerText()));
+    await p.screenshot({ path: path.join(SHOTS, 'r106-coach-resources.png') });
+    T('coach matchday and resources zero console errors', E.length === 0);
     if (E.length) console.log(E);
     await ctx.close();
   }
