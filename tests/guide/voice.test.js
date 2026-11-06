@@ -21,6 +21,37 @@ assert.equal(V.parseIntent('club shop',ctx).intent,'shop');
 assert.equal(V.parseIntent('what are we doing at training tonight',ctx).intent,'training');
 assert.equal(V.parseIntent('help',ctx).intent,'help');
 assert.equal(V.parseIntent('zzzz unknown xyz',ctx).intent,'unknown');
+assert.equal(V.parseIntent('reply we are running late',ctx).intent,'draft');
+assert.equal(V.parseIntent('reply we are running late',ctx).text,'we are running late');
+assert.equal(V.parseIntent('reply we are running late',ctx).needConfirm,true);
+assert.equal(V.parseIntent('send me a clip of shooting',Object.assign({library:[
+ {title:'Shooting drill',url:'https://example.test/shoot',tags:'finishing shooting',src:'X'},
+ {title:'Coaches Voice finishing PDF',url:'https://example.test/cv',tags:'finishing',src:'coachesvoice',private:true,coachOnly:true}
+]},ctx)).intent,'clip');
+var clip=V.parseIntent('send me a clip of shooting',Object.assign({library:[
+ {title:'Shooting drill',url:'https://example.test/shoot',tags:'finishing shooting',src:'X'},
+ {title:'Coaches Voice finishing PDF',url:'https://example.test/cv',tags:'finishing',src:'coachesvoice',private:true}
+]},ctx));
+assert.equal(clip.clip.url,'https://example.test/shoot');
+assert.equal(V.parseIntent('open the emergency head injury page',ctx).intent,'blocked');
+assert.equal(V.parseIntent('show me the niggle list',ctx).intent,'blocked');
+var coach=Object.assign({},ctx,{role:'coach'});
+assert.equal(V.parseIntent('open the emergency head injury page',coach).intent,'open');
+assert.equal(V.parseIntent('open the emergency head injury page',coach).page,'conc');
+assert.equal(V.parseIntent('what are we doing at training tonight',ctx).intent,'training');
+assert.ok(/Pressing/.test(V.parseIntent('training tonight',ctx).say));
+assert.equal(V.isCoachOnlyItem({title:'FA squad list PDF',src:'fa',url:'x'}),true);
+assert.equal(V.isCoachOnlyItem({title:'Finishing session',url:'https://learn.englandfootball.com/x',src:'England Football Learning'}),false);
+assert.ok(V.fuzzyScore('open welfare','welfare')>=0.9);
+// on-device recognition refuses a recogniser that will not stay local
+var cloud=0;
+function CloudSR(){
+ Object.defineProperty(this,'processLocally',{get:function(){return false;},set:function(){}});
+ this.start=function(){cloud++;};
+}
+sandbox.SpeechRecognition=CloudSR;
+V.listenOnce(function(){});
+assert.equal(cloud,0,'cloud recognition must not start');
 assert(!/\u2014/.test(code),'no em dashes');
 for(const f of ['family.html','parents.html','coach/index.html'])assert(fs.readFileSync(path.join(R,f),'utf8').includes('voice.js'),f);
 console.log('voice ok');

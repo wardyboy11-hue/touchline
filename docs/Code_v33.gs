@@ -1637,8 +1637,8 @@ function setupR80() {
   var op = tab_('OppContacts', OPP_HEAD);
   if (!rowsOf_(op, OPP_HEAD).length) {
     var O = [
-      { id: 'atheagl', club: 'Atherton Town', team: 'Atherton Town U15 Eagles', name: 'Stephen Bevan', phone: '07748 566549', email: 'stebevan@sky.com', notes: 'Home team contact on Full-Time. Chairmans Cup group game moved to Sat 07/11/2026 09:00.', matches: '' },
-      { id: 'boothul', club: 'Boothstown', team: 'Boothstown U15 Ultras', name: 'Michael Robb-Elliott', phone: '07919 145464', email: 'mrobbelliott@googlemail.com', notes: 'Away team contact on Full-Time. Section A game moved to Sat 14/11/2026.', matches: '' }
+      { id: 'atheagl', club: 'Atherton Town', team: 'Atherton Town U15 Eagles', name: 'Stephen Bevan', phone: '', email: 'stebevan@sky.com', notes: 'Home team contact on Full-Time. Chairmans Cup group game moved to Sat 07/11/2026 09:00.', matches: '' },
+      { id: 'boothul', club: 'Boothstown', team: 'Boothstown U15 Ultras', name: 'Michael Robb-Elliott', phone: '', email: 'mrobbelliott@googlemail.com', notes: 'Away team contact on Full-Time. Section A game moved to Sat 14/11/2026.', matches: '' }
     ];
     putRows_(op, OPP_HEAD, O.map(function (o) { o.updated = now; return o; })); out.push('OppContacts seeded (' + O.length + ')');
   } else out.push('OppContacts already has rows, left alone');
