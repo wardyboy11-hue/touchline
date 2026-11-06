@@ -44,9 +44,15 @@ if (kind === 'motm') { try { motmAuto_(key); } catch (e) {} }
 
 The family reply stays `{ ok: true }`. The family caller does not receive the tally, the voter list, or a photo.
 
-Paste the `motm*` functions from that file at the end. They call `auth_`, `tab_`, `players_`, `votes_`, `allDocs_`, `photo_`, `consentRows_` and `consentSeason_`. Do not replace those.
+Paste the `motm*` functions from that file at the end. They call `auth_`, `tab_`, `players_`, `votes_`, `allDocs_` and `photo_`. Do not replace those.
 
-`MotmAward` and `MotmAudit` sheets are created on first use. No migration of old votes. No seed of real people.
+Do not paste `consentRows_` or `consentSeason_`. The live v36 script does not define them. Photo consent is read only through `consentList_`, and only when that function is already in the project. It is the coach list from `consent.gs`: `{ season, rows: [{ pid, photo }] }`, where `photo` is `yes`, `team` or `no`. This patch does not add `consent.gs` and does not create a consent sheet.
+
+If `consentList_` is already there and the winner's choice is `yes` or `team`, and `photo_` returns a `data:image/jpeg;base64,` value, the coach card uses that jpeg. A choice of `no`, a missing row, a failed read, or any other value keeps the shirt number and does not use a stored jpeg. Emergency contacts and notes on the consent row are not copied onto the card.
+
+If `consentList_` is not in the project, the card does not use a stored photo. The coach screen offers a JPEG from the phone after the coach ticks that they have checked it is allowed. That file stays in the page. It is not posted to the script, not written to the public site, and not sent to the assistant. A later paste of the existing `consent.gs` turns this offer off, because `consentList_` then decides.
+
+`MotmAward` and `MotmAudit` sheets are created on first use. No migration of old votes. No seed of real people. The file to paste is `docs/r105-motm-addon.gs` at blob `3ea97b37877d11ad411242c5984598418ddc1e2d`.
 
 ### Then
 
@@ -68,7 +74,7 @@ Phones pick up the new version from `version.json` when the app is opened. Do no
 
 Release 104 travel falls back to the existing `alert.send` coach phone alert. It does not write a shared travel row until Patch A is deployed.
 
-Release 105 close, reopen and awards say the action is not on the server until Patch B is deployed. Voting itself still uses `f.vote`.
+Release 105 close, reopen and awards say the action is not on the server until Patch B is deployed. Voting itself still uses `f.vote`. After Patch B, a stored photo is used only when `consentList_` is present and the choice is yes or team. If that function is absent, the coach can add a checked JPEG on the phone. A refusal, a missing choice, or a failed read stays as the shirt number.
 
 Release 106 colour, shortcuts, matchday headings, resources headings, wake-up and Spotify do not need a new Apps Script action.
 
