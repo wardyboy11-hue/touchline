@@ -185,7 +185,7 @@ body.ps header.tl-top{background:#fff}
 .tl-poll .fill{height:100%;border-radius:999px}
 .tl-poll .pct{width:64px;text-align:right;font-size:12px;color:var(--muted);flex:0 0 auto}
 </style>
-<script src="cd.js?v=101"></script>
+<script src="cd.js?v=102"></script>
 </head>
 <body>
 <div id="splash"><div class="spw"><svg viewBox="0 0 240 240" id="sprays"></svg><img src="badge.png" alt=""></div><p>Welcome to <b>Wigan Junior Latics Blues U15</b> Touchline Hub</p><div class="spn"><span>Proudly sponsored by</span><img src="coach/mfs.png" alt="MFS Limited"></div></div>
@@ -372,9 +372,52 @@ function bodyGames(){var x=X(),srt=function(a,b){return String(a.date||'9').loca
  if(dn.length)h+='<h2 style="margin:18px 0 0">Results</h2>'+dn.map(fxCard).join('');
  h+='<div class="card"><a class="btn block" href="'+FT+'" target="_blank" rel="noopener">Open FA Full Time for the table</a></div>';
  return h;}
+
+/* r102: optional Ask for attendance on events. Local answers + queue until Code_v36. */
+function evAskAtt(e){return !!(e&&(e.askAtt||e.type==='event-att'));}
+function evMineGet(){try{return JSON.parse(g('fam.evmine')||'{}')||{};}catch(e){return {};}}
+function evMineSet(id,a){var o=evMineGet();o[id]=a;try{s('fam.evmine',JSON.stringify(o));}catch(e){} if(D){D.evMine=D.evMine||{};D.evMine[id]=a;}}
+function evQLoad(){try{return JSON.parse(g('fam.evattq')||'[]')||[];}catch(e){return [];}}
+function evQSave(arr){try{s('fam.evattq',JSON.stringify(arr||[]));}catch(e){}}
+function evQAdd(id,a){var q=evQLoad().filter(function(x){return x.id!==id;});q.push({id:id,a:a,at:Date.now()});evQSave(q);}
+function evQFlush(){var q=evQLoad();if(!q.length||navigator.onLine===false)return;var next=q[0];
+ call('f.ev.answer',{eventId:next.id,answer:next.a}).then(function(){evQSave(q.slice(1));if(q.length>1)evQFlush();}).catch(function(e){if(!/not open|not found|Bad|Unknown|action/i.test(String(e&&e.message||e))){/* keep queue */}});
+}
+try{window.addEventListener('online',function(){evQFlush();});}catch(e){}
+function evAnsLabel(a){return a==='Y'?'Yes':a==='N'?'No':a;}
+function evShirtBlock(e){if(!e)return '';var A=(D&&D.evAtt&&D.evAtt[e.id])||null;
+ var mine=evMineGet()[e.id]||(D&&D.evMine&&D.evMine[e.id])||'';
+ var myNum='';try{myNum=famShirtNum?famShirtNum():'';}catch(x){myNum=(D&&D.num)||'';}
+ if(!A){/* local-only summary until v36 */
+  var Y=[],N=[],none=[];
+  if(mine==='Y'&&myNum)Y=[myNum];else if(mine==='N'&&myNum)N=[myNum];
+  A={Y:Y,N:N,none:none};
+ }
+ var chip=function(n,c){return '<span class="'+c+'">'+esc(String(n))+'</span>';};
+ var h='<div class="att-sum" style="margin-top:12px;padding-top:10px;border-top:1px solid var(--line)"><p class="small muted" style="margin:0 0 6px">Answers by shirt number only. No names.</p>';
+ h+='<p class="small" style="margin:8px 0 2px"><b>Yes</b> ('+A.Y.length+')</p><div class="tl-shirt">'+(A.Y.length?A.Y.map(function(n){return chip(n,'y');}).join(''):'<span class="muted small">None yet</span>')+'</div>';
+ h+='<p class="small" style="margin:8px 0 2px"><b>No</b> ('+A.N.length+')</p><div class="tl-shirt">'+(A.N.length?A.N.map(function(n){return chip(n,'n');}).join(''):'<span class="muted small">None yet</span>')+'</div>';
+ h+='<p class="small" style="margin:8px 0 2px"><b>Not answered</b> ('+(A.none?A.none.length:0)+')</p><div class="tl-shirt">'+(A.none&&A.none.length?A.none.map(function(n){return chip(n,'w');}).join(''):'<span class="muted small">Waiting for the full squad list from the server</span>')+'</div></div>';
+ return h;}
+function evAns(id,a){evMineSet(id,a);var ev=((X().events||[]).filter(function(e){return e.id===id;})[0])||{date:today(),title:'event'};
+ var day=attDayLabel?attDayLabel(ev):nice(ev.date);
+ var msg=navigator.onLine===false
+  ?("Thanks, you're down as "+evAnsLabel(a)+" for "+day+". Saved on this phone, will send when you are back online.")
+  :("Thanks, you're down as "+evAnsLabel(a)+" for "+day+".");
+ if(typeof attPop==='function')attPop(a==='Y');if(typeof attToast==='function')attToast(msg);r();
+ evQAdd(id,a);
+ if(navigator.onLine===false)return;
+ call('f.ev.answer',{eventId:id,answer:a}).then(function(){var q=evQLoad().filter(function(x){return x.id!==id;});evQSave(q);}).catch(function(){/* stay queued until Code_v36 */});
+}
+function evCard(e){var ask=evAskAtt(e)&&!e.pending,mine=evMineGet()[e.id]||(D&&D.evMine&&D.evMine[e.id])||'';
+ var h='<div class="card" id="ev-'+(e.id||'')+'"><div>'+(e.pending?'<span class="tag" style="background:#7a3b00">Waiting for Tim</span>':'')+(e.coach?'':'<span class="tag">Parent</span>')+(ask?'<span class="tag" style="background:#FFB81C;color:#1b1200">Needs your answer</span>':'')+'</div><h2 style="margin-top:6px">'+esc(e.title)+'</h2><p><b>'+esc(nice(e.date))+'</b>'+(e.time?', '+esc(e.time):'')+(e.place?'<br>'+esc(e.place):'')+'</p>'+(e.note?'<p class="small">'+esc(e.note)+'</p>':'')+(e.link?'<a class="btn block" style="margin-top:6px" href="'+esc(e.link)+'" target="_blank" rel="noopener">Open the link</a>':'');
+ if(ask){h+='<div class="ybig"><button class="btn'+(mine==='Y'?' on-y':'')+'" style="background:#14532d;border-color:#4ADE80;min-height:56px;font-size:18px" onclick="evAns(\''+e.id+'\',\'Y\')">Yes</button><button class="btn'+(mine==='N'?' on-n':'')+'" style="background:#7f1d33;border-color:#FB7185;min-height:56px;font-size:18px" onclick="evAns(\''+e.id+'\',\'N\')">No</button></div><p class="small muted" style="margin-top:8px">Tap Yes or No. You can change it any time.</p>'+evShirtBlock(e);}
+ if(!e.pending)h+='<div class="row"><a class="btn" target="_blank" rel="noopener" href="'+gcal(e.title,e.date,e.time,e.place,e.note)+'">Add to calendar</a><button class="btn" onclick="wa(\''+esc(String(e.title).replace(/'/g,''))+' - '+esc(nice(e.date))+(e.time?' at '+esc(e.time):'')+'. More: https://touchline.cipher-training.co.uk/parents\')">WhatsApp</button></div>';
+ return h+'</div>';}
+function evAttHomeCards(){var x=X(),td=today(),out='';(x.events||[]).forEach(function(e){if(e.pending||!evAskAtt(e)||e.date<td)return;var mine=evMineGet()[e.id]||(D&&D.evMine&&D.evMine[e.id]);if(mine)return;out+=evCard(e);});return out;}
 function bodyEvents(){var x=X(),h=intro('Team nights, fundraisers and anything else going on.'+(D.role==='parent'?' Parents can add one. Tim checks it first.':''))+'<div class="card"><h2>Events</h2><p class="small muted">Team nights, fundraisers and anything else going on.'+(D.role==='parent'?' Parents can add one below. Tim checks it first.':'')+'</p></div>';
  if(alertMsg&&tab==='events')h+='<div class="card"><p class="small">'+esc(alertMsg)+'</p></div>';
- h+=(x.events.length?x.events.map(function(e){return '<div class="card"><div>'+(e.pending?'<span class="tag" style="background:#7a3b00">Waiting for Tim</span>':'')+(e.coach?'':'<span class="tag">Parent</span>')+'</div><h2 style="margin-top:6px">'+esc(e.title)+'</h2><p><b>'+esc(nice(e.date))+'</b>'+(e.time?', '+esc(e.time):'')+(e.place?'<br>'+esc(e.place):'')+'</p>'+(e.note?'<p class="small">'+esc(e.note)+'</p>':'')+(e.link?'<a class="btn block" style="margin-top:6px" href="'+esc(e.link)+'" target="_blank" rel="noopener">Open the link</a>':'')+(e.pending?'':'<div class="row"><a class="btn" target="_blank" rel="noopener" href="'+gcal(e.title,e.date,e.time,e.place,e.note)+'">Add to calendar</a><button class="btn" onclick="wa(\''+esc(String(e.title).replace(/'/g,''))+' - '+esc(nice(e.date))+(e.time?' at '+esc(e.time):'')+'. More: https://touchline.cipher-training.co.uk/parents\')">WhatsApp</button></div>')+'</div>';}).join(''):'<div class="card"><p class="muted">Nothing listed yet.</p></div>');
+ h+=(x.events.length?x.events.map(evCard).join(''):'<div class="card"><p class="muted">Nothing listed yet.</p></div>');
  if(D.role==='parent'){h+=evForm?'<div class="card"><h2>Add an event</h2><input id="evt" placeholder="Title"><div class="row"><input id="evd" type="date"><input id="evh" type="time"></div><input id="evp" placeholder="Place" style="margin-top:8px"><input id="evl" placeholder="Link (optional)" style="margin-top:8px"><textarea id="evn" style="min-height:70px;margin-top:8px" placeholder="Note (optional)"></textarea><div class="row"><button class="btn pri" onclick="evAdd()">Send to Tim</button><button class="btn" onclick="evForm=false;r()">Cancel</button></div><p class="small muted">Please do not put private details or names of children you do not know. Links must start with https.</p></div>':'<button class="btn pri block" onclick="evForm=true;r()">Add an event</button>'+wh('events');}
  return h;}
 var RS={d:null,loading:false,err:'',msg:'',name:''};
@@ -515,7 +558,7 @@ function famShirtNum(){if(D&&D.role==='parent'&&CHD&&CHD.num)return String(CHD.n
 window.tlLateNum=function(){return famShirtNum();};
 window.tlLateSend=function(row){if(!row)return Promise.resolve();var act=row.op==='undo'?'f.late.undo':'f.late';return call(act,{id:row.id,num:row.num,mins:row.mins,kind:row.kind,ref:row.ref,date:row.date}).then(function(){alertMsg=row.op==='undo'?'Late notice cleared.':'Told the coaches: '+(window.TLCD?TLCD.lateLabel(row.num,row.mins):('No. '+row.num+' running late'));try{r();}catch(e){}}).catch(function(e){alertMsg=(e&&e.message)||'Saved on this phone. Will send when you are back online.';try{r();}catch(x){};});};
 window.addEventListener('online',function(){try{if(window.TLCD)TLCD.flushLate();}catch(e){}});
-function famMatchdayMaybe(){try{if(!window.TLCD||!D)return;var x=X(),td=today();var nx=(x.fixtures||[]).filter(function(m){return !m.done&&m.date===td&&!m.pp;})[0];if(!nx)return;if(D.role==='parent')loadChild();TLCD.showMatchday(nx,{role:D.role||'parent',anim:'12_352_in_transition',animHref:'coach/anim/12_352_in_transition.html?v=101',onGo:function(){try{goTab('home');}catch(e){}try{TLCD.pinToday(nx);}catch(e2){}},onCard:function(){try{goTab('home');}catch(e){}}});}catch(e){}}
+function famMatchdayMaybe(){try{if(!window.TLCD||!D)return;var x=X(),td=today();var nx=(x.fixtures||[]).filter(function(m){return !m.done&&m.date===td&&!m.pp;})[0];if(!nx)return;if(D.role==='parent')loadChild();TLCD.showMatchday(nx,{role:D.role||'parent',anim:'12_352_in_transition',animHref:'coach/anim/12_352_in_transition.html?v=102',onGo:function(){try{goTab('home');}catch(e){}try{TLCD.pinToday(nx);}catch(e2){}},onCard:function(){try{goTab('home');}catch(e){}}});}catch(e){}}
 
 
 /* r98/r100: attendance Yes/No at top of Home, with confirm toast and shirt-number summary. */
@@ -670,7 +713,7 @@ function selfPrompt(){if(!D||D.role!=='player'||!SELF||SELF.done||SELF.role!=='p
 function selfLink(){if(!D||D.role!=='player'||!SELF||SELF.role!=='player')return '';var h='<div class="card"><h3>My profile</h3><p class="small muted">Nickname, foot, positions and your own scores. Only you and the coaches can see these.</p><button class="btn block" onclick="selfOpen()">'+(SELF.done?'Update my profile':'Make it yours')+'</button></div>';if(window.roleBtn)h=roleBtn({label:'My role'})+h;if(window.niggleCard)h=niggleCard()+h;return h;}
 var WK3P={0:["w1_shape_to_receive_session","plans/w1_shape_to_receive_session.pdf"]};var WK3D=[["06_shape_to_receive_first_pass_forward", "Shape to receive, first pass forward", "Watch how the players move before the ball arrives: someone shows short, others give width, and the first pass goes forward."], ["07_counter_attack_three_runners", "Counter attack: first pass forward, three runners", "Watch the moment we win the ball: the first pass goes forward through a gap, and three players sprint straight away."], ["08_five_second_counter_press", "Lose it, react: five second press", "Watch what happens the moment we lose the ball: do the closest players chase it straight away together for about five seconds?"], ["09_build_from_keeper_then_break", "Build from the keeper, then break", "Watch the keeper start the attack and the defenders spread out wide, then the ball goes forward quickly."], ["10_rotate_roles_everyone_every_job", "Everyone plays every job", "Watch your child play in different positions. That is the plan: everyone learns every job in the team."], ["11_shape_and_transition_game", "Shape and transition in the game", "Watch for the three ideas from this block: getting into shape, reacting when we lose it, and breaking fast when we win it."]];
 function tonightCard(){var n=new Date(),p=function(x){return ('0'+x).slice(-2);},td=n.getFullYear()+'-'+p(n.getMonth()+1)+'-'+p(n.getDate());if(td<'2026-11-03'||td>'2026-11-10')return '';var pl=D&&D.role==='player';return '<div class="card" id="tonight"><span class="tag" style="background:#1e3a8a">'+(td==='2026-11-04'?'Tonight':'Wed 4 Nov')+'</span><h2 style="margin-top:8px">'+(pl?'Tonight\'s session':'Tonight\'s training')+': body shape and quick play</h2><p class="small muted">60 minutes. Look, open, forward, quick.</p>'+(pl?'<p>Watch it before training. Turn the sound on. Players are shown by shirt number.</p>':'<p><b>What to look for:</b> players looking over their shoulder before the ball arrives, opening up on the half turn, and moving it on in one or two touches. When we win it, the first pass goes forward.</p>')+'<a class="btn pri block" href="coach/anim/t1104_body_shape_quick_play.html?v=86&back='+encodeURIComponent(location.pathname)+'">Watch the whole session</a><p class="small muted" style="margin:8px 0">Five parts with voice over. Tap Close or press Esc to come back here.</p><a class="btn block" href="plans/t1104_body_shape_quick_play.pdf?v=87" target="_blank" rel="noopener">Session plan (PDF)</a></div>';}
-function stretchCard(){return '<div class="card" id="stretchc"><span class="tag" style="background:#16a34a">Cool down</span><h2 style="margin-top:8px">Stretching</h2><p class="small muted">18 football stretches, about 14 minutes. Voice over tells you each one, why it helps, then counts you down. Works offline once opened.</p><a class="btn block" href="stretch/index.html?v=101&back='+encodeURIComponent(location.pathname)+'">Start stretching</a>'+(window.preStretchExtra?preStretchExtra():'<button type="button" class="btn pri block" style="margin-top:8px" onclick="openPreStretch&&openPreStretch()">Pre-game stretch</button>')+'</div>';}
+function stretchCard(){return '<div class="card" id="stretchc"><span class="tag" style="background:#16a34a">Cool down</span><h2 style="margin-top:8px">Stretching</h2><p class="small muted">18 football stretches, about 14 minutes. Voice over tells you each one, why it helps, then counts you down. Works offline once opened.</p><a class="btn block" href="stretch/index.html?v=102&back='+encodeURIComponent(location.pathname)+'">Start stretching</a>'+(window.preStretchExtra?preStretchExtra():'<button type="button" class="btn pri block" style="margin-top:8px" onclick="openPreStretch&&openPreStretch()">Pre-game stretch</button>')+'</div>';}
 function wk3dCard(){var s=new Date('2026-11-04T00:00:00'),n=Math.floor((Date.now()-s)/864e5),i=n<0?0:Math.floor(n/7);if(i>5||n<-14)return stretchCard()+(window.TLFit?TLFit.familyCard({who:D.role==='parent'?'parent':'player'}):'');var w=WK3D[i],pl=D&&D.role==='player',sp=WK3P[i],u='coach/anim/'+(sp?sp[0]:w[0])+'.html?v=86&back='+encodeURIComponent(location.pathname),dt=new Date(s.getTime()+i*7*864e5).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});return '<div class="card" id="wk3d"><span class="tag" style="background:#1e3a8a">'+(n<0?'Coming up':'This week')+'</span><h2 style="margin-top:8px">'+(pl?'This week\'s session':'This week\'s training')+'</h2><p class="small muted">Week '+(i+1)+' of 6, '+dt+': '+w[1]+'</p>'+(pl?'<p>Watch it before training. Turn the sound on. Players are shown by shirt number.</p>':'<p><b>What to look for:</b> '+w[2]+'</p>')+'<a class="btn pri block" href="'+u+'">'+(sp?'Watch the whole session':'Watch it')+'</a>'+(sp?'<p class="small muted" style="margin:8px 0">Warm up, both practices and the game, with voice over. Tap Close or press Esc to come back here.</p><a class="btn block" href="'+sp[1]+'?v=87" target="_blank" rel="noopener">Session plan (PDF)</a>':'')+'</div>'+stretchCard()+(window.TLFit?TLFit.familyCard({who:D.role==='parent'?'parent':'player'}):'');}
 /* UK dates: shared helper. Display only; stored dates stay yyyy-mm-dd. */
 function ukD(s,o){if(!s)return '';var m=/^(\d{4})-(\d\d)-(\d\d)/.exec(String(s)),d=m?new Date(Date.UTC(+m[1],+m[2]-1,+m[3],12)):new Date(s);if(isNaN(d))return String(s);return d.toLocaleDateString('en-GB',Object.assign({timeZone:'Europe/London'},o||{day:'numeric',month:'short',year:'numeric'}));}
@@ -781,7 +824,7 @@ function closeMore(){
 function moreJump(k){
  closeMore();
  if(k==='shopx'){showKit=true;r();window.scrollTo(0,0);return;}
- if(k==='stretchx'){location.href='stretch/index.html?v=101&back='+encodeURIComponent(location.pathname);return;}
+ if(k==='stretchx'){location.href='stretch/index.html?v=102&back='+encodeURIComponent(location.pathname);return;}
  if(k==='voicex'){r();setTimeout(function(){try{document.getElementById('tl-voice-fab').click();}catch(e){}},50);return;}
  goTab(k);
 }
@@ -818,7 +861,7 @@ function tlVoiceBoot(){
    if(!intent)return;
    if(intent.intent==='attendance'||intent.go==='att'){try{goTab('today');}catch(e){}return;}
    if(intent.intent==='fixtures'||intent.intent==='kickoff'||intent.intent==='where'||intent.go==='games'){try{goTab('games');}catch(e){}return;}
-   if(intent.intent==='stretch'){location.href='stretch/index.html?v=101&back='+encodeURIComponent(location.pathname);return;}
+   if(intent.intent==='stretch'){location.href='stretch/index.html?v=102&back='+encodeURIComponent(location.pathname);return;}
    if(intent.intent==='shop'){try{goTab('me');}catch(e){}try{if(window.openShop)openShop();else location.hash='#shop';}catch(e2){}return;}
    if(intent.intent==='training'||intent.go==='home'){try{goTab('today');}catch(e){}return;}
    if(intent.intent==='clip'||intent.go==='lib'){try{goTab('lib');}catch(e){}return;}
@@ -889,20 +932,20 @@ function motmSave(){if(!MOTM.pick&&!(D.vote&&D.vote.motm&&D.vote.motm.mine&&D.vo
   if(D.vote&&D.vote.motm){D.vote.motm.mine=[id];D.vote.motm.open=true;}
   r();
  });}
-function homeAlerts(){return motmHomeCard()+attTopCard()+homeMatchStrip()+notifCard()+feedCard()+hcCard()+headCard()+landVotes();}
+function homeAlerts(){return motmHomeCard()+attTopCard()+evAttHomeCards()+homeMatchStrip()+notifCard()+feedCard()+hcCard()+headCard()+landVotes();}
 function homeWeekItems(){var x=X(),td=today(),end=addD(td,7),items=[];
  (D.posts||[]).forEach(function(p){if(p.date>=td&&p.date<=end)items.push({date:p.date,time:p.time||'',title:p.title||(p.type==='match'?'Match':'Training'),kind:p.type||'post',place:p.place||'',href:'#sec-train',id:p.id});});
  (x.fixtures||[]).forEach(function(m){if(!m.done&&!m.pp&&m.date>=td&&m.date<=end){if(!items.some(function(i){return i.kind==='match'&&i.date===m.date;}))items.push({date:m.date,time:m.ko||'',title:(m.ha==='A'?'at ':'v ')+(m.opp||'Match'),kind:'match',place:m.venue||'',href:'#sec-alerts',id:m.id||m.date});}});
- (x.events||[]).forEach(function(e){if(!e.pending&&e.date>=td&&e.date<=end)items.push({date:e.date,time:e.time||'',title:e.title||'Event',kind:'event',place:e.place||'',href:'#sec-news',id:e.id||e.title});});
+ (x.events||[]).forEach(function(e){if(!e.pending&&e.date>=td&&e.date<=end)items.push({date:e.date,time:e.time||'',title:e.title||'Event',kind:evAskAtt(e)?'event-att':'event',place:e.place||'',href:evAskAtt(e)?'#sec-alerts':'#sec-news',id:e.id||e.title,askAtt:evAskAtt(e)});});
  items.sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:String(a.time).localeCompare(String(b.time));});
  return items;}
 function homeThisWeek(){var items=homeWeekItems();if(!items.length)return '<div class="card"><p class="muted">Nothing listed for this week yet.</p></div>';
- return '<div class="tl-week" role="list">'+items.map(function(it){return '<a class="tl-week-item" role="listitem" href="'+esc(it.href)+'" onclick="try{document.getElementById(\'sec-'+(it.kind==='match'?'alerts':it.kind==='event'?'news':'train')+'\').open=true;}catch(e){}"><div class="d">'+esc(nice(it.date).split(',')[0]||nice(it.date))+'</div><div class="t">'+esc(it.title)+'</div><div class="m">'+(it.time?esc(it.time)+' · ':'')+esc(it.kind==='match'?'Match':it.kind==='event'?'Event':'Training')+(it.place?' · '+esc(it.place):'')+'</div></a>';}).join('')+'</div>';}
+ return '<div class="tl-week" role="list">'+items.map(function(it){return '<a class="tl-week-item" role="listitem" href="'+esc(it.href)+'" onclick="try{document.getElementById(\'sec-'+(it.kind==='match'||it.kind==='event-att'?'alerts':it.kind==='event'?'news':'train')+'\').open=true;}catch(e){}"><div class="d">'+esc(nice(it.date).split(',')[0]||nice(it.date))+'</div><div class="t">'+esc(it.title)+'</div><div class="m">'+(it.time?esc(it.time)+' · ':'')+esc(it.kind==='match'?'Match':it.kind==='event-att'?'Event · RSVP':it.kind==='event'?'Event':'Training')+(it.place?' · '+esc(it.place):'')+'</div></a>';}).join('')+'</div>';}
 function homeTraining(){return wcCard()+tonightCard()+(window.posCard?posCard()+prepCard():'')+stretchCard()+wk3dCard();}
 function homeNewsShelf(){var bits=[];
  bits.push('<div class="card"><h3 style="margin-top:0">Reminders and news</h3>'+bodyHome()+'</div>');
  var car=carousel();if(car)bits.push(car);
- bits.push('<div class="card"><h3 style="margin-top:0">Check these out</h3><p class="small muted">Sessions, shape and ideas. Tap one.</p><div class="row wrap2"><button class="btn grow" onclick="goTab(\'lib\')">Library</button><button class="btn grow" onclick="goTab(\'own\')">My own training</button><a class="btn grow" href="shape/index.html?mode=squad&back='+encodeURIComponent(location.pathname.split('/').pop())+'">Our 352</a><a class="btn grow" href="stretch/index.html?v=101&back='+encodeURIComponent(location.pathname)+'">Stretching</a></div></div>');
+ bits.push('<div class="card"><h3 style="margin-top:0">Check these out</h3><p class="small muted">Sessions, shape and ideas. Tap one.</p><div class="row wrap2"><button class="btn grow" onclick="goTab(\'lib\')">Library</button><button class="btn grow" onclick="goTab(\'own\')">My own training</button><a class="btn grow" href="shape/index.html?mode=squad&back='+encodeURIComponent(location.pathname.split('/').pop())+'">Our 352</a><a class="btn grow" href="stretch/index.html?v=102&back='+encodeURIComponent(location.pathname)+'">Stretching</a></div></div>');
  bits.push(voiceCard()+rsCard('home')+tourCard());
  return '<div class="tl-shelf">'+bits.map(function(b){return '<div>'+b+'</div>';}).join('')+'</div>';}
 function homePlayers(){var h=glCard()+rcPlayerCard()+mdpCard()+fmCard()+workCard()+shapeCard()+selfPrompt();
@@ -929,7 +972,7 @@ function voteCards(){var V=D.vote||{},h=(D.role==='parent'?'<p class="small" sty
   h+='<div class="card" style="border-color:#FFB81C"><h2>'+x[1]+(v.label?': '+esc(v.label):'')+'</h2><p class="small muted">'+x[2]+' '+(x[0]==='motm'?'Pick one player. ':'Pick your top three: 3 points for first, 2 for second, 1 for third. ')+(D.role==='player'?'Not yourself.':'Not your own player.')+' Vote for effort, attitude and team play, not just goals.</p>'+(x[0]==='motm'?[0]:[0,1,2]).map(function(i){return '<label class="small">'+(x[0]==='motm'?'Your choice':pts[i])+'</label><select id="v_'+x[0]+i+'" style="width:100%;margin-bottom:8px"><option value="">Choose</option>'+v.cands.map(function(c){var lab=c.num?('#'+c.num):(c.name||c.id);return '<option value="'+(c.id||c.num)+'"'+(m[i]===c.id||m[i]===c.num?' selected':'')+'>'+esc(lab)+'</option>';}).join('')+'</select>';}).join('')+'<button class="btn pri block" onclick="vote(\''+x[0]+'\')">Save my vote</button>'+(m.length===(x[0]==='motm'?1:3)?'<p class="small">Vote saved. You can change it until voting closes.</p>':'')+'</div>';});
  return h;}
 function vote(k){var n=k==='motm'?1:3;var p=[0,1,2].slice(0,n).map(function(i){return document.getElementById('v_'+k+i).value;});if(p.some(function(x){return !x;})||new Set(p).size!==n){alert(n===1?'Pick one player.':'Pick three different players, one for each place.');return;}call('f.vote',{kind:k,picks:p}).then(function(){return load();}).catch(function(e){alert(e.message);});}
-function load(){return call('f.home').then(function(d){D=d;D.at=Date.now();try{s('fam.cache',JSON.stringify({c:CODE,d:d}));}catch(x){}r();splashDone();setTimeout(famMatchdayMaybe,500);}).catch(function(e){if(/code/i.test(e.message)){CODE='';s(CK,'');s('fam.cache','');D=null;msg=e.message;}else if(!D){msg=e.message;}r();splashDone();});}
+function load(){return call('f.home').then(function(d){D=d;D.at=Date.now();try{var loc=evMineGet();D.evMine=Object.assign({},loc,D.evMine||{});Object.keys(D.evMine).forEach(function(k){loc[k]=D.evMine[k];});s('fam.evmine',JSON.stringify(loc));}catch(x){}try{s('fam.cache',JSON.stringify({c:CODE,d:d}));}catch(x){}r();splashDone();setTimeout(famMatchdayMaybe,500);evQFlush();}).catch(function(e){if(/code/i.test(e.message)){CODE='';s(CK,'');s('fam.cache','');D=null;msg=e.message;}else if(!D){msg=e.message;}r();splashDone();});}
 var LC={open:false,num:'',who:'',st:''};
 function lostBox(){if(!LC.open)return '<p class="small"><a href="#" onclick="LC.open=true;r();return false">Lost your code?</a></p>';
  if(LC.st==='sent')return '<div class="card"><h2>Sent to Tim and Deano</h2><p>They will get your code to you in person or by the team chat. We never show a code on this page.</p></div>';
@@ -1011,13 +1054,13 @@ function feedCard(){var f=(D&&D.feed)||[];if(!f.length)return '';return '<div cl
 function out(){CODE='';D=null;s(CK,'');s('fam.cache','');r();}
 if(CODE){var cc=null;try{cc=JSON.parse(g('fam.cache')||'null');}catch(x){}if(cc&&cc.c===CODE&&cc.d){D=cc.d;r();splashDone();setTimeout(famMatchdayMaybe,500);}load();}else{r();splashDone();}
 </script>
-<script src="positions.js?v=101" defer></script>
-<script src="fitness.js?v=101" defer></script>
-<script src="prestretch.js?v=101" defer></script>
-<script src="acct.js?v=101" defer></script>
-<script src="shop.js?v=101" defer></script>
-<script src="voice.js?v=101" defer></script>
-<script src="update.js?v=101" defer></script>
-<script src="pq.js?v=101" defer></script>
+<script src="positions.js?v=102" defer></script>
+<script src="fitness.js?v=102" defer></script>
+<script src="prestretch.js?v=102" defer></script>
+<script src="acct.js?v=102" defer></script>
+<script src="shop.js?v=102" defer></script>
+<script src="voice.js?v=102" defer></script>
+<script src="update.js?v=102" defer></script>
+<script src="pq.js?v=102" defer></script>
 </body>
 </html>
