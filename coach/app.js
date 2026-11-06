@@ -2913,6 +2913,7 @@ function vaAtt(id){var a=[],s=$('#vs_'+id),l=$('#vl_'+id);
  if(l)l.value.split('\n').forEach(function(line){line=line.trim();if(!line)return;var m=line.split('|'),u=(m.length>1?m[m.length-1]:m[0]).trim(),t=m.length>1?m.slice(0,-1).join('|').trim():'';if(/^https:\/\//.test(u))a.push({t:t||u,u:u,kind:'link'});});
  return a;}
 /* Send to player profile: the only way to share player content. No WhatsApp, email or direct messages. */
+window.tlShareRoster=function(){return plist().map(function(p){return {id:p.id,num:String(p.num||''),name:shortName(p)};});};
 window.sendToProfile=function(item){
  var pl=plist(),w=document.createElement('div');w.className='r81m';w.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;display:flex;align-items:flex-end;justify-content:center';
  w.innerHTML='<div class="card" style="max-width:520px;width:100%;max-height:85vh;overflow:auto;margin:0"><h2>Send to player profile</h2><p class="small muted">Posts <b>'+esc(item.t)+'</b> into the player feed in the app. Players see it on their profile. There is no direct messaging.</p><label class="small" style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="r81all" style="width:auto;min-height:0"> Whole squad</label><div id="r81pl" class="chips">'+pl.map(function(p){return '<button class="chip" data-pid="'+esc(p.id)+'">#'+esc(String(p.num||'?'))+' '+esc(shortName(p))+'</button>';}).join('')+'</div><label class="small">Note (optional)</label><textarea id="r81n" rows="2"></textarea><div style="display:flex;gap:8px;margin-top:8px"><button class="btn" id="r81go">Send</button><button class="btn sec" id="r81x">Cancel</button></div></div>';
@@ -3021,7 +3022,7 @@ setTimeout(function(){
     var go=intent.page||intent.go;
     if(intent.intent==='coach_att'||intent.intent==='attendance')go='att';
     if(intent.intent==='fixtures'||intent.intent==='kickoff'||intent.intent==='where')go='match';
-    if(intent.intent==='stretch'){location.href='../stretch/index.html?v=106&back='+encodeURIComponent('/coach/');return;}
+    if(intent.intent==='stretch'){location.href='../stretch/index.html?v=108&back='+encodeURIComponent('/coach/');return;}
     if(intent.intent==='shop')go='shop';
     if(intent.intent==='training')go=intent.span==='week'?'plan':'run';
     if(intent.intent==='clip')go='rl';

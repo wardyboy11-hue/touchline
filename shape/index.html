@@ -63,11 +63,13 @@ footer{background:#0a1626;border-top:1px solid #1d3652;padding:8px 12px calc(10p
    <button class="btn g" id="snd">Sound on</button>
    <span class="sp"></span>
    <button class="btn g" id="all">Play all</button>
+   <button class="btn" id="share" type="button" style="min-height:48px">Share</button>
   </div>
  </footer>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="data.js"></script>
+<script src="../tl-share-inapp.js?v=108"></script>
 <script>
 (function(){
 'use strict';
@@ -80,7 +82,13 @@ var MINE=[];
 var r=(Q.get('role')||'').toUpperCase();if(r&&SH.ROLES[r]){ROLE=r;MODE='role';if(MINE.indexOf(r)<0)MINE.unshift(r);}else if(MINE.length){ROLE=MINE[0];}
 var ph=Q.get('phase');if(ph){for(i=0;i<SH.PHASES.length;i++)if(SH.PHASES[i].id===ph)PHASE=i;}
 if(Q.get('mode')==='role')MODE='role';
-if(Q.get('back'))$('back').href=Q.get('back');})();
+if(Q.get('back'))$('back').href=Q.get('back');
+ var shareBtn=$('share');
+ if(shareBtn)shareBtn.addEventListener('click',function(){
+  if(!window.TLInShare)return;
+  TLInShare.open({kind:'shape',ref:'352',title:'Our 352 in 3D',path:'/shape/index.html'});
+ });
+})();
 
 /* ---------- helpers ---------- */
 function est(txt){return Math.max(8,txt.length/14.5);}
@@ -112,6 +120,7 @@ var CAMS={behind:{th:0,ph:1.0,r:92,tx:0,tz:6},top:{th:0,ph:0.02,r:128,tx:0,tz:0}
 var CS={th:0,ph:1.0,r:92,tx:0,tz:6},CT={th:0,ph:1.0,r:92,tx:0,tz:6};
 function wx(x){return x-34;}function wz(y){return 52.5-y;}
 function init(){
+ if (typeof THREE === 'undefined') { $('err').style.display = 'flex'; return; }
  try{
   R=new THREE.WebGLRenderer({canvas:$('cv'),antialias:true});
   R.setPixelRatio(Math.min(window.devicePixelRatio||1,2));

@@ -30,7 +30,7 @@ function probe(code){
 }
 function go(a){
  if(a.role==='coach'){s('tl.code',a.code);if(COACH)location.reload();else location.href='/coach/';return;}
- s('fam.code',a.code);rm('fam.cache');
+ s('fam.code',a.code);rm('fam.cache');rm('tl.shareq');
  if(COACH)location.href='/family.html';else location.reload();
 }
 function signOut(all){
@@ -40,7 +40,7 @@ function signOut(all){
   if(dirty&&!confirm('Some changes have not synced yet. Sign out anyway?'))return;
   ['tl.code','tl.state.v1','tl.em','tl.conc'].forEach(rm);try{indexedDB.deleteDatabase('tl.pdf');}catch(e){}
  }
- if(all||!COACH){rm('fam.code');rm('fam.cache');}
+ if(all||!COACH){rm('fam.code');rm('fam.cache');rm('tl.shareq');}
  if(all){['tl.code','tl.state.v1','tl.em','tl.conc'].forEach(rm);try{indexedDB.deleteDatabase('tl.pdf');}catch(e){}save([]);}
  else if(c)dropCode(c.code);
  location.reload();
