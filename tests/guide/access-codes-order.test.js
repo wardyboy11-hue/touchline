@@ -17,9 +17,9 @@ assert.ok(/function applySettings\(/.test(app),'settings.access merge protect pr
 assert.ok(/data-act=\"moreJump\"/.test(app),'Settings jump tiles present');
 assert.ok(/Where are the site access codes\?/.test(app),'FAQ covers site access');
 const ver=JSON.parse(fs.readFileSync(path.join(root,'version.json'),'utf8'));
-assert.strictEqual(ver.v,'105');
+assert.strictEqual(ver.v,'106');
 const upd=fs.readFileSync(path.join(root,'update.js'),'utf8');
-assert.ok(/RUN='105'/.test(upd));
+assert.ok(/RUN='106'/.test(upd));
 const sw=fs.readFileSync(path.join(root,'coach','sw.js'),'utf8');
-assert.ok(/touchline-shell-v105/.test(sw)&&/app\.js\?v=105/.test(sw));
+assert.ok(/touchline-shell-v106/.test(sw)&&/app\.js\?v=106/.test(sw));
 console.log('access-codes-order: ok');
