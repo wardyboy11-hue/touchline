@@ -1,6 +1,6 @@
 /* family service worker, r88: push alerts + offline shop images */
-var FV='tl-fam-v95';
-var FSHELL=['voice.js?v=95','shop.js?v=95','fitness.js?v=95','fitness.css?v=95','prestretch.js?v=95','cd.js?v=95','shop.css?v=95'].concat(['ss-core-supporters-coat-navy','ss-core-thermal-jacket-navy','end-of-line-ss-bench-coat-navy','ss-core-softshell-jacket-navy','ss-core-padded-gilet-navy','new-ss-core-rain-jacket-navy','ss-core-softshell-gilet-navy'].map(function(s){return 'shop/img/'+s+'.webp?v=95';}));
+var FV='tl-fam-v96';
+var FSHELL=['voice.js?v=96','shop.js?v=96','fitness.js?v=96','fitness.css?v=96','prestretch.js?v=96','cd.js?v=96','shop.css?v=96'].concat(['ss-core-supporters-coat-navy','ss-core-thermal-jacket-navy','end-of-line-ss-bench-coat-navy','ss-core-softshell-jacket-navy','ss-core-padded-gilet-navy','new-ss-core-rain-jacket-navy','ss-core-softshell-gilet-navy'].map(function(s){return 'shop/img/'+s+'.webp?v=96';}));
 self.addEventListener('install',function(e){e.waitUntil(caches.open(FV).then(function(c){return c.addAll(FSHELL);}).then(function(){return self.skipWaiting();}).catch(function(){return self.skipWaiting();}));});
 self.addEventListener('activate',function(e){e.waitUntil(caches.keys().then(function(ks){return Promise.all(ks.filter(function(k){return k.indexOf('tl-fam-')===0&&k!==FV;}).map(function(k){return caches.delete(k);}));}).then(function(){return self.clients.claim();}));});
 self.addEventListener('fetch',function(e){
