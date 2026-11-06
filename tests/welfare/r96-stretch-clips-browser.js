@@ -1,0 +1,34 @@
+/* r96: video stretch clips. SHOTS=/workspace/shots */
+const {chromium,devices}=require('playwright');const http=require('http'),fs=require('fs'),path=require('path');
+const root=path.resolve(__dirname,'../..'),PORT=+process.env.PORT||8798,SHOTS=process.env.SHOTS||'/workspace/shots';
+const MT={'.js':'text/javascript','.html':'text/html','.json':'application/json','.css':'text/css','.png':'image/png','.webp':'image/webp','.mp3':'audio/mpeg','.mp4':'video/mp4','.webm':'video/webm','.jpg':'image/jpeg'};
+const srv=http.createServer((q,r)=>{let u=q.url.split('?')[0],f=path.join(root,decodeURIComponent(u));if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,d)=>{if(e){r.writeHead(404);r.end();return;}r.writeHead(200,{'content-type':MT[path.extname(f)]||'application/octet-stream'});r.end(d);});}).listen(PORT);
+let ok=0,bad=0;const T=(n,c)=>{console.log((c?'PASS ':'FAIL ')+n);c?ok++:bad++;};
+const w=ms=>new Promise(r=>setTimeout(r,ms));
+const shot=async(p,n)=>{fs.mkdirSync(SHOTS,{recursive:true});await p.screenshot({path:path.join(SHOTS,n),fullPage:true});};
+(async()=>{
+ const b=await chromium.launch();const q=await (await b.newContext({...devices['Pixel 7']})).newPage();
+ await q.goto('http://localhost:'+PORT+'/stretch/index.html?v=96');await w(2000);
+ await q.waitForFunction(()=>Object.keys(window.__stretchVids||{}).length>=8,{timeout:8000}).catch(()=>{});
+ const vids=await q.evaluate(()=>window.__stretchVids);
+ T('videos detected',vids&&Object.keys(vids).length>=8);
+ await q.evaluate(()=>{window.__silent=1;document.getElementById('start').click();});
+ await w(1200);
+ const hasVid=await q.evaluate(()=>!!document.querySelector('#fig video.stretch-vid'));
+ T('intro shows video',hasVid);
+ await shot(q,'r96_stretch_intro.png');
+ await q.evaluate(()=>{const s=window.__seg.find(x=>x.k==='hold');window.__at(s.t0+1);});
+ await w(500);
+ T('hold video present',!!(await q.$('#fig video.stretch-vid')));
+ await shot(q,'r96_stretch_hold.png');
+ await q.evaluate(()=>{const s=window.__seg.find(x=>x.k==='rest');window.__at(s.t0+2);});
+ await w(400);await shot(q,'r96_stretch_rest.png');
+ T('rest preview video or badge',!!(await q.$('.restwrap')));
+ await q.evaluate(()=>{const s=window.__seg.find(x=>x.k==='intro');window.__at(s.t0+0.5);document.getElementById('fig').click();});
+ await w(600);
+ const rate=await q.evaluate(()=>{const v=document.querySelector('#howto video');return v?v.playbackRate:null;});
+ T('howto slow 0.5',rate===0.5);
+ await shot(q,'r96_stretch_howto.png');
+ console.log(ok+' passed, '+bad+' failed');
+ await b.close();srv.close();process.exit(bad?1:0);
+})();

@@ -1,32 +1,28 @@
 /* Touchline coach app shell service worker (P0).
-   Precache: shell only. Runtime: cache first for versioned static, network first for pages,
-   Apps Script and other origins are never touched. No PDFs, video or audio are cached here. */
-var V='touchline-shell-v95',RT='touchline-run-v94';
-var SHELL=['./','index.html','app.css?v=95','topics.js?v=95','topic-bank.js?v=95','guide.js?v=95','app.js?v=95','gui.js?v=95','positions.js?v=95','positions.json','cdev.js?v=95','../pod.js','../acct.js?v=95','../voice.js?v=95','../update.js?v=95','../shop.css?v=95','../shop.js?v=95','../fitness.js?v=95','../fitness.css?v=95','../cd.js?v=95','../shop/img/ss-core-supporters-coat-navy.webp?v=95','../shop/img/ss-core-thermal-jacket-navy.webp?v=95','../shop/img/end-of-line-ss-bench-coat-navy.webp?v=95','../shop/img/ss-core-softshell-jacket-navy.webp?v=95','../shop/img/ss-core-padded-gilet-navy.webp?v=95','../shop/img/new-ss-core-rain-jacket-navy.webp?v=95','../shop/img/ss-core-softshell-gilet-navy.webp?v=95','manifest.webmanifest','../badge.png','../icon-192.png','../icon-512.png'];
+   Precache: shell only. Runtime: network first for HTML/JS so a broken release can be replaced
+   even if update.js never runs; cache first for versioned images/css. Apps Script and other
+   origins are never touched. No PDFs, video or audio are cached here. */
+var V='touchline-shell-v96',RT='touchline-run-v96';
+var SHELL=['./','index.html','app.css?v=96','topics.js?v=96','topic-bank.js?v=96','guide.js?v=96','app.js?v=96','gui.js?v=96','positions.js?v=96','positions.json','cdev.js?v=96','../pod.js','../acct.js?v=96','../voice.js?v=96','../update.js?v=96','../shop.css?v=96','../shop.js?v=96','../fitness.js?v=96','../fitness.css?v=96','../cd.js?v=96','../shop/img/ss-core-supporters-coat-navy.webp?v=96','../shop/img/ss-core-thermal-jacket-navy.webp?v=96','../shop/img/end-of-line-ss-bench-coat-navy.webp?v=96','../shop/img/ss-core-softshell-jacket-navy.webp?v=96','../shop/img/ss-core-padded-gilet-navy.webp?v=96','../shop/img/new-ss-core-rain-jacket-navy.webp?v=96','../shop/img/ss-core-softshell-gilet-navy.webp?v=96','manifest.webmanifest','../badge.png','../icon-192.png','../icon-512.png'];
 var SKIP=/\.(pdf|mp4|mp3|m4a|webm|mov)$|version\.json$/i;
 self.addEventListener('install',function(e){e.waitUntil(caches.open(V).then(function(c){return c.addAll(SHELL);}).then(function(){return self.skipWaiting();}));});
 self.addEventListener('activate',function(e){e.waitUntil(caches.keys().then(function(ks){return Promise.all(ks.filter(function(k){return k!==V&&k!==RT;}).map(function(k){return caches.delete(k);}));}).then(function(){return self.clients.claim();}));});
-self.addEventListener('message',function(e){var d=e.data||{};if(d.type==='prefetch'&&Array.isArray(d.urls)){e.waitUntil(caches.open(RT).then(function(c){return Promise.all(d.urls.filter(function(u){return !SKIP.test(u);}).map(function(u){return c.add(u).catch(function(){});}));}));}});
+self.addEventListener('message',function(e){var d=e.data||{};if(d.type==='SKIP_WAITING'){self.skipWaiting();return;}if(d.type==='prefetch'&&Array.isArray(d.urls)){e.waitUntil(caches.open(RT).then(function(c){return Promise.all(d.urls.filter(function(u){return !SKIP.test(u);}).map(function(u){return c.add(u).catch(function(){});}));}));}});
 self.addEventListener('fetch',function(e){
  var r=e.request,u=new URL(r.url);
  if(r.method!=='GET'||u.origin!==location.origin||SKIP.test(u.pathname)||r.headers.has('range'))return;
+ function netFirst(cacheName){
+  return caches.open(cacheName).then(function(c){return fetch(r).then(function(res){if(res&&res.ok)c.put(r,res.clone());return res;}).catch(function(){return c.match(r,{ignoreSearch:true}).then(function(hit){return hit||Response.error();});});});
+ }
  if(r.mode==='navigate'){
-  /* Pages other than the coach app (animations, plans) must never fall back to the app shell:
-     a slow first load used to swap the clip for the coach app after 3.5s. Network first, same URL from cache offline. */
-  if(!/\/coach\/(index\.html)?$/.test(u.pathname)){
-   e.respondWith(caches.open(RT).then(function(c){return fetch(r).then(function(res){if(res&&res.ok)c.put(r,res.clone());return res;}).catch(function(){return c.match(r,{ignoreSearch:true}).then(function(hit){return hit||Response.error();});});}));return;}
-  /* coach app (r89): cached shell first, refreshed in the background. The old 3.5s race between network and cache
-     could hand back a half-loaded page on a weak signal at the ground. New releases arrive through update.js,
-     which clears the caches and reloads, so serving the cached shell straight away never leaves you stuck. */
-  var shell=function(){return caches.match('index.html',{ignoreSearch:true}).then(function(h){return h||caches.match('./');});};
-  var net=fetch(r).then(function(res){if(res&&res.ok){var cp=res.clone();caches.open(V).then(function(c){return c.put('index.html',cp);});}return res;});
-  e.respondWith(shell().then(function(h){if(h){e.waitUntil(net.catch(function(){}));return h;}return net.catch(function(){return Response.error();});}));return;}
- /* library index: network first so new links show up, cached copy when offline */
- if(/\/library\.json$/.test(u.pathname)){
-  e.respondWith(caches.open(RT).then(function(c){return fetch(r).then(function(res){if(res&&res.ok)c.put(r,res.clone());return res;}).catch(function(){return c.match(r,{ignoreSearch:true}).then(function(hit){return hit||Response.error();});});}));return;}
+  /* Always prefer network for HTML so a broken cached shell cannot stick. Offline falls back to cache. */
+  e.respondWith(netFirst(/\/coach\/(index\.html)?$/.test(u.pathname)?V:RT));return;
+ }
+ /* JS (and update.js) network first so syntax fixes land even without a version-query bump race. */
+ if(/\.js$/i.test(u.pathname)){e.respondWith(netFirst(V));return;}
+ if(/\/library\.json$/.test(u.pathname)){e.respondWith(netFirst(RT));return;}
  if(u.search.indexOf('v=')>-1){
   e.respondWith(caches.match(r).then(function(hit){return hit||fetch(r).then(function(res){if(res&&res.ok){var cp=res.clone();caches.open(V).then(function(c){c.put(r,cp);});}return res;});}));return;}
- /* other same origin static (res.js, ig.js, x.js, anim, images): stale while revalidate */
  e.respondWith(caches.open(RT).then(function(c){return c.match(r).then(function(hit){
   var net=fetch(r).then(function(res){if(res&&res.ok)c.put(r,res.clone());return res;}).catch(function(){return hit;});
   return hit||net;});}));

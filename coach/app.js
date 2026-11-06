@@ -2772,11 +2772,11 @@ setTimeout(function(){
  try{
   if(!window.TLVoice||document.getElementById('tl-voice-root'))return;
   TLVoice.mount({
-   context:function(){return {role:'coach',shirt:'',fixtures:Object.keys(S.matches||{}).map(function(k){var m=S.matches[k];return {date:m.date,ko:m.ko,opp:m.opp,ha:m.ha,venue:m.venue,pp:m.pp,done:m.status==='done'};}),trainingLine:'Open Train, then Run for tonight.';};},
+   context:function(){return {role:'coach',shirt:'',fixtures:Object.keys(S.matches||{}).map(function(k){var m=S.matches[k];return {date:m.date,ko:m.ko,opp:m.opp,ha:m.ha,venue:m.venue,pp:m.pp,done:m.status==='done'};}),trainingLine:'Open Train, then Run for tonight.'};},
    onIntent:function(intent){
     if(intent.intent==='coach_att'||intent.intent==='attendance'){view.tab='att';render();return;}
     if(intent.intent==='fixtures'||intent.intent==='kickoff'||intent.intent==='where'){view.tab='match';render();return;}
-    if(intent.intent==='stretch'){location.href='../stretch/index.html?v=95&back='+encodeURIComponent('/coach/');return;}
+    if(intent.intent==='stretch'){location.href='../stretch/index.html?v=96&back='+encodeURIComponent('/coach/');return;}
     if(intent.intent==='shop'){view.tab='shop';render();return;}
     if(intent.intent==='training'){view.tab='run';render();return;}
     if(intent.intent==='clip'){view.tab='rl';render();return;}

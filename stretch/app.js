@@ -5,7 +5,7 @@
  * No player data leaves this page (pregame may read tl.prestretch from localStorage only). */
 (function(){
 var S=STRETCH,IT=S.items,$=function(i){return document.getElementById(i);},vo=$('vo');
-var HOLD_MIN=15,REST=15,V='95';
+var HOLD_MIN=15,REST=15,V='96';
 var PRE=false;
 (function(){
  var q=new URLSearchParams(location.search),mode=q.get('mode')||'';
@@ -61,10 +61,42 @@ function mmss(s){s=Math.max(0,Math.ceil(s));return Math.floor(s/60)+':'+('0'+s%6
 function sideTxt(x){return x.side==='L'?'Left':x.side==='R'?'Right':'';}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 function poseSrc(pose,kind){
- var base='img/'+pose+(kind==='start'?'_s':'')+'.webp?v='+V;
- return base;
+ return 'img/'+pose+(kind==='start'?'_s':'')+'.webp?v='+V;
 }
+function vidSrc(pose,ext){return 'vid/'+pose+'.'+ext+'?v='+V;}
 function hasStart(pose){return !!window.__stretchStarts&&window.__stretchStarts[pose];}
+function hasVid(pose){return !!window.__stretchVids&&window.__stretchVids[pose];}
+function vidHtml(pose,side,opts){
+ opts=opts||{};
+ var flip=side==='R'?' mr':'';
+ var loop=opts.loop?' loop':'';
+ var rate=opts.rate!=null?opts.rate:1;
+ var cls='stretch-vid'+flip+(opts.cls?' '+opts.cls:'');
+ return '<video class="'+cls+'" playsinline muted'+loop+' preload="auto" poster="'+poseSrc(pose,'')+'" data-pose="'+pose+'" data-rate="'+rate+'">'+
+  '<source src="'+vidSrc(pose,'webm')+'" type="video/webm">'+
+  '<source src="'+vidSrc(pose,'mp4')+'" type="video/mp4">'+
+  '</video>';
+}
+function syncVid(mode){
+ var v=document.querySelector('#fig video.stretch-vid');
+ if(!v)return;
+ try{
+  var rate=parseFloat(v.getAttribute('data-rate')||'1')||1;
+  if(mode==='howto'){v.playbackRate=0.5;v.loop=true;if(v.paused){var p=v.play();if(p&&p.catch)p.catch(function(){});}}
+  else if(mode==='hold'){
+   v.playbackRate=1;v.loop=true;
+   /* Prefer looping the last ~40% (the hold). */
+   if(v.duration&&isFinite(v.duration)){var start=Math.max(0,v.duration*0.55);if(v.currentTime<start)v.currentTime=start;}
+   if(v.paused&&!howOpen&&playing){var p2=v.play();if(p2&&p2.catch)p2.catch(function(){});}
+  }
+  else if(mode==='intro'){
+   v.playbackRate=1;v.loop=false;
+   if(v.paused&&playing&&!howOpen){var p3=v.play();if(p3&&p3.catch)p3.catch(function(){});}
+   v.onended=function(){try{v.pause();if(v.duration)v.currentTime=Math.max(0,v.duration-0.05);}catch(e){}};
+  }
+  else if(mode==='pause'){v.pause();}
+ }catch(e){}
+}
 
 $('cnt').textContent=IT.length;$('total').textContent=mmss(TOTAL)+' total';
 try{var hl=$('hdr-len');if(hl)hl.textContent=mmss(TOTAL)+' · If it hurts, stop and tell a coach';
@@ -138,27 +170,29 @@ function figFor(s,local,x){
  if(s.k==='done')return '<div class="wd">Well done!</div>';
  if(s.k==='rest'){
   var nx=IT[s.next];
-  return badgeHtml(s.d-local,s.d)+(nx?'<div class="restprev"><img src="img/'+nx.pose+'_t.webp?v='+V+'" alt=""'+(nx.side==='R'?' class="mr"':'')+'><span>Next: '+esc(nx.name)+(nx.side?' ('+sideTxt(nx)+')':'')+'</span></div>':'');
+  var prev='';
+  if(nx){
+   if(hasVid(nx.pose))prev='<div class="restprev">'+vidHtml(nx.pose,nx.side,{loop:1,cls:'mini'})+'<span>Next: '+esc(nx.name)+(nx.side?' ('+sideTxt(nx)+')':'')+'</span></div>';
+   else prev='<div class="restprev"><img src="img/'+nx.pose+'_t.webp?v='+V+'" alt=""'+(nx.side==='R'?' class="mr"':'')+'><span>Next: '+esc(nx.name)+(nx.side?' ('+sideTxt(nx)+')':'')+'</span></div>';
+  }
+  return badgeHtml(s.d-local,s.d)+prev;
  }
- var pose=x.pose,start=hasStart(pose);
- var flip=x.side==='R'?' mr':'';
+ var pose=x.pose,flip=x.side==='R'?' mr':'';
+ if(hasVid(pose)&&(s.k==='intro'||s.k==='hold'||s.k==='welcome')){
+  return vidHtml(pose,x.side,{loop:s.k==='hold'?1:0});
+ }
+ /* Fallback stills / crossfade if a clip is missing */
+ var start=hasStart(pose);
  if(s.k==='intro'||s.k==='welcome'){
   if(start){
    var p=Math.min(1,local/Math.max(1,s.d*0.7));
-   return '<div class="anim">'
-    +'<img class="a0" src="'+poseSrc(pose,'start')+'" alt="" style="opacity:'+(1-p).toFixed(3)+'">'
-    +'<img class="a1'+flip+'" src="img/'+pose+'.webp?v='+V+'" alt="'+esc(x.name)+'" style="opacity:'+p.toFixed(3)+'">'
-    +'</div>';
+   return '<div class="anim"><img class="a0" src="'+poseSrc(pose,'start')+'" alt="" style="opacity:'+(1-p).toFixed(3)+'"><img class="a1'+flip+'" src="img/'+pose+'.webp?v='+V+'" alt="'+esc(x.name)+'" style="opacity:'+p.toFixed(3)+'"></div>';
   }
   return '<img id="pimg" class="pulsein'+flip+'" src="img/'+pose+'.webp?v='+V+'" alt="'+esc(x.name)+' demo">';
  }
- /* hold: show hold pose with gentle breathe, or crossfade loop if start exists */
  if(start){
   var ph=(Math.sin(local*1.2)+1)/2;
-  return '<div class="anim holdanim">'
-   +'<img class="a0" src="'+poseSrc(pose,'start')+'" alt="" style="opacity:'+(0.15+0.1*ph).toFixed(3)+'">'
-   +'<img class="a1'+flip+'" src="img/'+pose+'.webp?v='+V+'" alt="'+esc(x.name)+'" style="opacity:'+(0.85-0.05*ph).toFixed(3)+'">'
-   +'</div>';
+  return '<div class="anim holdanim"><img class="a0" src="'+poseSrc(pose,'start')+'" alt="" style="opacity:'+(0.15+0.1*ph).toFixed(3)+'"><img class="a1'+flip+'" src="img/'+pose+'.webp?v='+V+'" alt="'+esc(x.name)+'" style="opacity:'+(0.85-0.05*ph).toFixed(3)+'"></div>';
  }
  return '<img id="pimg" class="breathe'+flip+'" src="img/'+pose+'.webp?v='+V+'" alt="'+esc(x.name)+' demo">';
 }
@@ -169,9 +203,23 @@ function render(){
  var pl=playing||window.__rec;
  var fk=s.k+':'+(x?x.pose:'')+(x?x.side:'')+':'+(s.next||'')+':'+(howOpen?'h':'');
  var fg=$('fig');
- if(fg.dataset.k!==fk || s.k==='rest' || s.k==='intro' || s.k==='hold'){
+ var needPaint=fg.dataset.k!==fk;
+ if(s.k==='rest'){
+  /* Update rest countdown each tick */
+  needPaint=true;fk=fk+':'+Math.ceil(rem);
+ }
+ if(needPaint){
   fg.dataset.k=fk;
   fg.innerHTML=figFor(s,local,x);
+  if(s.k==='rest'){
+   var pv=fg.querySelector('video.stretch-vid');
+   if(pv){try{pv.muted=true;pv.playbackRate=1;pv.loop=true;var pp=pv.play();if(pp&&pp.catch)pp.catch(function(){});}catch(e){}}
+  }
+ }
+ if(!howOpen){
+  if(s.k==='intro'||s.k==='welcome')syncVid('intro');
+  else if(s.k==='hold')syncVid(playing?'hold':'pause');
+  else if(s.k!=='rest')syncVid('pause');
  }
  var ph=$('phase');
  ph.className='phase'+(s.k==='hold'?' hold':s.k==='rest'?' rest':'');
@@ -241,7 +289,7 @@ function play(){
  var r=render();cues(r.si,r.local);
  cancelAnimationFrame(raf);raf=requestAnimationFrame(tick);
 }
-function pause(){playing=false;Object.keys(clips).forEach(function(k){try{clips[k].pause();}catch(e){}});animIdle();}
+function pause(){playing=false;Object.keys(clips).forEach(function(k){try{clips[k].pause();}catch(e){}});syncVid('pause');animIdle();}
 function jump(nt){
  stopVo();awaitingAudio=false;t=Math.max(0,Math.min(TOTAL,nt));fired={};
  if(playing){last=performance.now();var r=render();cues(r.si,r.local);}
@@ -258,21 +306,21 @@ function openHow(){
  howOpen=true;pause();
  var s=SEG[segAt(t)],ix=s.i!=null?s.i:0,x=IT[Math.max(0,Math.min(IT.length-1,ix))];
  var ov=$('howto');if(!ov)return;
- var start=hasStart(x.pose);
  ov.hidden=false;
+ var demo='';
+ if(hasVid(x.pose))demo=vidHtml(x.pose,x.side,{loop:1,rate:0.5,cls:'howto'});
+ else if(hasStart(x.pose))demo='<img class="hs" src="'+poseSrc(x.pose,'start')+'" alt=""><img class="he'+(x.side==='R'?' mr':'')+'" src="img/'+x.pose+'.webp?v='+V+'" alt="">';
+ else demo='<img src="img/'+x.pose+'.webp?v='+V+'" alt=""'+(x.side==='R'?' class="mr"':'')+'>';
  ov.innerHTML='<div class="howto-in" role="dialog" aria-label="How to do this stretch">'+
   '<h3 style="margin-top:0">'+esc(x.name)+(x.side?' · '+sideTxt(x):'')+'</h3>'+
-  '<div class="howto-demo'+(start?' has-anim':'')+'">'+
-  (start
-    ?'<img class="hs" src="'+poseSrc(x.pose,'start')+'" alt=""><img class="he'+(x.side==='R'?' mr':'')+'" src="img/'+x.pose+'.webp?v='+V+'" alt="">'
-    :'<img src="img/'+x.pose+'.webp?v='+V+'" alt=""'+(x.side==='R'?' class="mr"':'')+'>')+
-  '</div>'+
+  '<div class="howto-demo'+(hasVid(x.pose)||hasStart(x.pose)?' has-anim':'')+'">'+demo+'</div>'+
   '<h4>Steps</h4><ol>'+x.how.map(function(h){return '<li>'+esc(h)+'</li>';}).join('')+'</ol>'+
   '<h4>What you should feel</h4><p>'+esc(x.why)+'</p>'+
   '<h4>Common mistakes</h4><ul><li>Do not bounce or force the stretch.</li><li>Stop if you feel sharp pain and tell a coach.</li>'+(x.note?'<li>'+esc(x.note)+'</li>':'')+'</ul>'+
   '<button type="button" class="btn pri block" id="howto-close">Close and resume</button>'+
   '</div>';
  ov.querySelector('#howto-close').onclick=function(){closeHow();play();};
+ var hv=ov.querySelector('video.stretch-vid');if(hv){try{hv.muted=true;hv.playbackRate=0.5;hv.loop=true;var hp=hv.play();if(hp&&hp.catch)hp.catch(function(){});}catch(e){}}
 }
 function closeHow(){howOpen=false;var ov=$('howto');if(ov){ov.hidden=true;ov.innerHTML='';}}
 
@@ -296,10 +344,16 @@ document.addEventListener('visibilitychange',function(){if(document.hidden&&play
 
 /* Which start-pose images exist (filled by build or a tiny manifest) */
 window.__stretchStarts=window.__stretchStarts||{};
+window.__stretchVids=window.__stretchVids||{};
 (function(){
  var poses={};IT.forEach(function(x){poses[x.pose]=1;});
  Object.keys(poses).forEach(function(p){
   var im=new Image();im.onload=function(){window.__stretchStarts[p]=1;};im.onerror=function(){};im.src=poseSrc(p,'start');
+  var v=document.createElement('video');v.preload='auto';v.muted=true;v.playsInline=true;
+  v.onloadeddata=function(){window.__stretchVids[p]=1;};
+  v.onerror=function(){};
+  v.src=vidSrc(p,'mp4');
+  try{v.load();}catch(e){}
  });
 })();
 
