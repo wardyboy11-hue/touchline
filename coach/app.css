@@ -209,3 +209,23 @@ header.tl-top .pill{padding:5px 9px}
 .tl-board-wrap{max-width:100%}
 .tl-board-wrap canvas{touch-action:pan-y}
 .tl-board-gutter{border-style:dashed}
+/* r97 resources browse */
+.tl-rsearch{position:sticky;top:0;z-index:6;background:var(--bg);padding:6px 0}
+.tl-rsearch input{width:100%;box-sizing:border-box;min-height:48px;font-size:16px}
+.tl-fbar{display:flex;gap:6px;overflow-x:auto;align-items:center;padding:4px 0 8px;scrollbar-width:none}
+.tl-fbar .chip{white-space:nowrap;flex:none}.tl-fbar select{flex:none;width:auto;max-width:150px;min-height:36px;margin-left:auto}
+.tl-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.tl-tile{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;color:var(--ink);cursor:pointer;min-height:92px}
+.tl-tile:hover,.tl-sc:hover{border-color:var(--purple2)}.tl-ti{font-size:26px;line-height:1}
+.tl-shh{display:flex;align-items:center;justify-content:space-between;margin-top:14px}.tl-shh h3{margin:0}
+.tl-shelf{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 0 4px}
+.tl-sc{flex:none;width:170px;scroll-snap-align:start;display:flex;flex-direction:column;gap:4px;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;color:var(--ink);cursor:pointer}
+.tl-sc b{font-size:14px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.tl-rl{margin-top:6px;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.tl-rr{display:flex;align-items:center;gap:6px;padding:8px 10px;border-bottom:1px solid var(--line);content-visibility:auto;contain-intrinsic-size:auto 60px}
+.tl-rr:last-child{border-bottom:0}.tl-rico{font-size:18px;flex:none;width:24px;text-align:center}
+.tl-rt{flex:1;min-width:0;display:flex;flex-direction:column;text-align:left;background:none;border:0;color:var(--ink);padding:0;cursor:pointer;font:inherit}
+.tl-rt b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:15px}.tl-rt .small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tl-ib{flex:none;width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;border-radius:10px;border:1px solid var(--line);background:var(--card2);color:var(--ink);font-size:18px;text-decoration:none;cursor:pointer}
+.tl-ib.on{background:var(--purple);border-color:var(--purple2);color:var(--amber)}
+body.ps .tl-tile,body.ps .tl-sc,body.ps .tl-rl,body.ps .tl-rt{color:inherit}
