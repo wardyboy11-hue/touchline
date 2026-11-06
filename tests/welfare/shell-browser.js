@@ -1,7 +1,7 @@
 /* r90 app shell (countdown + matchday) on the r87 Base44 shell: five tabs, More in the top bar, page addresses, scroll memory, attendance ticks,
    guides on tap, roles grid, Update ready during a match, and the error card. Fake data only. */
 const {chromium}=require('playwright');const http=require('http'),fs=require('fs'),path=require('path');
-const root=path.resolve(__dirname,'../..');const PORT=+process.env.PORT||8797;let VER='106';
+const root=path.resolve(__dirname,'../..');const PORT=+process.env.PORT||8797;let VER='109';
 const SHOTS=process.env.SHOTS||'';
 const MT={'.js':'text/javascript','.html':'text/html','.json':'application/json','.css':'text/css','.png':'image/png','.jpg':'image/jpeg','.vtt':'text/vtt','.mp4':'video/mp4','.webmanifest':'application/json'};
 const srv=http.createServer((q,r)=>{const u=q.url.split('?')[0];if(u==='/version.json'){r.writeHead(200,{'content-type':'application/json'});r.end(JSON.stringify({v:VER}));return;}let f=path.join(root,decodeURIComponent(u));if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,d)=>{if(e){r.writeHead(404);r.end();return;}r.writeHead(200,{'content-type':MT[path.extname(f)]||'application/octet-stream'});r.end(d);});}).listen(PORT);
