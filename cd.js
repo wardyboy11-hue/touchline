@@ -451,6 +451,8 @@
       else n.classList.remove('tl-cd-pulse');
       var id = n.getAttribute('data-cd-until');
       if (urgent && !buzzed[id] && !reduce && w.navigator && typeof w.navigator.vibrate === 'function') {
+        var act = w.navigator.userActivation;
+        if (act && act.isActive === false) return;
         buzzed[id] = 1;
         try { w.navigator.vibrate(30); } catch (e) { }
       }

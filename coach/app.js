@@ -171,7 +171,7 @@ function sync(manual){
   if(!S.revAck)S.revAck={};d.docs.forEach(function(r){if(r.kind==='rev')S.revAck[r.id]=1;});
   keys.forEach(function(k){var cur=docFor(k);if(!cur||cur.updatedAt===stamps[k])delete S.dirty[k];});
   try{rvMigrate();}catch(e){}
-  S.lastSync=d.serverTime;online=true;lastMsg='Synced '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});persist();syncing=false;paintStatus();if(manual)toast('Synced');try{travelNotice();}catch(e){}if(manual||got)render(true);try{libReqLoad();}catch(e){}
+  S.lastSync=d.serverTime;online=true;lastMsg='Synced '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});persist();syncing=false;paintStatus();if(manual)toast('Synced');if(manual||got)render(true);try{libReqLoad();}catch(e){}
  }).catch(function(e){syncing=false;if(/code/i.test(e.message)&&/work|wrong|not/i.test(e.message)){emClear();ccClear();view.gl=null;CODE='';lsSet(CKEY,'');lastMsg='';render();toast('That code did not work');return;}online=false;lastMsg='Saved on this phone';paintStatus();if(manual)toast('No signal. Saved on this phone.');});
 }
 function paintStatus(){var el=$('#st');if(!el)return;var n=Object.keys(S.dirty).length;var txt=syncing?'Syncing':(!online?'Offline':(n?n+' to sync':lastMsg||'Ready'));el.textContent=txt;el.className='pill '+(syncing?'':(!online||n?'warn':'ok'));}
@@ -2226,8 +2226,10 @@ function coachLateBannerHtml(){var L=coachLateList();if(!L.length)return '';retu
 function coachLateForNum(num){num=String(num||'');return coachLateList().filter(function(x){return String(x.num)===num;})[0]||null;}
 function loadLate(){if(!CODE||API.indexOf('__'+'API__')>-1){S.late=S.late||[];return Promise.resolve();};return call('late.list').then(function(r){S.late=(r&&r.rows)||[];view.hub=view.hub||{};view.hub.late=S.late;}).catch(function(){S.late=S.late||[];});}
 
-/* r104: matchday travel issues. Coach phones only (Tim and Deano). Never the family push. */
-var TRAVEL={rows:[],seen:{}};
+/* r104: matchday travel. Coach phones only (Tim and Deano via notify_ / alert.send).
+   Never the family web push. The shared list exists only when travel.send and travel.list
+   are on the server. A missing action does not write a synced list. */
+var TRAVEL={rows:[],seen:{},listOk:null};
 try{TRAVEL.seen=JSON.parse(localStorage.getItem('tl.travel.seen')||'{}')||{};}catch(e){TRAVEL.seen={};}
 function travelMark(id){if(!id)return;TRAVEL.seen[id]=1;try{localStorage.setItem('tl.travel.seen',JSON.stringify(TRAVEL.seen));}catch(e){}}
 function travelWho(){var w=who()||'Coach';return (w==='Tim'||w==='Deano')?w:'Coach';}
@@ -2240,16 +2242,13 @@ function travelLine(row){
  if(row.kind==='cant')return by+' cannot make it.';
  return by+': '+(row.text||'Travel note');
 }
+function travelMissing(e){return /unknown|not found|no such|action/i.test(String(e&&e.message||e||''));}
 function travelSpeak(row){
  if(!row||!row.id||TRAVEL.seen[row.id])return;
  travelMark(row.id);
  var line=travelLine(row);
  if(window.TLVoice&&TLVoice.speak)TLVoice.speak('Travel alert. '+line);
  else say('Travel alert. '+line);
-}
-function travelNotice(){
- var L=(S.settings&&S.settings.travelLog)||[];
- L.forEach(travelSpeak);
 }
 function travelMatch(){
  var td=isoToday();
@@ -2260,31 +2259,56 @@ function travelMatch(){
  });
  return ms[0]||null;
 }
-function travelLogAdd(row){var s=S.settings;s.travelLog=s.travelLog||[];s.travelLog.push(row);while(s.travelLog.length>30)s.travelLog.shift();touch('settings',s);}
 function travelSendDo(kind){
  var by=travelWho(),mins='',text='';
  if(kind==='late'){mins=String((($('#tl-travel-eta')||{}).value)||'15').replace(/\D/g,'').slice(0,3)||'15';}
  if(kind==='custom'){text=String((($('#tl-travel-custom')||{}).value)||'').trim().slice(0,160);if(text.length<3){toast('Type a short note first');return;}}
  var id='T'+Date.now().toString(36);
- var row={id:id,by:by,kind:kind,mins:mins,text:text,date:isoToday(),at:Date.now()};
- var line=travelLine(row);row.line=line;
+ var row={id:id,by:by,kind:kind,mins:mins,text:text,date:isoToday(),at:Date.now(),line:''};
+ row.line=travelLine(row);
  travelMark(id);
  var el=$('#tl-travel-st');if(el)el.textContent='Sending to Tim and Deano only';
- function done(extra){if(el)el.textContent='Sent to Tim and Deano only. Families do not get this.'+(extra?(' '+extra):'');toast('Sent to coaches only');render(true);}
- function fallback(){
-  call('alert.send',{title:'Travel',msg:line,level:kind==='cant'?'urgent':'normal'}).then(function(){travelLogAdd(row);done('Phone alert sent.');}).catch(function(){travelLogAdd(row);if(el)el.textContent='Saved on this phone for the other coach. It will send when you are back online.';toast('Saved on this phone');});
+ function phoneOnly(sent){
+  TRAVEL.listOk=false;
+  if(el)el.textContent=sent
+   ?'Sent by coach phone alert to Tim and Deano only. The shared travel list is not on the server, so it is not stored for the other app.'
+   :'The coach phone alert did not go. Nothing was stored.';
+  toast(sent?'Sent to coaches only':'Not sent');
+  render(true);
  }
- call('travel.send',{id:id,by:by,kind:kind,mins:mins,text:text,date:row.date}).then(function(){travelLogAdd(row);done();}).catch(fallback);
+ call('travel.send',{id:id,by:by,kind:kind,mins:mins,text:text,date:row.date}).then(function(){
+  TRAVEL.listOk=true;
+  TRAVEL.rows=(TRAVEL.rows||[]).filter(function(r){return r.id!==id;}).concat([row]);
+  if(el)el.textContent='Sent to Tim and Deano only. Families do not get this.';
+  toast('Sent to coaches only');
+  render(true);
+ }).catch(function(e){
+  if(!travelMissing(e)){
+   if(el)el.textContent='Not sent. Check your signal and try again. Nothing was stored.';
+   toast('Not sent');
+   return;
+  }
+  /* alert.send is notify_ to the two coach phones. It does not write a travel row and does not call the family push. */
+  call('alert.send',{title:'Travel',msg:row.line,level:kind==='cant'?'urgent':'normal'}).then(function(r){
+   phoneOnly(!!(r&&r.sent));
+  }).catch(function(){phoneOnly(false);});
+ });
 }
 function travelPoll(){
  if(!CODE||document.visibilityState==='hidden')return;
  if(!API||String(API).indexOf('__'+'API__')>-1)return;
- call('travel.list').then(function(d){var rows=(d&&d.rows)||[];TRAVEL.rows=rows;rows.forEach(travelSpeak);}).catch(function(){});
+ call('travel.list').then(function(d){
+  TRAVEL.listOk=true;
+  var rows=(d&&d.rows)||[];
+  TRAVEL.rows=rows;
+  rows.forEach(travelSpeak);
+ }).catch(function(e){if(travelMissing(e))TRAVEL.listOk=false;});
 }
 function travelCard(){
  if(!travelMatch())return '';
- var recent=(S.settings.travelLog||[]).filter(function(r){return r&&r.date===isoToday();}).slice(-4);
- var h='<div class="card" id="tl-travel" style="border-color:#FFB81C"><span class="tag" style="background:#6b4a0a">Coaches only</span><h3 style="margin-top:8px">Travel issues</h3><p class="small muted">Matchday. Alerts Tim and Deano only, through the coach phone alert and Comms. Families do not get this. If the app is open, the alert is read aloud.</p>';
+ var recent=(TRAVEL.rows||[]).slice(-4);
+ var h='<div class="card" id="tl-travel" style="border-color:#FFB81C"><span class="tag" style="background:#6b4a0a">Coaches only</span><h3 style="margin-top:8px">Travel issues</h3><p class="small muted">Matchday. Coach phone alert to Tim and Deano only. Families do not get this. When the shared list is on the server, an open app reads a new alert aloud.</p>';
+ if(TRAVEL.listOk===false)h+='<p class="small">The shared travel list is not on the server yet. A send uses the coach phone alert only. It is not stored for the other app.</p>';
  h+='<label class="small" for="tl-travel-eta">Running late, ETA minutes</label><input id="tl-travel-eta" type="number" min="1" max="180" value="15" inputmode="numeric">';
  h+='<div class="row wrap2" style="margin-top:8px"><button type="button" class="btn pri grow" data-act="travelSend" data-k="late">Running late</button><button type="button" class="btn grow" data-act="travelSend" data-k="traffic">Traffic</button><button type="button" class="btn grow" data-act="travelSend" data-k="cant">Can\'t make it</button></div>';
  h+='<label class="small" for="tl-travel-custom">Custom</label><input id="tl-travel-custom" maxlength="160" placeholder="Short note for the other coach">';
@@ -2294,9 +2318,10 @@ function travelCard(){
  return h+'</div>';
 }
 function travelCommsCard(){
- var L=(S.settings.travelLog||[]).slice(-6).reverse();
- var h='<div class="card" id="tl-travel-comms"><h3>Travel alerts</h3><p class="small muted">Coach only. These do not go to parents or players.</p>';
- if(!L.length)h+='<p class="small muted">None today.</p>';
+ var L=(TRAVEL.listOk?TRAVEL.rows:[]).slice(-6).reverse();
+ var h='<div class="card" id="tl-travel-comms"><h3>Travel alerts</h3><p class="small muted">Coach only. These do not go to parents or players. Shown from the server list only.</p>';
+ if(TRAVEL.listOk===false)h+='<p class="small">Shared list is not on the server. Phone alerts still go to Tim and Deano only, and nothing is stored here.</p>';
+ else if(!L.length)h+='<p class="small muted">None today.</p>';
  else h+=L.map(function(r){return '<div class="it" style="cursor:default"><div class="grow small"><b>'+esc(travelLine(r))+'</b><div class="muted">'+esc(r.date||'')+'</div></div></div>';}).join('');
  return h+'</div>';
 }
