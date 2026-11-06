@@ -1,7 +1,7 @@
 /* r90 app shell (countdown + matchday) on the r87 Base44 shell: five tabs, More in the top bar, page addresses, scroll memory, attendance ticks,
    guides on tap, roles grid, Update ready during a match, and the error card. Fake data only. */
 const {chromium}=require('playwright');const http=require('http'),fs=require('fs'),path=require('path');
-const root=path.resolve(__dirname,'../..');const PORT=+process.env.PORT||8797;let VER='97';
+const root=path.resolve(__dirname,'../..');const PORT=+process.env.PORT||8797;let VER='98';
 const SHOTS=process.env.SHOTS||'';
 const MT={'.js':'text/javascript','.html':'text/html','.json':'application/json','.css':'text/css','.png':'image/png','.jpg':'image/jpeg','.vtt':'text/vtt','.mp4':'video/mp4','.webmanifest':'application/json'};
 const srv=http.createServer((q,r)=>{const u=q.url.split('?')[0];if(u==='/version.json'){r.writeHead(200,{'content-type':'application/json'});r.end(JSON.stringify({v:VER}));return;}let f=path.join(root,decodeURIComponent(u));if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,d)=>{if(e){r.writeHead(404);r.end();return;}r.writeHead(200,{'content-type':MT[path.extname(f)]||'application/octet-stream'});r.end(d);});}).listen(PORT);
@@ -166,7 +166,7 @@ const w=ms=>new Promise(r=>setTimeout(r,ms));const H=c=>c.evaluate(()=>location.
  await cc.close();
  // live match: no reload, Update ready button instead
  const live=JSON.parse(JSON.stringify(state));live.matches.m1={id:'m1',opp:'Test FC',date:'2026-11-07',ko:'10:30',ha:'H',formation:'352',half:35,avail:{},lineup:{},status:'live',period:1,clock:{acc:0,running:false,t0:0},stints:{},events:[],ratings:{},updatedAt:1};
- const L=await open(b,ph,live);let loads=0;L.c.on('load',()=>loads++);VER='98';
+ const L=await open(b,ph,live);let loads=0;L.c.on('load',()=>loads++);VER='99';
  await L.c.evaluate(()=>window.tlCheckUpdate());await w(1500);
  T('during a live match an update shows Update ready and does not reload',loads===0&&!!(await L.c.$('#tl-upd')));await shot(L.c,'phone_update_ready');
  await L.cc.close();VER='95';
