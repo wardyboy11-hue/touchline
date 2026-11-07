@@ -1,6 +1,6 @@
 /* family service worker, r88: push alerts + offline shop images */
-var FV='tl-fam-v106';
-var FSHELL=['tl-ui.css?v=106','tl-spotify.js?v=106','tl-alarm.js?v=106','tl-pages.js?v=106','tl-quick.js?v=106','share.js?v=106','voice.js?v=106','shop.js?v=106','fitness.js?v=106','fitness.css?v=106','prestretch.js?v=106','cd.js?v=106','shop.css?v=106'].concat(['ss-core-supporters-coat-navy','ss-core-thermal-jacket-navy','end-of-line-ss-bench-coat-navy','ss-core-softshell-jacket-navy','ss-core-padded-gilet-navy','new-ss-core-rain-jacket-navy','ss-core-softshell-gilet-navy'].map(function(s){return 'shop/img/'+s+'.webp?v=106';}));
+var FV='tl-fam-v110';
+var FSHELL=['tl-ui.css?v=110','tl-spotify.js?v=110','tl-alarm.js?v=110','tl-pages.js?v=110','tl-quick.js?v=110','share.js?v=110','voice.js?v=110','shop.js?v=110','fitness.js?v=110','fitness.css?v=110','prestretch.js?v=110','cd.js?v=110','shop.css?v=110'].concat(['ss-core-supporters-coat-navy','ss-core-thermal-jacket-navy','end-of-line-ss-bench-coat-navy','ss-core-softshell-jacket-navy','ss-core-padded-gilet-navy','new-ss-core-rain-jacket-navy','ss-core-softshell-gilet-navy'].map(function(s){return 'shop/img/'+s+'.webp?v=110';}));
 self.addEventListener('install',function(e){e.waitUntil(caches.open(FV).then(function(c){return c.addAll(FSHELL);}).then(function(){return self.skipWaiting();}).catch(function(){return self.skipWaiting();}));});
 self.addEventListener('activate',function(e){e.waitUntil(caches.keys().then(function(ks){return Promise.all(ks.filter(function(k){return k.indexOf('tl-fam-')===0&&k!==FV;}).map(function(k){return caches.delete(k);}));}).then(function(){return self.clients.claim();}));});
 self.addEventListener('fetch',function(e){

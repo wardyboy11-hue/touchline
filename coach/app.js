@@ -3006,7 +3006,7 @@ setTimeout(function(){
     var posts=[];
     try{sessAll().forEach(function(x){if(x&&x.date)posts.push({date:x.date,time:x.time||'',title:x.title||'Training',place:x.place||'',type:'training'});});}catch(e){}
     try{(S.settings.posts||[]).forEach(function(p){posts.push({date:p.date,time:p.time||'',title:p.title||'',place:p.place||'',type:p.type||'training'});});}catch(e){}
-    return {role:'coach',shirt:'',today:isoToday(),posts:posts,fixtures:Object.keys(S.matches||{}).map(function(k){var m=S.matches[k];return {date:m.date,ko:m.ko,opp:m.opp,ha:m.ha,venue:m.venue,pp:m.pp,done:m.status==='done',kind:m.kind,comp:m.comp};})};
+    return {role:'coach',shirt:'',today:isoToday(),posts:posts,fixtures:Object.keys(S.matches||{}).map(function(k){var m=S.matches[k];return {date:m.date,ko:m.ko,opp:m.opp,ha:m.ha,venue:m.venue,pp:m.pp,done:m.status==='done',kind:m.kind,comp:m.comp,kit:m.kit||'',kitColours:m.kitColours||''};})};
    },
    onIntent:function(intent){
     if(!intent)return;
@@ -3021,7 +3021,7 @@ setTimeout(function(){
     var go=intent.page||intent.go;
     if(intent.intent==='coach_att'||intent.intent==='attendance')go='att';
     if(intent.intent==='fixtures'||intent.intent==='kickoff'||intent.intent==='where')go='match';
-    if(intent.intent==='stretch'){location.href='../stretch/index.html?v=106&back='+encodeURIComponent('/coach/');return;}
+    if(intent.intent==='stretch'){location.href='../stretch/index.html?v=110&back='+encodeURIComponent('/coach/');return;}
     if(intent.intent==='shop')go='shop';
     if(intent.intent==='training')go=intent.span==='week'?'plan':'run';
     if(intent.intent==='clip')go='rl';

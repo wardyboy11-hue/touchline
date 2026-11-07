@@ -126,6 +126,7 @@ function fuzzyScore(text,phrase){
  return hit/pp.length;
 }
 function isoToday(d){d=d||new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function londonToday(){try{return new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/London',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());}catch(e){return isoToday();}}
 function addDays(iso,n){var p=String(iso||isoToday()).split('-'),d=new Date(+p[0],+p[1]-1,+p[2]+n);return isoToday(d);}
 function nice(iso){var p=String(iso||'').split('-');if(p.length<3)return iso||'';var d=new Date(+p[0],+p[1]-1,+p[2]);if(isNaN(d.getTime()))return iso;return d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});}
 function meetBy(ko){var m=String(ko||'').match(/(\d{1,2}):(\d{2})/);if(!m)return '';var t=(+m[1])*60+(+m[2])-30;if(t<0)t+=1440;return String(Math.floor(t/60)).padStart(2,'0')+':'+String(t%60).padStart(2,'0');}
@@ -138,6 +139,34 @@ function nextSat(fixtures){
  for(var i=0;i<L.length;i++){var d=new Date(L[i].date+'T12:00:00');if(d.getDay()===6)return L[i];}
  return L[0]||null;
 }
+function explicitKit(m){
+ if(!m||m.kit==null||String(m.kit).trim()==='')return '';
+ var k=String(m.kit).trim().toLowerCase();
+ if(k==='h'||k==='home'||k==='blue')return 'H';
+ if(k==='a'||k==='away')return 'A';
+ if(k==='t'||k==='third')return 'T';
+ return '';
+}
+function fixtureFor(ctx,t){
+ var td=(ctx&&ctx.today)||londonToday();
+ var list=upcoming(ctx&&ctx.fixtures,td);
+ if(/\btomorrow\b/.test(t)){var tom=addDays(td,1),hit=list.filter(function(m){return m.date===tom;})[0];if(hit)return hit;}
+ if(/\btoday\b/.test(t))return list.filter(function(m){return m.date===td;})[0]||null;
+ if(/\bsaturday\b/.test(t))return nextSat(ctx&&ctx.fixtures);
+ if(ctx&&ctx.memory&&ctx.memory.fixture&&/\b(it|that|the game|the match)\b/.test(t))return ctx.memory.fixture;
+ return list[0]||null;
+}
+function kitSay(m){
+ if(!m)return 'No upcoming game is listed yet.';
+ var who=(m.ha==='A'?'at ':(m.ha==='H'?'against ':''))+(m.opp||'the opposition');
+ var when=m.date?(' on '+nice(m.date)):'';
+ var k=explicitKit(m),note=String(m.kitColours||'').trim();
+ if(k==='H')return 'For the game '+who+when+', the kit is the home kit: dark blue and white stripes, black shorts.';
+ if(k==='A')return 'For the game '+who+when+', the kit is the away kit'+(note?': '+note:'')+'.';
+ if(k==='T')return 'For the game '+who+when+', the kit is the third kit'+(note?': '+note:'')+'.';
+ return 'For the game '+who+when+', the kit has not been chosen yet. I will not guess it from home or away.';
+}
+function wantsKit(t){return /\b(kit|strip)\b/.test(t)||/\b(wearing|shirts|colours|colors)\b/.test(t);}
 function gameLine(g){
  if(!g)return 'No upcoming game is listed yet.';
  var meet=meetBy(g.ko||g.meet);
@@ -318,6 +347,10 @@ function parseIntent(raw,ctx){
   return {intent:'training',say:trainingSay(ctx,'week'),span:'week',go:isFamily(role)?'home':'plan'};
  if(has(t,['training tonight','what are we doing at training','what is training','session tonight','what are we working on','tonight']))
   return {intent:'training',say:trainingSay(ctx,'tonight'),span:'tonight',go:isFamily(role)?'home':'run'};
+ if(wantsKit(t)&&!/\bshop\b/.test(t)){
+  var gk=fixtureFor(ctx,t);
+  return {intent:'kit',say:kitSay(gk),game:gk,go:isFamily(role)?'games':'match'};
+ }
  var nav=pageFor(t,ctx);
  if(nav&&nav.blocked)return {intent:'blocked',say:blockedSay()};
  if(nav&&fuzzyScore(t,nav.words)>=0.72)return {intent:'open',say:'Opening that page.',page:nav.go,go:nav.go};
@@ -343,16 +376,27 @@ function pickVoice(){
  return null;
 }
 function speak(text,done){
+ var finished=false;
+ function end(ok){if(finished)return;finished=true;if(done)done(!!ok);}
  try{
-  if(!global.speechSynthesis){if(done)done();return;}
+  if(!global.speechSynthesis){end(false);return;}
   speechSynthesis.cancel();
   var u=new SpeechSynthesisUtterance(String(text||'').replace(/[\u2013\u2014]/g,', '));
   u.lang='en-GB';u.rate=1;u.pitch=1;
   var v=pickVoice();if(v)u.voice=v;
-  u.onend=function(){if(done)done();};
-  u.onerror=function(){if(done)done();};
+  u.onend=function(){end(true);};
+  u.onerror=function(){end(false);};
   speechSynthesis.speak(u);
- }catch(e){if(done)done();}
+ }catch(e){end(false);}
+}
+function listenMessage(code){
+ if(code==='no-speech')return 'I did not hear anything. You can type it, or tap the mic again.';
+ if(code==='not-allowed')return 'The microphone is blocked on this phone. Type your question. Nothing was sent away.';
+ if(code==='audio-capture')return 'This phone has no microphone I can use. Type your question. The answer stays on screen.';
+ if(code==='network')return 'Listening stays on this phone. That attempt failed. Type your question.';
+ if(code==='language-not-supported'||code==='service-not-allowed')return 'On-device listening is not available for English here. Type your question.';
+ if(code==='local-only'||code==='no-speech-recognition')return 'On-device listening is not available. Type your question. Nothing is sent to a speech service.';
+ return 'I could not listen just then. Type your question. The answer stays on screen.';
 }
 function SR(){return global.SpeechRecognition||global.webkitSpeechRecognition||null;}
 function canListen(){return !!SR();}
@@ -374,11 +418,24 @@ function listenOnce(cb){
  if(!Ctor){cb(null,new Error('no-speech-recognition'));return null;}
  var rec;
  try{rec=new Ctor();}catch(e){cb(null,e);return null;}
- rec.lang='en-GB';rec.interimResults=false;rec.maxAlternatives=3;
+ rec.lang='en-GB';rec.interimResults=true;rec.maxAlternatives=3;
  try{rec.processLocally=true;}catch(e){}
  if(rec.processLocally!==true){cb(null,new Error('local-only'));return null;}
- rec.onresult=function(ev){var t=(ev.results&&ev.results[0]&&ev.results[0][0]&&ev.results[0][0].transcript)||'';cb(t,null);};
- rec.onerror=function(ev){cb(null,new Error((ev&&ev.error)||'listen-failed'));};
+ var finalText='',interim='';
+ rec.onresult=function(ev){
+  var i,res,live='';
+  for(i=0;i<(ev.results||[]).length;i++){
+   res=ev.results[i];
+   var piece=(res[0]&&res[0].transcript)||'';
+   if(res.isFinal)finalText=(finalText?finalText+' ':'')+String(piece).trim();
+   else live=piece;
+  }
+  interim=live;
+  if(finalText)cb(finalText,null,{final:true});
+  else if(interim)cb(interim,null,{interim:true});
+ };
+ rec.onerror=function(ev){var code=(ev&&ev.error)||'listen-failed';if(code==='aborted')return;cb(null,new Error(code));};
+ rec.onend=function(){if(finalText)cb(finalText,null,{final:true,end:true});else cb(null,new Error('no-speech'),{end:true});};
  try{rec.start();}catch(e){cb(null,e);return null;}
  return rec;
 }
@@ -422,7 +479,7 @@ function mount(opts){
   '<div class="tl-voice-sheet" id="tl-voice-sheet" hidden>'+
   '<div class="tl-voice-inner" role="dialog" aria-modal="true" aria-labelledby="tl-voice-h">'+
   '<div class="tl-voice-top"><h3 id="tl-voice-h">Voice assistant</h3><button type="button" class="btn" id="tl-voice-x" aria-label="Dismiss voice assistant">Close</button></div>'+
-  '<p class="small" id="tl-voice-status" role="status">Tap the mic. Audio stays on this phone.</p>'+
+  '<p class="small" id="tl-voice-status" role="status" aria-live="assertive" aria-atomic="true">Tap the mic. Audio stays on this phone.</p>'+
   '<div id="tl-voice-log" class="tl-voice-log" aria-live="polite"></div>'+
   '<div class="tl-voice-row"><button type="button" class="btn pri" id="tl-voice-mic" aria-pressed="false">Mic</button></div>'+
   '<label class="small" for="tl-voice-in">Or type your question</label>'+
@@ -443,7 +500,8 @@ function mount(opts){
    '.tl-voice-log{display:flex;flex-direction:column;gap:8px;margin:8px 0;min-height:48px}'+
    '.tl-voice-b{border-radius:12px;padding:10px 12px;max-width:100%}.tl-voice-b.app{background:rgba(255,184,28,.14)}.tl-voice-b.you{background:rgba(255,255,255,.06)}'+
    '.tl-voice-b p{margin:0}.tl-voice-clip{margin-top:8px;padding:8px;border-radius:10px;border:1px solid #27407F}'+
-   '.tl-voice-inner input,.tl-voice-inner button.btn{min-height:44px}'+
+   '.tl-voice-inner input,.tl-voice-inner button.btn{min-height:48px}'+
+   '#tl-voice-status{font-weight:700}'+
    '.tl-voice-inner input{width:100%;border-radius:10px;border:1px solid var(--line,#27407F);background:#0A173A;color:inherit;padding:8px 10px;font:inherit}'+
    'body.ps .tl-voice-inner{background:#fff;color:#0A0F24}body.ps .tl-voice-inner input{background:#fff;color:#0A0F24}body.ps .tl-voice-b.you{background:#f3f4f8}'+
    '@media(min-width:900px){.tl-voice-fab{bottom:24px}.tl-voice-sheet{align-items:center}.tl-voice-inner{border-radius:16px}}';
@@ -453,10 +511,12 @@ function mount(opts){
  var fab=document.getElementById('tl-voice-fab'),sheet=document.getElementById('tl-voice-sheet');
  var status=document.getElementById('tl-voice-status'),inp=document.getElementById('tl-voice-in');
  var log=document.getElementById('tl-voice-log'),note=document.getElementById('tl-voice-note'),mic=document.getElementById('tl-voice-mic');
- var handsFree=false,prompting=false,rec=null,localOk=null,open=false,lastEl=null;
- function ctxNow(){var c=(typeof opts.context==='function'?opts.context():(opts.context||{}))||{};if(!c.library)c.library=LIB;return c;}
+ var handsFree=false,prompting=false,rec=null,localOk=null,open=false,lastEl=null,phase='idle',greeted=false,memory={};
+ function ctxNow(){var c=(typeof opts.context==='function'?opts.context():(opts.context||{}))||{};if(!c.library)c.library=LIB;c.memory=memory;if(!c.today)c.today=londonToday();return c;}
+ function setPhase(next,msg){phase=next;status.textContent=msg||'';}
  function setListen(on){fab.classList.toggle('listening',!!on);mic.setAttribute('aria-pressed',on?'true':'false');mic.textContent=on?'Listening':'Mic';}
- function stopRec(){try{if(rec)rec.onresult=rec.onerror=rec.onend=null;}catch(e){}try{if(rec)rec.abort?rec.abort():rec.stop();}catch(e){}rec=null;setListen(false);}
+ function stopRec(){var r=rec;rec=null;try{if(r)r.onresult=r.onerror=r.onend=null;}catch(e){}try{if(r)r.abort?r.abort():r.stop();}catch(e2){}setListen(false);}
+ function finishListen(){var r=rec;rec=null;setListen(false);if(!r)return;try{r.stop();}catch(e){}}
  function bubble(who,html){
   var d=document.createElement('div');d.className='tl-voice-b '+who;d.innerHTML=html;log.appendChild(d);log.scrollTop=log.scrollHeight;lastEl=d;return d;
  }
@@ -475,12 +535,25 @@ function mount(opts){
    if(!ok){showNote(true);return;}
    showNote(false);
    stopRec();
-   status.textContent='Listening';
+   setPhase('listening','Listening. I stay on this phone.');
    setListen(true);
-   rec=listenOnce(function(t,err){
-    setListen(false);rec=null;
-    if(!open||!handsFree)return;
-    if(err||!t){status.textContent='I did not catch that. You can type it.';bubble('app','<p>I did not catch that. You can type it, or tap the mic.</p>');return;}
+   var delivered=false;
+   rec=listenOnce(function(t,err,meta){
+    meta=meta||{};
+    if(!open)return;
+    if(meta.interim){if(phase==='listening')setPhase('listening','I heard: '+t);return;}
+    if(delivered)return;
+    if(err){
+     if(err.message==='aborted')return;
+     if(err.message==='no-speech'&&!meta.end)return;
+     delivered=true;setListen(false);rec=null;
+     var msg=listenMessage(err.message);
+     setPhase('error',msg);
+     bubble('app','<p>'+esc(msg)+'</p>');
+     return;
+    }
+    if(!t)return;
+    delivered=true;setListen(false);rec=null;
     inp.value='';
     run(t,{relisten:true});
    });
@@ -488,12 +561,13 @@ function mount(opts){
   });
  }
  function greet(){
+  if(phase==='listening'||phase==='working'||phase==='answering'||phase==='heard')return;
   handsFree=true;prompting=true;showNote(false);
-  status.textContent='How can I help?';
-  bubble('app','<p>How can I help?</p>');
+  setPhase('greeting','How can I help?');
+  if(!greeted){greeted=true;bubble('app','<p>How can I help?</p>');}
   speak('How can I help?',function(){
    prompting=false;
-   if(!open||!handsFree||inp.value||document.activeElement===inp)return;
+   if(!open||!handsFree||phase!=='greeting'||inp.value||document.activeElement===inp)return;
    startListen();
   });
  }
@@ -507,7 +581,7 @@ function mount(opts){
   greet();
  }
  function dismiss(){
-  open=false;handsFree=false;prompting=false;stopRec();
+  open=false;handsFree=false;prompting=false;phase='idle';greeted=false;stopRec();
   try{if(global.speechSynthesis)speechSynthesis.cancel();}catch(e){}
   sheet.hidden=true;
  }
@@ -519,9 +593,14 @@ function mount(opts){
  }
  function run(raw,flag){
   flag=flag||{};
-  var c=ctxNow(),intent=parseIntent(raw,c);
-  bubble('you','<p>'+esc(raw)+'</p>');
-  status.textContent=intent.say;
+  var text=String(raw||'').trim();
+  if(!text){setPhase('error','I did not catch that. You can type it.');bubble('app','<p>I did not catch that. You can type it, or tap the mic.</p>');return;}
+  setPhase('working','Working that out.');
+  bubble('you','<p>'+esc(text)+'</p>');
+  var c=ctxNow(),intent=parseIntent(text,c);
+  if(intent.game)memory.fixture=intent.game;
+  memory.intent=intent.intent;
+  setPhase('answering',intent.say);
   var extra=clipHtml(intent);
   if(intent.needConfirm){
    extra+='<div class="tl-voice-row"><button type="button" class="btn pri" data-voice-yes="1">'+(esc(intent.confirmLabel||'Confirm'))+'</button><button type="button" class="btn" data-voice-no="1">Cancel</button></div>';
@@ -530,11 +609,19 @@ function mount(opts){
   b._intent=intent;
   if(intent.intent==='draft'&&typeof opts.onIntent==='function')opts.onIntent(Object.assign({},intent,{confirmed:false}),c);
   else if(!intent.needConfirm&&intent.intent!=='dismiss'&&typeof opts.onIntent==='function')opts.onIntent(intent,c);
-  if(intent.intent==='dismiss'){speak(intent.say,dismiss);return;}
-  speak(intent.say,function(){if(flag.relisten)follow();});
+  if(intent.intent==='dismiss'){speak(intent.say,function(){dismiss();});return;}
+  speak(intent.say,function(spoke){
+   if(spoke===false)setPhase('answering',intent.say+' The answer is on screen. This phone is not speaking.');
+   if(flag.relisten)follow();
+  });
  }
  fab.onclick=function(){openSheet();};
- mic.onclick=function(){if(!open){openSheet();return;}handsFree=true;inp.blur();greet();};
+ mic.onclick=function(){
+  if(!open){openSheet();return;}
+  if(phase==='listening'){finishListen();return;}
+  if(phase==='greeting'){prompting=false;try{if(global.speechSynthesis)speechSynthesis.cancel();}catch(e){}startListen();return;}
+  handsFree=true;inp.blur();startListen();
+ };
  document.getElementById('tl-voice-x').onclick=dismiss;
  sheet.addEventListener('click',function(e){if(e.target===sheet)dismiss();});
  document.getElementById('tl-voice-go').onclick=function(){handsFree=false;prompting=false;stopRec();try{speechSynthesis.cancel();}catch(e){}var q=inp.value;inp.value='';if(q.trim())run(q,{relisten:false});};
