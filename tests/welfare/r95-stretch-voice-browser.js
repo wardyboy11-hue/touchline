@@ -12,7 +12,7 @@ const shot=async(p,n)=>{fs.mkdirSync(SHOTS,{recursive:true});await p.screenshot(
  const ctx=await b.newContext({...ph});const q=await ctx.newPage();
  q.on('pageerror',e=>console.log('PAGEERR',e.message));
  await q.route('**/macros/**',r=>r.fulfill({status:200,contentType:'application/json',headers:{'access-control-allow-origin':'*'},body:JSON.stringify({ok:true,data:{first:'Sam',role:'player',num:'7',mine:{},posts:[{id:'t1',type:'train',title:'Pressing',date:'2026-11-05',time:'20:00',why:'Win it back'}],x:{fixtures:[{id:'g1',opp:'Demo FC',date:'2026-11-07',ko:'15:00',ha:'H',venue:'Christopher Park'}]},tips:'',vote:{}}})}));
- await q.addInitScript(()=>{localStorage.setItem('fam.code','p');localStorage.setItem('fam.ok1','1');localStorage.setItem('fam.wel.p','1');});
+ await q.addInitScript(()=>{localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code','p');localStorage.setItem('fam.ok1','1');localStorage.setItem('fam.wel.p','1');});
  await q.goto('http://localhost:'+PORT+'/family.html');await w(2500);
  await q.evaluate(()=>{const s=document.getElementById('splash');if(s)s.remove();});
  const moreBtn=await q.$('button[aria-label="More"]');

@@ -1,7 +1,7 @@
 /* r90 app shell (countdown + matchday) on the r87 Base44 shell: five tabs, More in the top bar, page addresses, scroll memory, attendance ticks,
    guides on tap, roles grid, Update ready during a match, and the error card. Fake data only. */
 const {chromium}=require('playwright');const http=require('http'),fs=require('fs'),path=require('path');
-const root=path.resolve(__dirname,'../..');const PORT=+process.env.PORT||8797;let VER='107';
+const root=path.resolve(__dirname,'../..');const PORT=+process.env.PORT||8797;let VER='108';
 const SHOTS=process.env.SHOTS||'';
 const MT={'.js':'text/javascript','.html':'text/html','.json':'application/json','.css':'text/css','.png':'image/png','.jpg':'image/jpeg','.vtt':'text/vtt','.mp4':'video/mp4','.webmanifest':'application/json'};
 const srv=http.createServer((q,r)=>{const u=q.url.split('?')[0];if(u==='/version.json'){r.writeHead(200,{'content-type':'application/json'});r.end(JSON.stringify({v:VER}));return;}let f=path.join(root,decodeURIComponent(u));if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,d)=>{if(e){r.writeHead(404);r.end();return;}r.writeHead(200,{'content-type':MT[path.extname(f)]||'application/octet-stream'});r.end(d);});}).listen(PORT);
@@ -143,7 +143,7 @@ const w=ms=>new Promise(r=>setTimeout(r,ms));const H=c=>c.evaluate(()=>location.
    if(a.action==='f.child')return ok({num:'7',first:'Lad'});
    if(a.action==='f.late'||a.action==='f.late.undo'){globalThis.__FAM_LATE=(globalThis.__FAM_LATE||[]).concat([a]);return ok({ok:true,sent:1,id:a.id||'Lx'});}
    return ok({});});
-  await fp.addInitScript(()=>{const _g=Storage.prototype.getItem;Storage.prototype.getItem=function(k){return /^fam\.wel\./.test(k)?'1':_g.call(this,k);};localStorage.setItem('fam.code','PARENT');localStorage.setItem('fam.ok1','1');});
+  await fp.addInitScript(()=>{const _g=Storage.prototype.getItem;Storage.prototype.getItem=function(k){return /^fam\.wel\./.test(k)?'1':_g.call(this,k);};localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code','PARENT');localStorage.setItem('fam.ok1','1');});
   await fp.goto('http://localhost:'+PORT+'/family.html');await w(1800);
   await fp.evaluate(()=>{const s=document.getElementById('splash');if(s)s.remove();const md=document.getElementById('tl-md');if(md)md.remove();});
   await w(400);

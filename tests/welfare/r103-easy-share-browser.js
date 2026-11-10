@@ -3,7 +3,7 @@ const {chromium,devices}=require('playwright');const http=require('http'),fs=req
 const root=path.resolve(__dirname,'../..'),PORT=+process.env.PORT||8813,SHOTS=process.env.SHOTS||'/workspace/shots',PRE=process.env.PRE||'r103_';
 fs.mkdirSync(SHOTS,{recursive:true});
 const MT={'.js':'text/javascript','.html':'text/html','.json':'application/json','.css':'text/css','.png':'image/png','.webmanifest':'application/json','.webp':'image/webp'};
-const srv=http.createServer((q,r)=>{let u=decodeURIComponent(q.url.split('?')[0]);if(u==='/version.json'){r.writeHead(200,{'content-type':'application/json'});r.end('{"v": "107"}');return;}let f=path.join(root,u);if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,d)=>{if(e){r.writeHead(404);r.end();return;}r.writeHead(200,{'content-type':MT[path.extname(f)]||'application/octet-stream'});r.end(d);});}).listen(PORT);
+const srv=http.createServer((q,r)=>{let u=decodeURIComponent(q.url.split('?')[0]);if(u==='/version.json'){r.writeHead(200,{'content-type':'application/json'});r.end('{"v": "108"}');return;}let f=path.join(root,u);if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,d)=>{if(e){r.writeHead(404);r.end();return;}r.writeHead(200,{'content-type':MT[path.extname(f)]||'application/octet-stream'});r.end(d);});}).listen(PORT);
 const BASE='http://localhost:'+PORT;let ok=0,bad=0;const T=(n,c)=>{console.log((c?'PASS ':'FAIL ')+n);c?ok++:bad++;};
 const H={'access-control-allow-origin':'*'};
 function errsOf(p){const e=[];p.on('pageerror',x=>e.push('pageerror: '+x.message));p.on('console',m=>{if(m.type()==='error'&&!/Failed to load resource|favicon|net::ERR|service.?worker/i.test(m.text()))e.push('console: '+m.text());});return e;}
@@ -19,7 +19,7 @@ function errsOf(p){const e=[];p.on('pageerror',x=>e.push('pageerror: '+x.message
    if(a.action==='f.clips')return r.fulfill({status:200,contentType:'application/json',headers:H,body:JSON.stringify({ok:true,data:clips})});
    if(a.action==='f.home')return r.fulfill({status:200,contentType:'application/json',headers:H,body:JSON.stringify({ok:true,data:{first:'Pat',role:'player',num:'7',mine:{},evMine:{},evAtt:{},at:Date.now(),posts:[],att:{},vote:{motm:{open:false},poty:{open:false}},x:{fixtures:[],news:[],events:[],lifts:[],media:[],contacts:[]}}})});
    r.fulfill({status:200,contentType:'application/json',headers:H,body:JSON.stringify({ok:true,data:{}})});});
-  await c.addInitScript(()=>{localStorage.setItem('fam.code','p');localStorage.setItem('fam.ok1','1');localStorage.setItem('fam.wel.P','1');localStorage.setItem('fam.tour','1');Object.defineProperty(navigator,'share',{configurable:true,get:()=>undefined});});
+  await c.addInitScript(()=>{localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code','p');localStorage.setItem('fam.ok1','1');localStorage.setItem('fam.wel.P','1');localStorage.setItem('fam.tour','1');Object.defineProperty(navigator,'share',{configurable:true,get:()=>undefined});});
   await c.goto(BASE+'/family.html');await c.waitForTimeout(2200);
   await c.evaluate(()=>{const s=document.getElementById('splash');if(s)s.remove();try{goTab('media');r();}catch(e){}});
   await c.waitForTimeout(900);
@@ -63,7 +63,7 @@ function errsOf(p){const e=[];p.on('pageerror',x=>e.push('pageerror: '+x.message
   const ctx=await b.newContext({...ph});const c=await ctx.newPage();const E=errsOf(c);
   await c.route('**/macros/**',r=>{let a={};try{a=JSON.parse(r.request().postData()||'{}');}catch(e){}
    r.fulfill({status:200,contentType:'application/json',headers:H,body:JSON.stringify({ok:true,data:a.action==='f.home'?{first:'Sam',role:'parent',num:'9',mine:{},evMine:{},evAtt:{},at:Date.now(),posts:[],att:{},vote:{motm:{open:false},poty:{open:false}},x:{fixtures:[],news:[],events:[],lifts:[],media:[],contacts:[]}}:{rows:[],pt:'',na:1}})});});
-  await c.addInitScript(()=>{localStorage.setItem('fam.code','p');localStorage.setItem('fam.ok1','1');localStorage.setItem('fam.wel.P','1');localStorage.setItem('fam.tour','1');Object.defineProperty(navigator,'share',{configurable:true,get:()=>undefined});});
+  await c.addInitScript(()=>{localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code','p');localStorage.setItem('fam.ok1','1');localStorage.setItem('fam.wel.P','1');localStorage.setItem('fam.tour','1');Object.defineProperty(navigator,'share',{configurable:true,get:()=>undefined});});
   await c.goto(BASE+'/parents.html');await c.waitForTimeout(2200);
   await c.evaluate(()=>{const s=document.getElementById('splash');if(s)s.remove();try{goTab('home');r();}catch(e){}});
   await c.waitForTimeout(700);
@@ -123,7 +123,7 @@ function errsOf(p){const e=[];p.on('pageerror',x=>e.push('pageerror: '+x.message
     if(label==='coach'){
       await c.addInitScript(()=>{localStorage.setItem('tl.code','x');localStorage.setItem('tl.who','Tim');localStorage.setItem('tl.state.v1',JSON.stringify({ideas:{},players:{},matches:{},settings:{id:'main',half:35,roles:{},updatedAt:0},dirty:{},lastSync:Date.now()}));});
     }else{
-      await c.addInitScript(()=>{localStorage.setItem('fam.code','p');localStorage.setItem('fam.ok1','1');localStorage.setItem('fam.wel.P','1');localStorage.setItem('fam.tour','1');Object.defineProperty(navigator,'share',{configurable:true,get:()=>undefined});});
+      await c.addInitScript(()=>{localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code','p');localStorage.setItem('fam.ok1','1');localStorage.setItem('fam.wel.P','1');localStorage.setItem('fam.tour','1');Object.defineProperty(navigator,'share',{configurable:true,get:()=>undefined});});
     }
     await c.route('**/macros/**',r=>r.fulfill({status:200,contentType:'application/json',headers:H,body:JSON.stringify({ok:true,data:{first:'Pat',role:label==='parents'?'parent':'player',num:'7',mine:{},posts:[],att:{},vote:{motm:{open:false},poty:{open:false}},x:{fixtures:[],news:[],events:[],lifts:[],media:[],contacts:[]},docs:[],rows:[],serverTime:Date.now(),ev:[],clips:[],cpt:''}})}));
     await c.goto(BASE+url);await c.waitForTimeout(1600);
@@ -154,7 +154,7 @@ function errsOf(p){const e=[];p.on('pageerror',x=>e.push('pageerror: '+x.message
   T('share.js has navigator.share', /navigator\.share/.test(share));
   T('share.js has wa.me fallback', /wa\.me\/\?text=/.test(share));
   T('share.js has coach only note', /Coach only/.test(share));
-  T('version is 104', JSON.parse(fs.readFileSync(path.join(root,'version.json'),'utf8')).v==='107');
+  T('version is 104', JSON.parse(fs.readFileSync(path.join(root,'version.json'),'utf8')).v==='108');
  }
 
  await b.close();srv.close();

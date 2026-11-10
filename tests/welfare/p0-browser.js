@@ -47,7 +47,7 @@ await p.route('**/macros/**',async r=>{let a={};try{a=JSON.parse(r.request().pos
  return ok({});});
 for(const [code,role] of [['PARENT','parent'],['PLAYER','player']]){
  await p.addInitScript(()=>{const _g=Storage.prototype.getItem;Storage.prototype.getItem=function(k){return /^fam\.wel\./.test(k)?'1':_g.call(this,k);};}); // welcome screen already seen
- await p.addInitScript(([c])=>{localStorage.setItem('fam.code',c);localStorage.setItem('fam.ok1','1');},[code]);
+ await p.addInitScript(([c])=>{localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code',c);localStorage.setItem('fam.ok1','1');},[code]);
  await p.goto('http://localhost:8766/family.html');await p.waitForTimeout(1200);
  await p.evaluate(()=>{if(typeof goTab==='function')goTab('me');});await p.waitForTimeout(500);
  t=await p.innerText('body');

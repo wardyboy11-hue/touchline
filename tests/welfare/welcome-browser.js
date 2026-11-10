@@ -17,7 +17,7 @@ for(const role of ['parent','player']){
   if(a.action==='f.respect.get')return okk({season:'2026/27',who:role,signed:signed?{name:signed,date:'2026-11-01'}:null});
   if(a.action==='f.respect.sign'){signed=a.name||'Sam';return okk({ok:true});}
   return okk({});});
- await q.addInitScript((c)=>{if(!sessionStorage.getItem('s')){sessionStorage.setItem('s','1');localStorage.setItem('fam.code',c);localStorage.setItem('fam.ok1','1');}},role==='parent'?'PAR123':'PLA123');
+ await q.addInitScript((c)=>{if(!sessionStorage.getItem('s')){sessionStorage.setItem('s','1');localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code',c);localStorage.setItem('fam.ok1','1');}},role==='parent'?'PAR123':'PLA123');
  await q.goto('http://localhost:8774/family.html');await q.waitForTimeout(1800);
  let tx=await q.innerText('body');
  const vid=await q.$('#welcome video');

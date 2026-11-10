@@ -63,7 +63,7 @@ async function coach(b,vp,v34){const ctx=await b.newContext(vp);const c=await ct
  // Family and parents: render, no coach-only favourites
  for(const pg of ['family.html','parents.html'])for(const [vn,vp] of [['mobile',{...ph}],['pc',{viewport:{width:1440,height:900}}]]){const ctx=await b.newContext(vp);const q=await ctx.newPage();const E=errsOf(q);
   await q.route('**/macros/**',r=>{let a={};try{a=JSON.parse(r.request().postData()||'{}');}catch(e){}const d=a.action==='f.home'?{first:'Pat',role:pg==='parents.html'?'parent':'player',num:'7',mine:{},rsn:{},x:{fixtures:[],posts:[]},posts:[],res:[],tips:[],vote:{}}:{};r.fulfill({status:200,contentType:'application/json',headers:H,body:JSON.stringify({ok:true,data:d})});});
-  await q.addInitScript(()=>{localStorage.setItem('fam.code','p');localStorage.setItem('fam.ok1','1');});
+  await q.addInitScript(()=>{localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code','p');localStorage.setItem('fam.ok1','1');});
   await q.goto(BASE+'/'+pg);await q.waitForTimeout(2500);
   const body=await q.evaluate(()=>document.body.innerText);
   T(pg+' '+vn+' renders',body.length>50);T(pg+' '+vn+' has no coach favourites or notes',!/Favourites|Coach notes/.test(body));

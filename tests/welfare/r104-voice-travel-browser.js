@@ -5,7 +5,7 @@ const PORT=+process.env.PORT||8824;
 const SHOTS=process.env.SHOTS||'/opt/cursor/artifacts';
 fs.mkdirSync(SHOTS,{recursive:true});
 const MT={'.js':'text/javascript','.html':'text/html','.json':'application/json','.css':'text/css','.png':'image/png','.jpg':'image/jpeg','.webp':'image/webp','.webmanifest':'application/json','.svg':'image/svg+xml','.mp3':'audio/mpeg','.vtt':'text/vtt','.mp4':'video/mp4'};
-const srv=http.createServer((q,r)=>{let u=decodeURIComponent(q.url.split('?')[0]);if(u==='/version.json'){r.writeHead(200,{'content-type':'application/json'});r.end('{"v": "107"}');return;}let f=path.join(root,u);if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,d)=>{if(e){r.writeHead(404);r.end();return;}r.writeHead(200,{'content-type':MT[path.extname(f)]||'application/octet-stream'});r.end(d);});}).listen(PORT);
+const srv=http.createServer((q,r)=>{let u=decodeURIComponent(q.url.split('?')[0]);if(u==='/version.json'){r.writeHead(200,{'content-type':'application/json'});r.end('{"v": "108"}');return;}let f=path.join(root,u);if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,d)=>{if(e){r.writeHead(404);r.end();return;}r.writeHead(200,{'content-type':MT[path.extname(f)]||'application/octet-stream'});r.end(d);});}).listen(PORT);
 const BASE='http://127.0.0.1:'+PORT;
 let ok=0,bad=0;const T=(n,c)=>{console.log((c?'PASS ':'FAIL ')+n);c?ok++:bad++;};
 const w=ms=>new Promise(r=>setTimeout(r,ms));
@@ -57,6 +57,7 @@ const FAM_TABS=['home','games','events','media','me','faq','contacts','lib','own
   }
   await p.goto(BASE+'/coach/index.html#/today');await w(900);
   await p.evaluate(()=>{const s=document.getElementById('splash');if(s)s.remove();const m=document.getElementById('tl-md');if(m)m.remove();});
+  await p.evaluate(()=>{const d=document.getElementById('sec-today');if(d)d.open=true;});await p.waitForTimeout(200); // r108: Today is folded by default
   const travel=await p.locator('#tl-travel').innerText();
   T('travel card is coach only copy',/travel issues/i.test(travel)&&/Families do not get this/.test(travel)&&/Running late/.test(travel)&&/Traffic/.test(travel)&&/Can.t make it/.test(travel)&&/Custom/.test(travel));
   await p.locator('#tl-travel').screenshot({path:path.join(SHOTS,'r104-travel-card.png')});
@@ -90,7 +91,7 @@ const FAM_TABS=['home','games','events','media','me','faq','contacts','lib','own
   await p.route('**/macros/**',r=>{let a={};try{a=JSON.parse(r.request().postData()||'{}');}catch(e){}
    const data={first:'Pat',role:page==='family.html'?'parent':'player',num:'7',mine:{},evMine:{},evAtt:{},at:Date.now(),posts:[{id:'tr1',type:'training',title:'Pressing',date:iso,time:'20:00',place:'Orrell'}],att:{},vote:{motm:{open:false},poty:{open:false}},x:{fixtures:[{id:'g1',opp:'Saturday FC',date:iso,ko:'15:00',ha:'H',venue:'Christopher Park'}],news:[],events:[],lifts:[],media:[],contacts:[]}};
    r.fulfill({status:200,contentType:'application/json',headers:H,body:JSON.stringify({ok:true,data:a.action==='f.clips'?{rows:[],pt:''}:data})});});
-  await p.addInitScript(()=>{localStorage.setItem('fam.code','p');localStorage.setItem('fam.ok1','1');localStorage.setItem('fam.wel.P','1');localStorage.setItem('fam.tour','1');});
+  await p.addInitScript(()=>{localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code','p');localStorage.setItem('fam.ok1','1');localStorage.setItem('fam.wel.P','1');localStorage.setItem('fam.tour','1');});
   await p.goto(BASE+'/'+page);await w(1600);
   await p.evaluate(()=>{const s=document.getElementById('splash');if(s)s.remove();});
   const tabs=page==='family.html'?FAM_TABS.concat(['child','pq']):FAM_TABS.concat(['voice']);

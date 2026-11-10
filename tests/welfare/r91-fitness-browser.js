@@ -18,7 +18,7 @@ async function seedFamily(page,role){
   if(a.action==='f.child')return okk({num:'7',first:'Lad',pos:['CM']});
   if(a.action&&String(a.action).indexOf('f.fit')===0)return okk({ok:true,id:(a.plan&&a.plan.id)||'F1'});
   return okk({});});
- await page.addInitScript(()=>{const _g=Storage.prototype.getItem;Storage.prototype.getItem=function(k){return /^fam\.wel\./.test(k)?'1':_g.call(this,k);};localStorage.setItem('fam.code','p');localStorage.setItem('fam.ok1','1');});
+ await page.addInitScript(()=>{const _g=Storage.prototype.getItem;Storage.prototype.getItem=function(k){return /^fam\.wel\./.test(k)?'1':_g.call(this,k);};localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code','p');localStorage.setItem('fam.ok1','1');});
 }
 
 (async()=>{

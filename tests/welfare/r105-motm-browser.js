@@ -35,7 +35,7 @@ function errsOf(p) {
     const ctx = await b.newContext({ ...ph, serviceWorkers: 'block' });
     const p = await ctx.newPage();
     const E = errsOf(p);
-    await p.addInitScript(() => { window.open = () => { window.__opened = (window.__opened || 0) + 1; return null; }; localStorage.setItem('fam.code', 'p'); localStorage.setItem('fam.ok1', '1'); localStorage.setItem('fam.wel.P', '1'); localStorage.setItem('fam.tour', '1'); });
+    await p.addInitScript(() => { window.open = () => { window.__opened = (window.__opened || 0) + 1; return null; }; localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code', 'p'); localStorage.setItem('fam.ok1', '1'); localStorage.setItem('fam.wel.P', '1'); localStorage.setItem('fam.tour', '1'); });
     await p.route('**/macros/**', r => r.fulfill({ status: 200, contentType: 'application/json', headers: H, body: JSON.stringify({ ok: true, data: fam }) }));
     await p.goto(BASE + '/parents.html');
     await p.waitForTimeout(1800);

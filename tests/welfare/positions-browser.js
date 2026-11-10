@@ -20,7 +20,7 @@ const fam=JSON.parse(fs.readFileSync(path.join(root,'positions.json'),'utf8'));
   if(a.action==='f.workon')return okk({items:[{k:'iq',txt:'Scan over your shoulder before the ball comes'},{k:'',txt:'Win your 1v1 defending by staying on your feet'}],at:1});
   if(a.action==='f.pos.file')return a.id===fam.slots[1].guide?okk({name:'RCB guide',mime:'application/pdf',kind:'pdf',size:1,b64:pdf}):r.fulfill({status:200,contentType:'application/json',headers:H,body:JSON.stringify({ok:false,error:'That file is not a position guide.'})});
   return okk({});});
- await q.addInitScript(()=>{const _g=Storage.prototype.getItem;Storage.prototype.getItem=function(k){return /^fam\.wel\./.test(k)?'1':_g.call(this,k);};localStorage.setItem('fam.code','p');localStorage.setItem('fam.ok1','1');});
+ await q.addInitScript(()=>{const _g=Storage.prototype.getItem;Storage.prototype.getItem=function(k){return /^fam\.wel\./.test(k)?'1':_g.call(this,k);};localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code','p');localStorage.setItem('fam.ok1','1');});
  await q.goto(`http://localhost:${PORT}/family.html`);await q.waitForSelector('#posCard',{timeout:8000});await q.waitForTimeout(2500);await q.evaluate(()=>{const s=document.getElementById('splash');if(s)s.remove();});
  let tx=await q.innerText('#posCard');
  T('player sees My position for RCB from the role card',/RCB Right centre-back/.test(tx)&&/Open my role guide/.test(tx));
@@ -41,7 +41,7 @@ const fam=JSON.parse(fs.readFileSync(path.join(root,'positions.json'),'utf8'));
  T('player page has no errors',errs.length===0);if(errs.length)console.log(errs);
  // parent sees no position card
  const pc=await b.newContext({...dev}),pp=await pc.newPage();await pp.route('**/macros/**',r=>{let a={};try{a=JSON.parse(r.request().postData()||'{}')}catch(e){}r.fulfill({status:200,contentType:'application/json',headers:H,body:JSON.stringify({ok:true,data:a.action==='f.home'?{first:'Sam',role:'parent',x:{},posts:[],res:[],tips:[]}:{}})});});
- await pp.addInitScript(()=>{const _g=Storage.prototype.getItem;Storage.prototype.getItem=function(k){return /^fam\.wel\./.test(k)?'1':_g.call(this,k);};localStorage.setItem('fam.code','q');localStorage.setItem('fam.ok1','1');});
+ await pp.addInitScript(()=>{const _g=Storage.prototype.getItem;Storage.prototype.getItem=function(k){return /^fam\.wel\./.test(k)?'1':_g.call(this,k);};localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code','q');localStorage.setItem('fam.ok1','1');});
  await pp.goto(`http://localhost:${PORT}/family.html`);await pp.waitForTimeout(1500);T('parent view has no position card',!(await pp.$('#posCard')));
  // ---------- coach ----------
  const cc=await b.newContext({...dev});const c=await cc.newPage();const ce=[];c.on('pageerror',e=>ce.push(e.message));

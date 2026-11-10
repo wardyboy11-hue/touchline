@@ -9,7 +9,7 @@ const EMBED = 'https://open.spotify.com/embed/playlist/37i9dQZF1Fx1qy2m6cIsqW';
 fs.mkdirSync(SHOTS, { recursive: true });
 const srv = http.createServer((q, r) => {
   const u = decodeURIComponent(q.url.split('?')[0]);
-  if (u === '/version.json') { r.writeHead(200, { 'content-type': 'application/json' }); r.end('{"v": "107"}'); return; }
+  if (u === '/version.json') { r.writeHead(200, { 'content-type': 'application/json' }); r.end('{"v": "108"}'); return; }
   let f = path.join(root, u);
   if (f.endsWith('/')) f += 'index.html';
   fs.readFile(f, (e, d) => {
@@ -37,7 +37,7 @@ function dirty(s) { return /[?&](pt|si)=/i.test(s) || /[?&]pt\b/i.test(s); }
     p.on('pageerror', e => errs.push(e.message));
     p.on('console', m => { if (m.type() === 'error' && !/favicon|Failed to load/.test(m.text())) errs.push(m.text()); });
     p.on('request', req => { if (/spotify\.com/i.test(req.url())) hits.push(req.url()); });
-    await p.addInitScript(() => { localStorage.setItem('fam.code', 'p'); localStorage.setItem('fam.ok1', '1'); localStorage.setItem('fam.wel.P', '1'); localStorage.setItem('fam.tour', '1'); });
+    await p.addInitScript(() => { localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code', 'p'); localStorage.setItem('fam.ok1', '1'); localStorage.setItem('fam.wel.P', '1'); localStorage.setItem('fam.tour', '1'); });
     await p.route('**/macros/**', r => r.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify({ ok: true, data: fam('parent') }) }));
     await p.goto('http://localhost:' + PORT + '/parents.html');
     await p.waitForTimeout(1400);
@@ -61,7 +61,7 @@ function dirty(s) { return /[?&](pt|si)=/i.test(s) || /[?&]pt\b/i.test(s); }
     T('player fits the phone width', parseFloat(frame.cssW) > 200 && parseFloat(frame.cssW) <= 412);
     const desk = await b.newContext({ viewport: { width: 1280, height: 800 }, serviceWorkers: 'block' });
     const d = await desk.newPage();
-    await d.addInitScript(() => { localStorage.setItem('fam.code', 'p'); localStorage.setItem('fam.ok1', '1'); localStorage.setItem('fam.wel.P', '1'); localStorage.setItem('fam.tour', '1'); });
+    await d.addInitScript(() => { localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code', 'p'); localStorage.setItem('fam.ok1', '1'); localStorage.setItem('fam.wel.P', '1'); localStorage.setItem('fam.tour', '1'); });
     await d.route('**/macros/**', r => r.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify({ ok: true, data: fam('player') }) }));
     await d.goto('http://localhost:' + PORT + '/family.html');
     await d.waitForTimeout(1200);
@@ -80,7 +80,7 @@ function dirty(s) { return /[?&](pt|si)=/i.test(s) || /[?&]pt\b/i.test(s); }
     const ctx = await b.newContext({ ...phone, serviceWorkers: 'block' });
     const p = await ctx.newPage();
     await p.addInitScript(() => {
-      localStorage.setItem('fam.code', 'p'); localStorage.setItem('fam.ok1', '1'); localStorage.setItem('fam.wel.P', '1'); localStorage.setItem('fam.tour', '1');
+      localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code', 'p'); localStorage.setItem('fam.ok1', '1'); localStorage.setItem('fam.wel.P', '1'); localStorage.setItem('fam.tour', '1');
       try { Object.defineProperty(navigator, 'onLine', { get: function () { return false; } }); } catch (e) {}
     });
     await p.route('**/macros/**', r => r.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify({ ok: true, data: fam('parent') }) }));
