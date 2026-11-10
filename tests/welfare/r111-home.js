@@ -1,0 +1,26 @@
+/* Home order for release 111. Source checks only. No live data. */
+const fs = require('fs');
+const path = require('path');
+const assert = require('assert');
+const R = path.resolve(__dirname, '../..');
+const coach = fs.readFileSync(path.join(R, 'coach/app.js'), 'utf8');
+const today = coach.slice(coach.indexOf('function vToday'), coach.indexOf('function addDays'));
+assert.ok(today.indexOf('voiceCoachCard()') < today.indexOf("coachSec('alerts'"), 'questions lead Today');
+assert.ok(coach.indexOf('voicePreview:function') > 0);
+assert.ok(coach.indexOf('voiceSend:function') > 0);
+assert.ok(coach.indexOf('voiceCancel:function') > 0);
+assert.ok(coach.indexOf('Cancelled. Nothing was sent.') > 0);
+assert.ok(/voiceWelfare/.test(coach));
+const qBlock = coach.slice(coach.indexOf('if(qs.length)'), coach.indexOf('if(xs.length)'));
+assert.ok(!/voiceDel/.test(qBlock), 'questions are not deleted from this list');
+assert.ok(/Open welfare/.test(qBlock));
+const family = fs.readFileSync(path.join(R, 'family.html'), 'utf8');
+const parents = fs.readFileSync(path.join(R, 'parents.html'), 'utf8');
+assert.ok(family.indexOf('h+=whatsNew()') > 0 && family.indexOf('function whatsNew') > 0);
+assert.ok(parents.indexOf('h+=whatsNew()') > 0);
+assert.ok(/Mark all read/.test(family));
+assert.ok(/function tlFind/.test(family));
+assert.equal(JSON.parse(fs.readFileSync(path.join(R, 'version.json'), 'utf8')).v, '111');
+const sw = fs.readFileSync(path.join(R, 'coach/sw.js'), 'utf8');
+assert.ok(/tl-matchday/.test(sw) && /k!==MATCH/.test(sw));
+console.log('home order ok');
