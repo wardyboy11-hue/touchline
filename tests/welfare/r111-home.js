@@ -20,7 +20,7 @@ assert.ok(family.indexOf('h+=whatsNew()') > 0 && family.indexOf('function whatsN
 assert.ok(parents.indexOf('h+=whatsNew()') > 0);
 assert.ok(/Mark all read/.test(family));
 assert.ok(/function tlFind/.test(family));
-assert.equal(JSON.parse(fs.readFileSync(path.join(R, 'version.json'), 'utf8')).v, '111');
+assert.equal(JSON.parse(fs.readFileSync(path.join(R, 'version.json'), 'utf8')).v, '112');
 const sw = fs.readFileSync(path.join(R, 'coach/sw.js'), 'utf8');
 assert.ok(/tl-matchday/.test(sw) && /k!==MATCH/.test(sw));
 console.log('home order ok');

@@ -2,7 +2,7 @@
    Precache: shell only. Runtime: network first for HTML/JS so a broken release can be replaced
    even if update.js never runs; cache first for versioned images/css. Apps Script and other
    origins are never touched. No PDFs, video or audio are cached here. */
-var V='touchline-shell-v111',RT='touchline-run-v111',MATCH='tl-matchday';
+var V='touchline-shell-v112',RT='touchline-run-v112',MATCH='tl-matchday';
 var SHELL=['./','index.html','app.css?v=111','../tl-ui.css?v=111','../tl-spotify.js?v=111','../tl-alarm.js?v=111','../tl-pages.js?v=111','topics.js?v=111','topic-bank.js?v=111','guide.js?v=111','motm105.js?v=111','app.js?v=111','gui.js?v=111','positions.js?v=111','positions.json','cdev.js?v=111','../pod.js','../acct.js?v=111','../voice.js?v=111','../share.js?v=111','../update.js?v=111','../shop.css?v=111','../shop.js?v=111','../fitness.js?v=111','../fitness.css?v=111','../cd.js?v=111','../shop/img/ss-core-supporters-coat-navy.webp?v=111','../shop/img/ss-core-thermal-jacket-navy.webp?v=111','../shop/img/end-of-line-ss-bench-coat-navy.webp?v=111','../shop/img/ss-core-softshell-jacket-navy.webp?v=111','../shop/img/ss-core-padded-gilet-navy.webp?v=111','../shop/img/new-ss-core-rain-jacket-navy.webp?v=111','../shop/img/ss-core-softshell-gilet-navy.webp?v=111','manifest.webmanifest','../badge.png','../icon-192.png','../icon-512.png'];
 var SKIP=/\.(pdf|mp4|mp3|m4a|webm|mov)$|version\.json$/i;
 self.addEventListener('install',function(e){e.waitUntil(caches.open(V).then(function(c){return c.addAll(SHELL);}).then(function(){return self.skipWaiting();}));});
