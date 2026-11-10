@@ -8,7 +8,7 @@ fs.mkdirSync(SHOTS, { recursive: true });
 const MT = { '.js': 'text/javascript', '.html': 'text/html', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.webmanifest': 'application/json', '.vtt': 'text/vtt', '.webm': 'video/webm', '.mp4': 'video/mp4' };
 const srv = http.createServer((q, r) => {
   const u = decodeURIComponent(q.url.split('?')[0]);
-  if (u === '/version.json') { r.writeHead(200, { 'content-type': 'application/json' }); r.end('{"v":"106"}'); return; }
+  if (u === '/version.json') { r.writeHead(200, { 'content-type': 'application/json' }); r.end('{"v": "107"}'); return; }
   let f = path.join(root, u);
   if (f.endsWith('/')) f += 'index.html';
   fs.readFile(f, (e, d) => {

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1b2e">
+<title>Training 11/11 | Wigan Junior Latics U15 Blues</title>
+<link rel="preload" href="../vendor/three/three.r128.min.js?v=r128" as="script">
+<style>
+  :root{ --bg:#0b1b2e; --panel:#12283f; --line:#2a4a6c; --text:#f2f6fa; --amber:#ffb81c; --amberText:#1a1200; --muted:#9db3c9; }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  #app{display:flex;flex-direction:column;max-width:1280px;margin:0 auto}
+  header{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid #12283f}
+  h1{font-size:16px;margin:0;font-weight:700}
+  header a{color:var(--amber);font-size:14px;text-decoration:none;white-space:nowrap}
+  .row{display:flex;gap:8px;padding:8px 12px 0;overflow-x:auto;scrollbar-width:none}
+  .row::-webkit-scrollbar{display:none}
+  button{font:inherit;font-size:14px;color:var(--text);background:var(--panel);border:1px solid var(--line);padding:8px 14px;cursor:pointer;white-space:nowrap}
+  button:active{transform:scale(.97)}
+  button.on{background:var(--amber);border-color:var(--amber);color:var(--amberText);font-weight:700}
+  .mode{border-radius:8px;padding:9px 16px}
+  .pill{border-radius:999px}
+  .part b{font-weight:400;opacity:.8;font-size:12px;margin-right:4px}
+  #picks{padding-bottom:8px}
+  #phead{padding:6px 12px 0}
+  #ptitle{font-weight:700;font-size:15px}
+  #pmeta{color:var(--muted);font-size:13px}
+  #stageWrap{position:relative;height:min(56vh,560px);min-height:240px;background:radial-gradient(ellipse at 50% 30%,#10263d,#0b1b2e 70%)}
+  #stage{position:absolute;inset:0;touch-action:none}
+  #stage canvas{display:block;width:100%;height:100%}
+  #legend{position:absolute;left:10px;bottom:8px;font-size:13px;background:rgba(11,27,46,.7);padding:6px 8px;border-radius:8px;line-height:1.5;pointer-events:none}
+  #legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px}
+  #cams{position:absolute;right:10px;top:8px;display:flex;flex-direction:column;gap:8px}
+  #cams button{border-radius:8px;padding:7px 12px;background:rgba(18,40,63,.92)}
+  #title{position:absolute;left:50%;top:10px;transform:translateX(-50%);background:rgba(11,27,46,.85);border-radius:999px;padding:6px 14px;font-weight:700;font-size:15px;pointer-events:none;white-space:nowrap;max-width:70%;overflow:hidden;text-overflow:ellipsis}
+  #fallback{position:absolute;inset:0;display:none;align-items:center;justify-content:center;text-align:center;padding:24px;color:var(--muted)}
+  #narr{padding:12px 12px 6px;border-top:1px solid #12283f}
+  #narr small{display:block;color:var(--amber);letter-spacing:.06em;text-transform:uppercase;font-size:12px;margin-bottom:6px}
+  #narr p{margin:0;font-size:17px;line-height:1.5;min-height:5.2em}
+  #bar{height:6px;background:var(--panel);margin:6px 12px;border-radius:6px;overflow:hidden}
+  #bar div{height:100%;width:0;background:var(--amber)}
+  #controls{display:flex;gap:8px;padding:6px 12px 12px;align-items:center;flex-wrap:wrap}
+  #controls button{border-radius:10px;padding:12px 18px}
+  #controls .sp{flex:1}
+  .txt{padding:4px 14px calc(24px + env(safe-area-inset-bottom));border-top:1px solid #12283f}
+  .txt h2{color:var(--amber);font-size:15px;letter-spacing:.06em;text-transform:uppercase;margin:18px 0 6px}
+  .txt h3{font-size:15px;margin:14px 0 4px}
+  .txt ul{margin:0;padding-left:20px;line-height:1.55}
+  .txt p.m{color:var(--muted);margin:0}
+  .txt table{border-collapse:collapse;width:100%;font-size:15px}
+  .txt td{border-bottom:1px solid #1d3652;padding:6px 6px;vertical-align:top}
+  .txt td:first-child{white-space:nowrap;color:var(--amber);font-weight:700}
+  a.pdf{display:inline-block;background:var(--amber);color:#0b1330;font-weight:800;padding:10px 16px;border-radius:12px;text-decoration:none;margin-top:10px}
+  @media (min-width:900px){ #narr p{font-size:20px} #stageWrap{height:min(62vh,620px)} }
+  body.render header,body.render #modes,body.render #parts,body.render #picks,body.render #cams,body.render #controls,body.render #bar,body.render .txt{display:none}
+  body.render #stageWrap{height:540px}
+  body.render #narr p{font-size:20px;min-height:0}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1>Training 11/11</h1>
+    <a id="back" href="../../">Back to the app</a>
+  </header>
+  <div class="row" id="parts" role="group" aria-label="Parts of the session"></div>
+  <div class="row" id="modes">
+    <button class="mode on" data-mode="team">The whole team</button>
+    <button class="mode" data-mode="role">My role</button>
+  </div>
+  <div id="phead"><div id="ptitle"></div><div id="pmeta"></div></div>
+  <div class="row" id="picks"></div>
+  <div id="stageWrap">
+    <div id="stage"></div>
+    <div id="title"></div>
+    <div id="legend"></div>
+    <div id="cams">
+      <button data-cam="behind">Behind</button>
+      <button data-cam="top">Top</button>
+      <button data-cam="side">Side</button>
+      <button data-cam="angle">Angle</button>
+    </div>
+    <div id="fallback">The 3D pitch couldn't start on this device, which may need a newer phone or browser. The voice and the words on screen still work.</div>
+  </div>
+  <div id="narr"><small id="nlabel"></small><p id="ntext"></p></div>
+  <div id="bar"><div id="barfill"></div></div>
+  <div id="controls">
+    <button class="on" id="play">Play</button>
+    <button id="next">Next</button>
+    <button id="sound">Sound on</button>
+    <span class="sp"></span>
+    <button id="all">Play all</button>
+  </div>
+  <div class="txt">
+    <h2>Training 11/11: the plan</h2><p class="m">Wednesday 11 November 2026. 60 minutes. Tim and Deano. Our 3-5-2: recover and play out, wing backs and three runners.</p><table><tr><td>0 to 8</td><td>Warm up: pass, follow, open up. Everyone.</td></tr><tr><td>8 to 16</td><td>Side on rondo 5v2. Everyone, two rondos if 14 or more.</td></tr><tr><td>16 to 31</td><td>Split 1. Tim: recover and play out (back three, Calum, two wing backs, two attackers). Deano: wing backs and three runners (keeper, two wing backs, strikers, 8s).</td></tr><tr><td>31</td><td>Halfway whistle: the four wing backs swap pitches.</td></tr><tr><td>31 to 46</td><td>Split 2. Same coaches, same practices, other pair of wing backs.</td></tr><tr><td>46 to 48</td><td>Drinks.</td></tr><tr><td>48 to 58</td><td>Unit v unit game, 7v7 with our one keeper. Adapt to numbers.</td></tr><tr><td>58 to 60</td><td>Cool down and three questions.</td></tr></table><h3>Groups and the wing back swap</h3><ul><li>Tim (defence): five centre backs (three in the line, two as attackers, rotate every round), Calum, and two wing backs.</li><li>Deano (attack): our keeper, two strikers, the 8s, and the other two wing backs. Two reds rotate from the strikers and 8s.</li><li>Wing backs: Ryan and Harry start with Tim, the other two start with Deano. Each pair swaps left and right halfway through their spell. At 31 minutes all four swap pitches.</li></ul><a class="pdf" href="../../plans/Block3_W2_session_v2_11Nov2026.pdf?v=107" target="_blank" rel="noopener">Session plan (PDF)</a>
+    <div id="notes"></div>
+  </div>
+</div>
+<script>window.SESSION3D={"slug":"s1111_training","date":"2026-11-11","three":"../vendor/three/three.r128.min.js?v=r128","abase":"audio/s1111_training/","audio":{"warmup_0":["427926a7f0.mp3",13.71],"warmup_0_ON":["f8c595412c.mp3",3.5],"warmup_0_Q":["58dabb9a70.mp3",3.4],"warmup_1":["36d60d7c97.mp3",11.73],"warmup_1_ON":["3c4c13d944.mp3",3.5],"warmup_1_Q":["12951cf635.mp3",4.02],"warmup_2":["d179037855.mp3",11.44],"warmup_2_ON":["9c62002ecb.mp3",4.86],"warmup_2_Q":["c2f1939907.mp3",3.03],"warmup_3":["bee58cddf7.mp3",13.06],"warmup_3_ON":["d76c9befda.mp3",4.23],"warmup_3_Q":["67482d2eb9.mp3",2.77],"rondo_0":["3839c37584.mp3",10.89],"rondo_0_OUT":["5bcf1f9396.mp3",4.15],"rondo_0_MID":["a95cfe8385.mp3",4.47],"rondo_1":["b0e6cea455.mp3",10.89],"rondo_1_OUT":["214933ec26.mp3",4.28],"rondo_1_MID":["82f1d54860.mp3",3.32],"rondo_2":["0fe1c1ac92.mp3",8.62],"rondo_2_OUT":["2f437f9da1.mp3",4.81],"rondo_2_MID":["f93e52e1ea.mp3",2.95],"rondo_3":["922b29fbad.mp3",13.77],"rondo_3_OUT":["6f380d326e.mp3",4.05],"rondo_3_MID":["1c35cd226a.mp3",3.32],"defence_0":["bbbf2f4a82.mp3",19.93],"defence_0_LCB":["4c76146a97.mp3",4.15],"defence_0_CB":["ebb91f0b6f.mp3",3.08],"defence_0_RCB":["cd60d09148.mp3",4.75],"defence_0_CDM":["8502eb1e66.mp3",5.41],"defence_0_LWB":["84b9f0cd2c.mp3",2.72],"defence_0_RWB":["69479edc32.mp3",2.98],"defence_0_ATT":["6116c2bfbf.mp3",4.7],"defence_1":["2d5d8b4352.mp3",15.75],"defence_1_LCB":["1703f7427c.mp3",3.27],"defence_1_CB":["4f2e17d2d4.mp3",3.13],"defence_1_RCB":["d88ae332b0.mp3",2.98],"defence_1_CDM":["eea049a199.mp3",2.9],"defence_1_LWB":["c8f57a2b63.mp3",3.08],"defence_1_RWB":["6950d06e77.mp3",2.56],"defence_1_ATT":["d9f82dfaf2.mp3",4.65],"defence_2":["391a1e99e8.mp3",25],"defence_2_LCB":["c5017258ba.mp3",4.88],"defence_2_CB":["8a46cedf84.mp3",4.94],"defence_2_RCB":["687ae90ce2.mp3",5.46],"defence_2_CDM":["d1e68eb770.mp3",3.21],"defence_2_LWB":["6e22c8e8f3.mp3",3.4],"defence_2_RWB":["f5191d6955.mp3",2.66],"defence_2_ATT":["500ad29912.mp3",3.5],"defence_3":["41eeb67e42.mp3",21.05],"defence_3_LCB":["1c7bb4af39.mp3",4.88],"defence_3_CB":["3685be57fc.mp3",2.8],"defence_3_RCB":["cafedb1ba9.mp3",2.61],"defence_3_CDM":["c4d7104277.mp3",2.19],"defence_3_LWB":["3b44624648.mp3",5.3],"defence_3_RWB":["2393ff0181.mp3",4.02],"defence_3_ATT":["811d8be755.mp3",2.72],"defence_4":["b2d3289f7d.mp3",19.85],"defence_4_LCB":["d78605c853.mp3",3.32],"defence_4_CB":["ee99765495.mp3",3.5],"defence_4_RCB":["acb737498f.mp3",2.8],"defence_4_CDM":["a028a43d44.mp3",4.39],"defence_4_LWB":["b10c9f9ed9.mp3",2.8],"defence_4_RWB":["4412b7cde6.mp3",3.97],"defence_4_ATT":["5211a00919.mp3",3.6],"defence_5":["65fa13b7df.mp3",21.05],"defence_5_LCB":["88de778005.mp3",2.8],"defence_5_CB":["a27dc20bb0.mp3",2.3],"defence_5_RCB":["a871ac107a.mp3",2.53],"defence_5_CDM":["763a1f9e7c.mp3",2.85],"defence_5_LWB":["53452c511b.mp3",4.1],"defence_5_RWB":["2de8016fe1.mp3",2.98],"defence_5_ATT":["ac8fe7ce95.mp3",3.03],"defence_6":["4c9832c23e.mp3",29.7],"defence_6_LCB":["2ab848e066.mp3",3.13],"defence_6_CB":["2ab848e066.mp3",3.13],"defence_6_RCB":["2ab848e066.mp3",3.13],"defence_6_CDM":["84bad2f75d.mp3",3.79],"defence_6_LWB":["0b56e02e7f.mp3",9.12],"defence_6_RWB":["0b56e02e7f.mp3",9.12],"defence_6_ATT":["4227d3c98f.mp3",3.79],"attack_0":["538e0a1411.mp3",20.95],"attack_0_WB":["7637b7edcc.mp3",3.87],"attack_0_ST":["c18606bd89.mp3",4.57],"attack_0_M8":["47af16f654.mp3",3.5],"attack_0_RED":["8c59bf9019.mp3",3.63],"attack_0_GK":["41217e71a6.mp3",3.21],"attack_1":["6bf2369716.mp3",20.22],"attack_1_WB":["ce8cf82245.mp3",7.55],"attack_1_ST":["f112060931.mp3",4.39],"attack_1_M8":["5407cbded3.mp3",3.19],"attack_1_RED":["cd8ebb6495.mp3",3.97],"attack_1_GK":["ac44621f08.mp3",3.19],"attack_2":["a686b09c2f.mp3",17.16],"attack_2_WB":["6e2224aa1b.mp3",4.1],"attack_2_ST":["fa84bc5255.mp3",4.7],"attack_2_M8":["9d81ba6f18.mp3",4.02],"attack_2_RED":["05645c5093.mp3",4.39],"attack_2_GK":["433c6c281d.mp3",2.85],"attack_3":["51d4643ee1.mp3",17.53],"attack_3_WB":["71db952475.mp3",5.36],"attack_3_ST":["48e946d7b7.mp3",3.68],"attack_3_M8":["20e05b97eb.mp3",4.21],"attack_3_RED":["32d9c29201.mp3",4.28],"attack_3_GK":["19f7234c99.mp3",3.27],"attack_4":["776430cea7.mp3",19.15],"attack_4_WB":["dec2db018c.mp3",3.27],"attack_4_ST":["34d3d893c7.mp3",3.45],"attack_4_M8":["0bb819af64.mp3",3.21],"attack_4_RED":["9f7d079012.mp3",3.32],"attack_4_GK":["2f46d6bc88.mp3",4.1],"attack_5":["be0cec4451.mp3",23.88],"attack_5_WB":["f993a64986.mp3",6.74],"attack_5_ST":["e988585219.mp3",3.19],"attack_5_M8":["036fa313f3.mp3",2.98],"attack_5_RED":["ec748bf8ec.mp3",3.63],"attack_5_GK":["b5d32ed1d1.mp3",3.37],"game_0":["2d117961ae.mp3",20.27],"game_0_BACK":["4c77ba0a2e.mp3",5.12],"game_0_CDM":["2094a39ac3.mp3",3.4],"game_0_WB":["380edc09f4.mp3",3.27],"game_0_GK":["c21cd1827d.mp3",3.68],"game_0_ATT":["537ccab623.mp3",4.05],"game_0_F":["fefdf96baa.mp3",3.27],"game_1":["0c808d973a.mp3",18.23],"game_1_BACK":["f63cad3fc4.mp3",4.39],"game_1_CDM":["94902d5655.mp3",2.95],"game_1_WB":["2e7e605106.mp3",3.79],"game_1_GK":["813375a3c7.mp3",3.74],"game_1_ATT":["4bfa0dfc9f.mp3",3.27],"game_1_F":["790161b3b5.mp3",2.25],"game_2":["926c264901.mp3",16.46],"game_2_BACK":["4908ae4919.mp3",3.6],"game_2_CDM":["31398dd1d8.mp3",2.98],"game_2_WB":["c1891f4eaf.mp3",2.85],"game_2_GK":["4c03d7318e.mp3",2.95],"game_2_ATT":["572a75f730.mp3",2.85],"game_2_F":["e3e43e395e.mp3",3.13],"game_3":["e3cac686a1.mp3",23.04],"game_3_BACK":["3c1ea8d15c.mp3",4.39],"game_3_CDM":["4997089daa.mp3",3.32],"game_3_WB":["68326c3905.mp3",2.85],"game_3_GK":["1e6f3c622a.mp3",2.19],"game_3_ATT":["43eb03e9e6.mp3",5.17],"game_3_F":["054fb3ba01.mp3",2.43],"game_4":["bb95105b83.mp3",23.67],"game_4_BACK":["140b2a6e2a.mp3",2.72],"game_4_CDM":["89bfba6db6.mp3",1.59],"game_4_WB":["45a9d1b997.mp3",3.21],"game_4_GK":["d611851df0.mp3",3.27],"game_4_ATT":["4971846935.mp3",3.68],"game_4_F":["32a374904b.mp3",3.27],"cooldown_0":["d38ecbf59d.mp3",6.11],"cooldown_0_ALL":["116416e810.mp3",3.19],"cooldown_1":["9f0691b665.mp3",10.97],"cooldown_1_ALL":["58dd745cea.mp3",3.19]},"parts":[{"id":"warmup","when":"0 to 8","chip":"Warm up","name":"Warm up: pass, follow, open up","coach":"Tim and Deano","area":"15m square, 4 cones","numbers":"Groups of 8, two at each cone","cam":{"tx":0,"tz":30,"zoom":0.5,"zoomWide":0.9},"box":[-7.5,22.5,7.5,37.5],"props":{"cones":[[-7.5,22.5],[7.5,22.5],[7.5,37.5],[-7.5,37.5]]},"actors":[["W1",3900150,"1"],["W2",3900150,"2"],["W3",3900150,"3"],["W4",3900150,"4"],["W5",3900150,"5"],["W6",3900150,"6"],["W7",3900150,"7"],["W8",3900150,"8"],["coach",16758812,"COACH"]],"legend":[["#3b82f6","Blues"],["#ffb81c","Coach"]],"base":{"W1":[-7.5,22.5],"W2":[-9.2,20.8],"W3":[7.5,22.5],"W4":[9.2,20.8],"W5":[7.5,37.5],"W6":[9.2,39.2],"W7":[-7.5,37.5],"W8":[-9.2,39.2],"coach":[-14,30],"ball":[-6.8,23.2]},"roles":[{"id":"ON","label":"On the cone","ids":["W1","W3","W5","W7"]},{"id":"Q","label":"In the queue","ids":["W2","W4","W6","W8"]}],"setup":["15 metre square, a cone on each corner, two players on each cone.","Two balls per square once they have it.","Six minutes passing, then two minutes of moves across the square."],"points":["Pass and follow your pass.","Back foot to the ball, open up, play it on the side away from where it came.","Talk: say the name of who you are passing to."],"harder":["Harder: two touch, then one touch, or add the second ball.","Easier: stop it, then pass."],"steps":[{"chip":"Set up","title":"The square","segs":[],"text":"Warm up. A fifteen metre square with a cone on each corner and two of you on every cone. Pass and follow your pass. Get the legs going and the touch sharp before the rondo.","roles":{"ON":"You start on the cone. Ball arrives, open up and move it on.","Q":"You wait behind. When your mate goes, step up onto the cone."}},{"chip":"Pass and follow","title":"Pass and follow","segs":[{"t":1,"pos":{"ball":[6.8,23.2],"W1":[-2,22.5]}},{"t":0.9,"pos":{"W1":[9.2,20.8],"W4":[9.6,19.4],"W3":[7.2,22.9]}},{"t":1,"pos":{"ball":[7,36.8],"W3":[7.5,30]}},{"t":0.9,"pos":{"W3":[9.2,39.2],"W6":[9.8,40.6],"W4":[7.5,22.5]}}],"text":"One passes along the bottom to three and follows his pass to the back of that queue. Three opens up, plays it up the side to five and follows. Pass, follow, next man steps up.","roles":{"ON":"Receive, open up, pass it on, then follow it to the next cone.","Q":"Step onto the cone the second it is free. Be ready for the next ball."}},{"chip":"Open up","title":"Receive on the half turn","from":1,"segs":[{"t":0.6,"pos":{"W5":[7.3,37.3],"W2":[-7.5,22.5]}},{"t":1,"pos":{"ball":[-6.8,37],"W5":[0,37.5]}},{"t":0.5,"pos":{"W7":[-7.2,36.9]}},{"t":1,"pos":{"ball":[-7,23.2],"W5":[-9.2,39.2],"W7":[-7.5,30]}}],"text":"Now the key bit. Back foot to the ball, body open, so one touch takes it round the corner and you are already facing the next pass. Seven takes it across his body and plays it down to two.","roles":{"ON":"Open your hips before it arrives. First touch round the corner, second touch pass.","Q":"Watch the man on the cone. You are next, so be on your toes."}},{"chip":"Moves","title":"Two minutes of moves","segs":[{"t":2.6,"pos":{"W1":[7.5,37.5],"W3":[-7.5,37.5],"W5":[-7.5,22.5],"W7":[7.5,22.5],"W2":[9.2,39.2],"W4":[-9.2,39.2],"W6":[-9.2,20.8],"W8":[9.2,20.8],"ball":[-14,31]}},{"t":2.6,"pos":{"W1":[-7.5,22.5],"W3":[7.5,22.5],"W5":[7.5,37.5],"W7":[-7.5,37.5],"W2":[-9.2,20.8],"W4":[9.2,20.8],"W6":[9.2,39.2],"W8":[-9.2,39.2]}}],"text":"Last two minutes, no ball. Go across the square to the far cone and back. High knees, side steps, open the hips, then two short sprints. Then straight into the rondo.","roles":{"ON":"Cross to the far cone and back. Do every move properly, not half a job.","Q":"Same as the cone man. Follow him across and back."}}]},{"id":"rondo","when":"8 to 16","chip":"Rondo","name":"Side on rondo 5v2","coach":"Tim and Deano","area":"14m square","numbers":"5 v 2, two rondos if 14 or more","cam":{"tx":0,"tz":31,"zoom":0.48,"zoomWide":0.85},"box":[-7,24,7,38],"props":{"cones":[[-7,24],[7,24],[7,38],[-7,38]]},"actors":[["B4",3900150,"4"],["B5",3900150,"5"],["B6",3900150,"6"],["B8",3900150,"8"],["B10",3900150,"10"],["R1",15680580,"R"],["R2",15680580,"R"]],"legend":[["#3b82f6","Blues round the outside"],["#ef4444","Reds in the middle"]],"base":{"B4":[0,24],"B5":[-7,28.5],"B6":[7,28.5],"B8":[-5.5,38],"B10":[5.5,38],"R1":[-1.5,32],"R2":[1.8,29],"ball":[0.5,24.7]},"roles":[{"id":"OUT","label":"Blues outside","ids":["B4","B5","B6","B8","B10"]},{"id":"MID","label":"Reds in the middle","ids":["R1","R2"]}],"setup":["14 metre square. Five blues round the outside, two reds in the middle.","Two touches. Swap the reds every 60 seconds.","A pass that splits the two reds is a point."],"points":["Open your body. Back foot to the ball.","Look before it arrives. Two looks.","Pass through the middle when it is on."],"harder":["Harder: one touch for a split pass, or a 12 metre square.","Easier: three touches, or one red."],"steps":[{"chip":"The shape","title":"The rondo","segs":[],"text":"Five round the outside, two reds in the middle, fourteen metre square. Two touches. Stand side on so you can see the whole square, not square on to the ball.","roles":{"OUT":"Stand side on, half turned, so you can see the ball and the next pass.","MID":"Work as a pair. One presses the ball, the other cuts out the pass through the middle."}},{"chip":"Open and look","title":"Open and look","segs":[{"t":1,"pos":{"ball":[-6.4,28.6],"R1":[-3.5,30],"R2":[-0.5,27]}},{"t":0.4,"pos":{"B5":[-6.8,28.9]}},{"t":1,"pos":{"ball":[-5.2,37.4],"R1":[-4,34],"R2":[-2,30.5]}}],"text":"Four plays to five. Five has looked before it arrives, takes it on the back foot and plays it on to eight. Look, open, play. The reds have to keep shifting.","roles":{"OUT":"Two looks before it arrives. Take it on your back foot and move it on.","MID":"Shift across together. Do not both chase the same ball."}},{"chip":"Split them","title":"Split pass: a point","from":1,"segs":[{"t":0.5,"pos":{"B8":[-5.3,37.6]}},{"t":1.2,"pos":{"ball":[6.4,28.8],"R1":[-2,33],"R2":[0,31]}}],"text":"Eight sees the gap between the two reds and plays it straight through to six. That's a split pass and that's a point. If the gap is there, play through it.","roles":{"OUT":"If the gap between the reds is on, play through it. That is the pass we want.","MID":"Stay close together so the split pass is never on."}},{"chip":"Win it, swap","title":"Win it and swap","from":2,"segs":[{"t":1,"pos":{"ball":[4.2,33.2],"R2":[4,33]}},{"t":1.4,"pos":{"R2":[7,28.5],"B6":[2,31],"ball":[6.6,28.9]}}],"text":"Six goes for the pass up to ten but the red reads it and wins it. Straight swap: the red who won it goes out, the blue who lost it goes in the middle. No moaning, just swap and go.","roles":{"OUT":"Lose it and you go straight in the middle. Sprint in, no sulking.","MID":"Win it and you are out. Read the pass and step in front of it."}}]},{"id":"defence","when":"16 to 46","chip":"Defence (Tim)","name":"Recover and play out (Tim)","coach":"Tim","area":"Our half, goal to halfway","numbers":"Back three, Calum and two wing backs v two attackers","cam":{"tx":0,"tz":41,"zoom":1},"props":{"goals":[[7.32,2.44,2,16777215,0,0,0],[3.2,1.3,1,16758812,10,56,3.491592653589793],[3.2,1.3,1,16758812,-10,56,2.791592653589793]],"mannequins":[[0,44]],"cones":[[-28,50],[28,50],[-24,36],[24,36]],"poles":[[-33,54],[33,54]]},"actors":[["LCB",3900150,"LCB"],["CB",3900150,"CB"],["RCB",3900150,"RCB"],["CDM",3900150,"CDM"],["LWB",3900150,"LWB"],["RWB",3900150,"RWB"],["A1",15680580,"ATT"],["A2",15680580,"ATT"],["coach",16758812,"COACH"]],"line":["LWB","LCB","CB","RCB","RWB","CDM","CB"],"legend":[["#3b82f6","Our unit (352)"],["#ef4444","Attackers"],["#ffb81c","Coach"]],"base":{"LCB":[-14,40],"CB":[0,40],"RCB":[14,40],"CDM":[0,50],"LWB":[-28,50],"RWB":[28,50],"A1":[-4,60],"A2":[4,60],"coach":[0,63.5],"ball":[0,62]},"roles":[{"id":"LCB","label":"Left CB","ids":["LCB"]},{"id":"CB","label":"Middle CB","ids":["CB"]},{"id":"RCB","label":"Right CB","ids":["RCB"]},{"id":"CDM","label":"Calum (CDM)","ids":["CDM"]},{"id":"LWB","label":"Left wing back","ids":["LWB"]},{"id":"RWB","label":"Right wing back","ids":["RWB"]},{"id":"ATT","label":"Attackers","ids":["A1","A2"]}],"setup":["Our half, full size goal, two mini goals either side of the centre circle as our strikers, a mannequin in the middle.","Five centre backs: three in the line, two as attackers, rotate every round.","Calum stays in the unit. Two of our four wing backs on at a time.","Coach plays it in behind from halfway."],"points":["Ball side goes, middle covers, far side tucks, Calum screens.","Nobody stands and watches when it goes in behind.","Win it, touch away from pressure, play out wide or through Calum.","Final pass into a mini goal, like a pass into a striker."],"variants":["Four centre backs: three in the line, one attacker plus the coach as the second.","Six centre backs: rotate two in and out every round.","Wing back swap: Ryan and Harry start here, swap sides halfway through their spell, then all four wing backs swap pitches at the halfway whistle."],"harder":["Harder: attackers live from the start, or a third attacker.","Easier: attackers at half pace and no tackling."],"steps":[{"chip":"The shape","title":"The shape","segs":[],"text":"Here's our unit. Three centre backs, Calum just in front of them, and a wing back each side. We start pushed out towards halfway. The two mini goals are our strikers, so that's where the final pass goes. The mannequin is their man in the middle. Learn the picture first, then learn your own bit.","roles":{"LCB":"Left side of the three. Stay wide of the middle man and keep the line level.","CB":"Middle of the three. You set the line and you set the voice.","RCB":"Right side of the three. Keep the line level and keep an eye on the far side.","CDM":"Calum: sit just in front of the three. You are the screen and the first pass out.","LWB":"Wide and high on the left. You are our width.","RWB":"Wide and high on the right. You are our width.","ATT":"You are their strikers for this one. Stay up by halfway until the coach plays it."}},{"chip":"Ball in behind","title":"Ball in behind","segs":[{"t":1.8,"pos":{"ball":[-17,26],"A1":[-12,52],"A2":[-4,54],"LCB":[-15,36],"CB":[-3,37],"RCB":[12,38],"CDM":[0,46],"LWB":[-27,46],"RWB":[28,48]}}],"text":"Coach plays it in behind, down the left. The second it goes, we go. Nobody stands and watches. The two attackers chase it, at half pace for now. Notice everyone starts dropping together, as one unit.","roles":{"LCB":"The ball is on your side. That is your trigger. Go, no waiting.","CB":"It's not yours, but you are straight behind it, ready to cover.","RCB":"Far side. Start tucking in the second it goes.","CDM":"Drop with the ball. Do not stay high and get skipped.","LWB":"Start dropping goalside, ready to be the way out.","RWB":"Far side. Start tucking in towards the middle.","ATT":"Chase the ball at half pace. Make the defenders feel you, no tackling."}},{"chip":"Recover as a unit","title":"Recover as a unit","from":1,"segs":[{"t":2.6,"pos":{"LCB":[-16,25],"CB":[-5,31],"RCB":[8,32],"CDM":[0,38],"LWB":[-24,36],"RWB":[14,38],"A1":[-12,42],"A2":[-4,47]}}],"text":"Ball side centre back goes to the ball. The middle centre back covers behind him. The far centre back tucks in and keeps an eye on the far post. Calum drops in to screen the middle. The left wing back drops to be the way out, the right wing back tucks in. We finish goalside and compact. Ball side goes, middle covers, far side tucks, Calum screens.","roles":{"LCB":"You go to the ball. Get goalside and get your body between the ball and the goal.","CB":"Cover behind and inside your left centre back. Talk: 'Cover, I'm here.'","RCB":"Tuck in and hold the far side. Eyes on the far post and the far striker.","CDM":"Drop in front of the line and screen the middle. Show for the pass.","LWB":"Drop back and out wide. Be an easy pass for the way out.","RWB":"Tuck in to make the back five. Stay compact.","ATT":"Keep chasing at half pace. No tackling, just pressure."}},{"chip":"Win it: play out wide","title":"Pattern A: out wide","from":2,"segs":[{"t":1.1,"pos":{"ball":[-24,36.6]}},{"t":2.2,"pos":{"LWB":[-22,52],"ball":[-21.2,52.6],"LCB":[-14,32],"CB":[-5,38],"RCB":[6,38],"CDM":[-2,44],"RWB":[27,50]}},{"t":1.1,"pos":{"ball":[-10,56.6]}}],"text":"Left centre back wins it, takes a touch away from pressure and plays it to the left wing back. The wing back drives past halfway with his head up. As the ball goes out, the right wing back breaks high. The final pass goes into a mini goal, like a pass into a striker.","roles":{"LCB":"Win it, touch away from pressure, play it to the wing back. Then move up to support.","CB":"Step up behind the ball so the unit stays connected.","RCB":"Squeeze up with the line. Do not get left behind.","CDM":"Move up to be the next option inside.","LWB":"Receive, drive over halfway with your head up. Final pass into the mini goal.","RWB":"Break high and wide as the ball goes out. You are the switch if it's needed.","ATT":"Drop off and let them play. Watch where the gaps are."}},{"chip":"Win it: through the middle","title":"Pattern B: through the middle","from":2,"segs":[{"t":1,"pos":{"ball":[-4.2,31.6],"LCB":[-15,30]}},{"t":1,"pos":{"ball":[12.8,32.6],"CB":[-2,32],"RCB":[12,32]}},{"t":1,"pos":{"ball":[0.8,38.6],"CDM":[1,39]}},{"t":1.2,"pos":{"ball":[26.8,44.6],"RWB":[26,44],"LWB":[-14,44]}},{"t":2,"pos":{"RWB":[24,54],"ball":[24.8,54.6],"LWB":[-8,50]}},{"t":1,"pos":{"ball":[10,56.6]}}],"text":"Same recovery, different way out. The ball goes across the back three to the far centre back. Calum shows between the lines, receives on the half turn, then it goes wide to the right wing back. He drives and plays into the other mini goal. The mannequin blocks the direct route, so we have to play around it.","roles":{"LCB":"Play it across to the middle, then spread wide to keep the angle.","CB":"Take it, open your body, and play it on to the far centre back.","RCB":"Receive across the back and get it up to Calum quickly.","CDM":"Show between the lines, check your shoulder, receive on the half turn and play it wide.","LWB":"Come inside to be the safe option if it goes wrong.","RWB":"Come to receive from Calum, then drive and play into the mini goal.","ATT":"Press the pass across but do not tackle. Make them move it quickly."}},{"chip":"Attackers go live","title":"Attackers go live","segs":[{"t":1.8,"pos":{"ball":[17,26],"A1":[12,52],"A2":[4,54],"RCB":[15,36],"CB":[3,37],"LCB":[-12,38],"CDM":[0,46],"RWB":[27,46],"LWB":[-28,48]}},{"t":2.6,"pos":{"RCB":[16,25],"CB":[5,31],"LCB":[-8,32],"CDM":[0,38],"RWB":[24,36],"LWB":[-14,38],"A1":[12,33],"A2":[3,38]}},{"t":1.1,"pos":{"ball":[24,36.6],"A1":[10,40],"A2":[4,44]}},{"t":2.2,"pos":{"RWB":[22,52],"ball":[21.2,52.6],"RCB":[14,32],"CB":[5,38],"LCB":[-6,38],"CDM":[2,44],"LWB":[-27,50]}},{"t":1.1,"pos":{"ball":[10,56.6]}}],"text":"Now the attackers press for real. The ball goes down the right this time. Same jobs: ball side goes, middle covers, far side tucks, Calum screens. Win it, play out, and hit a mini goal for a point. If the attackers score in the big goal or win it back, the point is theirs.","roles":{"LCB":"Far side this time. Tuck in and hold the line.","CB":"Cover the right centre back and keep talking.","RCB":"Ball side now. You go. Win it, then play out.","CDM":"Screen the middle. Do not get dragged out of position.","LWB":"Far side wing back: tuck in, then break high when it goes out.","RWB":"Ball side: drop as the outlet, then drive.","ATT":"Go for real. Win it back or score in the big goal."}},{"chip":"Rotate the lads","title":"Rotate the lads","segs":[{"t":1.6,"pos":{"LWB":[-33,47],"RWB":[33,47]}},{"t":0.8,"pos":{"LWB":[-33.5,47.2],"RWB":[33.5,47.2]}},{"t":1.6,"pos":{"LWB":[-28,50],"RWB":[28,50]}}],"text":"Five centre backs, so three play in the line and two are the attackers. Rotate every round so everyone plays all three line roles and the attacker job. Calum stays in the unit. We have four wing backs and only two are on here at a time. Ryan and Harry start here and swap sides halfway through their spell. At the halfway whistle all four wing backs swap over: Ryan and Harry go to Deano for the attacking practice, and the other two come in here and do the same.","roles":{"LCB":"Rotate every round. You will play all three line roles.","CB":"Rotate every round. You will play all three line roles.","RCB":"Rotate every round. You will play all three line roles.","CDM":"Calum: you stay in the unit every round. You are the glue.","LWB":"Two of our four wing backs are on here at a time. Swap sides with your partner halfway through your spell, then at the halfway whistle swap pitches with the other two.","RWB":"Two of our four wing backs are on here at a time. Swap sides with your partner halfway through your spell, then at the halfway whistle swap pitches with the other two.","ATT":"Attackers rotate in and out. Everyone gets a go at both jobs."}}]},{"id":"attack","when":"16 to 46","chip":"Attack (Deano)","name":"Wing backs and three runners (Deano)","coach":"Deano","area":"Penalty box to 45m out, full width of the box plus wings","numbers":"5 v 2 plus keeper: two wing backs, two strikers and an 8 v two reds","cam":{"tx":0,"tz":22,"zoom":0.82,"flip":true},"box":[-30,0,30,46],"props":{"goals":[[7.32,2.44,2,16777215,0,0,0],[3.2,1.3,1,16758812,0,47,3.141592653589793]],"cones":[[-30,46],[30,46],[-30,0.5],[30,0.5]]},"actors":[["GK",2278750,"GK"],["D1",15680580,"RED"],["D2",15680580,"RED"],["ST1",3900150,"ST"],["ST2",3900150,"ST"],["M8",3900150,"8"],["LWB",3900150,"LWB"],["RWB",3900150,"RWB"],["coach",16758812,"COACH"]],"legend":[["#3b82f6","Blues attacking"],["#ef4444","Reds defending"],["#22c55e","Keeper"],["#ffb81c","Coach"]],"base":{"GK":[0,1.5],"D1":[-5,15],"D2":[5,15],"ST1":[4,22],"ST2":[-4,24],"M8":[2,32],"LWB":[24,30],"RWB":[-24,30],"coach":[0,44],"ball":[0,43.2]},"roles":[{"id":"WB","label":"Wing backs","ids":["LWB","RWB"]},{"id":"ST","label":"Strikers","ids":["ST1","ST2"]},{"id":"M8","label":"The 8","ids":["M8"]},{"id":"RED","label":"Reds","ids":["D1","D2"]},{"id":"GK","label":"Keeper","ids":["GK"]}],"setup":["Big goal with our keeper. Mini goal 45 metres out for the reds to counter into.","Blues: two wing backs, two strikers and an 8. Reds: two defenders.","Coach serves into the 8 from the top. Ten seconds to score."],"points":["Wing backs high and wide. First look is down the line.","Cross early and low into the corridor between keeper and defenders.","Three runners every time: near post, far post, and the 8 late to the edge or the penalty spot.","Far wing back attacks the back post.","One striker shows, one spins."],"variants":["Twelve or fewer: 4 v 1 plus keeper, the 8 plays as a striker as well.","Fourteen: 5 v 2 plus keeper as drawn.","Sixteen: add a second 8 and a third red, so 6 v 3 plus keeper.","Odd number: the spare is a red, so it goes 5 v 3, or a second server next to the coach.","No keeper on this pitch: use two mini goals on the goal line and finish low."],"harder":["Harder: third red, or seven seconds to score.","Easier: reds at half pace, or the cross is unopposed."],"steps":[{"chip":"The set up","title":"The set up","segs":[],"text":"Deano's practice. Two wing backs high and wide, two strikers, and an 8 behind them. Two reds and our keeper defend the big goal. The coach serves into the 8 and we have ten seconds to score. If the reds win it, they counter into the mini goal at the top.","roles":{"WB":"Start high and wide, nearly on the touchline. You are the width.","ST":"Start on the shoulders of the two reds. One of you will show, the other spins.","M8":"You get the first ball off the coach. Head up before it arrives.","RED":"Defend the box with the keeper. Win it and counter into the mini goal.","GK":"Organise the two reds. Talk to them the whole time."}},{"chip":"Wide and early","title":"Pattern A: wide and early","segs":[{"t":0.9,"pos":{"ball":[1.6,32.6]}},{"t":1.1,"pos":{"ball":[23.4,30.4],"ST1":[3,19],"ST2":[-3,21]}},{"t":2,"pos":{"LWB":[25,14],"ball":[24.4,13.6],"D1":[-2,10],"D2":[6,10],"ST1":[5,12],"ST2":[-5,15],"M8":[6,22],"RWB":[-16,18]}},{"t":1,"pos":{"ST1":[3.5,5.5],"ST2":[-4,6],"M8":[6,11.5],"RWB":[-12,8]}},{"t":0.7,"pos":{"ball":[3.5,6]}},{"t":0.5,"pos":{"ball":[1.5,-0.8],"GK":[2.2,1.2]}}],"text":"Coach into the 8, and straight out to the left wing back. He drives down the line and crosses early and low. Three runners: one striker near post, one far post, and the 8 arrives late on the edge. The far wing back attacks the back post. Near post finish.","roles":{"WB":"Ball side: drive down the line and cross early and low. Far side: get in at the back post.","ST":"One near post, one far post. Time your run so you arrive with the ball.","M8":"Play it wide, then arrive late on the edge for the cut back.","RED":"Drop and protect the six yard box. Defend the near post first.","GK":"Come for anything in the six yard box. Shout early."}},{"chip":"Show and spin","title":"Pattern B: one shows, one spins","segs":[{"t":0.9,"pos":{"ball":[1.6,32.6]}},{"t":1,"pos":{"ST1":[3,28],"D2":[4,22]}},{"t":0.9,"pos":{"ball":[3,27.4]}},{"t":0.8,"pos":{"ball":[1.8,31.4],"ST2":[-6,21]}},{"t":1.3,"pos":{"ball":[-6,10],"ST2":[-6,10.6],"D1":[-4,13]}},{"t":0.6,"pos":{"ball":[-2,-0.8],"GK":[-1.5,1.3]}}],"text":"This time it goes through the middle. One striker shows short and drags his red with him. He sets it back to the 8. The other striker spins in behind into the gap, and the 8 slides it through. One shows, one spins. Finish across the keeper.","roles":{"WB":"Hold your width. You stretch the reds so the gap opens in the middle.","ST":"Talk to each other. One shows short and sets it, the other spins in behind.","M8":"Set and go: take the lay off and slide it through first time if you can.","RED":"Do you follow the striker who drops, or hold? Talk to your partner.","GK":"Off your line when the ball goes through. Make yourself big."}},{"chip":"Switch it","title":"Pattern C: switch to the free wing back","segs":[{"t":1.1,"pos":{"ball":[23.4,30.4]}},{"t":1.2,"pos":{"D1":[3,16],"D2":[12,18],"ST1":[8,20]}},{"t":0.9,"pos":{"ball":[2.2,31.6]}},{"t":1.4,"pos":{"ball":[-22.6,24.4],"RWB":[-23,25]}},{"t":1.8,"pos":{"RWB":[-17,8],"ball":[-16.6,8.6],"D1":[-4,8],"D2":[2,9],"ST2":[-3,7],"ST1":[4,5.5],"M8":[-3,15]}},{"t":0.7,"pos":{"ball":[-3,14.6]}},{"t":0.5,"pos":{"ball":[-1,-0.8],"GK":[-0.8,1.2]}}],"text":"If the reds shift across to the ball, the far wing back is free. Back to the 8, switch it, and the right wing back drives into the box. Strikers attack the posts, so he cuts it back to the 8 on the edge. Make them shift, then go the other way.","roles":{"WB":"Far side wing back: you are the switch. Stay wide and call for it when the reds shift.","ST":"Keep the reds busy, then attack the posts so the cut back is on.","M8":"Take it back from the wing back and switch it quickly. Then get to the edge.","RED":"Shift together towards the ball, but someone has to watch the far wing back.","GK":"Move across with every pass. Set your feet for the cut back."}},{"chip":"Go live","title":"Go live: ten seconds","segs":[{"t":0.9,"pos":{"ball":[1.6,32.6]}},{"t":1.1,"pos":{"ball":[23.4,30.4]}},{"t":1.4,"pos":{"LWB":[24,20],"ball":[23.4,19.6],"D2":[18,20]}},{"t":0.7,"pos":{"ball":[18,20.6]}},{"t":1.8,"pos":{"D2":[6,40],"ball":[6.4,40.6],"M8":[5,37],"LWB":[14,30],"ST1":[6,30]}},{"t":0.6,"pos":{"ball":[0.5,47.5]}}],"text":"Now it is live. Blues get ten seconds from the coach's pass to score. Reds defend for real. Here the red wins it off the wing back and goes for the mini goal. The nearest two blues press straight away for five seconds. Rotate the reds every three minutes.","roles":{"WB":"If you lose it, chase it straight away for five seconds.","ST":"Score inside ten seconds. If it breaks down, press the ball.","M8":"You are the first to press if we lose it. Stop the counter.","RED":"Defend for real. Win it and score in the mini goal for a point.","GK":"Live now. Save it, then play it out to a red for the counter."}},{"chip":"Wing back swap","title":"Wing back swap and numbers","segs":[{"t":1.6,"pos":{"LWB":[31,38],"RWB":[-31,38]}},{"t":0.8,"pos":{"LWB":[31.5,38.5],"RWB":[-31.5,38.5]}},{"t":1.6,"pos":{"LWB":[24,30],"RWB":[-24,30]}}],"text":"We have four wing backs and two are on here at a time. The other two start with Tim on the defending practice. Swap sides left and right halfway through your spell. At the halfway whistle all four wing backs swap pitches, so everyone gets a bit of both. With more players, add a second 8 and a third red. With fewer, play four against one.","roles":{"WB":"Swap sides with your partner halfway through your spell, then swap pitches with the other two at the halfway whistle.","ST":"You stay on this pitch all the way through. Take turns as a red.","M8":"You stay on this pitch. Take your turn as a red too.","RED":"Reds rotate every three minutes from the strikers and the 8.","GK":"You stay here all session. You are the only keeper we have."}}]},{"id":"game","when":"48 to 58","chip":"Game","name":"Unit v unit game, one keeper","coach":"Tim and Deano","area":"50m x 44m, big goal one end, two mini goals the other","numbers":"7 v 7 with one keeper, adapt on the night","cam":{"tx":0,"tz":26,"zoom":0.95,"zoomWide":0.85},"box":[-22,0,22,50],"props":{"goals":[[7.32,2.44,2,16777215,0,0,0],[3.2,1.3,1,16758812,12,50,3.141592653589793],[3.2,1.3,1,16758812,-12,50,3.141592653589793]],"cones":[[-22,0.5],[22,0.5],[-22,50],[22,50],[-22,25],[22,25]]},"actors":[["GK",2278750,"GK"],["LCB",3900150,"LCB"],["CB",3900150,"CB"],["RCB",3900150,"RCB"],["CDM",3900150,"CDM"],["LWB",3900150,"LWB"],["RWB",3900150,"RWB"],["S1",16347926,"ST"],["S2",16347926,"ST"],["A8",16347926,"8"],["A10",16347926,"10"],["A6",16347926,"6"],["AL",16347926,"WB"],["AR",16347926,"WB"],["F",16436245,"FLOAT"]],"line":["LWB","LCB","CB","RCB","RWB","CDM","CB"],"legend":[["#3b82f6","Back unit"],["#f97316","Attack unit (bibs)"],["#22c55e","Keeper"],["#facc15","Floater if odd numbers"]],"base":{"GK":[0,1.5],"LCB":[-10,12],"CB":[0,11],"RCB":[10,12],"CDM":[0,20],"LWB":[-18,24],"RWB":[18,24],"S1":[-4,16],"S2":[5,16],"A8":[8,28],"A10":[-8,28],"A6":[0,36],"AL":[19,32],"AR":[-19,32],"F":[-24.5,30],"ball":[0.5,35.3]},"roles":[{"id":"BACK","label":"Back three","ids":["LCB","CB","RCB"]},{"id":"CDM","label":"Calum (CDM)","ids":["CDM"]},{"id":"WB","label":"Back unit wing backs","ids":["LWB","RWB"]},{"id":"GK","label":"Keeper","ids":["GK"]},{"id":"ATT","label":"Attack unit","ids":["S1","S2","A8","A10","A6","AL","AR"]},{"id":"F","label":"Floater","ids":["F"]}],"setup":["50m long, 44m wide. Big goal with our only keeper at one end, two mini goals at the other.","Back unit: keeper, back three, Calum and two wing backs. They defend the big goal and score in the mini goals.","Attack unit in bibs: two strikers, three mids and two wing backs. They attack the big goal.","Two halves of five minutes. Restart from the attack unit at the top."],"points":["Back unit: ball side goes, middle covers, far side tucks, Calum screens. Win it and play out.","Attack unit: wide and early, three runners, one shows and one spins.","Lose it: nearest two press for five seconds."],"variants":["Twelve (6 v 6): back unit drops a centre back to a back two, attack unit drops the 6.","Thirteen: 6 v 6 plus a floater in a yellow bib who plays for whoever has the ball.","Fourteen (7 v 7): as drawn.","Fifteen: 7 v 7 plus the floater.","Sixteen (8 v 8): back unit adds an 8 next to Calum, attack unit adds a third striker or a 10.","Ten or eleven: 5 v 5, no wing backs on the back unit, mini goals 30 metres out.","No keeper: shrink the big goal to two cones three metres apart, goals must be below knee height.","Coach can play as a floater too if numbers are tight."],"harder":["Harder: attack unit two touch, or the back unit must make three passes before a mini goal.","Easier: free touches, or the back unit can also score by dribbling over the top line."],"steps":[{"chip":"The game","title":"Unit v unit, one keeper","segs":[],"text":"The game brings both practices together. The back unit is our keeper, the back three, Calum and two wing backs. They defend the big goal and score in either mini goal. The attack unit in bibs is two strikers, three mids and two wing backs, and they attack the big goal. Seven against seven with our one keeper.","roles":{"BACK":"Same jobs as Tim's practice. Ball side goes, middle covers, far side tucks.","CDM":"Calum: screen the middle, then be the first pass out.","WB":"You are the way out when we win it. Drop, then drive.","GK":"You are the only keeper. Talk to your back three the whole time.","ATT":"Same ideas as Deano's practice. Wide and early, three runners.","F":"Only on if we have odd numbers. You play for whoever has the ball."}},{"chip":"Attack unit goes","title":"Attack unit goes","segs":[{"t":1,"pos":{"ball":[7.6,28.4]}},{"t":1.1,"pos":{"ball":[18.6,31.4],"RWB":[17,27]}},{"t":1.6,"pos":{"AL":[19,18],"ball":[18.6,17.6],"RWB":[17.5,17],"RCB":[11,11],"CB":[4,9],"LCB":[-4,9],"LWB":[-12,12],"CDM":[5,15],"S1":[-2,9],"S2":[5,9],"A8":[10,16]}},{"t":0.8,"pos":{"ball":[6,9.5],"CB":[5.6,9.2]}}],"text":"The attack unit go wide early to their wing back. The back unit do what they learned with Tim. Our wing back goes to the ball, the right centre back covers, the middle and left centre backs tuck in and Calum screens. The cross comes in and the middle centre back cuts it out.","roles":{"BACK":"Read the cross. Middle centre back attacks the ball, the other two cover the posts.","CDM":"Drop in and screen the edge of the box for the cut back.","WB":"Ball side goes to the ball. Far side tucks in to make a back five.","GK":"Talk early. Keeper's ball or away, nothing in between.","ATT":"Wide and early, then three runners into the box.","F":"Stay outside until we have odd numbers."}},{"chip":"Win it, play out","title":"Win it and play out","from":1,"segs":[{"t":0.9,"pos":{"ball":[-3.6,9.6],"CB":[3,10]}},{"t":1,"pos":{"LWB":[-18,22],"LCB":[-8,12]}},{"t":1.1,"pos":{"ball":[-17.6,22.4],"A10":[-12,26]}},{"t":1.8,"pos":{"LWB":[-14,40],"ball":[-13.6,40.6],"A10":[-12,34],"AR":[-16,36],"CDM":[-4,26]}},{"t":0.7,"pos":{"ball":[-12,50.6]}}],"text":"Win it and go. Across to the left centre back, out to the left wing back, he drives and scores in the mini goal. That's the play out from Tim's practice in a real game. The attack unit have five seconds to win it back before it gets out.","roles":{"BACK":"Win it, touch away from pressure, and find the wing back early.","CDM":"Show for the pass inside if the wing back is blocked.","WB":"Drop to receive, then drive and finish in the mini goal.","GK":"If you catch it, roll it out to a wing back quickly.","ATT":"Lose it: nearest two press for five seconds.","F":"If you are on, show for the back unit when they win it."}},{"chip":"Win it back","title":"Scoring and the five second press","segs":[{"t":0.1,"pos":{"ball":[-9.4,12.6]}},{"t":1,"pos":{"ball":[-17.6,24.4],"A10":[-14,26]}},{"t":0.8,"pos":{"A10":[-17,25.2],"ball":[-16.8,25.6]}},{"t":1.1,"pos":{"ball":[-4,15],"S1":[-4,15.5]}},{"t":0.6,"pos":{"ball":[-1.5,-0.8],"GK":[-1,1.3]}}],"text":"Scoring. A goal in the big goal is one point, or two if the attack unit win it back and score inside ten seconds. A mini goal is one point for the back unit. Here the 10 presses the pass out, wins it, and the striker finishes. Swap the jobs at half time if you want both units to do both.","roles":{"BACK":"When it goes out to the wing back, get spread out but be ready if we lose it.","CDM":"If we lose it, get back in front of the three straight away.","WB":"Check your shoulder before it arrives so you are not caught.","GK":"Set yourself early when they win it back.","ATT":"Press the pass out. Win it inside five seconds and it's a quick chance for two points.","F":"Play for whoever has it. Two touches."}},{"chip":"Numbers","title":"Odd numbers: the floater","segs":[{"t":1.5,"pos":{"F":[-3,28]}},{"t":0.9,"pos":{"ball":[-2.6,28.4]}},{"t":0.9,"pos":{"ball":[7.6,28.4]}}],"text":"Numbers on the night. Fourteen is seven against seven as drawn. Thirteen or fifteen, add a floater in a yellow bib who plays for whoever has the ball. Sixteen, add an 8 to the back unit and a third striker to the attack. Twelve, drop a centre back and the 6. No keeper, shrink the big goal to two cones.","roles":{"BACK":"Fewer players: play a back two with Calum.","CDM":"Same job whatever the numbers.","WB":"Fewer players: wing backs stay, they are our way out.","GK":"If you are missing, the big goal becomes two cones.","ATT":"More players: add a striker. Fewer: drop the 6.","F":"Play for whoever has the ball. Two touches, keep it moving."}}]},{"id":"cooldown","when":"58 to 60","chip":"Cool down","name":"Cool down and three questions","coach":"Tim and Deano","area":"Centre circle","numbers":"Everyone","cam":{"tx":0,"tz":30,"zoom":0.55,"zoomWide":0.9},"props":{},"actors":[["P1",3900150,"1"],["P2",3900150,"2"],["P3",3900150,"3"],["P4",3900150,"4"],["P5",3900150,"5"],["P6",3900150,"6"],["coach",16758812,"COACH"]],"balls":[],"legend":[["#3b82f6","Players"],["#ffb81c","Coach"]],"base":{"P1":[-8,22],"P2":[-4,22],"P3":[0,22],"P4":[4,22],"P5":[8,22],"P6":[12,22],"coach":[0,38]},"roles":[{"id":"ALL","label":"Everyone","ids":["P1","P2","P3","P4","P5","P6"]}],"setup":["Light jog, then stretch with the stretching card.","Three questions, one line each from Tim and Deano for Reflect in Touchline later."],"points":["When we win it at the back, where does the first pass go?","Wing backs: when do you drive and when do you tuck in?","Who are the three runners in the box?"],"steps":[{"chip":"Jog and stretch","title":"Jog and stretch","segs":[{"t":3,"pos":{"P1":[-10,36],"P2":[-6,38],"P3":[-2,39],"P4":[2,39],"P5":[6,38],"P6":[10,36]}},{"t":3,"pos":{"P1":[-8,30],"P2":[-5,33],"P3":[-1.7,34.5],"P4":[1.7,34.5],"P5":[5,33],"P6":[8,30]}}],"text":"Cool down. A light jog, nice and easy, then stretch with the stretching card. Get your breath back.","roles":{"ALL":"Easy jog, then hold each stretch for twenty seconds."}},{"chip":"Three questions","title":"Three questions","from":0,"segs":[],"text":"Three questions. When we win it at the back, where does the first pass go? Wing backs, when do you drive and when do you tuck in? And who are the three runners in the box? Well done tonight lads.","roles":{"ALL":"Have an answer ready for each question. Short and honest."}}]}]};</script>
+<script>
+(function(){var m=/[?&]back=([^&]+)/.exec(location.search);if(m){try{var u=decodeURIComponent(m[1]);if(/^\/[^\/]/.test(u))document.getElementById('back').href=u;}catch(e){}}})();
+</script>
+<script>/* Touchline 3D session engine. Built from Tim's "Recover and Play Out in 3D" page so every part
+   of a session has the same look: whole team or my role, camera presets, Play / Next / Play all.
+   Data comes from window.SESSION3D (see tools/anim/s1111/specs.js). Voice is pre recorded mp3,
+   loaded one step at a time; browser speech is only a fallback. Words on screen always show. */
+(function(){
+'use strict';
+var S = window.SESSION3D, PARTS = S.parts, AUD = S.audio || {}, ABASE = S.abase || '';
+var HALF = 54;
+var RENDER = /[?&]render=1/.test(location.search);
+if(RENDER) document.body.classList.add('render');
+function $(id){ return document.getElementById(id); }
+
+/* ---------- per part derived data ---------- */
+function prep(P){
+  if(P._ready) return P;
+  var swap = P.swap || {};
+  function sid(k){ return swap[k] || k; }
+  P._mirror = function(segs){ return segs.map(function(s){ var p={}; for(var k in s.pos){ p[sid(k)] = [-s.pos[k][0], s.pos[k][1]]; } return {t:s.t, pos:p}; }); };
+  if(typeof P.build === 'function') P.build(P);
+  var ENDS=[], STARTS=[];
+  P.steps.forEach(function(st,i){
+    var start = (st.from === undefined || st.from === 'BASE') ? P.base : ENDS[st.from];
+    STARTS[i] = start;
+    var s = {}; for(var k in start) s[k] = start[k].slice();
+    (st.segs||[]).forEach(function(seg){ for(var k in seg.pos) s[k] = seg.pos[k].slice(); });
+    ENDS[i] = s;
+  });
+  P._starts = STARTS; P._ends = ENDS; P._ready = true;
+  return P;
+}
+
+/* ---------- state ---------- */
+var partIdx = 0, mode = 'team', roleSel = null, stepIdx = 0, soundOn = true, runId = 0, playing = false;
+var actors = {}, ready = false, renderer = null, scene, camera, partGroup = null, pitchMesh = null;
+var P = null;
+
+var m = /[?&]part=([a-z0-9_]+)/.exec(location.search) || /#([a-z0-9_]+)/.exec(location.hash);
+if(m){ PARTS.forEach(function(p,i){ if(p.id === m[1]) partIdx = i; }); }
+
+/* ---------- DOM ---------- */
+function buildParts(){
+  var row = $('parts'); row.innerHTML = '';
+  PARTS.forEach(function(p,i){
+    var b = document.createElement('button');
+    b.className = 'pill part' + (i===partIdx ? ' on' : '');
+    b.innerHTML = '<b>' + p.when + '</b> ' + p.chip;
+    b.onclick = function(){ stopAll(); setPart(i); };
+    row.appendChild(b);
+  });
+}
+function buildChips(){
+  var row = $('picks'); row.innerHTML = '';
+  if(mode === 'team'){
+    P.steps.forEach(function(st,i){
+      var b = document.createElement('button');
+      b.className = 'pill' + (i===stepIdx ? ' on' : '');
+      b.textContent = (i+1) + '. ' + st.chip;
+      b.onclick = function(){ stopAll(); setStep(i, true); };
+      row.appendChild(b);
+    });
+  } else {
+    P.roles.forEach(function(r){
+      var b = document.createElement('button');
+      b.className = 'pill' + (r.id===roleSel ? ' on' : '');
+      b.textContent = r.label;
+      b.onclick = function(){ roleSel = r.id; buildChips(); showText(); applyRoleLook(); };
+      row.appendChild(b);
+    });
+  }
+}
+function roleText(st){ return (st.roles && st.roles[roleSel]) || st.text; }
+function showText(){
+  var st = P.steps[stepIdx];
+  $('title').textContent = st.title;
+  $('ptitle').textContent = P.name;
+  $('pmeta').textContent = P.when + ' min | ' + P.coach + ' | ' + P.area;
+  if(mode === 'team'){
+    $('nlabel').textContent = (RENDER ? P.when + ' min | ' + P.name + ' | ' : '') + 'Step ' + (stepIdx+1) + ' of ' + P.steps.length + ' | ' + st.title;
+    $('ntext').textContent = st.text;
+  } else {
+    var r = P.roles.filter(function(x){return x.id===roleSel;})[0];
+    $('nlabel').textContent = r.label + ' | ' + st.title;
+    $('ntext').textContent = roleText(st);
+  }
+  var lg = $('legend'); lg.innerHTML = '';
+  (P.legend||[]).forEach(function(l){ var d = document.createElement('div'); d.innerHTML = '<i style="background:'+l[0]+'"></i>'; d.appendChild(document.createTextNode(l[1])); lg.appendChild(d); });
+}
+
+/* ---------- 3D bits (from Tim's page) ---------- */
+function makeLabel(text){
+  var c = document.createElement('canvas'); c.width = 256; c.height = 96;
+  var g = c.getContext('2d');
+  g.fillStyle = 'rgba(11,27,46,0.92)';
+  var x=8,y=14,w=240,h=68,r=18;
+  g.beginPath(); g.moveTo(x+r,y); g.arcTo(x+w,y,x+w,y+h,r); g.arcTo(x+w,y+h,x,y+h,r); g.arcTo(x,y+h,x,y,r); g.arcTo(x,y,x+w,y,r); g.closePath(); g.fill();
+  g.fillStyle = '#ffffff'; g.font = 'bold ' + (text.length > 5 ? 34 : 44) + 'px system-ui,Arial,sans-serif'; g.textAlign='center'; g.textBaseline='middle';
+  g.fillText(text,128,50);
+  var t = new THREE.CanvasTexture(c);
+  var mt = new THREE.SpriteMaterial({map:t, transparent:true, depthTest:false});
+  var s = new THREE.Sprite(mt); s.scale.set(5.6,2.1,1); s.position.y = 4.9; s.renderOrder = 10;
+  return s;
+}
+function makePitchTexture(){
+  var ppm = 10, W = 68*ppm, zmin=-2, zmax=72, H=(zmax-zmin)*ppm;
+  var c = document.createElement('canvas'); c.width=W; c.height=H;
+  var g = c.getContext('2d');
+  for(var z=zmin, i=0; z<zmax; z+=6, i++){ g.fillStyle = i%2 ? '#3fbf63' : '#4bd271'; g.fillRect(0,(z-zmin)*ppm,W,6*ppm+1); }
+  g.strokeStyle='#ffffff'; g.lineWidth=2.2; g.fillStyle='#ffffff';
+  function X(x){return (x+34)*ppm;} function Z(z){return (z-zmin)*ppm;}
+  function rect(x1,z1,x2,z2){ g.strokeRect(X(x1),Z(z1),(x2-x1)*ppm,(z2-z1)*ppm); }
+  g.beginPath(); g.moveTo(X(-34),Z(0)); g.lineTo(X(-34),Z(zmax)); g.moveTo(X(34),Z(0)); g.lineTo(X(34),Z(zmax)); g.stroke();
+  g.beginPath(); g.moveTo(X(-34),Z(0)); g.lineTo(X(34),Z(0)); g.stroke();
+  rect(-20.15,0,20.15,16.5); rect(-9.15,0,9.15,5.5);
+  g.beginPath(); g.arc(X(0),Z(11),0.25*ppm,0,Math.PI*2); g.fill();
+  g.beginPath(); g.arc(X(0),Z(11),9.15*ppm,Math.asin(5.5/9.15),Math.PI-Math.asin(5.5/9.15),false); g.stroke();
+  g.beginPath(); g.moveTo(X(-34),Z(HALF)); g.lineTo(X(34),Z(HALF)); g.stroke();
+  g.beginPath(); g.arc(X(0),Z(HALF),9.15*ppm,0,Math.PI*2); g.stroke();
+  g.beginPath(); g.arc(X(0),Z(HALF),0.3*ppm,0,Math.PI*2); g.fill();
+  var t = new THREE.CanvasTexture(c); t.anisotropy = 4;
+  return t;
+}
+function makeFigure(color, name){
+  var grp = new THREE.Group();
+  var mat = new THREE.MeshLambertMaterial({color:color, transparent:true});
+  var body = new THREE.Mesh(new THREE.CylinderGeometry(0.85,1.0,2.7,16), mat); body.position.y = 1.35;
+  var headMat = new THREE.MeshLambertMaterial({color:0xf2d3b5, transparent:true});
+  var head = new THREE.Mesh(new THREE.SphereGeometry(0.62,16,12), headMat); head.position.y = 3.25;
+  grp.add(body, head);
+  var ringMat = new THREE.MeshBasicMaterial({color:0xffb81c, transparent:true, opacity:0, side:THREE.DoubleSide});
+  var ring = new THREE.Mesh(new THREE.RingGeometry(1.5,2.0,32), ringMat); ring.rotation.x = -Math.PI/2; ring.position.y = 0.06;
+  grp.add(ring);
+  var label = makeLabel(name); grp.add(label);
+  grp.userData = {mats:[mat,headMat], ring:ringMat, label:label};
+  return grp;
+}
+function addGoal(parent, width, height, depth, color, x, z, rotY){
+  var g = new THREE.Group();
+  var mt = new THREE.MeshLambertMaterial({color:color});
+  var r = 0.12;
+  function post(px){ var p = new THREE.Mesh(new THREE.CylinderGeometry(r,r,height,8), mt); p.position.set(px,height/2,0); g.add(p); }
+  post(-width/2); post(width/2);
+  var bar = new THREE.Mesh(new THREE.CylinderGeometry(r,r,width,8), mt); bar.rotation.z = Math.PI/2; bar.position.y = height; g.add(bar);
+  var net = new THREE.Mesh(new THREE.PlaneGeometry(width,height), new THREE.MeshBasicMaterial({color:0xffffff, transparent:true, opacity:0.12, side:THREE.DoubleSide}));
+  net.position.set(0,height/2,-depth); g.add(net);
+  g.position.set(-x,0,z); g.rotation.y = rotY||0; parent.add(g);
+}
+
+function initScene(){
+  var host = $('stage');
+  try{ renderer = new THREE.WebGLRenderer({antialias:true, alpha:true, preserveDrawingBuffer:RENDER}); }catch(e){ renderer = null; }
+  if(!renderer){ $('fallback').style.display='flex'; return false; }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
+  host.appendChild(renderer.domElement);
+  scene = new THREE.Scene();
+  camera = new THREE.PerspectiveCamera(38, 1, 1, 400);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.75));
+  var dl = new THREE.DirectionalLight(0xffffff, 0.55); dl.position.set(20,50,10); scene.add(dl);
+  pitchMesh = new THREE.Mesh(new THREE.PlaneGeometry(68,74), new THREE.MeshBasicMaterial({map:makePitchTexture()}));
+  pitchMesh.rotation.x = -Math.PI/2; pitchMesh.position.set(0,0,35); scene.add(pitchMesh);
+  resize();
+  return true;
+}
+
+function buildPartScene(){
+  if(!ready) return;
+  if(partGroup){ scene.remove(partGroup); partGroup.traverse(function(o){ if(o.geometry) o.geometry.dispose(); if(o.material){ if(o.material.map) o.material.map.dispose(); o.material.dispose(); } }); }
+  partGroup = new THREE.Group(); scene.add(partGroup);
+  actors = {};
+  var pr = P.props || {};
+  /* area outline */
+  if(P.box){
+    var b = P.box, pts = [[b[0],b[1]],[b[2],b[1]],[b[2],b[3]],[b[0],b[3]],[b[0],b[1]]];
+    var geo = new THREE.BufferGeometry().setFromPoints(pts.map(function(p){ return new THREE.Vector3(-p[0],0.08,p[1]); }));
+    partGroup.add(new THREE.Line(geo, new THREE.LineBasicMaterial({color:0xffb81c})));
+  }
+  (pr.zones||[]).forEach(function(b){
+    var geo = new THREE.PlaneGeometry(Math.abs(b[2]-b[0]), Math.abs(b[3]-b[1]));
+    var z = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({color:0xffb81c, transparent:true, opacity:0.16, depthWrite:false}));
+    z.rotation.x = -Math.PI/2; z.position.set(-(b[0]+b[2])/2, 0.05, (b[1]+b[3])/2); partGroup.add(z);
+  });
+  (pr.goals||[]).forEach(function(g){ addGoal(partGroup, g[0], g[1], g[2], g[3], g[4], g[5], g[6]); });
+  (pr.mannequins||[]).forEach(function(p){
+    var man = new THREE.Group(), mm = new THREE.MeshLambertMaterial({color:0xcbd5e1});
+    var mb = new THREE.Mesh(new THREE.CylinderGeometry(0.55,0.75,2.6,12), mm); mb.position.y = 1.3;
+    var mh = new THREE.Mesh(new THREE.SphereGeometry(0.5,12,10), mm); mh.position.y = 3.0;
+    man.add(mb, mh); man.position.set(-p[0],0,p[1]); partGroup.add(man);
+    var ml = makeLabel('MANNEQUIN'); ml.scale.set(6.4,1.9,1); ml.position.y = 3.9; man.add(ml);
+  });
+  (pr.cones||[]).forEach(function(c){ var k = new THREE.Mesh(new THREE.ConeGeometry(0.55,1.1,12), new THREE.MeshLambertMaterial({color:c[2]||0xff7a00})); k.position.set(-c[0],0.55,c[1]); partGroup.add(k); });
+  (pr.poles||[]).forEach(function(c){ var k = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.1,2.4,8), new THREE.MeshLambertMaterial({color:0xffffff})); k.position.set(-c[0],1.2,c[1]); partGroup.add(k); });
+  P.actors.forEach(function(d){ var f = makeFigure(d[1], d[2]); partGroup.add(f); actors[d[0]] = {x:0,z:0,mesh:f,fig:true}; });
+  var balls = P.balls || ['ball'];
+  balls.forEach(function(id){ var ball = new THREE.Mesh(new THREE.SphereGeometry(0.55,16,12), new THREE.MeshLambertMaterial({color:0xffffff})); partGroup.add(ball); actors[id] = {x:0,z:0,mesh:ball,fig:false}; });
+  if(P.line){
+    var lineGeo = new THREE.BufferGeometry();
+    lineGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(P.line.length*3), 3));
+    var line = new THREE.Line(lineGeo, new THREE.LineBasicMaterial({color:0x7dd3fc, transparent:true, opacity:0.7}));
+    line.frustumCulled = false; partGroup.add(line); actors._line = line;
+  }
+  var c = P.cam || {};
+  cam.tx = -(c.tx||0); cam.tz = c.tz===undefined ? 41 : c.tz;
+  var pr0 = PRESETS[c.start||'behind'];
+  cam.theta = pr0.theta + (c.flip ? Math.PI : 0); cam.phi = pr0.phi; cam.r = pr0.r*zf(); camGoal = null;
+}
+function zf(){ var c = P.cam || {}; return (camera && camera.aspect > 1.2 && c.zoomWide) ? c.zoomWide : (c.zoom||1); }
+
+/* camera orbit */
+var cam = {theta:0, phi:1.0, r:62, tx:0, ty:0, tz:41}, camGoal = null;
+var PRESETS = { behind:{theta:0, phi:1.0, r:62}, top:{theta:0, phi:0.12, r:78}, side:{theta:Math.PI/2, phi:1.2, r:84}, angle:{theta:0.62, phi:0.9, r:70} };
+function placeCamera(){
+  camera.position.set(cam.tx + cam.r*Math.sin(cam.phi)*Math.sin(cam.theta), cam.ty + cam.r*Math.cos(cam.phi), cam.tz - cam.r*Math.sin(cam.phi)*Math.cos(cam.theta));
+  camera.lookAt(cam.tx,cam.ty,cam.tz);
+}
+function resize(){
+  if(!renderer) return;
+  var h = $('stage'), w = h.clientWidth, ht = h.clientHeight;
+  renderer.setSize(w, ht, false); camera.aspect = w/ht;
+  cam.zoomScale = Math.max(1, 1.5/camera.aspect);
+  camera.updateProjectionMatrix();
+}
+function updateMeshes(){
+  for(var k in actors){
+    if(k === '_line') continue;
+    var a = actors[k]; a.mesh.position.x = -a.x; a.mesh.position.z = a.z;
+    if(!a.fig) a.mesh.position.y = 0.55;
+  }
+  var line = actors._line;
+  if(line){
+    var arr = line.geometry.attributes.position.array, n = 0;
+    P.line.forEach(function(id){ var a = actors[id]; arr[n++] = -a.x; arr[n++] = 0.2; arr[n++] = a.z; });
+    line.geometry.attributes.position.needsUpdate = true;
+  }
+}
+function frame(){
+  if(camGoal){
+    cam.theta += (camGoal.theta - cam.theta)*0.12; cam.phi += (camGoal.phi - cam.phi)*0.12; cam.r += (camGoal.r - cam.r)*0.12;
+    if(Math.abs(camGoal.theta-cam.theta)+Math.abs(camGoal.phi-cam.phi)+Math.abs(camGoal.r-cam.r) < 0.004) camGoal = null;
+  }
+  var keep = cam.r; if(cam.zoomScale) cam.r = cam.r*cam.zoomScale; placeCamera(); cam.r = keep;
+  updateMeshes(); renderer.render(scene, camera);
+  requestAnimationFrame(frame);
+}
+function bindOrbit(){
+  var el = $('stage'), pts = {}, pinch = null;
+  el.addEventListener('pointerdown', function(e){ el.setPointerCapture(e.pointerId); pts[e.pointerId]={x:e.clientX,y:e.clientY}; camGoal = null; });
+  el.addEventListener('pointermove', function(e){
+    if(!pts[e.pointerId]) return;
+    var ids = Object.keys(pts);
+    if(ids.length === 1){ var p = pts[e.pointerId]; cam.theta -= (e.clientX - p.x)*0.006; cam.phi = Math.max(0.1, Math.min(1.45, cam.phi - (e.clientY - p.y)*0.006)); p.x = e.clientX; p.y = e.clientY; }
+    else { pts[e.pointerId] = {x:e.clientX,y:e.clientY}; var a = pts[ids[0]], b = pts[ids[1]], d = Math.hypot(a.x-b.x, a.y-b.y); if(pinch) cam.r = Math.max(20, Math.min(120, cam.r*(pinch/d))); pinch = d; }
+  });
+  function up(e){ delete pts[e.pointerId]; pinch = null; }
+  el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up);
+  el.addEventListener('wheel', function(e){ e.preventDefault(); cam.r = Math.max(20, Math.min(120, cam.r*(1+e.deltaY*0.001))); }, {passive:false});
+}
+function applyRoleLook(){
+  if(!ready) return;
+  var chosen = {};
+  if(mode === 'role'){ P.roles.filter(function(r){return r.id===roleSel;})[0].ids.forEach(function(id){ chosen[id]=true; }); }
+  for(var k in actors){
+    var a = actors[k]; if(!a.fig) continue;
+    var on = mode==='team' || chosen[k];
+    a.mesh.userData.mats.forEach(function(mt){ mt.opacity = on ? 1 : 0.28; });
+    a.mesh.userData.label.material.opacity = on ? 1 : 0.35;
+    a.mesh.userData.ring.opacity = (mode==='role' && chosen[k]) ? 0.95 : 0;
+  }
+}
+
+/* ---------- animation ---------- */
+function jumpTo(state){ for(var k in state){ if(actors[k]){ actors[k].x = state[k][0]; actors[k].z = state[k][1]; } } }
+function alive(my){ return my === runId; }
+function sleep(ms){ return new Promise(function(res){ setTimeout(res, ms); }); }
+function runSeg(seg, my){
+  return new Promise(function(res){
+    var from = {};
+    for(var k in seg.pos){ if(actors[k]) from[k] = [actors[k].x, actors[k].z]; else from[k] = seg.pos[k]; }
+    var t0 = performance.now();
+    function f(now){
+      if(!alive(my)) return res();
+      var p = Math.min(1, (performance.now() - t0)/(seg.t*1000));
+      var e = p<0.5 ? 2*p*p : 1 - Math.pow(-2*p+2,2)/2;
+      for(var k in seg.pos){ if(!actors[k]) continue; actors[k].x = from[k][0] + (seg.pos[k][0]-from[k][0])*e; actors[k].z = from[k][1] + (seg.pos[k][1]-from[k][1])*e; }
+      if(p<1) requestAnimationFrame(f); else res();
+    }
+    requestAnimationFrame(f);
+  });
+}
+
+/* voice: one audio element reused (works on iPhone after the first tap), fetched only when needed */
+var au = null, speechTimer = null, cues = [];
+function audioKey(i){ return P.id + '_' + i + (mode==='role' ? '_' + roleSel : ''); }
+function sayText(t){ return t.replace(/Deano/g, 'Deeno'); }
+function prefetch(key){ if(!AUD[key] || RENDER) return; try{ var l = document.createElement('link'); l.rel = 'prefetch'; l.as = 'audio'; l.href = ABASE + AUD[key][0]; document.head.appendChild(l); }catch(e){} }
+function browserSpeak(text, res){
+  if(!('speechSynthesis' in window)){ res(); return; }
+  try{
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(sayText(text)); u.lang = 'en-GB'; u.rate = 0.98;
+    var vs = window.speechSynthesis.getVoices().filter(function(v){ return /en[-_]GB/i.test(v.lang); }); if(vs.length) u.voice = vs[0];
+    var done = false; function fin(){ if(!done){ done = true; clearTimeout(speechTimer); res(); } }
+    u.onend = fin; u.onerror = fin; speechTimer = setTimeout(fin, Math.max(6000, text.length*90));
+    window.speechSynthesis.speak(u);
+  }catch(e){ res(); }
+}
+function speak(key, text){
+  return new Promise(function(res){
+    var a = AUD[key];
+    if(RENDER){ cues.push({key:key, file:a?a[0]:null, t:performance.now()}); setTimeout(res, a ? a[1]*1000 : 4000); return; }
+    if(!soundOn){ res(); return; }
+    if(!a){ browserSpeak(text, res); return; }
+    if(!au){ au = new Audio(); au.preload = 'none'; }
+    var done = false; function fin(){ if(!done){ done = true; clearTimeout(speechTimer); au.onended = au.onerror = null; res(); } }
+    au.onended = fin; au.onerror = function(){ if(!done){ done = true; clearTimeout(speechTimer); browserSpeak(text, res); } };
+    au.src = ABASE + a[0];
+    speechTimer = setTimeout(fin, (a[1] + 8)*1000);
+    var pp = au.play(); if(pp && pp.catch) pp.catch(function(){ if(!done){ done = true; clearTimeout(speechTimer); browserSpeak(text, res); } });
+  });
+}
+function hush(){ try{ if(au){ au.pause(); au.onended = au.onerror = null; } }catch(e){} try{ window.speechSynthesis && window.speechSynthesis.cancel(); }catch(e){} clearTimeout(speechTimer); }
+
+function setPart(i){
+  partIdx = i; P = prep(PARTS[i]); stepIdx = 0;
+  roleSel = P.roles[0].id;
+  buildParts(); buildPartScene(); setStep(0, true); applyRoleLook();
+  try{ history.replaceState(null, '', location.pathname + location.search.replace(/([?&])part=[^&]*&?/,'$1').replace(/[?&]$/,'') + '#' + P.id); }catch(e){}
+  renderNotes();
+}
+function setStep(i, jump){
+  stepIdx = i; buildChips(); showText();
+  if(jump && ready) jumpTo(P._starts[i]);
+  $('barfill').style.width = '0';
+}
+function stopAll(){ runId++; playing = false; hush(); $('play').textContent = 'Play'; $('all').textContent = 'Play all'; }
+
+async function playStep(i, my){
+  setStep(i, true);
+  var st = P.steps[i];
+  var total = (st.segs||[]).reduce(function(a,s){return a+s.t;},0);
+  await sleep(450); if(!alive(my)) return;
+  var sp = speak(audioKey(i), mode==='team' ? st.text : roleText(st));
+  prefetch(P.id + '_' + (i+1) + (mode==='role' ? '_' + roleSel : ''));
+  var t0 = performance.now();
+  var tick = setInterval(function(){ if(!alive(my)){ clearInterval(tick); return; } var p = total ? Math.min(1,(performance.now()-t0)/(total*1000)) : 1; $('barfill').style.width = (p*100)+'%'; }, 80);
+  await sleep(st.lead === undefined ? 600 : st.lead); if(!alive(my)){ clearInterval(tick); return; }
+  for(var s=0; s<(st.segs||[]).length; s++){ await runSeg(st.segs[s], my); if(!alive(my)){ clearInterval(tick); return; } }
+  clearInterval(tick); $('barfill').style.width = '100%';
+  await sp; if(!alive(my)) return;
+  await sleep(900);
+}
+async function playOne(){ stopAll(); var my = ++runId; playing = true; $('play').textContent = 'Replay'; await playStep(stepIdx, my); if(alive(my)) playing = false; }
+async function playAll(fromPart, toEnd){
+  stopAll(); var my = ++runId; playing = true; $('all').textContent = 'Stop';
+  var startStep = stepIdx;
+  for(var pi = partIdx; pi < PARTS.length; pi++){
+    if(pi !== partIdx){ setPart(pi); startStep = 0; }
+    for(var i=startStep; i<P.steps.length; i++){ await playStep(i, my); if(!alive(my)) return; }
+    if(!toEnd) break;
+  }
+  if(alive(my)){ playing = false; $('all').textContent = 'Play all'; window.__done = true; }
+}
+
+/* ---------- notes under the pitch (works with sound off) ---------- */
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function ul(a){ return '<ul>' + (a||[]).map(function(x){ return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>'; }
+function renderNotes(){
+  var h = '<h2>' + esc(P.name) + '</h2><p class="m">' + esc(P.when + ' min | ' + P.coach + ' | ' + P.area + ' | ' + P.numbers) + '</p>';
+  if(P.setup) h += '<h3>Set up</h3>' + ul(P.setup);
+  if(P.points) h += '<h3>Coaching points</h3>' + ul(P.points);
+  if(P.variants) h += '<h3>Numbers on the night</h3>' + ul(P.variants);
+  if(P.harder) h += '<h3>Harder / easier</h3>' + ul(P.harder);
+  $('notes').innerHTML = h;
+}
+
+/* ---------- wire up ---------- */
+document.querySelectorAll('#modes button').forEach(function(b){
+  b.onclick = function(){ stopAll(); mode = b.getAttribute('data-mode'); document.querySelectorAll('#modes button').forEach(function(x){ x.classList.toggle('on', x===b); }); buildChips(); showText(); applyRoleLook(); };
+});
+document.querySelectorAll('#cams button').forEach(function(b){
+  b.onclick = function(){ var p = PRESETS[b.getAttribute('data-cam')], c = P.cam || {}; camGoal = {theta:p.theta + (c.flip ? Math.PI : 0), phi:p.phi, r:p.r*zf()}; };
+});
+$('play').onclick = playOne;
+$('next').onclick = function(){ stopAll(); if(stepIdx+1 < P.steps.length) setStep(stepIdx+1, true); else setPart((partIdx+1)%PARTS.length); };
+$('sound').onclick = function(){ soundOn = !soundOn; $('sound').textContent = soundOn ? 'Sound on' : 'Sound off'; if(!soundOn) hush(); };
+$('all').onclick = function(){ if(playing) stopAll(); else playAll(partIdx, true); };
+window.addEventListener('resize', resize);
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape'){ var c = $('back'); if(c) c.click(); } });
+
+P = prep(PARTS[partIdx]); roleSel = P.roles[0].id;
+function start3d(){
+  if(typeof THREE === 'undefined'){ $('fallback').style.display = 'flex'; ready = false; }
+  else { ready = initScene(); if(ready){ bindOrbit(); requestAnimationFrame(frame); } }
+  setPart(partIdx);
+  window.__ready = true;
+}
+buildParts(); buildChips(); showText(); renderNotes();
+window.__s3d = {au:function(){ return au; }, pose:function(pi, si, cn){ stopAll(); setPart(pi); setStep(si, true); if(ready) jumpTo(P._ends[si]); var p = PRESETS[cn||'angle'], c = P.cam || {}; cam.theta = p.theta + (c.flip ? Math.PI : 0); cam.phi = p.phi; cam.r = p.r*zf(); camGoal = null; }, PARTS:PARTS, start3d:start3d, playAll:function(){ return playAll(0, true); }, cues:cues, setPart:setPart, audio:AUD};
+if(!RENDER){
+  /* three.js arrives after first paint so the words and plan show straight away on slow data */
+  var sc = document.createElement('script'); sc.src = S.three; sc.async = true;
+  sc.onload = start3d; sc.onerror = start3d; document.head.appendChild(sc);
+}
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1b2e">
+<title>{{TITLE}} | Wigan Junior Latics U15 Blues</title>
+<link rel="preload" href="{{THREE}}" as="script">
+<style>
+  :root{ --bg:#0b1b2e; --panel:#12283f; --line:#2a4a6c; --text:#f2f6fa; --amber:#ffb81c; --amberText:#1a1200; --muted:#9db3c9; }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  #app{display:flex;flex-direction:column;max-width:1280px;margin:0 auto}
+  header{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid #12283f}
+  h1{font-size:16px;margin:0;font-weight:700}
+  header a{color:var(--amber);font-size:14px;text-decoration:none;white-space:nowrap}
+  .row{display:flex;gap:8px;padding:8px 12px 0;overflow-x:auto;scrollbar-width:none}
+  .row::-webkit-scrollbar{display:none}
+  button{font:inherit;font-size:14px;color:var(--text);background:var(--panel);border:1px solid var(--line);padding:8px 14px;cursor:pointer;white-space:nowrap}
+  button:active{transform:scale(.97)}
+  button.on{background:var(--amber);border-color:var(--amber);color:var(--amberText);font-weight:700}
+  .mode{border-radius:8px;padding:9px 16px}
+  .pill{border-radius:999px}
+  .part b{font-weight:400;opacity:.8;font-size:12px;margin-right:4px}
+  #picks{padding-bottom:8px}
+  #phead{padding:6px 12px 0}
+  #ptitle{font-weight:700;font-size:15px}
+  #pmeta{color:var(--muted);font-size:13px}
+  #stageWrap{position:relative;height:min(56vh,560px);min-height:240px;background:radial-gradient(ellipse at 50% 30%,#10263d,#0b1b2e 70%)}
+  #stage{position:absolute;inset:0;touch-action:none}
+  #stage canvas{display:block;width:100%;height:100%}
+  #legend{position:absolute;left:10px;bottom:8px;font-size:13px;background:rgba(11,27,46,.7);padding:6px 8px;border-radius:8px;line-height:1.5;pointer-events:none}
+  #legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px}
+  #cams{position:absolute;right:10px;top:8px;display:flex;flex-direction:column;gap:8px}
+  #cams button{border-radius:8px;padding:7px 12px;background:rgba(18,40,63,.92)}
+  #title{position:absolute;left:50%;top:10px;transform:translateX(-50%);background:rgba(11,27,46,.85);border-radius:999px;padding:6px 14px;font-weight:700;font-size:15px;pointer-events:none;white-space:nowrap;max-width:70%;overflow:hidden;text-overflow:ellipsis}
+  #fallback{position:absolute;inset:0;display:none;align-items:center;justify-content:center;text-align:center;padding:24px;color:var(--muted)}
+  #narr{padding:12px 12px 6px;border-top:1px solid #12283f}
+  #narr small{display:block;color:var(--amber);letter-spacing:.06em;text-transform:uppercase;font-size:12px;margin-bottom:6px}
+  #narr p{margin:0;font-size:17px;line-height:1.5;min-height:5.2em}
+  #bar{height:6px;background:var(--panel);margin:6px 12px;border-radius:6px;overflow:hidden}
+  #bar div{height:100%;width:0;background:var(--amber)}
+  #controls{display:flex;gap:8px;padding:6px 12px 12px;align-items:center;flex-wrap:wrap}
+  #controls button{border-radius:10px;padding:12px 18px}
+  #controls .sp{flex:1}
+  .txt{padding:4px 14px calc(24px + env(safe-area-inset-bottom));border-top:1px solid #12283f}
+  .txt h2{color:var(--amber);font-size:15px;letter-spacing:.06em;text-transform:uppercase;margin:18px 0 6px}
+  .txt h3{font-size:15px;margin:14px 0 4px}
+  .txt ul{margin:0;padding-left:20px;line-height:1.55}
+  .txt p.m{color:var(--muted);margin:0}
+  .txt table{border-collapse:collapse;width:100%;font-size:15px}
+  .txt td{border-bottom:1px solid #1d3652;padding:6px 6px;vertical-align:top}
+  .txt td:first-child{white-space:nowrap;color:var(--amber);font-weight:700}
+  a.pdf{display:inline-block;background:var(--amber);color:#0b1330;font-weight:800;padding:10px 16px;border-radius:12px;text-decoration:none;margin-top:10px}
+  @media (min-width:900px){ #narr p{font-size:20px} #stageWrap{height:min(62vh,620px)} }
+  body.render header,body.render #modes,body.render #parts,body.render #picks,body.render #cams,body.render #controls,body.render #bar,body.render .txt{display:none}
+  body.render #stageWrap{height:540px}
+  body.render #narr p{font-size:20px;min-height:0}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1>{{TITLE}}</h1>
+    <a id="back" href="../../">Back to the app</a>
+  </header>
+  <div class="row" id="parts" role="group" aria-label="Parts of the session"></div>
+  <div class="row" id="modes">
+    <button class="mode on" data-mode="team">The whole team</button>
+    <button class="mode" data-mode="role">My role</button>
+  </div>
+  <div id="phead"><div id="ptitle"></div><div id="pmeta"></div></div>
+  <div class="row" id="picks"></div>
+  <div id="stageWrap">
+    <div id="stage"></div>
+    <div id="title"></div>
+    <div id="legend"></div>
+    <div id="cams">
+      <button data-cam="behind">Behind</button>
+      <button data-cam="top">Top</button>
+      <button data-cam="side">Side</button>
+      <button data-cam="angle">Angle</button>
+    </div>
+    <div id="fallback">The 3D pitch couldn't start on this device, which may need a newer phone or browser. The voice and the words on screen still work.</div>
+  </div>
+  <div id="narr"><small id="nlabel"></small><p id="ntext"></p></div>
+  <div id="bar"><div id="barfill"></div></div>
+  <div id="controls">
+    <button class="on" id="play">Play</button>
+    <button id="next">Next</button>
+    <button id="sound">Sound on</button>
+    <span class="sp"></span>
+    <button id="all">Play all</button>
+  </div>
+  <div class="txt">
+    {{PLAN}}
+    <div id="notes"></div>
+  </div>
+</div>
+<script>window.SESSION3D={{DATA}};</script>
+<script>
+(function(){var m=/[?&]back=([^&]+)/.exec(location.search);if(m){try{var u=decodeURIComponent(m[1]);if(/^\/[^\/]/.test(u))document.getElementById('back').href=u;}catch(e){}}})();
+</script>
+<script>{{ENGINE}}</script>
+</body>
+</html>
