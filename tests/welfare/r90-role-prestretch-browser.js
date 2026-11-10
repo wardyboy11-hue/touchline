@@ -22,7 +22,7 @@ async function seedFamily(page,role){
   if(a.action==='f.niggle'||a.action==='f.prestretch.set')return okk({ok:true,id:'N1',num:a.num||'7',areas:a.areas});
   if(a.action==='f.late'||a.action==='f.late.undo')return okk({ok:true});
   return okk({});});
- await page.addInitScript(()=>{const _g=Storage.prototype.getItem;Storage.prototype.getItem=function(k){return /^fam\.wel\./.test(k)?'1':_g.call(this,k);};localStorage.setItem('fam.code','p');localStorage.setItem('fam.ok1','1');});
+ await page.addInitScript(()=>{const _g=Storage.prototype.getItem;Storage.prototype.getItem=function(k){return /^fam\.wel\./.test(k)?'1':_g.call(this,k);};localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code','p');localStorage.setItem('fam.ok1','1');});
 }
 
 (async()=>{

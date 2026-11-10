@@ -18,7 +18,7 @@ for(const role of ['parent','player']){
   if(a.action==='f.mydata.delete'){asked++;return okk({ok:true});}
   return okk({});});
  await q.addInitScript(()=>{const _g=Storage.prototype.getItem;Storage.prototype.getItem=function(k){return /^fam\.wel\./.test(k)?'1':_g.call(this,k);};}); // welcome screen already seen
- await q.addInitScript((c)=>{localStorage.setItem('fam.code',c);localStorage.setItem('fam.ok1','1');},role);
+ await q.addInitScript((c)=>{localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code',c);localStorage.setItem('fam.ok1','1');},role);
  await q.goto('http://localhost:8770/family.html');await q.waitForTimeout(1500);
  let tx=await q.innerText('body');
  if(role==='parent'){

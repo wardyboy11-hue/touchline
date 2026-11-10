@@ -8,7 +8,7 @@ fs.mkdirSync(SHOTS, { recursive: true });
 const MT = { '.js': 'text/javascript', '.html': 'text/html', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.webmanifest': 'application/json', '.vtt': 'text/vtt', '.webm': 'video/webm', '.mp4': 'video/mp4' };
 const srv = http.createServer((q, r) => {
   const u = decodeURIComponent(q.url.split('?')[0]);
-  if (u === '/version.json') { r.writeHead(200, { 'content-type': 'application/json' }); r.end('{"v": "107"}'); return; }
+  if (u === '/version.json') { r.writeHead(200, { 'content-type': 'application/json' }); r.end('{"v": "108"}'); return; }
   let f = path.join(root, u);
   if (f.endsWith('/')) f += 'index.html';
   fs.readFile(f, (e, d) => {
@@ -35,7 +35,7 @@ function fam(role) {
   const phone = devices['Pixel 7'];
   const desk = { viewport: { width: 1280, height: 800 } };
   async function bootFamily(page, role) {
-    await page.addInitScript(() => { localStorage.setItem('fam.code', 'p'); localStorage.setItem('fam.ok1', '1'); localStorage.setItem('fam.wel.P', '1'); localStorage.setItem('fam.tour', '1'); });
+    await page.addInitScript(() => { localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code', 'p'); localStorage.setItem('fam.ok1', '1'); localStorage.setItem('fam.wel.P', '1'); localStorage.setItem('fam.tour', '1'); });
     await page.route('**/macros/**', r => r.fulfill({ status: 200, contentType: 'application/json', headers: H, body: JSON.stringify({ ok: true, data: fam(role) }) }));
   }
   {
@@ -164,7 +164,7 @@ function fam(role) {
     const ctx = await b.newContext({ ...phone, serviceWorkers: 'block' });
     const p = await ctx.newPage();
     await p.addInitScript(() => {
-      localStorage.setItem('fam.code', 'p');
+      localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code', 'p');
       localStorage.setItem('fam.ok1', '1');
       localStorage.setItem('fam.wel.P', '1');
       localStorage.setItem('fam.tour', '1');
@@ -187,7 +187,7 @@ function fam(role) {
     const data = fam('parent');
     data.vote.motm.open = true;
     data.vote.motm.elig = true;
-    await p.addInitScript(() => { localStorage.setItem('fam.code', 'p'); localStorage.setItem('fam.ok1', '1'); localStorage.setItem('fam.wel.P', '1'); localStorage.setItem('fam.tour', '1'); });
+    await p.addInitScript(() => { localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code', 'p'); localStorage.setItem('fam.ok1', '1'); localStorage.setItem('fam.wel.P', '1'); localStorage.setItem('fam.tour', '1'); });
     await p.route('**/macros/**', r => r.fulfill({ status: 200, contentType: 'application/json', headers: H, body: JSON.stringify({ ok: true, data: data }) }));
     await p.goto(BASE + '/parents.html');
     await p.waitForTimeout(1400);

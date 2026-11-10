@@ -268,3 +268,14 @@ body.ps .tl-tile,body.ps .tl-sc,body.ps .tl-rl,body.ps .tl-rt{color:inherit}
   .tl-share-bar .btn{max-width:420px;margin:0}
   .wrap.tl-share-pad,.tl-share-pad{padding-bottom:72px !important}
 }
+/* r108 compact Today accordions */
+.tl-acc{background:var(--card,rgba(255,255,255,.04));border:1px solid var(--line,rgba(255,255,255,.12));border-radius:14px;padding:2px 12px;margin:8px 0}
+.tl-acc>summary{min-height:52px}
+.tl-acc-h{display:flex;flex-direction:column;gap:2px;min-width:0}
+.tl-acc-t{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.tl-acc-s{font-size:17px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tl-acc-a{display:block;font-size:14px;font-weight:700;color:var(--amber,#FBBF24)}
+.tl-acc>.tl-sec-body{padding-bottom:8px}
+.tl-todo.done b{color:var(--muted);text-decoration:line-through}
+.tl-todo .btn.sm{margin-left:6px}
+button.tl-vq{background:transparent;color:inherit;border:0;border-bottom:1px solid var(--line,rgba(255,255,255,.12));font:inherit;padding:10px 2px;cursor:pointer}

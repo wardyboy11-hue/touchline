@@ -32,7 +32,7 @@ for(const role of ['player','parent']){
   if(a.action==='f.goals.add'){added=a;return okk({ok:true});}
   return okk({});});
  await q.addInitScript(()=>{const _g=Storage.prototype.getItem;Storage.prototype.getItem=function(k){return /^fam\.wel\./.test(k)?'1':_g.call(this,k);};}); // welcome screen already seen
- await q.addInitScript((c)=>{localStorage.setItem('fam.code',c);localStorage.setItem('fam.ok1','1');},role);
+ await q.addInitScript((c)=>{localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code',c);localStorage.setItem('fam.ok1','1');},role);
  await q.goto('http://localhost:8769/family.html');await q.waitForTimeout(1500);
  const tx=await q.innerText('body');
  if(role==='player'){T('player sees goals card with agreed goal',/my goals/i.test(tx)&&/talk more/.test(tx)&&/Agreed with the coaches/.test(tx));

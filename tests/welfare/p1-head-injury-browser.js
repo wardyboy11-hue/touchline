@@ -67,7 +67,7 @@ for(const role of ['parent','player']){
   if(a.action==='f.conc.confirm'){conf.push(a);return r.fulfill({status:200,contentType:'application/json',headers:H,body:JSON.stringify({ok:false,error:'Training with possible head contact starts from day 15 at the earliest. It is day 9.'})});}
   return okk({});});
  await q.addInitScript(()=>{const _g=Storage.prototype.getItem;Storage.prototype.getItem=function(k){return /^fam\.wel\./.test(k)?'1':_g.call(this,k);};}); // welcome screen already seen
- await q.addInitScript(()=>{localStorage.setItem('fam.code','CODE12');localStorage.setItem('fam.ok1','1');});
+ await q.addInitScript(()=>{localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code','CODE12');localStorage.setItem('fam.ok1','1');});
  await q.goto('http://localhost:8767/family.html');await q.waitForTimeout(1500);
  const tx=await q.innerText('body');
  if(role==='parent'){T('parent sees the return plan with stage 3 next',/return to play plan/i.test(tx)&&/Stage 3 done, no symptoms/.test(tx)&&!/Stage 4 done, no symptoms/.test(tx));

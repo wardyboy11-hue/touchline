@@ -37,7 +37,7 @@ function famData(role){
    await q.route('**/macros/**',r=>{let a={};try{a=JSON.parse(r.request().postData()||'{}');}catch(e){}
     const d=a.action==='f.home'?data:(a.action==='f.answer'?{ok:1}:{});
     r.fulfill({status:200,contentType:'application/json',headers:H,body:JSON.stringify({ok:true,data:d})});});
-   await q.addInitScript(()=>{localStorage.setItem('fam.code','p');localStorage.setItem('fam.ok1','1');localStorage.setItem('fam.wel.P','1');localStorage.setItem('fam.tour','1');});
+   await q.addInitScript(()=>{localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code','p');localStorage.setItem('fam.ok1','1');localStorage.setItem('fam.wel.P','1');localStorage.setItem('fam.tour','1');});
    await q.goto(BASE+'/'+pg);await q.waitForTimeout(2800);
    await q.evaluate(()=>{const s=document.getElementById('splash');if(s)s.remove();const w=document.getElementById('wel');if(w)w.remove();try{if(window.goTab)goTab('home');}catch(e){}try{r();}catch(e){}});
    await q.waitForTimeout(600);
