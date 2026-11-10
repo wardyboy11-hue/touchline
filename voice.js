@@ -87,6 +87,28 @@ var LIB=[];
 var LIB_ROLE='';
 
 function norm(s){return String(s||'').toLowerCase().replace(/[\u2013\u2014]/g,' ').replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim();}
+function fold(raw){
+ var s=String(raw||'').toLowerCase();
+ s=s.replace(/\btomoz\b|\btommorow\b|\btommorrow\b|\b2moro\b/g,'tomorrow');
+ s=s.replace(/\bwot\b/g,'what');
+ s=s.replace(/\bwen\b/g,'when');
+ s=s.replace(/\btrainin\b/g,'training');
+ s=s.replace(/\bwheres\b/g,'where is');
+ s=s.replace(/\bmidfeild\b/g,'midfield');
+ s=s.replace(/\bpassin\b/g,'passing');
+ s=s.replace(/\bgot owt\b/g,'got anything');
+ s=s.replace(/\bclever runs\b/g,'movement off the ball');
+ s=s.replace(/\bwhat's\b/g,'what is');
+ s=s.replace(/\bthat's\b/g,'that is');
+ s=s.replace(/\bit's\b/g,'it is');
+ s=s.replace(/\bdon't\b/g,'do not');
+ s=s.replace(/\bcan't\b/g,'cannot');
+ s=s.replace(/\bi'm\b/g,'i am');
+ s=s.replace(/\bwe're\b/g,'we are');
+ s=s.replace(/\btomorrow's\b/g,'tomorrow');
+ s=s.replace(/\btomorrows\b/g,'tomorrow');
+ return s;
+}
 function tokens(s){return norm(s).split(' ').filter(function(w){return w.length>1;});}
 function has(t,words){for(var i=0;i<words.length;i++)if(t.indexOf(words[i])>-1)return true;return false;}
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
@@ -134,8 +156,8 @@ function upcoming(fixtures,from){
  var iso=from||isoToday();
  return (fixtures||[]).filter(function(m){return m&&!m.done&&!m.pp&&String(m.date||'')>=iso;}).sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:0;});
 }
-function nextSat(fixtures){
- var L=upcoming(fixtures);
+function nextSat(fixtures, from){
+ var L=upcoming(fixtures, from);
  for(var i=0;i<L.length;i++){var d=new Date(L[i].date+'T12:00:00');if(d.getDay()===6)return L[i];}
  return L[0]||null;
 }
@@ -152,7 +174,7 @@ function fixtureFor(ctx,t){
  var list=upcoming(ctx&&ctx.fixtures,td);
  if(/\btomorrow\b/.test(t)){var tom=addDays(td,1),hit=list.filter(function(m){return m.date===tom;})[0];if(hit)return hit;}
  if(/\btoday\b/.test(t))return list.filter(function(m){return m.date===td;})[0]||null;
- if(/\bsaturday\b/.test(t))return nextSat(ctx&&ctx.fixtures);
+ if(/\bsaturday\b/.test(t))return nextSat(ctx&&ctx.fixtures, ctx&&ctx.today);
  if(ctx&&ctx.memory&&ctx.memory.fixture&&/\b(it|that|the game|the match)\b/.test(t))return ctx.memory.fixture;
  return list[0]||null;
 }
@@ -161,10 +183,10 @@ function kitSay(m){
  var who=(m.ha==='A'?'at ':(m.ha==='H'?'against ':''))+(m.opp||'the opposition');
  var when=m.date?(' on '+nice(m.date)):'';
  var k=explicitKit(m),note=String(m.kitColours||'').trim();
- if(k==='H')return 'For the game '+who+when+', the kit is the home kit: dark blue and white stripes, black shorts.';
- if(k==='A')return 'For the game '+who+when+', the kit is the away kit'+(note?': '+note:'')+'.';
- if(k==='T')return 'For the game '+who+when+', the kit is the third kit'+(note?': '+note:'')+'.';
- return 'For the game '+who+when+', the kit has not been chosen yet. I will not guess it from home or away.';
+ if(k==='H')return 'For the game '+who+when+', the kit is the home kit: dark blue and white stripes, black shorts.'+sourceLine(m,'fixture record');
+ if(k==='A')return 'For the game '+who+when+', the kit is the away kit'+(note?': '+note:'')+'.'+sourceLine(m,'fixture record');
+ if(k==='T')return 'For the game '+who+when+', the kit is the third kit'+(note?': '+note:'')+'.'+sourceLine(m,'fixture record');
+ return 'For the game '+who+when+', the kit has not been chosen yet. I will not guess it from home or away.'+sourceLine(m,'fixture record');
 }
 function wantsKit(t){return /\b(kit|strip)\b/.test(t)||/\b(wearing|shirts|colours|colors)\b/.test(t);}
 function gameLine(g){
@@ -291,10 +313,138 @@ function helpSay(role){
  return base+' You can also say open the emergency head injury page, open welfare, or open Comms.';
 }
 function blockedSay(){return 'That stays with the coaches. I can help with fixtures, training, clips, attendance and messages.';}
+function sourceLine(row,label){
+ var at=row&&(row.updatedAt||row.savedAt||row.publishedAt||row.at);
+ var n=typeof at==='number'?at:(at?Date.parse(String(at)):NaN);
+ var when='';
+ if(isFinite(n)&&n>100000000000){
+  try{when=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(new Date(n));}catch(e){when='';}
+ }
+ if(!when)return ' Source: '+(label||'app record')+'. Update time is not recorded.';
+ return ' Source: '+(label||'app record')+'. Updated '+when+'.';
+}
+function commandAllowed(cmd,role){
+ var r=role==='family'?'parent':(role||'parent');
+ if(!cmd.roles||cmd.roles.indexOf('any')>=0)return true;
+ if(cmd.roles.indexOf(r)>=0)return true;
+ if((r==='parent'||r==='player')&&cmd.roles.indexOf('family')>=0)return true;
+ return false;
+}
+function safetyIntent(raw,t){
+ if(/javascript\s*:/i.test(String(raw||''))||/\bdata:text\/html/i.test(String(raw||'')))return {intent:'blocked',say:'I will not open that. It is not a Touchline page.',model:false,go:''};
+ if(/\b(api key|system prompt|system instructions|hidden sheet|ignore the rules|ignore tim)\b/.test(t)||/\bi am deano\b/.test(t))return {intent:'blocked',say:'I cannot do that. I only use the signed in role on this phone, and I do not reveal keys, codes or hidden sheets.',model:false};
+ if(/\b(home address|house address)\b/.test(t))return {intent:'blocked',say:'I will not give a home address. Lifts stay on the team board with a first name and area.',model:false};
+ if(/\basthma\b|\bmedical notes\b|\bwho is injured\b/.test(t))return {intent:'blocked',say:'I will not share health information, and I have not sent that question away.',model:false};
+ if(/\b(login codes|family codes|player codes|access codes)\b/.test(t))return {intent:'blocked',say:'I will not show codes. Use Lost your code on the sign in page. Tim or Deano sort it in person.',model:false};
+ if(/\bphone number\b/.test(t))return {intent:'blocked',say:'I will not share phone numbers. Use Contacts for the club numbers already published there.',model:false};
+ if(/\b(export the squad|private profiles|all children)\b/.test(t))return {intent:'blocked',say:'I will not export private profiles.',model:false};
+ if(/\bcollapsed\b|\bnot breathing\b|\bunconscious\b/.test(t))return {intent:'welfare',say:'This sounds like an emergency. Call 999 now. I am not a person and nobody is monitoring this chat.',model:false};
+ if(/\bchildline\b/.test(t)||/\bscared of\b/.test(t)||(/\bwelfare officer\b/.test(t)&&/\babout\b/.test(t)))return {intent:'welfare',say:'You can call Childline on 0800 1111. If the worry is about a coach or the welfare officer, contact your County FA safeguarding team. I will not promise to keep it secret, and I have not told the coaches.',model:false};
+ if(/\bdo not tell anyone\b|\bpromise not to tell\b|\bsecretly every night\b/.test(t))return {intent:'welfare',say:'I cannot keep a secret and I am not a counsellor. If you are unsafe, tell a trusted adult, call 999, or call Childline on 0800 1111.',model:false};
+ if(/\bhurt me\b/.test(t))return {intent:'welfare',say:'I am sorry you said that. Do you mean a football foul, or that you need an adult? If you are in danger call 999. You can also call Childline on 0800 1111. I have not sent this to anyone.',model:false};
+ if(/\bankle\b|\bstill play\b|\bmedical advice\b/.test(t))return {intent:'welfare',say:'I cannot say if anyone should play, and I cannot give medical advice. Tell a parent and the coach. For urgent help in England that is not 999, use NHS 111.',model:false};
+ if(/\bcrypto|\bbitcoin|\bmaths homework|\bexact score|\bweather at my\b|\binsult/.test(t))return {intent:'scope',say:'I only help with this team app: fixtures, kit, training, clips, pages and the actions your role already has. I will not do that.',model:false};
+ if(/\blearn from all\b|\bretrain\b/.test(t))return {intent:'blocked',say:'I do not learn from children messages and I do not send them away.',model:false};
+ if(/\bclub website\b/.test(t)&&/\b(put|post|upload|send)\b/.test(t))return {intent:'blocked',say:'I will not send Touchline information to the club website.',model:false};
+ if(/\bmorning pack\b|\bevery match morning\b/.test(t))return {intent:'blocked',say:'I will not turn on a morning pack and I have not sent one. It stays off until a coach approves the exact pack and who receives it.',model:false};
+ return null;
+}
+function preview(say,payload,intent){
+ return {intent:intent||'write',say:say,needConfirm:true,confirmLabel:'Send',payload:payload,model:false,go:''};
+}
+var COMMANDS=[
+ {id:'write.kit',intent:'write',kind:'write',roles:['coach'],label:'Set the kit on a fixture',
+  match:function(t){return (/\b(set|change|switch|make)\b/.test(t)||/\bkit to\b/.test(t))&&/\bkit\b/.test(t)&&!/\bshop\b/.test(t);},
+  refuse:'Only a coach can set the kit. I have not changed it.',
+  build:function(t,ctx){var g=fixtureFor(ctx,t);var k=/\bthird\b/.test(t)?'T':(/\baway\b/.test(t)?'A':(/\b(home|blue)\b/.test(t)?'H':''));if(!k)return {intent:'clarify',say:'Which kit should I set? Nothing is changed until you tap Send.',choices:['Set home kit','Set away kit','Set third kit'],model:false};var name=k==='H'?'home kit':(k==='A'?'away kit':'third kit');var who=g?(g.opp||'the next game')+' on '+(g.date||'the saved date'):'the next game';return preview('Set the '+name+' for '+who+'. Nothing is changed until you tap Send.',{action:'kit',kit:k,id:g&&g.id,opp:g&&g.opp,date:g&&g.date},'write');}},
+ {id:'write.alert',intent:'write',kind:'write',roles:['coach'],label:'Send a match alert',
+  match:function(t){return /\b(send|push)\b/.test(t)&&/\b(alert|reminder)\b/.test(t)||/\bkick off reminder\b/.test(t);},
+  refuse:'Only a coach can send a match alert. I have not sent anything.',
+  build:function(t,ctx){var g=fixtureFor(ctx,t);var body=g?('Kick off reminder. '+(g.opp||'Match')+' on '+(g.date||'')+' at '+(g.ko||'the saved time')+'.'):'Match alert. Open Touchline for the latest.';return preview('Send this alert to families with alerts on: '+body+' Nothing goes out until you tap Send.',{action:'alert',kind:'ko',body:body,id:g&&g.id},'write');}},
+ {id:'write.roles',intent:'write',kind:'write',roles:['coach'],label:'Publish role cards',
+  match:function(t){return /\bpublish\b/.test(t)&&/\brole card/.test(t);},
+  refuse:'Only a coach can publish role cards. I have not published them.',
+  build:function(){return preview('Publish the role cards on the open match to players. Nothing is published until you tap Send.',{action:'rcPub'},'write');}},
+ {id:'write.attendance',intent:'write',kind:'write',roles:['coach'],label:'Mark attendance',
+  match:function(t){return /\beveryone in\b/.test(t)||/\bmark attendance\b/.test(t)||/\bmark shirt\b/.test(t);},
+  refuse:'Only a coach can mark the register. You can confirm your own attendance instead.',
+  build:function(t,ctx){var num=(t.match(/shirt\s*(\d+)/)||[])[1]||'';var date=(ctx&&ctx.today)||'';var say=num?('Mark shirt '+num+' in for '+ (date||'the open session')+'.'):('Mark everyone in for '+(date||'the open session')+'.');return preview(say+' Nothing is saved until you tap Send.',{action:num?'attOne':'attAll',shirt:num,date:date},'write');}},
+ {id:'write.motm',intent:'write',kind:'write',roles:['coach'],label:'Open or close man of the match voting',
+  match:function(t){return /\b(open|close|start|stop)\s+(the\s+)?(vote|voting|man of the match|motm)\b/.test(t);},
+  refuse:'Only a coach can open or close voting. I have not changed it.',
+  build:function(t){var close=/\b(close|stop)\b/.test(t);return preview((close?'Close':'Open')+' man of the match voting. Nothing changes until you tap Send.',{action:close?'voteClose':'voteOpen',kind:'motm'},'write');}},
+ {id:'write.resource',intent:'write',kind:'write',roles:['coach'],label:'Send a resource to a shirt number',
+  match:function(t){return /\bsend\b/.test(t)&&/\b(clip|resource)\b/.test(t)&&/\bshirt\b/.test(t);},
+  refuse:'Only a coach can send a resource to a player. I have not sent it.',
+  build:function(t,ctx){var num=(t.match(/shirt\s*(\d+)/)||[])[1]||'';var topic=clipTopic(t)||'the resource';var hit=bestClip(topic,ctx);var title=hit&&hit.title||topic;return preview('Send "'+title+'" to shirt '+num+'. Nothing is sent until you tap Send.',{action:'resource',shirt:num,title:title,url:hit&&hit.url||''},'write');}},
+ {id:'write.lift',intent:'write',kind:'write',roles:['parent','player'],label:'Request or offer a lift',
+  match:function(t){return /\b(need a lift|request a lift|offer a lift|give a lift|i can take)\b/.test(t);},
+  refuse:'Lifts stay on the team board. I have not posted one.',
+  build:function(t,ctx){var offer=/\b(offer a lift|give a lift|i can take)\b/.test(t);if(offer&&(ctx.role==='player'))return {intent:'blocked',say:'A player cannot offer a lift. A parent posts that on the Games board. Nothing was posted.',model:false};var g=fixtureFor(ctx,t);return preview((offer?'Offer':'Request')+' a lift on the team board'+(g?' for '+(g.opp||'the game')+' on '+(g.date||''):'')+'. No home address is included. Nothing is posted until you tap Send.',{action:'lift',type:offer?'offer':'request',ref:g&&(g.id||g.date),date:g&&g.date},'write');}},
+ {id:'write.alarm',intent:'write',kind:'write',roles:['parent'],label:'Save your own child wake up time',
+  match:function(t){return /\b(set|change|save)\b/.test(t)&&/\b(alarm|wake)\b/.test(t);},
+  refuse:'Only a parent can save a wake up time, and only for their own child. Nothing was saved.',
+  build:function(t){var m=t.match(/\b(\d{1,2})(?:\s+|:)(\d{2})\b/)||t.match(/\b(\d{1,2})\b/);var hh=m?String(Math.min(23,+m[1])).padStart(2,'0'):'';var mm=m&&m[2]?m[2]:'00';if(!hh)return {intent:'clarify',say:'What time should I save? For example 07:30. Nothing is saved until you tap Send.',model:false};return preview('Save a wake up time of '+hh+':'+mm+' on this phone for your own child. This does not set the phone lock screen alarm. Nothing is saved until you tap Send.',{action:'alarm',time:hh+':'+mm},'write');}},
+ {id:'write.vote',intent:'write',kind:'write',roles:['parent','player'],label:'Vote for a shirt number',
+  match:function(t){return /\bvote\b/.test(t)&&!/\b(open|close|start|stop)\b/.test(t);},
+  refuse:'Voting is not open to this role. I have not saved a vote.',
+  build:function(t){var num=(t.match(/shirt\s*(\d+)/)||[])[1]||'';if(!num)return {intent:'clarify',say:'Which shirt should the vote be for? Nothing is saved until you tap Send.',choices:['Vote for shirt 7','Vote for shirt 8','Vote for shirt 9'],model:false};return preview('Vote for shirt '+num+' as man of the match. Nothing is saved until you tap Send.',{action:'vote',kind:'motm',shirt:num},'write');}},
+ {id:'read.results',intent:'results',kind:'read',roles:['any'],label:'Latest result',
+  match:function(t){return /\b(last result|full time score|what was the score|who won)\b/.test(t);},
+  build:function(t,ctx){var rows=(ctx.fixtures||[]).filter(function(m){return m&&m.done;});var g=rows[rows.length-1];if(!g)return {intent:'results',say:'No result is saved yet.'+sourceLine(null,'fixture record'),model:false,go:isFamily(ctx.role)?'games':'match'};var score=(g.f!=null&&g.a!=null)?(' '+g.f+' to '+g.a+'.'):' The score is not on this record.';return {intent:'results',say:'Last saved result is against '+(g.opp||'the opposition')+' on '+(g.date?nice(g.date):'a saved date')+'.'+score+sourceLine(g,'fixture record'),game:g,model:false,go:isFamily(ctx.role)?'games':'match'};}},
+ {id:'read.squad',intent:'squad',kind:'read',roles:['any'],label:'Squad count',
+  match:function(t){return /\b(how many players|squad size|who is in the squad)\b/.test(t);},
+  build:function(t,ctx){var n=(ctx.squad||[]).length;var say=n?(n+' players are on the squad list. I will not read out private details.'):'I cannot see a squad count on this phone. Open Team or Me.';return {intent:'squad',say:say+sourceLine(ctx.squadMeta,'squad record'),model:false,go:isFamily(ctx.role)?'me':'squad'};}},
+ {id:'read.lifts',intent:'lifts',kind:'read',roles:['family','coach'],label:'Open lifts',
+  match:function(t){return /\b(lift board|who is offering a lift|any lifts)\b/.test(t);},
+  build:function(t,ctx){var rows=ctx.lifts||[];if(!rows.length)return {intent:'lifts',say:'No open lifts are listed.'+sourceLine(null,'lift board'),model:false,go:'games'};var offers=rows.filter(function(r){return r.type==='offer';}).length;return {intent:'lifts',say:rows.length+' open lift '+(rows.length===1?'note':'notes')+' on the board, '+offers+' offering. Areas only, no home addresses.'+sourceLine(rows[0],'lift board'),model:false,go:'games'};}},
+ {id:'read.attendance',intent:'attendance_read',kind:'read',roles:['any'],label:'Your attendance answer',
+  match:function(t){return /\b(am i in|did i say yes|who is in)\b/.test(t);},
+  build:function(t,ctx){if(!isFamily(ctx.role)&&ctx.attendance){return {intent:'attendance_read',say:(ctx.attendance.count||0)+' marked in'+(ctx.attendance.date?' on '+ctx.attendance.date:'')+'.'+sourceLine(ctx.attendance,'attendance'),model:false,go:'att'};}return {intent:'attendance_read',say:ctx.myAnswer?('Your answer is '+ctx.myAnswer+'.'+sourceLine(ctx.attendance,'your answer')):('I cannot see your Yes or No on this phone. Open Home. I will not show anyone else.'+sourceLine(null,'your answer')),model:false,go:isFamily(ctx.role)?'home':'att'};}},
+ {id:'read.motm',intent:'motm',kind:'read',roles:['any'],label:'Whether voting is open',
+  match:function(t){return /\bman of the match\b/.test(t)&&/\b(open|closed|voting)\b/.test(t)&&!/\b(publish|set)\b/.test(t);},
+  build:function(t,ctx){var open=ctx.vote&&ctx.vote.motm&&ctx.vote.motm.open;return {intent:'motm',say:open?'Man of the match voting is open.':'Man of the match voting is closed.'+sourceLine(ctx.vote,'vote settings'),model:false,go:isFamily(ctx.role)?'me':'match'};}},
+ {id:'read.role',intent:'role',kind:'read',roles:['any'],label:'Your role card',
+  match:function(t){return /\bwhat is my job\b/.test(t)||/\bmy role card\b/.test(t);},
+  build:function(t,ctx){if(ctx.roleText)return {intent:'role',say:ctx.roleText+sourceLine(ctx.roleMeta,'role card'),model:false,go:isFamily(ctx.role)?'me':'roles'};return {intent:'role',say:'No role card text is saved for you on this phone. I will open the role page.'+sourceLine(null,'role card'),model:false,go:isFamily(ctx.role)?'me':'roles'};}},
+ {id:'read.directions',intent:'where',kind:'read',roles:['any'],label:'Directions and postcode',
+  match:function(t){return /\b(directions|how do we get there|postcode|where do we park)\b/.test(t);},
+  build:function(t,ctx){var g=fixtureFor(ctx,t);if(!g)return {intent:'where',say:'No game is listed to give directions for.'+sourceLine(null,'fixture record'),model:false};var bits=[g.venue||g.addr||'',(g.vi&&g.vi.pc)||'',(g.vi&&g.vi.pk)||''].filter(Boolean);return {intent:'where',say:bits.length?('Getting there: '+bits.join('. ')+'.'+sourceLine(g,'fixture record')):('No venue or postcode is saved for that game.'+sourceLine(g,'fixture record')),game:g,model:false,go:isFamily(ctx.role)?'games':'match'};}},
+ {id:'nav.shape',intent:'open',kind:'nav',roles:['any'],label:'Open the 352 animation',
+  match:function(t){return /\b(352|3 5 2)\b/.test(t)||(/\banimation\b/.test(t)&&/\b(open|show|play)\b/.test(t));},
+  build:function(){return {intent:'open',say:'Opening the 352 animation.',page:'shape',go:'shape',model:false};}},
+ {id:'nav.training',intent:'open',kind:'nav',roles:['any'],label:'Open training',
+  match:function(t){return /\b(take me to|open|go to)\b/.test(t)&&/\btraining\b/.test(t)&&!/\bplan\b/.test(t);},
+  build:function(t,ctx){return {intent:'open',say:'Opening training.',page:isFamily(ctx.role)?'home':'run',go:isFamily(ctx.role)?'home':'run',model:false};}},
+ {id:'clarify.vague',intent:'clarify',kind:'read',roles:['any'],label:'Ask which thing you mean',
+  match:function(t){return /\bwhat about tomorrow\b/.test(t)||/\bshutting them down\b/.test(t)||t==='where is it';},
+  build:function(t){if(/shutting/.test(t))return {intent:'clarify',say:'That can mean pressing or delaying. Which one?',choices:['Show me pressing clips','Show me delaying clips'],model:false};if(t==='where is it')return {intent:'clarify',say:'Which event do you mean?',choices:['Where is the game?','Where is training?'],model:false};return {intent:'clarify',say:'Do you want the fixture, the kit, or training?',choices:['What time is kick off tomorrow?','What kit is it tomorrow?','What is training this week?'],model:false};}}
+];
+function registryMatch(t,ctx,kind){
+ var i,cmd;
+ for(i=0;i<COMMANDS.length;i++){
+  cmd=COMMANDS[i];
+  if(kind&&cmd.kind!==kind)continue;
+  if(!cmd.match(t,ctx))continue;
+  if(!commandAllowed(cmd,ctx.role||'family'))return {intent:'blocked',command:cmd.id,kind:cmd.kind,model:false,say:cmd.refuse||'That is not available for this role. I have not changed anything.'};
+  var built=cmd.build(t,ctx)||{intent:'unknown',say:'I am not sure.'};
+  built.command=cmd.id;built.kind=cmd.kind;built.model=false;
+  if(!built.intent)built.intent=cmd.intent||'unknown';
+  return built;
+ }
+ return null;
+}
+function commandCatalogue(role){
+ return COMMANDS.filter(function(cmd){return commandAllowed(cmd,role||'parent');}).map(function(cmd){return {id:cmd.id,kind:cmd.kind,label:cmd.label,roles:cmd.roles.slice()};});
+}
 function parseIntent(raw,ctx){
  ctx=ctx||{};
- var t=norm(raw),role=ctx.role||'family';
- if(!t)return {intent:'empty',say:'I did not catch that. Try again, or type it.'};
+ var t=norm(fold(raw)),role=ctx.role||'family';
+ if(!t)return {intent:'empty',say:'I did not catch that. Try again, or type it.',model:false};
+ var safe=safetyIntent(raw,t);
+ if(safe)return safe;
+ var write=registryMatch(t,ctx,'write');
+ if(write)return write;
  if(/\b(stop|cancel|dismiss|that is all|that's all|goodbye|close)\b/.test(t)&&t.split(' ').length<=5)return {intent:'dismiss',say:'OK. I will stop there.'};
  if(has(t,['help','what can i say','what can i ask','what can you do','examples','commands']))return {intent:'help',say:helpSay(role)};
  if(isFamily(role)&&(/\bniggle/.test(t)||/\bwelfare\b/.test(t)||/coaches voice/.test(t)||/fa pdf/.test(t)||/fa squad/.test(t)||/team sheet/.test(t)))
@@ -302,7 +452,7 @@ function parseIntent(raw,ctx){
  if(wantsDraft(t)&&!/\bclip\b|\bvideo\b/.test(t)){
   var body=draftBody(t);
   if(!body||body.length<3)return {intent:'draft',say:'What should the message say? For example: reply we are running late.',needText:true};
-  return {intent:'draft',say:'I have drafted that into Comms: '+body+'. Nothing is sent until you tap Confirm send.',text:body,needConfirm:true,confirmLabel:'Confirm send'};
+  return {intent:'draft',say:'I have drafted that into Comms: '+body+'. Nothing is sent until you tap Send.',text:body,needConfirm:true,confirmLabel:'Send',payload:{action:'draft',text:body}};
  }
  if(wantsClip(t)||(clipTopic(t)&&/\b(show|send|play|share|watch|find)\b/.test(t))){
   var topic=clipTopic(t)||'football';
@@ -312,13 +462,15 @@ function parseIntent(raw,ctx){
   if(!hit)return {intent:'clip',say:isFamily(role)?'I could not find a clip of '+topic+' that I am allowed to show here. I will open the library.':'I could not find a clip of '+topic+' on this phone yet. I will open the library.',topic:topic,action:share?'share':'play',go:isFamily(role)?'lib':'rl'};
   return {intent:'clip',say:(share?'Here is a clip you can share: ':'Here is a clip: ')+hit.title+'.',topic:topic,action:share?'share':'play',clip:hit,go:isFamily(role)?'lib':'rl'};
  }
- if(/\b(open|go to|show me|take me|jump to)\b/.test(t)){
+ var navEarly=registryMatch(t,ctx,'nav');
+ if(navEarly)return navEarly;
+ if(/^(open|show me|take me|go to|jump to)\b/.test(t)||/\b(go to|show me|take me|jump to)\b/.test(t)){
   var pg=pageFor(t,ctx);
   if(pg&&pg.blocked)return {intent:'blocked',say:blockedSay(),page:pg.page&&pg.page.id};
   if(pg)return {intent:'open',say:'Opening '+(pg.words.split(' ')[0])+' .',page:pg.go,go:pg.go};
  }
  if(has(t,['confirm attendance','mark me in','i am in','i can come','confirm i am coming','say yes to training','say yes to the match','confirm coming']))
-  return {intent:'attendance',say:'I can confirm attendance for shirt '+(ctx.shirt||'your player')+' only. Tap Confirm. Nothing is sent until you do.',needConfirm:true,confirmLabel:'Confirm'};
+  return {intent:'attendance',say:'I can confirm attendance for shirt '+(ctx.shirt||'your player')+' only. Nothing is saved until you tap Send.',needConfirm:true,confirmLabel:'Send',payload:{action:'attendance',shirt:ctx.shirt||''}};
  if(has(t,['running late','we are late','i am late','going to be late'])&&!/\breply\b|\bdraft\b/.test(t))
   return {intent:'late',say:'Opening the running late button.',go:'home'};
  if(has(t,['start the stretch','start stretch','pre game stretch','pregame stretch','cool down','start stretching','open stretch','stretching']))
@@ -334,29 +486,31 @@ function parseIntent(raw,ctx){
  if(has(t,['show fixtures','fixtures','fixture list','upcoming games','what games','show games']))
   return {intent:'fixtures',say:'Opening fixtures.',go:isFamily(role)?'games':'match'};
  if(has(t,['where is the game','where is the match','venue','where do we play','getting there','parking'])){
-  var g=nextSat(ctx.fixtures);
+  var g=nextSat(ctx.fixtures, ctx.today);
   var where=g?(g.venue||g.addr||(g.vi&&g.vi.pc)||'venue to be confirmed'):'No upcoming game listed yet.';
-  return {intent:'where',say:(g?((g.ha==='A'?'Away at ':'Home. ')+where):where),go:isFamily(role)?'games':'match',game:g};
+  return {intent:'where',say:(g?((g.ha==='A'?'Away at ':'Home. ')+where):where)+sourceLine(g,'fixture record'),go:isFamily(role)?'games':'match',game:g};
  }
  if(has(t,['what time','kick off','kickoff','when is the game','game on saturday','match on saturday','meet time','be there','what time is the game'])){
-  var g2=nextSat(ctx.fixtures);
-  if(!g2)return {intent:'kickoff',say:'No upcoming game is listed yet.',go:isFamily(role)?'games':'match'};
-  return {intent:'kickoff',say:gameLine(g2),go:isFamily(role)?'games':'match',game:g2};
+  var g2=nextSat(ctx.fixtures, ctx.today);
+  if(!g2)return {intent:'kickoff',say:'No upcoming game is listed yet.'+sourceLine(null,'fixture record'),go:isFamily(role)?'games':'match'};
+  return {intent:'kickoff',say:gameLine(g2)+sourceLine(g2,'fixture record'),go:isFamily(role)?'games':'match',game:g2};
  }
  if(has(t,['training this week','this week training','what is on this week','sessions this week']))
-  return {intent:'training',say:trainingSay(ctx,'week'),span:'week',go:isFamily(role)?'home':'plan'};
+  return {intent:'training',say:trainingSay(ctx,'week')+sourceLine((ctx.posts||[])[0],'training record'),span:'week',go:isFamily(role)?'home':'plan'};
  if(has(t,['training tonight','what are we doing at training','what is training','session tonight','what are we working on','tonight']))
-  return {intent:'training',say:trainingSay(ctx,'tonight'),span:'tonight',go:isFamily(role)?'home':'run'};
+  return {intent:'training',say:trainingSay(ctx,'tonight')+sourceLine((ctx.posts||[])[0],'training record'),span:'tonight',go:isFamily(role)?'home':'run'};
  if(wantsKit(t)&&!/\bshop\b/.test(t)){
   var gk=fixtureFor(ctx,t);
   return {intent:'kit',say:kitSay(gk),game:gk,go:isFamily(role)?'games':'match'};
  }
+ var read=registryMatch(t,ctx,'read');
+ if(read)return read;
  var nav=pageFor(t,ctx);
- if(nav&&nav.blocked)return {intent:'blocked',say:blockedSay()};
- if(nav&&fuzzyScore(t,nav.words)>=0.72)return {intent:'open',say:'Opening that page.',page:nav.go,go:nav.go};
+ if(nav&&nav.blocked)return {intent:'blocked',say:blockedSay(),model:false};
+ if(nav&&fuzzyScore(t,nav.words)>=0.72)return {intent:'open',say:'Opening that page.',page:nav.go,go:nav.go,model:false};
  if(role==='coach'&&has(t,['attendance','take register','who is here']))
-  return {intent:'coach_att',say:'Opening attendance.',go:'att'};
- return {intent:'unknown',say:'Sorry, I am not sure. Try: '+EXAMPLES[Math.floor(Math.random()*EXAMPLES.length)]+'. Or say help.'};
+  return {intent:'coach_att',say:'Opening attendance.',go:'att',model:false};
+ return {intent:'unknown',say:'I am not sure. I can open pages, read what your role is allowed to see, or prepare an action for you to send. The outside model is off.',model:false};
 }
 function femaleName(n){return /female|woman|girl|libby|hazel|sonia|serena|martha|kate|susan|fiona|alice|emma|amy|jenny|zira|samantha|moira|karen/i.test(n||'');}
 function pickVoice(){
@@ -482,9 +636,9 @@ function mount(opts){
   '<p class="small" id="tl-voice-status" role="status" aria-live="assertive" aria-atomic="true">Tap the mic. Audio stays on this phone.</p>'+
   '<div id="tl-voice-log" class="tl-voice-log" aria-live="polite"></div>'+
   '<div class="tl-voice-row"><button type="button" class="btn pri" id="tl-voice-mic" aria-pressed="false">Mic</button></div>'+
-  '<label class="small" for="tl-voice-in">Or type your question</label>'+
+  '<label class="small" for="tl-voice-in">Check the words, then tap Send</label>'+
   '<input id="tl-voice-in" placeholder="e.g. What time is the game on Saturday?" autocomplete="off" enterkeyhint="send">'+
-  '<button type="button" class="btn pri block" id="tl-voice-go">Ask</button>'+
+  '<button type="button" class="btn pri block" id="tl-voice-go">Send</button>'+
   '<p class="small muted" id="tl-voice-note" hidden>On-device listening is not available on this phone. Type your question. Nothing is sent to a speech service.</p>'+
   '</div></div>';
  if(!document.getElementById('tl-voice-css')){
@@ -511,11 +665,11 @@ function mount(opts){
  var fab=document.getElementById('tl-voice-fab'),sheet=document.getElementById('tl-voice-sheet');
  var status=document.getElementById('tl-voice-status'),inp=document.getElementById('tl-voice-in');
  var log=document.getElementById('tl-voice-log'),note=document.getElementById('tl-voice-note'),mic=document.getElementById('tl-voice-mic');
- var handsFree=false,prompting=false,rec=null,localOk=null,open=false,lastEl=null,phase='idle',greeted=false,memory={};
+ var handsFree=false,prompting=false,rec=null,localOk=null,open=false,lastEl=null,phase='idle',greeted=false,memory={},heardEdit=false,turn=0,painting=false;
  function ctxNow(){var c=(typeof opts.context==='function'?opts.context():(opts.context||{}))||{};if(!c.library)c.library=LIB;c.memory=memory;if(!c.today)c.today=londonToday();return c;}
  function setPhase(next,msg){phase=next;status.textContent=msg||'';}
  function setListen(on){fab.classList.toggle('listening',!!on);mic.setAttribute('aria-pressed',on?'true':'false');mic.textContent=on?'Listening':'Mic';}
- function stopRec(){var r=rec;rec=null;try{if(r)r.onresult=r.onerror=r.onend=null;}catch(e){}try{if(r)r.abort?r.abort():r.stop();}catch(e2){}setListen(false);}
+ function stopRec(){turn++;var r=rec;rec=null;try{if(r)r.onresult=r.onerror=r.onend=null;}catch(e){}try{if(r)r.abort?r.abort():r.stop();}catch(e2){}setListen(false);}
  function finishListen(){var r=rec;rec=null;setListen(false);if(!r)return;try{r.stop();}catch(e){}}
  function bubble(who,html){
   var d=document.createElement('div');d.className='tl-voice-b '+who;d.innerHTML=html;log.appendChild(d);log.scrollTop=log.scrollHeight;lastEl=d;return d;
@@ -535,13 +689,15 @@ function mount(opts){
    if(!ok){showNote(true);return;}
    showNote(false);
    stopRec();
+   var mine=++turn;
+   heardEdit=false;
    setPhase('listening','Listening. I stay on this phone.');
    setListen(true);
    var delivered=false;
    rec=listenOnce(function(t,err,meta){
     meta=meta||{};
-    if(!open)return;
-    if(meta.interim){if(phase==='listening')setPhase('listening','I heard: '+t);return;}
+    if(mine!==turn||!open)return;
+    if(meta.interim){if(phase==='listening'&&!heardEdit){painting=true;inp.value=t;painting=false;setPhase('listening','Listening. '+t);}return;}
     if(delivered)return;
     if(err){
      if(err.message==='aborted')return;
@@ -554,8 +710,9 @@ function mount(opts){
     }
     if(!t)return;
     delivered=true;setListen(false);rec=null;
-    inp.value='';
-    run(t,{relisten:true});
+    if(heardEdit){setPhase('heard','Your edit is kept. Tap Send when it is right. Nothing runs until you do.');return;}
+    painting=true;inp.value=t;painting=false;
+    setPhase('heard','Heard. Check the words, then tap Send. Nothing runs until you do.');
    });
    if(!rec){showNote(true);setListen(false);}
   });
@@ -602,8 +759,11 @@ function mount(opts){
   memory.intent=intent.intent;
   setPhase('answering',intent.say);
   var extra=clipHtml(intent);
+  if(intent.choices&&intent.choices.length){
+   extra+='<div class="tl-voice-row">'+intent.choices.map(function(ch){return '<button type="button" class="btn" data-voice-choice="'+esc(ch)+'">'+esc(ch)+'</button>';}).join('')+'</div>';
+  }
   if(intent.needConfirm){
-   extra+='<div class="tl-voice-row"><button type="button" class="btn pri" data-voice-yes="1">'+(esc(intent.confirmLabel||'Confirm'))+'</button><button type="button" class="btn" data-voice-no="1">Cancel</button></div>';
+   extra+='<div class="tl-voice-row"><button type="button" class="btn pri" data-voice-yes="1">'+(esc(intent.confirmLabel||'Send'))+'</button><button type="button" class="btn" data-voice-no="1">Cancel</button></div>';
   }
   var b=bubble('app','<p>'+esc(intent.say)+'</p>'+extra);
   b._intent=intent;
@@ -618,7 +778,8 @@ function mount(opts){
  fab.onclick=function(){openSheet();};
  mic.onclick=function(){
   if(!open){openSheet();return;}
-  if(phase==='listening'){finishListen();return;}
+  if(phase==='listening'){finishListen();setPhase('heard','Listening stopped. Check the words, then tap Send.');return;}
+  if(phase==='working'||phase==='answering'||phase==='heard'){handsFree=true;startListen();return;}
   if(phase==='greeting'){prompting=false;try{if(global.speechSynthesis)speechSynthesis.cancel();}catch(e){}startListen();return;}
   handsFree=true;inp.blur();startListen();
  };
@@ -626,16 +787,18 @@ function mount(opts){
  sheet.addEventListener('click',function(e){if(e.target===sheet)dismiss();});
  document.getElementById('tl-voice-go').onclick=function(){handsFree=false;prompting=false;stopRec();try{speechSynthesis.cancel();}catch(e){}var q=inp.value;inp.value='';if(q.trim())run(q,{relisten:false});};
  inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();document.getElementById('tl-voice-go').click();}});
- inp.addEventListener('input',function(){if(!inp.value)return;handsFree=false;stopRec();if(prompting){prompting=false;try{speechSynthesis.cancel();}catch(e){}}});
+ inp.addEventListener('input',function(){if(painting)return;if(phase==='listening'||phase==='heard')heardEdit=true;if(!inp.value)return;handsFree=false;stopRec();if(prompting){prompting=false;try{speechSynthesis.cancel();}catch(e){}}});
  inp.addEventListener('focus',function(){handsFree=false;stopRec();if(prompting){prompting=false;try{speechSynthesis.cancel();}catch(e){}}});
  log.addEventListener('click',function(e){
   var yes=e.target.closest('[data-voice-yes]');
   var no=e.target.closest('[data-voice-no]');
   var play=e.target.closest('[data-voice-play]');
   var share=e.target.closest('[data-voice-share]');
+  var choice=e.target.closest('[data-voice-choice]');
   var box=e.target.closest('.tl-voice-b');
   var intent=box&&box._intent;
-  if(no){speak('Cancelled.');return;}
+  if(choice){run(choice.getAttribute('data-voice-choice')||'',{relisten:false});return;}
+  if(no){setPhase('idle','Cancelled. Nothing was sent.');bubble('app','<p>Cancelled. Nothing was sent.</p>');return;}
   if(yes&&intent){
    var c=ctxNow();
    speak(intent.intent==='draft'?'Sending that now.':'Confirmed.');
@@ -659,6 +822,7 @@ function mount(opts){
  function api(){return {open:openSheet,close:dismiss,parse:parseIntent,speak:speak,examples:EXAMPLES};}
  return api();
 }
-var api={parseIntent:parseIntent,speak:speak,listenOnce:listenOnce,canListen:canListen,mount:mount,EXAMPLES:EXAMPLES,meetBy:meetBy,fuzzyScore:fuzzyScore,bestClip:bestClip,draftBody:draftBody,isCoachOnlyItem:isCoachOnlyItem,addLibrary:addLibrary,resetLibrary:resetLibrary,library:library,ensureLocal:ensureLocal,pickVoice:pickVoice,pageFor:pageFor};
+function localAnswer(raw,ctx){var intent=parseIntent(raw,ctx||{});intent.model=false;return intent;}
+var api={parseIntent:parseIntent,localAnswer:localAnswer,commands:COMMANDS,commandCatalogue:commandCatalogue,speak:speak,listenOnce:listenOnce,canListen:canListen,mount:mount,EXAMPLES:EXAMPLES,meetBy:meetBy,fuzzyScore:fuzzyScore,bestClip:bestClip,draftBody:draftBody,isCoachOnlyItem:isCoachOnlyItem,addLibrary:addLibrary,resetLibrary:resetLibrary,library:library,ensureLocal:ensureLocal,pickVoice:pickVoice,pageFor:pageFor,explicitKit:explicitKit};
 global.TLVoice=api;
 })(typeof window!=='undefined'?window:globalThis);

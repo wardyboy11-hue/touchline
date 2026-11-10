@@ -6,7 +6,7 @@ const sandbox={window:{},document:{getElementById(){return null},createElement()
 sandbox.global=sandbox;sandbox.globalThis=sandbox;sandbox.window=sandbox;
 vm.runInNewContext(code,sandbox);
 const V=sandbox.window.TLVoice;assert(V&&V.parseIntent);
-const ctx={role:'parent',shirt:'7',fixtures:[{date:'2026-11-07',ko:'15:00',opp:'Demo FC',ha:'H',venue:'Christopher Park'}],trainingLine:'Pressing and winning it back at 20:00.'};
+const ctx={role:'parent',shirt:'7',fixtures:[{date:'2026-11-14',ko:'15:00',opp:'Demo FC',ha:'H',venue:'Christopher Park'}],trainingLine:'Pressing and winning it back at 20:00.'};
 assert.equal(V.parseIntent('show fixtures',ctx).intent,'fixtures');
 assert.equal(V.parseIntent('what time is the game on Saturday',ctx).intent,'kickoff');
 assert.ok(/15:00/.test(V.parseIntent('kick off',ctx).say));

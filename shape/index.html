@@ -52,6 +52,7 @@ footer{background:#0a1626;border-top:1px solid #1d3652;padding:8px 12px calc(10p
   <div id="ttl"></div>
   <div id="key"></div>
   <div id="cams"></div>
+  <div id="wait" style="position:absolute;left:8px;bottom:8px;background:rgba(10,22,38,.85);padding:6px 10px;border-radius:8px;font-size:13px">Pitch ready. Voice loads when you press Play.</div>
   <div id="err"><div><h2>3D needs a newer phone or browser</h2><p>Your device could not start the 3D pitch. You can still listen to the voice over and read the words underneath.</p></div></div>
  </div>
  <footer>
@@ -128,7 +129,7 @@ function init(){
   var lines=[[1,2,3],[6,7,8],[9,10],[4,1],[3,5],[4,6],[5,8]];
   lines.forEach(function(l){var g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(new Float32Array(l.length*3),3));var m=new THREE.Line(g,new THREE.LineBasicMaterial({color:0x8fc1ff,transparent:true,opacity:0.55}));m.userData.ix=l;m.frustumCulled=false;S.add(m);LINES.push(m);});
   RING=new THREE.Mesh(new THREE.RingGeometry(2.2,2.9,40),new THREE.MeshBasicMaterial({color:0xFFB81C,side:THREE.DoubleSide,transparent:true,opacity:0.95}));RING.rotation.x=-Math.PI/2;RING.visible=false;S.add(RING);
-  okGL=true;resize();
+  okGL=true;resize();var w=$('wait');if(w)w.hidden=true;
  }catch(e){okGL=false;$('err').style.display='flex';}
 }
 function pitch(){
@@ -198,17 +199,16 @@ function bindCam(){var cv=$('cv'),pts={},pd=0;
 function resize(){if(!okGL)return;var st=$('stage'),w=st.clientWidth,h=st.clientHeight;R.setSize(w,h,false);C.aspect=w/h;C.fov=w<h?60:42;C.updateProjectionMatrix();}
 
 /* ---------- audio ---------- */
-var AU=new Audio();AU.preload='auto';
+var AU=new Audio();AU.preload='none';
 function clipKey(){return MODE==='squad'?SH.PHASES[PHASE].a:'r_'+ROLE;}
 function total(){return MODE==='squad'?dur(SH.PHASES[PHASE].a,SH.PHASES[PHASE].t):roleSegs(ROLE).total;}
 var BL={},READY=false,NL=0,WAIT=0;AU.setAttribute('playsinline','');
 function clipUrl(k){return BL[k]||('audio/'+k+'.mp3');}
 function loadClip(){AU.pause();AU.src=clipUrl(clipKey());AU.load();}
-/* fetch every voice line up front so any clip or Play all starts with its voice, no silent start */
-function preload(){var keys=Object.keys(DUR);if(!keys.length){READY=true;ldUI();return;}var first=clipKey();keys.sort(function(a,b){return (b===first)-(a===first);});
- var i=0,run=function(){if(i>=keys.length)return Promise.resolve();var k=keys[i++];return fetch('audio/'+k+'.mp3').then(function(r){if(!r.ok)throw 0;return r.blob();}).then(function(b){BL[k]=URL.createObjectURL(b);}).catch(function(){}).then(function(){NL++;ldUI();return run();});};
- Promise.all([run(),run(),run(),run()]).then(function(){READY=true;ldUI();if(!PLAYING)loadClip();});}
-function ldUI(){var n=Object.keys(DUR).length,b=$('play'),a=$('all');b.disabled=a.disabled=!READY;if(!READY){b.textContent='Loading voice '+NL+'/'+n;}else if(!PLAYING&&/Loading/.test(b.textContent))b.textContent='Play';}
+/* The pitch shows at once. One voice file loads when Play is pressed, not all 8MB up front. */
+function preload(){READY=true;ldUI();}
+function ensureClip(done){var k=clipKey();if(BL[k]){done();return;}var b=$('play');if(b)b.textContent='Loading voice';fetch('audio/'+k+'.mp3').then(function(r){if(!r.ok)throw 0;return r.blob();}).then(function(blob){BL[k]=URL.createObjectURL(blob);}).catch(function(){}).then(function(){if(!PLAYING&&b)b.textContent='Play';loadClip();done();});}
+function ldUI(){var b=$('play'),a=$('all');if(b)b.disabled=false;if(a)a.disabled=false;}
 function startAudio(){if(!SOUND)return;try{AU.currentTime=Math.min(CLOCK,total());var p=AU.play();if(p&&p.catch)p.catch(function(){});}catch(e){}}
 
 /* ---------- UI ---------- */
@@ -257,9 +257,9 @@ function bind(){
  $('modes').addEventListener('click',function(e){var b=e.target.closest('[data-m]');if(b){ALL=false;ALLREQ=false;setMode(b.dataset.m);}});
  $('picks').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;ALL=false;ALLREQ=false;if(b.dataset.p!==undefined){go(+b.dataset.p,true);}else if(b.dataset.r){setRole(b.dataset.r,true);}});
  $('cams').addEventListener('click',function(e){var b=e.target.closest('[data-c]');if(b)setCam(b.dataset.c);});
- $('play').addEventListener('click',function(){if(!READY)return;if(PLAYING){PLAYING=false;AU.pause();$('play').textContent='Play';}else doPlay(CLOCK>=total()-0.05);});
+ $('play').addEventListener('click',function(){if(PLAYING){PLAYING=false;AU.pause();$('play').textContent='Play';return;}ensureClip(function(){doPlay(CLOCK>=total()-0.05);});});
  $('next').addEventListener('click',function(){ALL=false;ALLREQ=false;nextItem(false);});
- $('all').addEventListener('click',function(){if(!READY)return;ALLREQ=true;if(MODE==='squad'){go(0,true);}else{setRole(SH.ORDER[0],true);}ALL=true;});
+ $('all').addEventListener('click',function(){ALLREQ=true;ensureClip(function(){if(MODE==='squad'){go(0,true);}else{setRole(SH.ORDER[0],true);}ALL=true;});});
  $('snd').addEventListener('click',function(){SOUND=!SOUND;this.textContent=SOUND?'Sound on':'Sound off';if(!SOUND)AU.pause();else if(PLAYING)startAudio();});
  $('bar').addEventListener('click',function(e){var r=this.getBoundingClientRect();CLOCK=total()*(e.clientX-r.left)/r.width;if(SOUND){try{AU.currentTime=CLOCK;}catch(x){}}if(!PLAYING){SEG=-1;}});
  AU.addEventListener('ended',function(){});

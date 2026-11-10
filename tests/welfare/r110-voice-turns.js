@@ -67,7 +67,8 @@ T('opening greets once', spoken.filter(function (s) { return s === 'How can I he
 T('listening started on the device stub', recs.length === 1);
 var beforeHelp = bubbles.filter(function (h) { return h.indexOf('How can I help?') >= 0; }).length;
 recs[0].onresult({ results: [{ isFinal: true, 0: { transcript: 'what kit is it tomorrow' } }] });
-T('the heard question is on screen', bubbles.some(function (h) { return h.indexOf('what kit is it tomorrow') >= 0; }));
+T('the heard question is on screen', els['tl-voice-in'].value.indexOf('what kit is it tomorrow') >= 0 && /Heard/.test(els['tl-voice-status'].textContent) && !bubbles.some(function (h) { return h.indexOf('dark blue') >= 0; }));
+els['tl-voice-go'].onclick();
 T('the answer names the saved blue kit', bubbles.some(function (h) { return h.indexOf('dark blue and white stripes') >= 0; }) && spoken.some(function (s) { return s.indexOf('dark blue') >= 0; }));
 els['tl-voice-mic'].onclick();
 T('a second mic tap does not add another greeting', bubbles.filter(function (h) { return h.indexOf('How can I help?') >= 0; }).length === beforeHelp);
