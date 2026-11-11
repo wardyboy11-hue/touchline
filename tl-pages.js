@@ -5,11 +5,11 @@ function tlPageBand(id, title, lead) {
 }
 function tlWrapGames(inner) {
   var player = window.D && D.role === 'player';
-  return tlPageBand('tl-matchday', player ? 'Player matchday' : 'Parent matchday', 'Next games are first. Kit, directions, lifts and the share button stay on each game. Emergency is on the Home shortcut row.') + (window.tlSpotifyCard ? tlSpotifyCard() : '') + (window.tlAlarmCard ? tlAlarmCard() : '') + inner;
+  return tlPageBand('tl-matchday', 'Match days', 'Your next game is first in the list below. Each game shows the kit, directions, lifts and a Share button. If something goes wrong on the day, use Emergency on Home.') + (window.tlSpotifyCard ? tlSpotifyCard() : '') + (window.tlAlarmCard ? tlAlarmCard() : '') + inner;
 }
 function tlWrapMedia(inner) {
   var player = window.D && D.role === 'player';
-  return tlPageBand('tl-resources', player ? 'Player resources' : 'Parent resources', 'Clips and pictures the coaches have checked. Share sits on each clip. Podcasts are under Listen.') + inner;
+  return tlPageBand('tl-resources', 'Videos and pictures', 'Videos and pictures the coaches have checked. Each one has a Share button. Podcasts are under Listen.') + inner;
 }
 function tlCoachMatchday() {
   return tlPageBand('tl-coach-matchday', 'Coach matchday', 'Clock, substitutions and goals are on this screen. Alerts and the checklist are the button under this heading. Nothing is sent until you press it.') + (window.tlSpotifyCard ? tlSpotifyCard() : '') + (window.tlAlarmCard ? tlAlarmCard() : '');

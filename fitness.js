@@ -416,7 +416,7 @@ function listHtml(opts){
 function familyCard(opts){
  opts=opts||{};
  var who=opts.who||(G.D&&G.D.role==='parent'?'parent':'player');
- return '<div class="card" id="fitc"><span class="tag" style="background:#16a34a">Fitness</span><h2 style="margin-top:8px">'+(who==='parent'?'Fitness':'My fitness')+'</h2><p class="small muted">'+(who==='parent'?'Your own plan, plus his plan read only.':'Goals, a PT-style plan, and tick sessions off. Saved to your profile.')+'</p><button type="button" class="btn pri block" data-fit="hub" data-who="'+E(who)+'">Open fitness</button></div>';
+ return '<div class="card" id="fitc"><span class="tag" style="background:#16a34a">Fitness</span><h2 style="margin-top:8px">'+(who==='parent'?'Fitness':'My fitness')+'</h2><p class="small muted">'+(who==='parent'?'Your own plan, plus his plan read only.':'Set a goal, get a plan like a personal trainer would give you, and tick off each session. Saved to your profile.')+'</p><button type="button" class="btn pri block" data-fit="hub" data-who="'+E(who)+'">Open fitness</button></div>';
 }
 
 /* ---------- Coach designers ---------- */

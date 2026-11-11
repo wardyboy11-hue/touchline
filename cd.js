@@ -126,7 +126,7 @@
     if (train) out.push(train);
     if (!out.length) return '';
     return '<div class="card tl-cd-rail" aria-label="Countdown to training and matches">' +
-      '<div class="tl-cd-head"><b>Coming up</b><span class="small muted">Live countdown</span></div>' +
+      '<div class="tl-cd-head"><b>Coming up</b><span class="small muted">Time to go</span></div>' +
       '<div class="tl-cd-row">' + out.map(itemHtml).join('') + '</div></div>';
   }
   function kitKey(m) {

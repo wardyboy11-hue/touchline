@@ -50,7 +50,7 @@ async function seedFamily(page,role){
  T('player harness has My role card',!!(await q.$('#r90-harness .tl-role button')));
  await shot(q,'r90_role_phone_card.png');
  await q.click('#r90-harness .tl-role button.btn.pri');await w(700);
- T('My role hub opens',!!(await q.$('#tl-roleview'))&&/My role/i.test(await q.innerText('#tl-roleview')));
+ T('My role hub opens',!!(await q.$('#tl-roleview'))&&/My position/i.test(await q.innerText('#tl-roleview')));
  await shot(q,'r90_role_phone_hub.png');
  const chipN=await q.$$eval('#tl-roleview .chip, #r90-harness .tl-role-chips .chip',xs=>xs.length);
  T('position chips available',chipN>=8);

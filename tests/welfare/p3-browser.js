@@ -43,7 +43,7 @@ for(const role of ['parent','player']){
  } else {
   T('player does not see the parent card on Home',!/Parents Respect code/i.test(tx));
   await q.evaluate(()=>goTab('me'));await q.waitForTimeout(400);tx=await q.innerText('body');
-  T('player sees optional team code, no My data',/Our team code/i.test(tx)&&/optional/i.test(tx)&&!/Open My data/.test(tx));
+  T('player sees optional team code, no My data',/Our team rules/i.test(tx)&&/optional/i.test(tx)&&!/Open My data/.test(tx));
   await q.click('button:has-text("I agree")');await q.waitForTimeout(500);
   T('player can agree with one tap',signed==='Sam'||/You agreed/.test(await q.innerText('body')));
   await q.evaluate(()=>goTab('data'));await q.waitForTimeout(300);

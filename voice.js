@@ -14,7 +14,7 @@ var EXAMPLES=[
  'Send me a clip of shooting',
  'Open the emergency head injury page',
  'Reply we are running late',
- 'My role',
+ 'My position',
  'Show my player card',
  'Running late',
  'Start the stretch',
@@ -294,8 +294,8 @@ function parseIntent(raw,ctx){
   return {intent:'late',say:'Opening the running late button.',go:'home'};
  if(has(t,['start the stretch','start stretch','pre game stretch','pregame stretch','cool down','start stretching','open stretch','stretching']))
   return {intent:'stretch',say:'Opening the stretch player.',go:'stretch'};
- if(has(t,['my role','role card','what is my role','show my role']))
-  return {intent:'role',say:'Opening your role card.',go:'me'};
+ if(has(t,['my role','my position','role card','what is my role','show my role','what is my position','where do i play']))
+  return {intent:'role',say:'Opening your position page.',go:'me'};
  if(has(t,['player card','my card','show my profile','my profile','player profile','his card']))
   return {intent:'card',say:'Opening the player card. Shirt numbers only on family views.',go:isFamily(role)?'me':'squad'};
  if(has(t,['club shop','open shop','kit shop','buy a coat']))
@@ -418,7 +418,7 @@ function mount(opts){
  if(document.getElementById('tl-voice-root'))return api();
  var wrap=document.createElement('div');wrap.id='tl-voice-root';
  wrap.innerHTML='<button type="button" class="tl-voice-fab" id="tl-voice-fab" aria-label="Voice helper" aria-haspopup="dialog" aria-controls="tl-voice-sheet">'+
-  '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>'+
+  '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg><span class="tl-voice-fab-l">Ask</span></button>'+
   '<div class="tl-voice-sheet" id="tl-voice-sheet" hidden>'+
   '<div class="tl-voice-inner" role="dialog" aria-modal="true" aria-labelledby="tl-voice-h">'+
   '<div class="tl-voice-top"><h3 id="tl-voice-h">Voice assistant</h3><button type="button" class="btn" id="tl-voice-x" aria-label="Dismiss voice assistant">Close</button></div>'+
@@ -432,7 +432,7 @@ function mount(opts){
   '</div></div>';
  if(!document.getElementById('tl-voice-css')){
   var st=document.createElement('style');st.id='tl-voice-css';
-  st.textContent='.tl-voice-fab{position:fixed;right:14px;bottom:calc(86px + env(safe-area-inset-bottom));z-index:90;width:52px;height:52px;border-radius:50%;border:0;background:#FFB81C;color:#0b1330;box-shadow:0 6px 18px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;cursor:pointer}'+
+  st.textContent='.tl-voice-fab{position:fixed;right:14px;bottom:calc(86px + env(safe-area-inset-bottom));z-index:90;min-width:52px;height:52px;padding:0 16px 0 14px;gap:6px;font:700 17px system-ui,sans-serif;border-radius:26px;border:0;background:#FFB81C;color:#0b1330;box-shadow:0 6px 18px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;cursor:pointer}'+
    '.tl-voice-fab.listening{background:#ef4444;color:#fff;animation:tl-voice-pulse 1s ease-in-out infinite}'+
    '@keyframes tl-voice-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}'+
    '.tl-voice-sheet{position:fixed;inset:0;z-index:95;background:rgba(0,0,0,.55);display:flex;align-items:flex-end;justify-content:center}'+

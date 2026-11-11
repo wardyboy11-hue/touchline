@@ -6,7 +6,7 @@ var CDEV={"src": {"uefaA": {"id": "1wHebGlT3XKD4mt_2_QMszV2f08y6kd_X", "n": "UEF
 var CQ={rows:null,busy:false,err:'',at:0,pq:null,pqErr:''};
 function cqLoad(force){if(CQ.busy)return;if(!force&&CQ.at&&Date.now()-CQ.at<60000)return;CQ.busy=true;CQ.at=Date.now();
  Promise.all([call('cq.list'),call('pqc.list')]).then(function(a){CQ.busy=false;CQ.err='';CQ.rows=a[0].rows||[];CQ.pq=a[1].rows||[];if(V().tab==='cdev')render(true);})
- .catch(function(e){CQ.busy=false;CQ.err=/unknown/i.test(e.message)?'The questions part of the backend is not switched on yet (release 75 backend).':e.message;if(V().tab==='cdev')render(true);});}
+ .catch(function(e){CQ.busy=false;CQ.err=/unknown/i.test(e.message)?'Questions are not switched on in the Google Sheet yet.':e.message;if(V().tab==='cdev')render(true);});}
 function cdSrc(keys){return '<div class="chips" style="margin-top:8px">'+keys.map(function(k){var s=CDEV.src[k];return s?'<button class="chip" data-act="planOpen" data-id="'+esc(s.id)+'" data-n="'+esc(s.n)+'">&#128196; '+esc(s.n)+'</button>':'';}).join('')+'</div>';}
 function cdList(p){return '<ul class="small" style="margin:6px 0 0 18px;padding:0">'+p.map(function(x){return '<li style="margin:4px 0">'+esc(x)+'</li>';}).join('')+'</ul>';}
 function cdCard(id,t,inner,open){return '<details class="card" id="cd-'+id+'"'+(open?' open':'')+'><summary style="cursor:pointer;font-weight:700;font-size:17px">'+esc(t)+'</summary>'+inner+'</details>';}

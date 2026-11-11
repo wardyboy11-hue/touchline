@@ -13,30 +13,31 @@
   #app{display:flex;flex-direction:column;max-width:1280px;margin:0 auto}
   header{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid #12283f}
   h1{font-size:16px;margin:0;font-weight:700}
-  header a{color:var(--amber);font-size:14px;text-decoration:none;white-space:nowrap}
+  header a{color:var(--amber);font-size:15px;font-weight:700;text-decoration:none;white-space:nowrap;display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1px solid var(--amber);border-radius:10px}
   .row{display:flex;gap:8px;padding:8px 12px 0;overflow-x:auto;scrollbar-width:none}
   .row::-webkit-scrollbar{display:none}
-  button{font:inherit;font-size:14px;color:var(--text);background:var(--panel);border:1px solid var(--line);padding:8px 14px;cursor:pointer;white-space:nowrap}
+  button{font:inherit;font-size:15px;min-height:44px;color:var(--text);background:var(--panel);border:1px solid var(--line);padding:8px 14px;cursor:pointer;white-space:nowrap}
   button:active{transform:scale(.97)}
   button.on{background:var(--amber);border-color:var(--amber);color:var(--amberText);font-weight:700}
   .mode{border-radius:8px;padding:9px 16px}
   .pill{border-radius:999px}
-  .part b{font-weight:400;opacity:.8;font-size:12px;margin-right:4px}
+  .part b{font-weight:400;opacity:.85;font-size:13px;margin-right:4px}
   #picks{padding-bottom:8px}
   #phead{padding:6px 12px 0}
   #ptitle{font-weight:700;font-size:15px}
-  #pmeta{color:var(--muted);font-size:13px}
+  #pmeta{color:var(--muted);font-size:15px}
   #stageWrap{position:relative;height:min(56vh,560px);min-height:240px;background:radial-gradient(ellipse at 50% 30%,#10263d,#0b1b2e 70%)}
   #stage{position:absolute;inset:0;touch-action:none}
   #stage canvas{display:block;width:100%;height:100%}
-  #legend{position:absolute;left:10px;bottom:8px;font-size:13px;background:rgba(11,27,46,.7);padding:6px 8px;border-radius:8px;line-height:1.5;pointer-events:none}
+  #legend{position:absolute;left:10px;bottom:8px;font-size:14px;background:rgba(11,27,46,.7);padding:6px 8px;border-radius:8px;line-height:1.5;pointer-events:none}
   #legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px}
-  #cams{position:absolute;right:10px;top:8px;display:flex;flex-direction:column;gap:8px}
+  #cams{position:absolute;right:10px;top:8px;display:flex;flex-direction:column;gap:6px}
+  #cams span{font-size:13px;font-weight:700;text-align:center;color:var(--text);background:rgba(11,27,46,.85);border-radius:6px;padding:2px 4px}
   #cams button{border-radius:8px;padding:7px 12px;background:rgba(18,40,63,.92)}
   #title{position:absolute;left:50%;top:10px;transform:translateX(-50%);background:rgba(11,27,46,.85);border-radius:999px;padding:6px 14px;font-weight:700;font-size:15px;pointer-events:none;white-space:nowrap;max-width:70%;overflow:hidden;text-overflow:ellipsis}
   #fallback{position:absolute;inset:0;display:none;align-items:center;justify-content:center;text-align:center;padding:24px;color:var(--muted)}
   #narr{padding:12px 12px 6px;border-top:1px solid #12283f}
-  #narr small{display:block;color:var(--amber);letter-spacing:.06em;text-transform:uppercase;font-size:12px;margin-bottom:6px}
+  #narr small{display:block;color:var(--amber);letter-spacing:.06em;text-transform:uppercase;font-size:13px;margin-bottom:6px}
   #narr p{margin:0;font-size:17px;line-height:1.5;min-height:5.2em}
   #bar{height:6px;background:var(--panel);margin:6px 12px;border-radius:6px;overflow:hidden}
   #bar div{height:100%;width:0;background:var(--amber)}
@@ -62,12 +63,12 @@
 <div id="app">
   <header>
     <h1>Training 11/11</h1>
-    <a id="back" href="../../">Back to the app</a>
+    <a id="back" href="../../">&#8249; Back to the app</a>
   </header>
   <div class="row" id="parts" role="group" aria-label="Parts of the session"></div>
   <div class="row" id="modes">
     <button class="mode on" data-mode="team">The whole team</button>
-    <button class="mode" data-mode="role">My role</button>
+    <button class="mode" data-mode="role">Just my position</button>
   </div>
   <div id="phead"><div id="ptitle"></div><div id="pmeta"></div></div>
   <div class="row" id="picks"></div>
@@ -75,7 +76,8 @@
     <div id="stage"></div>
     <div id="title"></div>
     <div id="legend"></div>
-    <div id="cams">
+    <div id="cams" role="group" aria-label="Camera view">
+      <span>View</span>
       <button data-cam="behind">Behind</button>
       <button data-cam="top">Top</button>
       <button data-cam="side">Side</button>
