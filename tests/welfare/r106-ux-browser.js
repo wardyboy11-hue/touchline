@@ -8,7 +8,7 @@ fs.mkdirSync(SHOTS, { recursive: true });
 const MT = { '.js': 'text/javascript', '.html': 'text/html', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.webmanifest': 'application/json', '.vtt': 'text/vtt', '.webm': 'video/webm', '.mp4': 'video/mp4' };
 const srv = http.createServer((q, r) => {
   const u = decodeURIComponent(q.url.split('?')[0]);
-  if (u === '/version.json') { r.writeHead(200, { 'content-type': 'application/json' }); r.end('{"v": "108"}'); return; }
+  if (u === '/version.json') { r.writeHead(200, { 'content-type': 'application/json' }); r.end('{"v": "109"}'); return; }
   let f = path.join(root, u);
   if (f.endsWith('/')) f += 'index.html';
   fs.readFile(f, (e, d) => {
@@ -75,11 +75,11 @@ function fam(role) {
     await p.screenshot({ path: path.join(SHOTS, 'r106-player-home.png') });
     await p.locator('nav.tabs button', { hasText: 'Games' }).click();
     await p.waitForSelector('#tl-matchday');
-    T('player matchday heading', /Player matchday/.test(await p.locator('#tl-matchday').innerText()));
+    T('player matchday heading', /Match days/.test(await p.locator('#tl-matchday').innerText()));
     await p.screenshot({ path: path.join(SHOTS, 'r106-player-matchday.png') });
     await p.locator('nav.tabs button', { hasText: 'Media' }).click();
     await p.waitForSelector('#tl-resources');
-    T('player resources heading', /Player resources/.test(await p.locator('#tl-resources').innerText()));
+    T('player resources heading', /Videos and pictures/.test(await p.locator('#tl-resources').innerText()));
     await p.screenshot({ path: path.join(SHOTS, 'r106-player-resources.png') });
     T('player home zero console errors', E.length === 0);
     if (E.length) console.log(E);
@@ -130,7 +130,7 @@ function fam(role) {
     await p.evaluate(() => { const s = document.getElementById('splash'); if (s) s.remove(); try { r(); } catch (e) {} });
     await p.locator('.tl-q', { hasText: 'Fixtures' }).click();
     await p.waitForSelector('#tl-matchday');
-    T('parent matchday heading', /Parent matchday/.test(await p.locator('#tl-matchday').innerText()));
+    T('parent matchday heading', /Match days/.test(await p.locator('#tl-matchday').innerText()));
     T('fixture opponent still listed', /Rivals Athletic/.test(await p.locator('#root').innerText()));
     T('share bar still on games', await p.locator('[data-tlshare], .tl-share-btn, button:has-text("Share")').count() > 0);
     await p.screenshot({ path: path.join(SHOTS, 'r106-parent-matchday.png') });
@@ -149,7 +149,7 @@ function fam(role) {
     await p.evaluate(() => { const s = document.getElementById('splash'); if (s) s.remove(); try { r(); } catch (e) {} });
     await p.locator('.tl-q', { hasText: 'Clips' }).click();
     await p.waitForSelector('#tl-resources');
-    T('parent resources heading', /Parent resources/.test(await p.locator('#tl-resources').innerText()));
+    T('parent resources heading', /Videos and pictures/.test(await p.locator('#tl-resources').innerText()));
     T('listen still on resources', /Open the podcast list/.test(await p.locator('#root').innerText()));
     await p.screenshot({ path: path.join(SHOTS, 'r106-parent-resources.png') });
     await p.locator('nav.tabs button', { hasText: 'Home' }).click();

@@ -43,7 +43,7 @@ function tlAlarmFixtureLine() {
     list.sort(function (a, b) { return String(a.date).localeCompare(String(b.date)); });
     var m = list[0];
     if (!m) return 'No fixture is listed yet. The alarm time is only what you type.';
-    return (m.ha === 'A' ? 'Away at ' : 'Home v ') + (m.opp || 'the opposition') + '. Kick-off ' + (m.ko || 'not set') + ', Europe/London' + (m.date ? ', ' + m.date : '') + '.';
+    return (m.ha === 'A' ? 'Away at ' : 'Home v ') + (m.opp || 'the opposition') + '. Kick-off ' + (m.ko || 'not set') + ' UK time' + (m.date ? ', ' + m.date : '') + '.';
   } catch (e) { return 'Fixture details are not on this screen. The alarm time is only what you type.'; }
 }
 function tlAlarmMessage() {
@@ -117,7 +117,7 @@ function tlAlarmArm() {
   var begin = function (buf) {
     if (!tlAlarmState.armed) { try { ctx.close(); } catch (e) {} return; }
     tlAlarmStartGraph(ctx, buf);
-    tlAlarmSetStatus('Preview is armed for ' + when.text + '. It plays only while this page stays open and awake. London now is ' + (tlAlarmLondonNow() || 'unavailable') + '. This is not the Match of the Day theme, and it will not ring with the screen locked.');
+    tlAlarmSetStatus('Preview is armed for ' + when.text + '. It plays only while this page stays open and awake. The time now is ' + (tlAlarmLondonNow() || 'unavailable') + '. This is not the Match of the Day theme, and it will not ring with the screen locked.');
   };
   if (tlAlarmState.fileBuffer) begin(tlAlarmState.fileBuffer);
   else begin(null);
@@ -166,8 +166,8 @@ function tlAlarmCard() {
   var plat = tlAlarmPlatform();
   var clock = plat === 'android-chrome'
     ? '<a class="btn block" id="tl-alarm-clock" href="#" onclick="return tlAlarmOpenClock(event)">Try Android Clock</a><p class="small">Chrome may open the clock app only if that app allows browser links. You still confirm the alarm there. If nothing opens, use Copy time.</p>'
-    : '<p class="small">' + (plat === 'ios' ? 'iPhone cannot set a Clock alarm from a website. There is no documented link for it.' : 'This browser cannot open the phone clock.') + ' Copy the time and add it in Clock yourself.</p>';
-  return '<section class="tl-simple" id="tl-alarm"><h2>Wake-up</h2><p class="small">You choose the time. Nothing is set until you tap a button. London now: <b id="tl-alarm-london">' + (tlAlarmLondonNow() || '') + '</b></p><p class="small" id="tl-alarm-fixture">' + tlAlarmFixtureLine() + '</p><label for="tl-alarm-time">Alarm time</label><input id="tl-alarm-time" type="time" value="">' + clock + '<button type="button" class="btn block" id="tl-alarm-copy" onclick="tlAlarmCopy()">Copy time</button><h3>In-app sound</h3><p class="small">This plays only while Touchline stays open, awake, and allowed to make sound. It stops if you leave the page or lock the screen. It is not a phone alarm and it is not a notification. No Match of the Day recording is included.</p><label for="tl-alarm-file">Your own audio file, kept on this phone</label><input id="tl-alarm-file" type="file" accept="audio/*"><div class="row wrap2" style="margin-top:8px"><button type="button" class="btn pri" id="tl-alarm-arm" onclick="tlAlarmArm()">Arm preview</button><button type="button" class="btn" id="tl-alarm-stop" onclick="tlAlarmStop();tlAlarmSetStatus(\'Stopped.\')">Stop</button><button type="button" class="btn" id="tl-alarm-snooze" onclick="tlAlarmSnooze()">Snooze 5 min</button></div><p class="small" id="tl-alarm-status" role="status"></p></section>';
+    : '<p class="small">' + (plat === 'ios' ? 'iPhone does not let a website set a Clock alarm.' : 'This phone does not let a website set an alarm.') + ' Copy the time and add it in Clock yourself.</p>';
+  return '<section class="tl-simple" id="tl-alarm"><h2>Wake up alarm</h2><p class="small">You choose the time. Nothing is set until you tap a button. Time now: <b id="tl-alarm-london">' + (tlAlarmLondonNow() || '') + '</b></p><p class="small" id="tl-alarm-fixture">' + tlAlarmFixtureLine() + '</p><label for="tl-alarm-time">Alarm time</label><input id="tl-alarm-time" type="time" value="">' + clock + '<button type="button" class="btn block" id="tl-alarm-copy" onclick="tlAlarmCopy()">Copy time</button><h3>Sound in the app</h3><p class="small">This plays only while Touchline stays open, awake, and allowed to make sound. It stops if you leave the page or lock the screen. It is not a phone alarm.</p><label for="tl-alarm-file">Your own audio file, kept on this phone</label><input id="tl-alarm-file" type="file" accept="audio/*"><div class="row wrap2" style="margin-top:8px"><button type="button" class="btn pri" id="tl-alarm-arm" onclick="tlAlarmArm()">Set it</button><button type="button" class="btn" id="tl-alarm-stop" onclick="tlAlarmStop();tlAlarmSetStatus(\'Stopped.\')">Stop</button><button type="button" class="btn" id="tl-alarm-snooze" onclick="tlAlarmSnooze()">Snooze 5 min</button></div><p class="small" id="tl-alarm-status" role="status"></p></section>';
 }
 function tlAlarmOpenClock(ev) {
   if (ev && ev.preventDefault) ev.preventDefault();

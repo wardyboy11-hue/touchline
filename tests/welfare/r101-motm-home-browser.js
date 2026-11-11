@@ -3,7 +3,7 @@ const {chromium,devices}=require('playwright');const http=require('http'),fs=req
 const root=path.resolve(__dirname,'../..'),PORT=+process.env.PORT||8805,SHOTS=process.env.SHOTS||'/workspace/shots',PRE=process.env.PRE||'r100_motm_';
 fs.mkdirSync(SHOTS,{recursive:true});
 const MT={'.js':'text/javascript','.html':'text/html','.json':'application/json','.css':'text/css','.png':'image/png','.jpg':'image/jpeg','.webp':'image/webp','.webmanifest':'application/json'};
-const srv=http.createServer((q,r)=>{let u=decodeURIComponent(q.url.split('?')[0]);if(u==='/version.json'){r.writeHead(200,{'content-type':'application/json'});r.end('{"v": "108"}');return;}let f=path.join(root,u);if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,d)=>{if(e){r.writeHead(404);r.end();return;}r.writeHead(200,{'content-type':MT[path.extname(f)]||'application/octet-stream'});r.end(d);});}).listen(PORT);
+const srv=http.createServer((q,r)=>{let u=decodeURIComponent(q.url.split('?')[0]);if(u==='/version.json'){r.writeHead(200,{'content-type':'application/json'});r.end('{"v": "109"}');return;}let f=path.join(root,u);if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,d)=>{if(e){r.writeHead(404);r.end();return;}r.writeHead(200,{'content-type':MT[path.extname(f)]||'application/octet-stream'});r.end(d);});}).listen(PORT);
 const BASE='http://localhost:'+PORT;let ok=0,bad=0;const T=(n,c)=>{console.log((c?'PASS ':'FAIL ')+n);c?ok++:bad++;};
 const H={'access-control-allow-origin':'*'};
 function errsOf(p){const e=[];p.on('pageerror',x=>e.push('pageerror: '+x.message));p.on('console',m=>{if(m.type()==='error'&&!/Failed to load resource|favicon|net::ERR/.test(m.text()))e.push('console: '+m.text());});return e;}
@@ -38,7 +38,7 @@ function famData(role, fxDate, ko, voteOpen){
    await q.evaluate(()=>{const s=document.getElementById('splash');if(s)s.remove();const md=document.getElementById('tl-md');if(md)md.remove();try{r();}catch(e){}});
    await q.waitForTimeout(400);
    const st=await q.evaluate(()=>{const el=document.getElementById('motm-home');return {has:!!el,text:el?el.innerText:'',first:(document.querySelector('#sec-alerts .card')||{}).id};});
-   T(pg+' holding MoM card', st.has && /MoM vote opens on matchday/i.test(st.text));
+   T(pg+' holding MoM card', st.has && /Voting opens on matchday/i.test(st.text));
    T(pg+' MoM in alerts band', st.first==='motm-home' || st.has);
    await q.screenshot({path:path.join(SHOTS,PRE+pg.replace('.html','')+'_holding.png'),fullPage:false});
    T(pg+' holding zero console errors', E.length===0); if(E.length) console.log(E);

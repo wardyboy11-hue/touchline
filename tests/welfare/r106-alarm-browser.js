@@ -7,7 +7,7 @@ const SHOTS = process.env.SHOTS || '/opt/cursor/artifacts';
 fs.mkdirSync(SHOTS, { recursive: true });
 const srv = http.createServer((q, r) => {
   const u = decodeURIComponent(q.url.split('?')[0]);
-  if (u === '/version.json') { r.writeHead(200, { 'content-type': 'application/json' }); r.end('{"v": "108"}'); return; }
+  if (u === '/version.json') { r.writeHead(200, { 'content-type': 'application/json' }); r.end('{"v": "109"}'); return; }
   let f = path.join(root, u);
   if (f.endsWith('/')) f += 'index.html';
   fs.readFile(f, (e, d) => {
@@ -39,7 +39,7 @@ const T = (n, c) => { console.log((c ? 'PASS ' : 'FAIL ') + n); c ? ok++ : bad++
   const html = await p.locator('#tl-alarm').innerHTML();
   T('time starts empty', empty === '');
   T('desktop test build has no clock intent link', html.indexOf('intent:') < 0);
-  T('fixture is London kick-off text', /10:30, Europe\/London/.test(await p.locator('#tl-alarm-fixture').innerText()));
+  T('fixture shows the kick off in UK time', /10:30 UK time/.test(await p.locator('#tl-alarm-fixture').innerText()));
   await p.locator('#tl-alarm-arm').click();
   await p.waitForTimeout(200);
   T('arm without a time does not start', /Choose a time/.test(await p.locator('#tl-alarm-status').innerText()));

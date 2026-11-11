@@ -116,7 +116,7 @@ function openSheet(){
 function cardExtra(){
  var prog=loadProg(),h='';
  h+='<button type="button" class="btn pri block" style="margin-top:8px" onclick="openPreStretch()">Pre-game stretch</button>';
- h+='<p class="small muted" style="margin-top:6px">short dynamic warm-up. Tell us any niggles (chips only), we weight the sequence, and save it on your profile to replay.</p>';
+ h+='<p class="small muted" style="margin-top:6px">A short warm up before the game. Tap anything that feels sore and we change the stretches to suit. You can save it and use it again.</p>';
  if(prog&&prog.ids&&prog.ids.length){
   var labs=(prog.areas||[]).map(function(k){for(var i=0;i<AREAS.length;i++)if(AREAS[i].k===k)return AREAS[i].lab;return k;}).join(', ');
   h+='<p class="small" style="margin-top:6px">Saved programme'+(labs?' · '+E(labs):'')+'. <a href="stretch/index.html?mode=pregame&v=92&back='+encodeURIComponent(location.pathname)+'">Replay</a></p>';

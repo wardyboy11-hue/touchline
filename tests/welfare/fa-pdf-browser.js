@@ -23,7 +23,7 @@ await p.click('button:has-text("Remove")').catch(()=>{});await p.waitForTimeout(
 T('Remove clears it',/Add the PDF/.test(await p.innerText('#root')));
 await p.setInputFiles('#fapdf',{name:'a.pdf',mimeType:'application/pdf',buffer:pdf});await p.waitForTimeout(600);
 const dbs=await p.evaluate(()=>indexedDB.databases?indexedDB.databases().then(d=>d.map(x=>x.name)):[]);T('stored in the phone database',dbs.includes('tl.pdf'));
-await p.click('#acctbtn');await p.click('#acctmenu .lnk:has-text("this account")');await p.waitForTimeout(1200);
+await p.click('#acctbtn');await p.click('#acctmenu .lnk:text-is("Sign out")');await p.waitForTimeout(1200);
 const dbs2=await p.evaluate(()=>indexedDB.databases().then(d=>d.map(x=>x.name)));T('signing out wipes the stored PDF',!dbs2.includes('tl.pdf'));
 T('no page errors',errs.length===0);if(errs.length)console.log(errs);
 console.log(ok+' passed, '+bad+' failed');await b.close();srv.close();process.exit(bad?1:0);})();

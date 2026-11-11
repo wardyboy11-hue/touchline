@@ -12,19 +12,19 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:16px/1
 #app{display:flex;flex-direction:column;height:100%;height:100dvh}
 header{padding:8px 12px;display:flex;align-items:center;gap:8px;background:#0a1626;border-bottom:1px solid #1d3652}
 header h1{font-size:16px;margin:0;flex:1}
-header a{color:var(--gold);text-decoration:none;font-size:14px}
+header a{color:var(--gold);text-decoration:none;font-size:15px;font-weight:700;display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1px solid var(--gold);border-radius:10px}
 .seg{display:flex;gap:6px;padding:6px 10px;overflow-x:auto;scrollbar-width:none;background:#0d2036}
 .seg::-webkit-scrollbar{display:none}
-.chip{flex:0 0 auto;border:1px solid #2a4a6c;background:#12283f;color:var(--ink);border-radius:999px;padding:7px 12px;font-size:14px;cursor:pointer;white-space:nowrap}
+.chip{flex:0 0 auto;border:1px solid #2a4a6c;background:#12283f;color:var(--ink);border-radius:999px;padding:7px 12px;min-height:44px;font-size:15px;cursor:pointer;white-space:nowrap}
 .chip.on{background:var(--gold);border-color:var(--gold);color:#1a1200;font-weight:700}
 .chip.mine{border-color:var(--gold)}
 .chip.mode{border-radius:8px}
 #stage{position:relative;flex:1;min-height:0}
 #cv{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
-#key{position:absolute;left:8px;top:8px;display:flex;flex-direction:column;gap:3px;font-size:12px;background:rgba(10,22,38,.78);padding:6px 8px;border-radius:8px;pointer-events:none}
+#key{position:absolute;left:8px;top:8px;display:flex;flex-direction:column;gap:3px;font-size:13px;background:rgba(10,22,38,.78);padding:6px 8px;border-radius:8px;pointer-events:none}
 #key i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
 #cams{position:absolute;right:8px;top:8px;display:flex;flex-direction:column;gap:5px}
-#cams button{background:rgba(10,22,38,.85);color:var(--ink);border:1px solid #2a4a6c;border-radius:8px;padding:6px 9px;font-size:13px;cursor:pointer}
+#cams button{background:rgba(10,22,38,.85);color:var(--ink);border:1px solid #2a4a6c;border-radius:8px;padding:6px 10px;min-height:44px;min-width:60px;font-size:14px;cursor:pointer}
 #cams button.on{border-color:var(--gold);color:var(--gold)}
 #ttl{position:absolute;left:50%;transform:translateX(-50%);top:8px;background:rgba(10,22,38,.85);padding:5px 12px;border-radius:999px;font-size:14px;font-weight:700;white-space:nowrap;max-width:46%;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
 #err{position:absolute;inset:0;display:none;align-items:center;justify-content:center;text-align:center;padding:24px;background:var(--bg)}
@@ -44,7 +44,7 @@ footer{background:#0a1626;border-top:1px solid #1d3652;padding:8px 12px calc(10p
 </head>
 <body>
 <div id="app">
- <header><h1>Our 352 in 3D</h1><a href="../family.html" id="back">Back to the app</a></header>
+ <header><h1>Our 352 in 3D</h1><a href="../family.html" id="back">&#8249; Back to the app</a></header>
  <div class="seg" id="modes"></div>
  <div class="seg" id="picks"></div>
  <div id="stage">
@@ -212,7 +212,7 @@ function ldUI(){var n=Object.keys(DUR).length,b=$('play'),a=$('all');b.disabled=
 function startAudio(){if(!SOUND)return;try{AU.currentTime=Math.min(CLOCK,total());var p=AU.play();if(p&&p.catch)p.catch(function(){});}catch(e){}}
 
 /* ---------- UI ---------- */
-function renderModes(){var h='';h+='<button class="chip mode'+(MODE==='squad'?' on':'')+'" data-m="squad">The whole team</button>';h+='<button class="chip mode'+(MODE==='role'?' on':'')+'" data-m="role">My role</button>';$('modes').innerHTML=h;}
+function renderModes(){var h='';h+='<button class="chip mode'+(MODE==='squad'?' on':'')+'" data-m="squad">The whole team</button>';h+='<button class="chip mode'+(MODE==='role'?' on':'')+'" data-m="role">Just my position</button>';$('modes').innerHTML=h;}
 function renderPicks(){var h='',i;
  if(MODE==='squad'){for(i=0;i<SH.PHASES.length;i++)h+='<button class="chip'+(i===PHASE?' on':'')+'" data-p="'+i+'">'+SH.PHASES[i].n+'</button>';}
  else{SH.ORDER.forEach(function(r){h+='<button class="chip'+(r===ROLE?' on':'')+(MINE.indexOf(r)>-1&&r!==ROLE?' mine':'')+'" data-r="'+r+'">'+r+(MINE.indexOf(r)>-1?' ★':'')+'</button>';});}
