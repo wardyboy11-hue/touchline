@@ -199,12 +199,12 @@ body.ps header.tl-top{background:#fff}
 #root button,#root a,#root input,#root select,#root textarea,#root label,#root summary,#root .card,#root .tl-sec{scroll-margin-top:calc(132px + env(safe-area-inset-top));scroll-margin-bottom:calc(200px + env(safe-area-inset-bottom))}
 
 </style>
-<script src="tl-spotify.js?v=109"></script>
-<script src="tl-alarm.js?v=109"></script>
-<script src="tl-pages.js?v=109"></script>
-<script src="tl-quick.js?v=109"></script>
-<script src="cd.js?v=109"></script>
-<link rel="stylesheet" href="tl-ui.css?v=109">
+<script src="tl-spotify.js?v=110"></script>
+<script src="tl-alarm.js?v=110"></script>
+<script src="tl-pages.js?v=110"></script>
+<script src="tl-quick.js?v=110"></script>
+<script src="cd.js?v=110"></script>
+<link rel="stylesheet" href="tl-ui.css?v=110">
 </head>
 <body>
 <div id="splash"><div class="spw"><svg viewBox="0 0 240 240" id="sprays"></svg><img src="badge.png" alt=""></div><p>Welcome to the <b>Wigan Junior Latics U15 Blues</b> team app</p><div class="spn"><span>Proudly sponsored by</span><img src="coach/mfs.png" alt="MFS Limited"></div></div>
@@ -614,7 +614,7 @@ function famShirtNum(){if(D&&D.role==='parent'&&CHD&&CHD.num)return String(CHD.n
 window.tlLateNum=function(){return famShirtNum();};
 window.tlLateSend=function(row){if(!row)return Promise.resolve();var act=row.op==='undo'?'f.late.undo':'f.late';return call(act,{id:row.id,num:row.num,mins:row.mins,kind:row.kind,ref:row.ref,date:row.date}).then(function(){alertMsg=row.op==='undo'?'Late notice cleared.':'Told the coaches: '+(window.TLCD?TLCD.lateLabel(row.num,row.mins):('No. '+row.num+' running late'));try{r();}catch(e){}}).catch(function(e){alertMsg=(e&&e.message)||'Saved on this phone. Will send when you are back online.';try{r();}catch(x){};});};
 window.addEventListener('online',function(){try{if(window.TLCD)TLCD.flushLate();}catch(e){}});
-function famMatchdayMaybe(){try{if(!window.TLCD||!D)return;var x=X(),td=today();var nx=(x.fixtures||[]).filter(function(m){return !m.done&&m.date===td&&!m.pp;})[0];if(!nx)return;if(D.role==='parent')loadChild();TLCD.showMatchday(nx,{role:D.role||'parent',anim:'12_352_in_transition',animHref:'coach/anim/12_352_in_transition.html?v=109',onGo:function(){try{goTab('home');}catch(e){}try{TLCD.pinToday(nx);}catch(e2){}},onCard:function(){try{goTab('home');}catch(e){}}});}catch(e){}}
+function famMatchdayMaybe(){try{if(!window.TLCD||!D)return;var x=X(),td=today();var nx=(x.fixtures||[]).filter(function(m){return !m.done&&m.date===td&&!m.pp;})[0];if(!nx)return;if(D.role==='parent')loadChild();TLCD.showMatchday(nx,{role:D.role||'parent',anim:'12_352_in_transition',animHref:'coach/anim/12_352_in_transition.html?v=110',onGo:function(){try{goTab('home');}catch(e){}try{TLCD.pinToday(nx);}catch(e2){}},onCard:function(){try{goTab('home');}catch(e){}}});}catch(e){}}
 
 
 /* r98/r100: attendance Yes/No at top of Home, with confirm toast and shirt-number summary. */
@@ -768,8 +768,8 @@ function selfForm(){var h='<div class="card"><h2>Make it yours</h2><p>Three minu
 function selfPrompt(){if(!D||D.role!=='player'||!SELF||SELF.done||SELF.role!=='player')return '';return '<div class="card" style="border-color:#FFB81C"><span class="tag" style="background:#FFB81C;color:#1b1200">First job</span><h2 style="margin-top:8px">Make it yours</h2><p>Pick your nickname, foot and positions, then rate yourself on the things we work on. Takes three minutes and helps Tim and Deano plan for you.</p><button class="btn pri block" onclick="selfOpen()">Start</button></div>';}
 function selfLink(){if(!D||D.role!=='player'||!SELF||SELF.role!=='player')return '';var h='<div class="card"><h3>My profile</h3><p class="small muted">Nickname, foot, positions and your own scores. Only you and the coaches can see these.</p><button class="btn block" onclick="selfOpen()">'+(SELF.done?'Update my profile':'Make it yours')+'</button></div>';if(window.roleBtn)h=roleBtn({label:'My position'})+h;if(window.niggleCard)h=niggleCard()+h;return h;}
 var WK3P={0:["w1_shape_to_receive_session","plans/w1_shape_to_receive_session.pdf"]};var WK3D=[["06_shape_to_receive_first_pass_forward", "Shape to receive, first pass forward", "Watch how the players move before the ball arrives: someone shows short, others give width, and the first pass goes forward."], ["07_counter_attack_three_runners", "Counter attack: first pass forward, three runners", "Watch the moment we win the ball: the first pass goes forward through a gap, and three players sprint straight away."], ["08_five_second_counter_press", "Lose it, react: five second press", "Watch what happens the moment we lose the ball: do the closest players chase it straight away together for about five seconds?"], ["09_build_from_keeper_then_break", "Build from the keeper, then break", "Watch the keeper start the attack and the defenders spread out wide, then the ball goes forward quickly."], ["10_rotate_roles_everyone_every_job", "Everyone plays every job", "Watch your child play in different positions. That is the plan: everyone learns every job in the team."], ["11_shape_and_transition_game", "Shape, and switching between attack and defence", "Watch for the three ideas from this block: getting into shape, reacting when we lose it, and breaking fast when we win it."]];
-function tonightCard(){var n=new Date(),p=function(x){return ('0'+x).slice(-2);},td=n.getFullYear()+'-'+p(n.getMonth()+1)+'-'+p(n.getDate());if(td<'2026-11-10'||td>'2026-11-11')return '';var pl=D&&D.role==='player';return '<div class="card" id="tonight" style="border-color:#FFB81C"><span class="tag" style="background:#1e3a8a">'+(td==='2026-11-11'?'Tonight':'Wed 11 Nov')+'</span><h2 style="margin-top:8px">Training 11/11: recover, play out, wing backs and three runners</h2><p class="small muted">60 minutes. Warm up, a keep ball game (rondo), two practices with Tim and Deano, then a game.</p>'+(pl?'<p>Watch it before training with the sound on. Tap Just my position to see what you do. Wing backs: you play in both practices, we swap at halfway.</p>':'<p><b>What to look for:</b> when the ball goes in behind, does the whole back unit drop together? When we win it, is the first pass out wide or through the middle? In the box, look for three runners: near post, far post and one arriving late.</p>')+'<a class="btn pri block" href="coach/anim/s1111_training.html?v=109&back='+encodeURIComponent(location.pathname)+'">Watch Training 11/11</a><p class="small muted" style="margin:8px 0">Six parts, each with voice over and words on screen. Tap Back to the app to come back here.</p><a class="btn block" href="plans/Block3_W2_session_v2_11Nov2026.pdf?v=109" target="_blank" rel="noopener">Session plan (PDF)</a></div>';}
-function stretchCard(){return '<div class="card" id="stretchc"><span class="tag" style="background:#16a34a">Cool down</span><h2 style="margin-top:8px">Stretching</h2><p class="small muted">18 football stretches, about 14 minutes. Voice over tells you each one, why it helps, then counts you down. Works without signal once you have opened it.</p><a class="btn block" href="stretch/index.html?v=109&back='+encodeURIComponent(location.pathname)+'">Start stretching</a><button type="button" class="btn block tl-share-btn" style="margin-top:8px;min-height:48px" data-tlshare="1" data-title="U15 Blues stretching" data-text="Stretching for the U15 Blues" data-url="'+(location.origin+(location.pathname.replace(/[^/]+$/,'')||'/')+'stretch/index.html')+'" aria-label="Share stretching">Share</button>'+(window.preStretchExtra?preStretchExtra():'<button type="button" class="btn pri block" style="margin-top:8px" onclick="openPreStretch&&openPreStretch()">Pre-game stretch</button>')+'</div>';}
+function tonightCard(){var n=new Date(),p=function(x){return ('0'+x).slice(-2);},td=n.getFullYear()+'-'+p(n.getMonth()+1)+'-'+p(n.getDate());if(td<'2026-11-10'||td>'2026-11-11')return '';var pl=D&&D.role==='player';return '<div class="card" id="tonight" style="border-color:#FFB81C"><span class="tag" style="background:#1e3a8a">'+(td==='2026-11-11'?'Tonight':'Wed 11 Nov')+'</span><h2 style="margin-top:8px">Training 11/11: recover, play out, wing backs and three runners</h2><p class="small muted">60 minutes. Warm up, a keep ball game (rondo), two practices with Tim and Deano, then a game.</p>'+(pl?'<p>Watch it before training with the sound on. Tap Just my position to see what you do. Wing backs: you play in both practices, we swap at halfway.</p>':'<p><b>What to look for:</b> when the ball goes in behind, does the whole back unit drop together? When we win it, is the first pass out wide or through the middle? In the box, look for three runners: near post, far post and one arriving late.</p>')+'<a class="btn pri block" href="coach/anim/s1111_training.html?v=110&back='+encodeURIComponent(location.pathname)+'">Watch Training 11/11</a><p class="small muted" style="margin:8px 0">Six parts, each with voice over and words on screen. Tap Back to the app to come back here.</p><a class="btn block" href="plans/Block3_W2_session_v2_11Nov2026.pdf?v=110" target="_blank" rel="noopener">Session plan (PDF)</a></div>';}
+function stretchCard(){return '<div class="card" id="stretchc"><span class="tag" style="background:#16a34a">Cool down</span><h2 style="margin-top:8px">Stretching</h2><p class="small muted">18 football stretches, about 14 minutes. Voice over tells you each one, why it helps, then counts you down. Works without signal once you have opened it.</p><a class="btn block" href="stretch/index.html?v=110&back='+encodeURIComponent(location.pathname)+'">Start stretching</a><button type="button" class="btn block tl-share-btn" style="margin-top:8px;min-height:48px" data-tlshare="1" data-title="U15 Blues stretching" data-text="Stretching for the U15 Blues" data-url="'+(location.origin+(location.pathname.replace(/[^/]+$/,'')||'/')+'stretch/index.html')+'" aria-label="Share stretching">Share</button>'+(window.preStretchExtra?preStretchExtra():'<button type="button" class="btn pri block" style="margin-top:8px" onclick="openPreStretch&&openPreStretch()">Pre-game stretch</button>')+'</div>';}
 function wk3dCard(){var s=new Date('2026-11-04T00:00:00'),n=Math.floor((Date.now()-s)/864e5),i=n<0?0:Math.floor(n/7);if(i>5||n<-14)return stretchCard()+(window.TLFit?TLFit.familyCard({who:D.role==='parent'?'parent':'player'}):'');var w=WK3D[i],pl=D&&D.role==='player',sp=WK3P[i],u='coach/anim/'+(sp?sp[0]:w[0])+'.html?v=86&back='+encodeURIComponent(location.pathname),dt=new Date(s.getTime()+i*7*864e5).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});return '<div class="card" id="wk3d"><span class="tag" style="background:#1e3a8a">'+(n<0?'Coming up':'This week')+'</span><h2 style="margin-top:8px">'+(pl?'This week\'s session':'This week\'s training')+'</h2><p class="small muted">Week '+(i+1)+' of 6, '+dt+': '+w[1]+'</p>'+(pl?'<p>Watch it before training. Turn the sound on. Players are shown by shirt number.</p>':'<p><b>What to look for:</b> '+w[2]+'</p>')+'<a class="btn pri block" href="'+u+'">'+(sp?'Watch the whole session':'Watch it')+'</a>'+(sp?'<p class="small muted" style="margin:8px 0">Warm up, both practices and the game, with voice over. Tap Close or press Esc to come back here.</p><a class="btn block" href="'+sp[1]+'?v=87" target="_blank" rel="noopener">Session plan (PDF)</a>':'')+'</div>'+stretchCard()+(window.TLFit?TLFit.familyCard({who:D.role==='parent'?'parent':'player'}):'');}
 /* UK dates: shared helper. Display only; stored dates stay yyyy-mm-dd. */
 function ukD(s,o){if(!s)return '';var m=/^(\d{4})-(\d\d)-(\d\d)/.exec(String(s)),d=m?new Date(Date.UTC(+m[1],+m[2]-1,+m[3],12)):new Date(s);if(isNaN(d))return String(s);return d.toLocaleDateString('en-GB',Object.assign({timeZone:'Europe/London'},o||{day:'numeric',month:'short',year:'numeric'}));}
@@ -880,7 +880,7 @@ function closeMore(){
 function moreJump(k){
  closeMore();
  if(k==='shopx'){showKit=true;r();window.scrollTo(0,0);return;}
- if(k==='stretchx'){location.href='stretch/index.html?v=109&back='+encodeURIComponent(location.pathname);return;}
+ if(k==='stretchx'){location.href='stretch/index.html?v=110&back='+encodeURIComponent(location.pathname);return;}
  if(k==='voicex'){r();setTimeout(function(){try{document.getElementById('tl-voice-fab').click();}catch(e){}},50);return;}
  goTab(k);
 }
@@ -931,7 +931,7 @@ function tlVoiceBoot(){
     }catch(e){try{goTab('today');}catch(e2){}}
     return;
    }
-   if(intent.intent==='stretch'||intent.go==='stretch'){location.href='stretch/index.html?v=109&back='+encodeURIComponent(location.pathname);return;}
+   if(intent.intent==='stretch'||intent.go==='stretch'){location.href='stretch/index.html?v=110&back='+encodeURIComponent(location.pathname);return;}
    if(intent.intent==='shop'||intent.go==='shop'){try{goTab('me');}catch(e){}try{if(window.openShop)openShop();else showKit=true;}catch(e2){}r();return;}
    var go=intent.page||intent.go;
    if(intent.intent==='fixtures'||intent.intent==='kickoff'||intent.intent==='where')go='games';
@@ -975,7 +975,8 @@ function motmPhase(){var fx=motmNextFx(),td=today(),bv=(D&&D.vote&&D.vote.motm)|
 function motmDayLabel(fx){if(!fx||!fx.date)return 'matchday';var d=new Date(String(fx.date)+'T12:00:00');return d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});}
 function motmHomeCard(){if(!D)return '';var st=motmPhase(),fx=st.fx,pl=D.role==='player';
  if(st.phase==='none')return '';
- if(st.phase==='before'||st.phase==='waiting'){
+ if(st.phase==='before')return ''; /* r110: no vote notice before matchday */
+ if(st.phase==='waiting'){
   var when=st.phase==='waiting'?('at kick-off ('+esc(fx.ko||'')+')'):('on matchday, '+motmDayLabel(fx));
   return '<div class="card" id="motm-home" style="border-color:#FFB81C"><span class="tag" style="background:#FFB81C;color:#1b1200">Man of the match</span><h2 style="margin-top:8px">Man of the match vote</h2><p>Voting opens '+when+'.</p><p class="small muted">'+(pl?'Parents vote after the game, by name and shirt number.':'Parents vote by name, with the shirt number next to the name. Coaches vote too.')+'</p></div>';
  }
@@ -1018,7 +1019,7 @@ function homeTraining(){return wcCard()+(window.posCard?posCard()+prepCard():'')
 function homeNewsShelf(){var bits=[];
  bits.push('<div class="card"><h3 style="margin-top:0">Reminders and news</h3>'+bodyHome()+'</div>');
  var car=carousel();if(car)bits.push(car);
- bits.push('<div class="card"><h3 style="margin-top:0">Check these out</h3><p class="small muted">Sessions, shape and ideas. Tap one.</p><div class="row wrap2"><button class="btn grow" onclick="goTab(\'lib\')">Library</button><button class="btn grow" onclick="goTab(\'own\')">My own training</button><a class="btn grow" href="shape/index.html?mode=squad&back='+encodeURIComponent(location.pathname.split('/').pop())+'">Our 352</a><a class="btn grow" href="stretch/index.html?v=109&back='+encodeURIComponent(location.pathname)+'">Stretching</a></div></div>');
+ bits.push('<div class="card"><h3 style="margin-top:0">Check these out</h3><p class="small muted">Sessions, shape and ideas. Tap one.</p><div class="row wrap2"><button class="btn grow" onclick="goTab(\'lib\')">Library</button><button class="btn grow" onclick="goTab(\'own\')">My own training</button><a class="btn grow" href="shape/index.html?mode=squad&back='+encodeURIComponent(location.pathname.split('/').pop())+'">Our 352</a><a class="btn grow" href="stretch/index.html?v=110&back='+encodeURIComponent(location.pathname)+'">Stretching</a></div></div>');
  bits.push(voiceCard()+rsCard('home')+tourCard());
  return '<div class="tl-shelf">'+bits.map(function(b){return '<div>'+b+'</div>';}).join('')+'</div>';}
 function homePlayers(){var h=glCard()+rcPlayerCard()+mdpCard()+fmCard()+workCard()+shapeCard()+selfPrompt();
@@ -1153,12 +1154,12 @@ function feedCard(){var f=(D&&D.feed)||[];if(!f.length)return '';return '<div cl
 function out(){CODE='';D=null;s(CK,'');s('fam.cache','');r();}
 if(CODE){var cc=null;try{cc=JSON.parse(g('fam.cache')||'null');}catch(x){}if(cc&&cc.c===CODE&&cc.d){D=cc.d;r();splashDone();setTimeout(famMatchdayMaybe,500);setTimeout(pushAskMaybe,1500);}load();}else{r();splashDone();}
 </script>
-<script src="positions.js?v=109" defer></script>
-<script src="fitness.js?v=109" defer></script>
-<script src="prestretch.js?v=109" defer></script>
-<script src="acct.js?v=109" defer></script>
-<script src="shop.js?v=109" defer></script>
-<script src="voice.js?v=109" defer></script>
+<script src="positions.js?v=110" defer></script>
+<script src="fitness.js?v=110" defer></script>
+<script src="prestretch.js?v=110" defer></script>
+<script src="acct.js?v=110" defer></script>
+<script src="shop.js?v=110" defer></script>
+<script src="voice.js?v=110" defer></script>
 
 <script>
 (function(){function __tlShareAfter(){try{tlShareBind();tlOpenClipHash();}catch(e){}}
@@ -1170,8 +1171,8 @@ if(CODE){var cc=null;try{cc=JSON.parse(g('fam.cache')||'null');}catch(x){}if(cc&
 })();
 </script>
 
-<script src="share.js?v=109" defer></script>
-<script src="update.js?v=109" defer></script>
-<script src="pq.js?v=109" defer></script>
+<script src="share.js?v=110" defer></script>
+<script src="update.js?v=110" defer></script>
+<script src="pq.js?v=110" defer></script>
 </body>
 </html>
