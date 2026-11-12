@@ -12,6 +12,7 @@ Browser tests start their own tiny web server and fake the Apps Script backend, 
 - `account-switch-browser.js`: the top corner account menu (switch, add, sign out, greyed roles).
 - `auto-update-browser.js`: the app refreshes itself when version.json is newer (not while typing or with unsynced changes).
 - `fa-pdf-browser.js`: the matchday FA team sheet PDF on the Team sheet tab (add, show, replace, remove, wiped on sign out).
+- `r112-running-browser.js`: Running (Build up to 5k, position runs, build your own, timer blocks, beeps or voice cues) and the Fuel and water card, on a phone and a 1366 wide laptop. Also the direct links (#games, #me, #running, #fuel and so on) and that Running sends nothing to the backend.
 
 Backend tests run the real `.gs` files in Node with a pretend Sheet, to check the rules (stage order, day 15 and day 21, who can see what, retention):
 
