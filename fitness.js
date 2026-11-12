@@ -386,6 +386,7 @@ function listHtml(opts){
  h+='<div class="card"><span class="tag" style="background:#16a34a">Fitness</span><h2 style="margin-top:8px">'+(who==='parent'?'My fitness':'Fitness plan')+'</h2>';
  h+='<p class="small muted">'+(who==='parent'?'Your own goals and plan. Separate from your lad\'s. You can still open his plan read only below.':'Tell us what you want to improve. We build a safe U15 plan around team training and match day (coaches set the days).')+'</p>';
  h+='<button type="button" class="btn pri block" data-fit="new" data-who="'+E(who)+'">New plan</button></div>';
+ h+='<div class="card"><span class="tag" style="background:#15803d">Running</span><h3 style="margin:8px 0 4px">Running and Fuel</h3><p class="small muted">Ready made runs, Build up to 5k, runs for your position, or build your own with a timer. Plus what to eat and drink.</p><div class="row wrap2" style="gap:6px"><button type="button" class="btn pri grow" data-run="hub">Running</button><button type="button" class="btn grow" data-run="fuel">Fuel and water</button></div></div>';
  if(mine.length){
   h+='<h3 class="tl-mh">Saved plans</h3>';
   mine.forEach(function(p){
@@ -416,7 +417,7 @@ function listHtml(opts){
 function familyCard(opts){
  opts=opts||{};
  var who=opts.who||(G.D&&G.D.role==='parent'?'parent':'player');
- return '<div class="card" id="fitc"><span class="tag" style="background:#16a34a">Fitness</span><h2 style="margin-top:8px">'+(who==='parent'?'Fitness':'My fitness')+'</h2><p class="small muted">'+(who==='parent'?'Your own plan, plus his plan read only.':'Set a goal, get a plan like a personal trainer would give you, and tick off each session. Saved to your profile.')+'</p><button type="button" class="btn pri block" data-fit="hub" data-who="'+E(who)+'">Open fitness</button></div>';
+ return '<div class="card" id="fitc"><span class="tag" style="background:#16a34a">Fitness</span><h2 style="margin-top:8px">'+(who==='parent'?'Fitness':'My fitness')+'</h2><p class="small muted">'+(who==='parent'?'Your own plan, plus his plan read only.':'Set a goal, get a plan like a personal trainer would give you, and tick off each session. Running has ready made runs with a timer.')+'</p><button type="button" class="btn pri block" data-fit="hub" data-who="'+E(who)+'">Open fitness</button><div class="row wrap2" style="gap:6px;margin-top:8px"><button type="button" class="btn grow" data-run="hub">Running</button><button type="button" class="btn grow" data-run="fuel">Fuel and water</button></div></div>';
 }
 
 /* ---------- Coach designers ---------- */

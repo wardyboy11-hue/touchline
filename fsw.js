@@ -1,6 +1,6 @@
-/* family service worker, r88: push alerts + offline shop images */
-var FV='tl-fam-v111';
-var FSHELL=['tl-ui.css?v=111','tl-spotify.js?v=111','tl-alarm.js?v=111','tl-pages.js?v=111','tl-quick.js?v=111','share.js?v=111','voice.js?v=111','shop.js?v=111','fitness.js?v=111','fitness.css?v=111','prestretch.js?v=111','cd.js?v=111','shop.css?v=111'].concat(['ss-core-supporters-coat-navy','ss-core-thermal-jacket-navy','end-of-line-ss-bench-coat-navy','ss-core-softshell-jacket-navy','ss-core-padded-gilet-navy','new-ss-core-rain-jacket-navy','ss-core-softshell-gilet-navy'].map(function(s){return 'shop/img/'+s+'.webp?v=111';}));
+/* family service worker, r112: push alerts, offline shop images, and the family pages plus Running work offline */
+var FV='tl-fam-v112';
+var FSHELL=['tl-ui.css?v=112','tl-spotify.js?v=112','tl-alarm.js?v=112','tl-pages.js?v=112','tl-quick.js?v=112','share.js?v=112','voice.js?v=112','shop.js?v=112','fitness.js?v=112','fitness.css?v=112','running.js?v=112','positions.js?v=112','acct.js?v=112','update.js?v=112','pq.js?v=112','family.html','parents.html','badge.png','icon-192.png','prestretch.js?v=112','cd.js?v=112','shop.css?v=112'].concat(['ss-core-supporters-coat-navy','ss-core-thermal-jacket-navy','end-of-line-ss-bench-coat-navy','ss-core-softshell-jacket-navy','ss-core-padded-gilet-navy','new-ss-core-rain-jacket-navy','ss-core-softshell-gilet-navy'].map(function(s){return 'shop/img/'+s+'.webp?v=112';}));
 self.addEventListener('install',function(e){e.waitUntil(caches.open(FV).then(function(c){return c.addAll(FSHELL);}).then(function(){return self.skipWaiting();}).catch(function(){return self.skipWaiting();}));});
 self.addEventListener('activate',function(e){e.waitUntil(caches.keys().then(function(ks){return Promise.all(ks.filter(function(k){return k.indexOf('tl-fam-')===0&&k!==FV;}).map(function(k){return caches.delete(k);}));}).then(function(){return self.clients.claim();}));});
 self.addEventListener('fetch',function(e){
@@ -8,7 +8,7 @@ self.addEventListener('fetch',function(e){
  if(r.method!=='GET'||u.origin!==location.origin)return;
  /* network first for html/js so a broken r95 client can pick up the fix without a stuck cache */
  if(r.mode==='navigate'||/\.(html|js)$/i.test(u.pathname)){
-  e.respondWith(fetch(r).then(function(res){if(res&&res.ok&&/voice\.js$/.test(u.pathname)){var cp=res.clone();caches.open(FV).then(function(c){c.put(r,cp);});}return res;}).catch(function(){return caches.match(r);}));
+  e.respondWith(fetch(r).then(function(res){if(res&&res.ok&&/voice\.js$/.test(u.pathname)){var cp=res.clone();caches.open(FV).then(function(c){c.put(r,cp);});}return res;}).catch(function(){return r.mode==='navigate'?caches.match(r,{ignoreSearch:true}):caches.match(r);}));
   return;
  }
  if(/\/shop\//.test(u.pathname)||/shop\.(js|css)$/.test(u.pathname)){
