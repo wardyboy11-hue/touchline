@@ -1139,7 +1139,7 @@ if(CODE){var cc=null;try{cc=JSON.parse(g('fam.cache')||'null');}catch(x){}if(cc&
 /* r112: direct links. #games #events #media #me #faq #contacts #lib #ask open that page once signed in.
    #fitness #running #fuel open those panels. Nothing personal is ever put in the address. */
 (function(){var TABS={home:'home',games:'games',events:'events',media:'media',me:'me',faq:'faq',help:'faq',contacts:'contacts',lib:'lib',clips:'lib',ask:'voice',voice:'voice',pq:'pq',data:'data',child:'child'},PAR={pq:1,data:1,child:1},done=false;
- function go(){var h=String(location.hash||'').replace(/^#\/?/,'').toLowerCase();if(!h||/^(clip|sec-)/.test(h))return;if(typeof CODE==='undefined'||!CODE||!D)return;
+ function go(){var h=String(location.hash||'').replace(/^#\/?/,'').toLowerCase();if(!h||/^(clip\/|clip=|sec-)/.test(h))return;if(typeof CODE==='undefined'||!CODE||!D)return;
   if(TABS[h]){var t=TABS[h];if(PAR[t]&&D.role!=='parent')t='me';if(tab!==t)goTab(t);return;}
   if(h==='fitness'||h==='running'||h==='fuel'){var n=0,iv=setInterval(function(){n++;if(h==='fitness'&&window.TLFit){clearInterval(iv);TLFit.open({});}else if(h!=='fitness'&&window.TLRun){clearInterval(iv);TLRun.open({view:h==='fuel'?'fuel':'hub'});}else if(n>80)clearInterval(iv);},100);}}
  window.tlHashGo=go;window.addEventListener('hashchange',go);
