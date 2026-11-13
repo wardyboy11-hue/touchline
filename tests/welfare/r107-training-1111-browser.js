@@ -3,14 +3,14 @@ const {chromium,devices}=require('playwright');const http=require('http'),fs=req
 const root=path.resolve(__dirname,'../..'),PORT=+process.env.PORT||8807,SHOTS=process.env.SHOTS||'/workspace/shots',PRE=process.env.PRE||"r107_";
 fs.mkdirSync(SHOTS,{recursive:true});
 const MT={'.js':'text/javascript','.html':'text/html','.json':'application/json','.css':'text/css','.png':'image/png','.jpg':'image/jpeg','.webp':'image/webp','.webmanifest':'application/json','.svg':'image/svg+xml'};
-const srv=http.createServer((q,r)=>{let u=decodeURIComponent(q.url.split('?')[0]);if(u==='/version.json'){r.writeHead(200,{'content-type':'application/json'});r.end('{"v": "109"}');return;}let f=path.join(root,u);if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,d)=>{if(e){r.writeHead(404);r.end();return;}r.writeHead(200,{'content-type':MT[path.extname(f)]||'application/octet-stream'});r.end(d);});}).listen(PORT);
+const srv=http.createServer((q,r)=>{let u=decodeURIComponent(q.url.split('?')[0]);if(u==='/version.json'){r.writeHead(200,{'content-type':'application/json'});r.end(JSON.stringify({v:(require('fs').readFileSync(require('path').join(__dirname,'../../update.js'),'utf8').match(/RUN='(\d+)'/)||[])[1]}));return;}let f=path.join(root,u);if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,d)=>{if(e){r.writeHead(404);r.end();return;}r.writeHead(200,{'content-type':MT[path.extname(f)]||'application/octet-stream'});r.end(d);});}).listen(PORT);
 const BASE='http://localhost:'+PORT;
 let ok=0,bad=0;const T=(n,c)=>{console.log((c?'PASS ':'FAIL ')+n);c?ok++:bad++;};
 const H={'access-control-allow-origin':'*'};
 function errsOf(p){const e=[];p.on('pageerror',x=>e.push('pageerror: '+x.message));p.on('console',m=>{if(m.type()==='error'&&!/Failed to load resource|favicon|net::ERR/.test(m.text()))e.push('console: '+m.text());});return e;}
 const td=new Date();const ymd=td.getFullYear()+'-'+String(td.getMonth()+1).padStart(2,'0')+'-'+String(td.getDate()).padStart(2,'0');
 const day=process.env.DAY||'2026-11-10';
-function famData(role){return {first:'Pat',role:role,num:'7',mine:{},rsn:{},at:Date.now(),photo:'',posts:[{id:'t1',type:'training',title:'Training',date:'2026-11-11',time:'19:00',place:'Christopher Park'}],att:{},welcome:'',tips:'',vote:{},res:[],matchDay:false,x:{fixtures:[],news:[],welcome:'',matchDay:false,events:[],lifts:[],media:[],contacts:[]}};}
+function famData(role){return {first:'Pat',role:role,num:'7',mine:{},rsn:{},at:Date.now(),photo:'',posts:[{id:'t1',type:'training',title:'Training',date:'2026-11-11',time:'20:00',place:'Christopher Park'}],att:{},welcome:'',tips:'',vote:{},res:[],matchDay:false,x:{fixtures:[],news:[],welcome:'',matchDay:false,events:[],lifts:[],media:[],contacts:[]}};}
 const fakeDate=`(()=>{const T=new Date('${day}T18:00:00').getTime(),D0=Date.now(),R=Date;class FD extends R{constructor(...a){if(a.length)super(...a);else super(T+(R.now()-D0));}static now(){return T+(R.now()-D0);}}window.Date=FD;})()`;
 (async()=>{
  const b=await chromium.launch();const ph=devices['Pixel 7'];
@@ -23,12 +23,12 @@ const fakeDate=`(()=>{const T=new Date('${day}T18:00:00').getTime(),D0=Date.now(
   await q.goto(BASE+'/'+pg);await q.waitForTimeout(2800);
   await q.evaluate(()=>{const s=document.getElementById('splash');if(s)s.remove();try{if(window.goTab)goTab('home');}catch(e){}try{r();}catch(e){}});
   await q.waitForTimeout(700);
-  const st=await q.evaluate(()=>{const t=document.getElementById('tonight');const a=t&&t.querySelector('a.btn.pri');const al=document.getElementById('sec-alerts');
-    return {card:!!t,inAlerts:!!(al&&t&&al.contains(t)),href:a?a.getAttribute('href'):'',text:t?t.innerText:'',count:document.querySelectorAll('#tonight').length};});
+  const st=await q.evaluate(()=>{const t=document.getElementById('tonight');const a=t&&t.querySelector('a.btn.pri');const al=document.getElementById('sec-alerts'),td=document.getElementById('tlh-todo')||document.getElementById('tlh-feed');
+    return {card:!!t,inAlerts:!!(al&&t&&al.contains(t))||!!(t&&td&&(t.compareDocumentPosition(td)&Node.DOCUMENT_POSITION_FOLLOWING)),href:a?a.getAttribute('href'):'',text:t?t.innerText:'',count:document.querySelectorAll('#tonight').length};});
   T(pg+' Training 11/11 card on Home', st.card&&/Training 11\/11/.test(st.text));
-  T(pg+' card sits in the Alerts section at the top', st.inAlerts);
+  T(pg+' card sits at the top of Home (r113: above Things to do)', st.inAlerts);
   T(pg+' card shows once', st.count===1);
-  T(pg+' links to the session page', /^coach\/anim\/s1111_training\.html\?v=109&back=/.test(st.href));
+  T(pg+' links to the session page', /^coach\/anim\/s1111_training\.html\?v=\d+&back=/.test(st.href));
   T(pg+' '+role+' wording', role==='player'?/Just my position/.test(st.text):/What to look for/.test(st.text));
   await q.evaluate(()=>{const t=document.getElementById('tonight');if(t)t.scrollIntoView();});
   await q.screenshot({path:path.join(SHOTS,PRE+pg.replace('.html','')+'_card.png')});
@@ -44,7 +44,7 @@ const fakeDate=`(()=>{const T=new Date('${day}T18:00:00').getTime(),D0=Date.now(
   await c.evaluate(()=>{const d=document.getElementById('sec-today');if(d)d.open=true;});await c.waitForTimeout(200); // r108: Today is folded by default
   const st=await c.evaluate(()=>{const t=document.getElementById('tonight');const a=t&&t.querySelector('a.btn.pri');return {card:!!t,href:a?a.getAttribute('href'):'',text:t?t.innerText:''};});
   T('coach Today shows Training 11/11', st.card&&/Training 11\/11/.test(st.text)&&/31 to 46/.test(st.text));
-  T('coach card links to anim/s1111_training.html', /^anim\/s1111_training\.html\?v=109/.test(st.href));
+  T('coach card links to anim/s1111_training.html', /^anim\/s1111_training\.html\?v=\d+/.test(st.href));
   await c.evaluate(()=>{const t=document.getElementById('tonight');if(t)t.scrollIntoView();});
   await c.screenshot({path:path.join(SHOTS,PRE+'coach_card.png')});
   T('coach zero console errors', E.length===0); if(E.length) console.log(E);

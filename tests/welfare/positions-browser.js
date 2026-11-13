@@ -21,7 +21,8 @@ const fam=JSON.parse(fs.readFileSync(path.join(root,'positions.json'),'utf8'));
   if(a.action==='f.pos.file')return a.id===fam.slots[1].guide?okk({name:'RCB guide',mime:'application/pdf',kind:'pdf',size:1,b64:pdf}):r.fulfill({status:200,contentType:'application/json',headers:H,body:JSON.stringify({ok:false,error:'That file is not a position guide.'})});
   return okk({});});
  await q.addInitScript(()=>{const _g=Storage.prototype.getItem;Storage.prototype.getItem=function(k){return /^fam\.wel\./.test(k)?'1':_g.call(this,k);};localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code','p');localStorage.setItem('fam.ok1','1');});
- await q.goto(`http://localhost:${PORT}/family.html`);await q.waitForSelector('#posCard',{timeout:8000});await q.waitForTimeout(2500);await q.evaluate(()=>{const s=document.getElementById('splash');if(s)s.remove();});
+ await q.goto(`http://localhost:${PORT}/family.html`);await q.waitForFunction(()=>typeof goTab==='function'&&window.D,null,{timeout:8000});await q.evaluate(()=>goTab('train')); // r113: the role card lives on Train (Home's Your job button opens it)
+ await q.waitForSelector('#posCard',{timeout:8000});await q.waitForTimeout(2500);await q.evaluate(()=>{const s=document.getElementById('splash');if(s)s.remove();});
  let tx=await q.innerText('#posCard');
  T('player sees My position for RCB from the role card',/RCB Right centre-back/.test(tx)&&/Open my position guide/.test(tx));
  T('Suggested for you from work ons (scanning, 1v1 defending)',/Suggested for you/i.test(tx)&&/scanning/.test(tx)&&/1v1 defending/.test(tx));
@@ -52,8 +53,10 @@ const fam=JSON.parse(fs.readFileSync(path.join(root,'positions.json'),'utf8'));
 await c.click('.seg.sub button:has-text("Positions")');await c.waitForSelector('#posArea .chip',{timeout:8000});
  await c.evaluate(()=>{const s=document.getElementById('splash');if(s)s.remove();});const ct=await c.$eval('#posArea',e=>e.textContent);T('coach sees all 11 positions',(await c.$$eval('#posArea .chips .chip',x=>x.length))===11);
  T('coach sees CV items marked coach only',/CV coach only/.test(ct));
+ // r81 changed this button to Send to player profile (no direct messages to players). r113: test brought up to date.
+ await c.evaluate(()=>{window.sendToProfile=d=>{window.__shared.push(d);};});
  await c.click('#posArea [data-pact="share"] >> nth=1');await c.waitForTimeout(200);const sh=await c.evaluate(()=>window.__shared);
- T('Share with player uses the native share menu with the link',sh.length===1&&/^https?:/.test(sh[0].url));
+ T('Send to player profile passes the link, not a direct message',sh.length===1&&/^https?:/.test(sh[0].u)&&sh[0].kind==='position');
  await shot(c,'4_coach_positions.png');
  T('coach page has no errors',ce.length===0);if(ce.length)console.log(ce);
  await b.close();srv.close();console.log(ok+' passed, '+bad+' failed');process.exit(bad?1:0);})().catch(e=>{console.error(e);process.exit(1);});

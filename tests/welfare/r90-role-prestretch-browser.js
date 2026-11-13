@@ -42,7 +42,7 @@ async function seedFamily(page,role){
   window.SELF={done:1,role:'player',num:'7',pos:['CB','RCB'],nick:'Sammy'};
   if(window.D){D.role='player';D.num='7';D.first='Sam';}
   let host=document.getElementById('r90-harness');
-  if(!host){host=document.createElement('div');host.id='r90-harness';host.style.cssText='padding:12px;max-width:520px;margin:0 auto';(document.getElementById('root')||document.body).prepend(host);}
+  if(!host){host=document.createElement('div');host.id='r90-harness';host.style.cssText='padding:12px;max-width:520px;margin:0 auto';document.body.prepend(host);} /* r113: outside #root so a background refresh cannot wipe it */
   host.innerHTML=(window.roleBtn?roleBtn({label:'My role'}):'<p>no role</p>')+
    '<div class="card" id="stretchc"><span class="tag" style="background:#16a34a">Cool down</span><h2 style="margin-top:8px">Stretching</h2><p class="small muted">18 football stretches.</p><a class="btn block" href="stretch/index.html?v=90">Start stretching</a>'+(window.preStretchExtra?preStretchExtra():'')+'</div>';
  });
@@ -132,7 +132,7 @@ async function seedFamily(page,role){
  await p.evaluate(()=>{const s=document.getElementById('splash');if(s)s.remove();const md=document.getElementById('tl-md');if(md)md.remove();
   try{localStorage.setItem('tl.md.shown.'+(new Date().toISOString().slice(0,10)),'1');}catch(e){}
   window.SELF={done:1,role:'player',num:'7',pos:['CB']};if(window.D){D.role='player';D.num='7';}
-  let host=document.getElementById('r90-harness');if(!host){host=document.createElement('div');host.id='r90-harness';(document.getElementById('root')||document.body).prepend(host);}
+  let host=document.getElementById('r90-harness');if(!host){host=document.createElement('div');host.id='r90-harness';document.body.prepend(host);} /* r113: outside #root so a background refresh cannot wipe it */
   host.innerHTML=(window.roleBtn?roleBtn({label:'My role'}):'')+'<div class="card" id="stretchc"><h2>Stretching</h2>'+(window.preStretchExtra?preStretchExtra():'')+'</div>';
  });
  await w(400);

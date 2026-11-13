@@ -6,7 +6,7 @@ const {chromium,devices}=require('playwright');const http=require('http'),fs=req
 const root=path.resolve(__dirname,'../..'),PORT=+process.env.PORT||8812,SHOTS=process.env.SHOTS||'/workspace/shots',PRE='r112_';
 fs.mkdirSync(SHOTS,{recursive:true});
 const MT={'.js':'text/javascript','.html':'text/html','.json':'application/json','.css':'text/css','.png':'image/png','.jpg':'image/jpeg','.webp':'image/webp','.webmanifest':'application/json','.svg':'image/svg+xml','.vtt':'text/vtt'};
-const srv=http.createServer((q,r)=>{let u=decodeURIComponent(q.url.split('?')[0]);if(u==='/version.json'){r.writeHead(200,{'content-type':'application/json'});r.end('{"v": "112"}');return;}let f=path.join(root,u);if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,d)=>{if(e){r.writeHead(404);r.end();return;}r.writeHead(200,{'content-type':MT[path.extname(f)]||'application/octet-stream'});r.end(d);});}).listen(PORT);
+const srv=http.createServer((q,r)=>{let u=decodeURIComponent(q.url.split('?')[0]);if(u==='/version.json'){r.writeHead(200,{'content-type':'application/json'});r.end(JSON.stringify({v:(require('fs').readFileSync(require('path').join(__dirname,'../../update.js'),'utf8').match(/RUN='(\d+)'/)||[])[1]}));return;}let f=path.join(root,u);if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,d)=>{if(e){r.writeHead(404);r.end();return;}r.writeHead(200,{'content-type':MT[path.extname(f)]||'application/octet-stream'});r.end(d);});}).listen(PORT);
 const BASE='http://localhost:'+PORT;
 let ok=0,bad=0;const T=(n,c,x)=>{console.log((c?'PASS ':'FAIL ')+n+(c||x===undefined?'':'  '+JSON.stringify(x)));c?ok++:bad++;};
 const H={'access-control-allow-origin':'*'};
@@ -162,7 +162,8 @@ async function tapSizes(p,sel){return p.evaluate(s=>[...document.querySelectorAl
   const extra=e.sent.slice(sentBefore).filter(a=>/run|fit/i.test(a));
   T(vn+': Running sent nothing to the backend',extra.length===0,extra);
   // tab direct links
-  for(const [h,lab] of [['#games','Games'],['#events','Events'],['#media','Media'],['#home','Home']]){await p.evaluate(x=>{location.hash=x;},h);await w(400);const on=await p.evaluate(()=>{const b=document.querySelector('nav.tabs button.on');return b?b.innerText.trim():'';});T(vn+': '+h+' opens '+lab,on.indexOf(lab)===0,on);}
+  /* r113: Games and Events sit under Calendar, Media is Videos. The old links still open the same pages. */
+  for(const [h,lab,t] of [['#games','Calendar','games'],['#events','Calendar','events'],['#media','Videos','media'],['#home','Home','home']]){await p.evaluate(x=>{location.hash=x;},h);await w(400);const on=await p.evaluate(()=>{const b=document.querySelector('nav.tabs button.on');return b?b.innerText.trim():'';});const tb=await p.evaluate(()=>tab);T(vn+': '+h+' opens '+t+' ('+lab+' lit)',on.indexOf(lab)===0&&tb===t,on+' '+tb);}
   await p.evaluate(()=>{location.hash='#ask';});await w(400);
   T(vn+': #ask opens Ask the coaches',/Ask the coaches|Your voice|My team idea/i.test(await p.innerText('#root')));
   await p.evaluate(()=>{location.hash='#faq';});await w(400);
@@ -184,7 +185,7 @@ async function tapSizes(p,sel){return p.evaluate(s=>[...document.querySelectorAl
  }
  // offline shell lists running.js
  const fsw=fs.readFileSync(path.join(root,'fsw.js'),'utf8');
- T('fsw.js caches running.js and the family pages for offline',/running\.js\?v=112/.test(fsw)&&/'family\.html'/.test(fsw)&&/'parents\.html'/.test(fsw));
+ T('fsw.js caches running.js and the family pages for offline',/running\.js\?v=\d+/.test(fsw)&&/'family\.html'/.test(fsw)&&/'parents\.html'/.test(fsw));
  const run=fs.readFileSync(path.join(root,'running.js'),'utf8');
  T('running.js makes no network calls',!/fetch\(|XMLHttpRequest|\bcall\(|sendBeacon/.test(run));
  T('running.js has no keys or tokens',!/api[_-]?key|token|secret/i.test(run));

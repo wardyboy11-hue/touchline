@@ -279,3 +279,11 @@ body.ps .tl-tile,body.ps .tl-sc,body.ps .tl-rl,body.ps .tl-rt{color:inherit}
 .tl-todo.done b{color:var(--muted);text-decoration:line-through}
 .tl-todo .btn.sm{margin-left:6px}
 button.tl-vq{background:transparent;color:inherit;border:0;border-bottom:1px solid var(--line,rgba(255,255,255,.12));font:inherit;padding:10px 2px;cursor:pointer}
+/* r113: Today opens with the match (on match day) or the next training, then Waiting for you. */
+.tlc-hero{border-color:var(--amber,#FFB81C);background:linear-gradient(135deg,#0B2F8A,#15295A)}
+.tlc-hero h2{font-size:22px}
+.tlc-hero .btn{min-height:50px}
+.tlc-wait .it{background:none}
+.tlc-else{font-size:16px;color:#A6B2D4;margin:18px 2px 8px;font-weight:700}
+#st[hidden]{display:none!important}
+body.ps .tlc-hero{background:#fff;color:#021945}

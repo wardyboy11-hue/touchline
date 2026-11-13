@@ -3,12 +3,12 @@ const { chromium, devices } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path');
 const root = path.resolve(__dirname, '../..');
 const PORT = +process.env.PORT || 8836;
-const SHOTS = process.env.SHOTS || '/opt/cursor/artifacts';
+const SHOTS = process.env.SHOTS || require('path').join(require('os').tmpdir(),'touchline-shots');
 fs.mkdirSync(SHOTS, { recursive: true });
 const MT = { '.js': 'text/javascript', '.html': 'text/html', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.webmanifest': 'application/json', '.vtt': 'text/vtt', '.webm': 'video/webm', '.mp4': 'video/mp4' };
 const srv = http.createServer((q, r) => {
   const u = decodeURIComponent(q.url.split('?')[0]);
-  if (u === '/version.json') { r.writeHead(200, { 'content-type': 'application/json' }); r.end('{"v": "109"}'); return; }
+  if (u === '/version.json') { r.writeHead(200, { 'content-type': 'application/json' }); r.end(JSON.stringify({v:(require('fs').readFileSync(require('path').join(__dirname,'../../update.js'),'utf8').match(/RUN='(\d+)'/)||[])[1]})); return; }
   let f = path.join(root, u);
   if (f.endsWith('/')) f += 'index.html';
   fs.readFile(f, (e, d) => {
@@ -28,7 +28,7 @@ function errsOf(p) {
   return e;
 }
 function fam(role) {
-  return { first: 'Pat', role: role, num: '7', mine: {}, at: Date.now(), photo: '', posts: [{ id: 'tr1', type: 'training', date: '2026-11-11', time: '19:00', title: 'Training', place: 'Pitch' }], squadNums: [], vote: { motm: { open: false, elig: role === 'parent', cands: [{ id: 'p9', num: '9', name: 'Alex Sample' }], mine: [] }, poty: { open: false } }, x: { fixtures: [{ id: 'fx1', opp: 'Rivals Athletic', date: '2026-11-14', ko: '10:30', ha: 'A', done: false, pp: 0, venue: 'Rivals ground' }], news: [], events: [], lifts: [], media: [], contacts: [{ n: 'Club welfare', r: 'Welfare', e: '', p: '' }] } };
+  return { first: 'Pat', role: role, num: '7', mine: {}, at: Date.now(), photo: '', posts: [{ id: 'tr1', type: 'training', date: '2026-11-11', time: '20:00', title: 'Training', place: 'Pitch' }], squadNums: [], vote: { motm: { open: false, elig: role === 'parent', cands: [{ id: 'p9', num: '9', name: 'Alex Sample' }], mine: [] }, poty: { open: false } }, x: { fixtures: [{ id: 'fx1', opp: 'Rivals Athletic', date: '2026-11-14', ko: '10:30', ha: 'A', done: false, pp: 0, venue: 'Rivals ground' }], news: [], events: [], lifts: [], media: [], contacts: [{ n: 'Club welfare', r: 'Welfare', e: '', p: '' }] } };
 }
 (async () => {
   const b = await chromium.launch();
@@ -46,15 +46,15 @@ function fam(role) {
     await p.goto(BASE + '/parents.html');
     await p.waitForTimeout(1600);
     await p.evaluate(() => { const s = document.getElementById('splash'); if (s) s.remove(); try { r(); } catch (e) {} });
-    await p.waitForSelector('.tl-q');
-    const q = await p.locator('.tl-q').allInnerTexts();
-    const h = await p.locator('.tl-q').first().evaluate(el => el.getBoundingClientRect().height);
+    await p.waitForSelector('.tlh-tile'); // r113: the shortcut row became four big buttons on the new Home
+    const q = (await p.locator('.tlh-tile').allInnerTexts()).map(t=>t.replace(/[^A-Za-z ]/g,'').trim());
+    const h = await p.locator('.tlh-tile').first().evaluate(el => el.getBoundingClientRect().height);
     const bg = await p.evaluate(() => getComputedStyle(document.body).backgroundColor);
-    T('parent shortcuts', q.join('|') === 'Playing?|Fixtures|Emergency|Clips');
+    T('parent shortcuts', q.join('|') === 'Emergency|Lifts|Training|Clips');
     T('parent shortcut at least 44px', h >= 44);
     T('kit navy background', bg === 'rgb(2, 25, 69)');
     await p.screenshot({ path: path.join(SHOTS, 'r106-parent-home.png') });
-    await p.locator('.tl-q', { hasText: 'Fixtures' }).click();
+    await p.locator('nav.tabs button', { hasText: 'Calendar' }).click(); // r113: the Fixtures shortcut became the Calendar tab
     await p.waitForTimeout(300);
     await p.screenshot({ path: path.join(SHOTS, 'r106-parent-fixtures.png') });
     T('parent home zero console errors', E.length === 0);
@@ -69,15 +69,15 @@ function fam(role) {
     await p.goto(BASE + '/family.html');
     await p.waitForTimeout(1600);
     await p.evaluate(() => { const s = document.getElementById('splash'); if (s) s.remove(); try { r(); } catch (e) {} });
-    await p.waitForSelector('.tl-q');
-    const q = await p.locator('.tl-q').allInnerTexts();
-    T('player shortcuts', q.join('|') === 'Playing?|Fixtures|My page|Clips');
+    await p.waitForSelector('.tlh-tile');
+    const q = (await p.locator('.tlh-tile').allInnerTexts()).map(t=>t.replace(/[^A-Za-z ]/g,'').trim());
+    T('player shortcuts', q.join('|') === 'Run|Stretch|My goals|Ask');
     await p.screenshot({ path: path.join(SHOTS, 'r106-player-home.png') });
-    await p.locator('nav.tabs button', { hasText: 'Games' }).click();
+    await p.locator('nav.tabs button', { hasText: 'Calendar' }).click();
     await p.waitForSelector('#tl-matchday');
     T('player matchday heading', /Match days/.test(await p.locator('#tl-matchday').innerText()));
     await p.screenshot({ path: path.join(SHOTS, 'r106-player-matchday.png') });
-    await p.locator('nav.tabs button', { hasText: 'Media' }).click();
+    await p.locator('nav.tabs button', { hasText: 'Videos' }).click();
     await p.waitForSelector('#tl-resources');
     T('player resources heading', /Videos and pictures/.test(await p.locator('#tl-resources').innerText()));
     await p.screenshot({ path: path.join(SHOTS, 'r106-player-resources.png') });
@@ -128,7 +128,7 @@ function fam(role) {
     await p.goto(BASE + '/parents.html');
     await p.waitForTimeout(1400);
     await p.evaluate(() => { const s = document.getElementById('splash'); if (s) s.remove(); try { r(); } catch (e) {} });
-    await p.locator('.tl-q', { hasText: 'Fixtures' }).click();
+    await p.locator('nav.tabs button', { hasText: 'Calendar' }).click(); // r113: the Fixtures shortcut became the Calendar tab
     await p.waitForSelector('#tl-matchday');
     T('parent matchday heading', /Match days/.test(await p.locator('#tl-matchday').innerText()));
     T('fixture opponent still listed', /Rivals Athletic/.test(await p.locator('#root').innerText()));
@@ -147,13 +147,13 @@ function fam(role) {
     await p.goto(BASE + '/parents.html');
     await p.waitForTimeout(1400);
     await p.evaluate(() => { const s = document.getElementById('splash'); if (s) s.remove(); try { r(); } catch (e) {} });
-    await p.locator('.tl-q', { hasText: 'Clips' }).click();
+    await p.locator('nav.tabs button', { hasText: 'Videos' }).click(); // r113: Media is Videos in the nav
     await p.waitForSelector('#tl-resources');
     T('parent resources heading', /Videos and pictures/.test(await p.locator('#tl-resources').innerText()));
     T('listen still on resources', /Open the podcast list/.test(await p.locator('#root').innerText()));
     await p.screenshot({ path: path.join(SHOTS, 'r106-parent-resources.png') });
     await p.locator('nav.tabs button', { hasText: 'Home' }).click();
-    await p.locator('.tl-q', { hasText: 'Emergency' }).click();
+    await p.locator('.tlh-tile', { hasText: 'Emergency' }).click();
     await p.waitForTimeout(300);
     T('emergency still lists 999', /999/.test(await p.locator('#root').innerText()));
     await ctx.close();
@@ -170,6 +170,8 @@ function fam(role) {
       localStorage.setItem('fam.tour', '1');
       try { Object.defineProperty(navigator, 'onLine', { get: function () { return false; } }); } catch (e) {}
     });
+    // r113: pin the clock to the day before training (Tuesday 10 Nov) so the Yes or No card shows whatever the real date is
+    await p.addInitScript("(()=>{const T=new Date('2026-11-10T18:00:00').getTime(),D0=Date.now(),R=Date;class FD extends R{constructor(...a){if(a.length)super(...a);else super(T+(R.now()-D0));}static now(){return T+(R.now()-D0);}}window.Date=FD;})()");
     await p.route('**/macros/**', r => r.fulfill({ status: 200, contentType: 'application/json', headers: H, body: JSON.stringify({ ok: true, data: fam('parent') }) }));
     await p.goto(BASE + '/parents.html');
     await p.waitForTimeout(1400);

@@ -3,13 +3,13 @@ const { chromium, devices } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path');
 const root = path.resolve(__dirname, '../..');
 const PORT = +process.env.PORT || 8848;
-const SHOTS = process.env.SHOTS || '/opt/cursor/artifacts';
+const SHOTS = process.env.SHOTS || require('path').join(require('os').tmpdir(),'touchline-shots');
 const OPEN = 'https://open.spotify.com/playlist/37i9dQZF1Fx1qy2m6cIsqW';
 const EMBED = 'https://open.spotify.com/embed/playlist/37i9dQZF1Fx1qy2m6cIsqW';
 fs.mkdirSync(SHOTS, { recursive: true });
 const srv = http.createServer((q, r) => {
   const u = decodeURIComponent(q.url.split('?')[0]);
-  if (u === '/version.json') { r.writeHead(200, { 'content-type': 'application/json' }); r.end('{"v": "109"}'); return; }
+  if (u === '/version.json') { r.writeHead(200, { 'content-type': 'application/json' }); r.end(JSON.stringify({v:(require('fs').readFileSync(require('path').join(__dirname,'../../update.js'),'utf8').match(/RUN='(\d+)'/)||[])[1]})); return; }
   let f = path.join(root, u);
   if (f.endsWith('/')) f += 'index.html';
   fs.readFile(f, (e, d) => {
@@ -42,7 +42,7 @@ function dirty(s) { return /[?&](pt|si)=/i.test(s) || /[?&]pt\b/i.test(s); }
     await p.goto('http://localhost:' + PORT + '/parents.html');
     await p.waitForTimeout(1400);
     await p.evaluate(() => { const s = document.getElementById('splash'); if (s) s.remove(); try { r(); } catch (e) {} });
-    await p.locator('.tl-q', { hasText: 'Fixtures' }).click();
+    await p.locator('nav.tabs button', { hasText: 'Calendar' }).click(); // r113: the Fixtures shortcut became the Calendar tab
     await p.waitForSelector('#tl-spotify-title');
     T('accessible title', (await p.locator('#tl-spotify-title').innerText()) === 'Pre-match music');
     const openHref = await p.locator('#tl-spotify-open').getAttribute('href');

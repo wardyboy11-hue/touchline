@@ -1,7 +1,7 @@
 /* r90 app shell (countdown + matchday) on the r87 Base44 shell: five tabs, More in the top bar, page addresses, scroll memory, attendance ticks,
    guides on tap, roles grid, Update ready during a match, and the error card. Fake data only. */
 const {chromium}=require('playwright');const http=require('http'),fs=require('fs'),path=require('path');
-const root=path.resolve(__dirname,'../..');const PORT=+process.env.PORT||8797;let VER='109';
+const root=path.resolve(__dirname,'../..');const PORT=+process.env.PORT||8797;let VER=(fs.readFileSync(path.join(root,'update.js'),'utf8').match(/RUN='(\d+)'/)||[])[1]; // r113: serve the app's own version so nothing reloads mid test
 const SHOTS=process.env.SHOTS||'';
 const MT={'.js':'text/javascript','.html':'text/html','.json':'application/json','.css':'text/css','.png':'image/png','.jpg':'image/jpeg','.vtt':'text/vtt','.mp4':'video/mp4','.webmanifest':'application/json'};
 const srv=http.createServer((q,r)=>{const u=q.url.split('?')[0];if(u==='/version.json'){r.writeHead(200,{'content-type':'application/json'});r.end(JSON.stringify({v:VER}));return;}let f=path.join(root,decodeURIComponent(u));if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,d)=>{if(e){r.writeHead(404);r.end();return;}r.writeHead(200,{'content-type':MT[path.extname(f)]||'application/octet-stream'});r.end(d);});}).listen(PORT);
@@ -72,10 +72,11 @@ const w=ms=>new Promise(r=>setTimeout(r,ms));const H=c=>c.evaluate(()=>location.
   const C=await open(b,ph,cdState);
   await C.c.goto('http://localhost:'+PORT+'/coach/index.html#/today');await w(1200);
   await C.c.evaluate(()=>{const s=document.getElementById('splash');if(s)s.remove();const el=document.getElementById('tl-md');if(el)el.remove();});
-  const cdInfo=await C.c.evaluate(()=>({tlcd:!!window.TLCD,rail:!!document.querySelector('.tl-cd-rail'),items:document.querySelectorAll('.tl-cd-item').length,coming:/Coming up/.test((document.getElementById('root')||{}).innerText||''),hasCdJs:!!document.querySelector('script[src*="cd.js"]'),snip:((document.getElementById('root')||{}).innerText||'').slice(0,180)}));
+  const cdInfo=await C.c.evaluate(()=>({tlcd:!!window.TLCD,rail:!!document.querySelector('.tl-cd-rail'),items:document.querySelectorAll('.tl-cd-item').length,coming:/Coming up/i.test((document.getElementById('root')||{}).innerText||''),hasCdJs:!!document.querySelector('script[src*="cd.js"]'),snip:((document.getElementById('root')||{}).innerText||'').slice(0,180)}));
   if(!cdInfo.rail)console.log('countdown debug',JSON.stringify(cdInfo));
-  T('Today shows the countdown rail',!!(await C.c.$('.tl-cd-rail'))&&(await C.c.$$('.tl-cd-item')).length>=1);await shot(C.c,'phone_countdown');
-  T('countdown items have a live timer',await C.c.evaluate(()=>[...document.querySelectorAll('.tl-cd-rail [data-cd-until]')].length>=1));
+  // r108 replaced the coach countdown rail with the one line Coming up section (see r108-coach-home). The rail itself lives on in family Home.
+  T('Today shows Coming up, not the old countdown rail',cdInfo.coming&&!cdInfo.rail);await shot(C.c,'phone_countdown');
+  T('countdown items have a live timer',await C.c.evaluate(()=>(()=>{const d=new Date(Date.now()+864e5),iso=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');const el=document.createElement('div');el.innerHTML=TLCD.rail([{kind:'match',date:iso,time:'09:00',title:'v Test FC',id:'x1'},{kind:'train',date:iso,time:'20:00',title:'Training',id:'t1'}]);return el;})().querySelectorAll('[data-cd-until]').length>=1));
   await C.c.evaluate(()=>{const td=new Date();const iso=td.getFullYear()+'-'+String(td.getMonth()+1).padStart(2,'0')+'-'+String(td.getDate()).padStart(2,'0');localStorage.removeItem('tl.md.shown.'+iso);if(window.TLCD){const g={id:'mcd',opp:'Countdown FC',date:iso,ko:'15:00',ha:'H',venue:'Christopher Park'};TLCD.showMatchday(g,{role:'coach',who:'Tim',coach:true,force:true});}});
   await w(400);
   T('matchday screen greets the coach by first name',await C.c.evaluate(()=>{const el=document.getElementById('tl-md');return !!(el&&/Morning, Tim|Afternoon, Tim|Evening, Tim/.test(el.innerText));}));
@@ -129,7 +130,7 @@ const w=ms=>new Promise(r=>setTimeout(r,ms));const H=c=>c.evaluate(()=>location.
   T('meetBy is always 30 minutes before kick off',await C.c.evaluate(()=>window.TLCD.meetBy('15:00')==='14:30'&&window.TLCD.meetBy('10:05')==='09:35'&&window.TLCD.meetBy('15:00','14:00')==='14:00'));
   T('rail shows absolute UK date/time line',await C.c.evaluate(()=>{document.querySelector('nav.tabs [aria-label="Today"]')&&document.querySelector('nav.tabs [aria-label="Today"]').click();return true;}));
   await C.c.goto('http://localhost:'+PORT+'/coach/index.html#/today');await w(900);
-  T('countdown rail has relative and absolute times',await C.c.evaluate(()=>!!document.querySelector('.tl-cd-left[data-cd-until]')&&!!document.querySelector('.tl-cd-abs')));
+  T('countdown rail has relative and absolute times',await C.c.evaluate(()=>{const el=(()=>{const d=new Date(Date.now()+864e5),iso=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');const el=document.createElement('div');el.innerHTML=TLCD.rail([{kind:'match',date:iso,time:'09:00',title:'v Test FC',id:'x1'},{kind:'train',date:iso,time:'20:00',title:'Training',id:'t1'}]);return el;})();return !!el.querySelector('.tl-cd-left[data-cd-until]')&&!!el.querySelector('.tl-cd-abs');}));
   await C.cc.close();
  }
  // family page: Running late on home matchday card (shirt number only, no family-to-family)
@@ -166,7 +167,7 @@ const w=ms=>new Promise(r=>setTimeout(r,ms));const H=c=>c.evaluate(()=>location.
  await cc.close();
  // live match: no reload, Update ready button instead
  const live=JSON.parse(JSON.stringify(state));live.matches.m1={id:'m1',opp:'Test FC',date:'2026-11-07',ko:'10:30',ha:'H',formation:'352',half:35,avail:{},lineup:{},status:'live',period:1,clock:{acc:0,running:false,t0:0},stints:{},events:[],ratings:{},updatedAt:1};
- const L=await open(b,ph,live);let loads=0;L.c.on('load',()=>loads++);VER='103';
+ const L=await open(b,ph,live);let loads=0;L.c.on('load',()=>loads++);VER=String(+((fs.readFileSync(path.join(root,'update.js'),'utf8').match(/RUN='(\d+)'/)||[])[1]||0)+1); // r113: always one newer than the app
  await L.c.evaluate(()=>window.tlCheckUpdate());await w(1500);
  T('during a live match an update shows Update ready and does not reload',loads===0&&!!(await L.c.$('#tl-upd')));await shot(L.c,'phone_update_ready');
  await L.cc.close();VER='95';

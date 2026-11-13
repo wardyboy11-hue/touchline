@@ -18,6 +18,7 @@ ol.list li .th{width:58px;height:58px;flex:none;background:#f1f5fe;border-radius
 .stage{display:grid;grid-template-columns:1fr;gap:12px}
 @media(min-width:820px){.stage{grid-template-columns:1.1fr 1fr}}
 .demo{background:#fff;border-radius:16px;position:relative;cursor:pointer;overflow:hidden;background:#cfd9e8;align-self:start}
+.aimark{margin:6px 0 0;font-size:14px;color:#A6B2D4;text-align:center}
 #fig{aspect-ratio:1/1;max-height:70vh;margin:0 auto;overflow:hidden;border-radius:16px;position:relative}
 #fig img{display:block;width:100%;height:100%;object-fit:cover}
 .anim{position:relative;width:100%;height:100%}
@@ -66,7 +67,7 @@ ol.list li .th img{width:100%;height:100%;border-radius:12px;object-fit:cover}
 <header><img src="../badge.png" alt=""><h1>Stretching<small>Wigan Junior Latics U15 Blues</small></h1><button class="x" id="close" aria-label="Close">Close ✕</button></header>
 <main>
 <section id="list">
- <div class="card"><h2 style="margin:0 0 4px">Cool down stretches</h2><p class="muted" style="margin:0">After training or a match. Each stretch is held at least 15 seconds, with a 15 second rest between. Voice and pictures stay in step.</p>
+ <div class="card"><h2 style="margin:0 0 4px">Cool down stretches</h2><p class="muted" style="margin:0">After training or a match. Each stretch is held at least 15 seconds, with a 15 second rest between. Voice and pictures stay in step.</p><p class="aimark" style="text-align:left;margin:6px 0 0">The videos are a computer made demo, not a real player.</p>
  <div class="tot"><span class="muted"><span id="cnt"></span> stretches</span><b id="total"></b></div>
  <button class="btn pri" id="start">Start</button><p class="small muted" style="margin:8px 0 0">Turn your sound on. Tap any stretch below to start from there. Tap the picture any time for how to do it.</p></div>
  <div class="card safe"><b>Stay safe</b><ul style="margin:6px 0 0;padding-left:20px"><li>Ease in to a gentle pull. Never pain, never force it, no bouncing.</li><li>Stop if anything feels sharp and tell a coach.</li><li>Growing? Sore below the kneecap (Osgood-Schlatter) or in the heel (Sever's) means go gentler and tell a coach or your parents.</li><li>Breathe slowly the whole time.</li></ul></div>
@@ -75,6 +76,7 @@ ol.list li .th img{width:100%;height:100%;border-radius:12px;object-fit:cover}
 <section id="play">
  <div class="stage">
   <div class="demo" id="demo" title="Tap for how to do it"><span class="phase" id="phase"></span><div id="fig"></div><span class="tap">Tap for how to</span></div>
+  <p class="aimark" id="aimark">Computer made demo, not a real player</p>
   <div>
    <div class="card"><div class="nm2" id="pname"></div><div class="sd" id="pside"></div>
     <div class="big" id="clock">0:15</div><div class="bar"><i id="prog"></i></div>

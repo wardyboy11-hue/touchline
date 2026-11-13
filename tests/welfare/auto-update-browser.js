@@ -1,6 +1,8 @@
 const {chromium}=require('playwright');const http=require('http'),fs=require('fs'),path=require('path');
 const root=path.resolve(__dirname,'../..');let VER='109';const PORT=+process.env.PORT||8793;
 const srv=http.createServer((q,r)=>{const u=q.url.split('?')[0];if(u==='/version.json'){r.writeHead(200,{'content-type':'application/json'});r.end(JSON.stringify({v:VER}));return;}let f=path.join(root,decodeURIComponent(u));if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,d)=>{if(e){r.writeHead(404);r.end();return;}r.writeHead(200,{'content-type':f.endsWith('.js')?'text/javascript':f.endsWith('.css')?'text/css':f.endsWith('.json')?'application/json':'text/html'});r.end(d);});}).listen(PORT);
+/* r113: read the live version from update.js so this test does not go stale every release */
+const RUN=(fs.readFileSync(path.join(root,'update.js'),'utf8').match(/RUN='(\d+)'/)||[])[1]||'0',NEWER=String(+RUN+1);
 let ok=0,bad=0;const T=(n,c)=>{console.log((c?'PASS ':'FAIL ')+n);c?ok++:bad++;};
 (async()=>{const b=await chromium.launch();
 async function run(name,setup,expectReload){
@@ -10,9 +12,9 @@ async function run(name,setup,expectReload){
  if(/unsaved/.test(name))await q.evaluate(()=>{var i=document.createElement('input');i.id='tu';document.body.appendChild(i);i.value='half a sentence';i.blur();});
  if(/typing/.test(name))await q.evaluate(()=>{var i=document.createElement('input');i.id='tt';document.body.appendChild(i);i.focus();});
  await q.waitForTimeout(4500);T(name,expectReload?loads>=2:loads===1);await ctx.close();}
-VER='109';await run('newer version on the server refreshes the app',()=>{},true);
-VER='109';await run('same version does not refresh',()=>{},false);
-VER='109';await run('newer version waits while typing in a box',()=>{},false);
-VER='109';await run('newer version waits while a box has unsaved text',()=>{},false);
-VER='109';await run('does not refresh with unsynced coach changes',()=>{localStorage.setItem('tl.state.v1',JSON.stringify({players:{},dirty:{a:1}}));},false);
+VER=NEWER;await run('newer version on the server refreshes the app',()=>{},true);
+VER=RUN;await run('same version does not refresh',()=>{},false);
+VER=NEWER;await run('newer version waits while typing in a box',()=>{},false);
+VER=NEWER;await run('newer version waits while a box has unsaved text',()=>{},false);
+VER=NEWER;await run('does not refresh with unsynced coach changes',()=>{localStorage.setItem('tl.state.v1',JSON.stringify({players:{},dirty:{a:1}}));},false);
 console.log(ok+' passed, '+bad+' failed');await b.close();srv.close();process.exit(bad?1:0);})();

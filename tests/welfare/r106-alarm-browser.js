@@ -3,11 +3,11 @@ const { chromium, devices } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path');
 const root = path.resolve(__dirname, '../..');
 const PORT = +process.env.PORT || 8842;
-const SHOTS = process.env.SHOTS || '/opt/cursor/artifacts';
+const SHOTS = process.env.SHOTS || require('path').join(require('os').tmpdir(),'touchline-shots');
 fs.mkdirSync(SHOTS, { recursive: true });
 const srv = http.createServer((q, r) => {
   const u = decodeURIComponent(q.url.split('?')[0]);
-  if (u === '/version.json') { r.writeHead(200, { 'content-type': 'application/json' }); r.end('{"v": "109"}'); return; }
+  if (u === '/version.json') { r.writeHead(200, { 'content-type': 'application/json' }); r.end(JSON.stringify({v:(require('fs').readFileSync(require('path').join(__dirname,'../../update.js'),'utf8').match(/RUN='(\d+)'/)||[])[1]})); return; }
   let f = path.join(root, u);
   if (f.endsWith('/')) f += 'index.html';
   fs.readFile(f, (e, d) => {
@@ -33,7 +33,7 @@ const T = (n, c) => { console.log((c ? 'PASS ' : 'FAIL ') + n); c ? ok++ : bad++
   await p.goto('http://localhost:' + PORT + '/parents.html');
   await p.waitForTimeout(1500);
   await p.evaluate(() => { const s = document.getElementById('splash'); if (s) s.remove(); try { r(); } catch (e) {} });
-  await p.locator('.tl-q', { hasText: 'Fixtures' }).click();
+  await p.locator('nav.tabs button', { hasText: 'Calendar' }).click(); // r113: the Fixtures shortcut became the Calendar tab
   await p.waitForSelector('#tl-alarm');
   const empty = await p.locator('#tl-alarm-time').inputValue();
   const html = await p.locator('#tl-alarm').innerHTML();

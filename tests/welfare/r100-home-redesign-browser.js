@@ -3,7 +3,7 @@ const {chromium,devices}=require('playwright');const http=require('http'),fs=req
 const root=path.resolve(__dirname,'../..'),PORT=+process.env.PORT||8800,SHOTS=process.env.SHOTS||'/workspace/shots',PRE=process.env.PRE||'r100_';
 fs.mkdirSync(SHOTS,{recursive:true});
 const MT={'.js':'text/javascript','.html':'text/html','.json':'application/json','.css':'text/css','.png':'image/png','.jpg':'image/jpeg','.webp':'image/webp','.webmanifest':'application/json','.svg':'image/svg+xml'};
-const srv=http.createServer((q,r)=>{let u=decodeURIComponent(q.url.split('?')[0]);if(u==='/version.json'){r.writeHead(200,{'content-type':'application/json'});r.end('{"v": "109"}');return;}let f=path.join(root,u);if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,d)=>{if(e){r.writeHead(404);r.end();return;}r.writeHead(200,{'content-type':MT[path.extname(f)]||'application/octet-stream'});r.end(d);});}).listen(PORT);
+const srv=http.createServer((q,r)=>{let u=decodeURIComponent(q.url.split('?')[0]);if(u==='/version.json'){r.writeHead(200,{'content-type':'application/json'});r.end(JSON.stringify({v:(require('fs').readFileSync(require('path').join(__dirname,'../../update.js'),'utf8').match(/RUN='(\d+)'/)||[])[1]}));return;}let f=path.join(root,u);if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,d)=>{if(e){r.writeHead(404);r.end();return;}r.writeHead(200,{'content-type':MT[path.extname(f)]||'application/octet-stream'});r.end(d);});}).listen(PORT);
 const BASE='http://localhost:'+PORT;
 let ok=0,bad=0;const T=(n,c)=>{console.log((c?'PASS ':'FAIL ')+n);c?ok++:bad++;};
 const H={'access-control-allow-origin':'*'};
@@ -27,9 +27,9 @@ function famData(role){
     r.fulfill({status:200,contentType:'application/json',headers:H,body:JSON.stringify({ok:true,data:{docs:[],serverTime:Date.now()}})});});
   await c.goto(BASE+'/coach/index.html');await c.waitForTimeout(1800);
   await c.evaluate(()=>{const s=document.getElementById('splash');if(s)s.remove();});
-  const hasJump=await c.locator('.tl-jump').count();
+  const hasJump=await c.locator('#tlc-top').count(); // r113: the jump chips became the Today hero (match or training, then Waiting for you)
   const hasSec=await c.locator('#sec-alerts').count();
-  T('coach home jump bar', hasJump>0);
+  T('coach home hero (was jump bar)', hasJump>0);
   T('coach home alerts section', hasSec>0);
   await c.screenshot({path:path.join(SHOTS,PRE+'coach_home.png'),fullPage:false});
   // open hub attendance poll if present
@@ -54,10 +54,10 @@ function famData(role){
   await q.waitForTimeout(700);
   const st=await q.evaluate(()=>{
     return {
-      jump:!!document.querySelector('.tl-jump'),
-      alerts:!!document.getElementById('sec-alerts'),
+      jump:!!document.getElementById('tlh-hello')&&!document.querySelector('#root .tl-jump'), // r113: short Home, no jump chips
+      alerts:!!document.getElementById('sec-alerts')||!!document.getElementById('tlh-todo')||!!document.getElementById('att-top'), // r113: alerts sit in Things to do
       week:!!document.getElementById('sec-week'),
-      train:!!document.getElementById('sec-train'),
+      train:!!document.getElementById('sec-train')||(D&&D.role==='player'&&typeof tlTrainBody==='function'), // r113: players have a Train tab
       news:!!document.getElementById('sec-news'),
       players:!!document.getElementById('sec-players'),
       att:!!document.getElementById('att-top'),
@@ -65,7 +65,7 @@ function famData(role){
       shirtText:(document.querySelector('.att-sum')||{}).innerText||''
     };
   });
-  T(pg+' jump bar', st.jump);
+  T(pg+' short Home (was jump bar)', st.jump);
   T(pg+' section alerts', st.alerts);
   T(pg+' section week', st.week);
   T(pg+' section train', st.train);
