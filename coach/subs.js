@@ -42,12 +42,17 @@
   function pair(inId,taken,score){var p=c.P(inId),best=null,bs=-1e9;c.onPitch.forEach(function(s){if(taken[s.pid]||taken['slot:'+s.slot])return;if(!nom(c.fit,p,s.pos))return;
     var fi=level(inId,s.pos,false),lo=level(s.pid,s.pos,true);if(fi<lo-0.25)return;var sc=score(s,fi,lo);if(sc>bs){bs=sc;best=s;}});return best;}
   function build(order,k,score){var taken={},ch=[],skipped=[];order.forEach(function(id){if(ch.length>=k)return;var s=pair(id,taken,score);if(!s){skipped.push(id);return;}taken[s.pid]=1;taken['slot:'+s.slot]=1;ch.push({off:s.pid,on:id,slot:s.slot,pos:s.pos});});return {ch:ch,skipped:skipped};}
+  /* A knock comes off in every option, with the best bench player who nominated that position. */
+  function knockFix(){var used={},ch=[];c.onPitch.filter(function(sl){return form(sl.pid)==='knock';}).forEach(function(sl){var best=null,bs=-1e9;bench.forEach(function(id){if(used[id])return;if(!nom(c.fit,c.P(id),sl.pos))return;var sc2=level(id,sl.pos,false)*10+need(id)/60;if(sc2>bs){bs=sc2;best=id;}});if(best){used[best]=1;ch.push({off:sl.pid,on:best,slot:sl.slot,pos:sl.pos});}});return ch;}
+  var KN=knockFix();
+  function withKnock(r,k2){if(!KN.length)return r;var ch=KN.slice();r.ch.forEach(function(x){if(ch.length>=Math.max(k2,KN.length))return;if(ch.some(function(y){return y.on===x.on||y.off===x.off||y.slot===x.slot;}))return;ch.push(x);});return {ch:ch,skipped:r.skipped};}
   var left=windowsLeft(c);var needy=benchNeed.filter(function(id){return need(id)>0;});
   var k=Math.min(3,bench.length,Math.max(1,Math.round(needy.length*2/Math.max(1,left))));
   var sc=c.score||[0,0],st=sc[0]>sc[1]?'We are '+sc[0]+'-'+sc[1]+' up':sc[0]<sc[1]?'We are '+sc[0]+'-'+sc[1]+' down':'It is '+sc[0]+'-'+sc[1];
   var opts=[];
   /* A: fair minutes */
   var a=build(benchNeed,k,function(s,fi,lo){return (form(s.pid)==='knock'?100:0)+c.mins(s.pid)/60+(form(s.pid)==='fly'?-15:0)+(fi-lo)*2;});
+  a=withKnock(a,k);
   if(a.ch.length)opts.push({key:'fair',title:'Fair minutes',ch:a.ch,why:whyFair(a.ch)});
   /* B: fix what is happening on the pitch */
   var tapped=c.onPitch.filter(function(s){var f=form(s.pid);return f==='knock'||f==='tired'||f==='strug';});
@@ -64,19 +69,24 @@
   if(calm&&!atRisk.length&&!tapped.length)opts.push({key:'steady',title:'Keep it steady',ch:[],why:[st+' and we are on top. Minutes are on track, so no change is needed yet.']});
   else{var cc=build(atRisk.length?atRisk.sort(function(x,y){return need(y)-need(x);}):benchNeed,1,function(s,fi,lo){return (fi-lo)*10+c.mins(s.pid)/60-(form(s.pid)==='fly'?50:0)-(hot[s.slot]?5:0);});
    if(!cc.ch.length&&atRisk.length)cc=build(benchNeed,1,function(s,fi,lo){return (fi-lo)*10+c.mins(s.pid)/60-(form(s.pid)==='fly'?50:0);});
+   cc=withKnock(cc,1);
    if(cc.ch.length)opts.push({key:'steady',title:'Keep it steady',ch:cc.ch,why:whySteady(cc.ch)});}
   /* drop exact repeats */
   var seen={};opts=opts.filter(function(o){var s=o.ch.map(function(x){return x.off+'>'+x.on+'@'+x.slot;}).sort().join('|');if(seen[s])return false;seen[s]=1;return true;}).slice(0,3);
   var stuck=benchNeed.filter(function(id){return !opts.some(function(o){return o.ch.some(function(x){return x.on===id;});})&&need(id)>0;});
   return {opts:opts,fair:Math.round(fair/60),floor:Math.round(floor/60),state:st,stuck:stuck.map(function(id){return {id:id,why:numName(c,id)+' is not in any option: every position he nominated has someone doing as well or better.'};}),atRisk:atRisk};
   function minsTxt(id){return Math.floor(c.mins(id)/60)+"'";}
-  function whyFair(ch){var w=[st+'.'];ch.forEach(function(x){w.push(name(c,x.on)+' has played '+minsTxt(x.on)+'. Fair share today is about '+Math.round(fair/60)+"'. "+name(c,x.off)+' has '+minsTxt(x.off)+(form(x.off)?' and you marked him '+FORM[form(x.off)].n.toLowerCase():'')+'.');});return w;}
+  function lst(a){return a.length>1?a.slice(0,-1).join(', ')+' and '+a[a.length-1]:a[0]||'';}
+  function whyFair(ch){var ins=ch.filter(function(x){return form(x.off)!=='knock';});var w=[st+'.'];
+   if(ch.length>ins.length)w.push(lst(ch.filter(function(x){return form(x.off)==='knock';}).map(function(x){return name(c,x.off);}))+' has a knock, so he comes off first.');
+   if(ins.length)w.push('Minutes go to the players who need them most: '+lst(ins.map(function(x){return name(c,x.on)+' ('+minsTxt(x.on)+')';}))+'. Off: '+lst(ins.map(function(x){var f=form(x.off);return name(c,x.off)+' ('+minsTxt(x.off)+(f&&f!=='ok'?', '+FORM[f].n.toLowerCase():'')+')';}))+'.');
+   return w;}
   function whyFix(ch){var w=[];ch.forEach(function(x){var f=form(x.off),bits=[];if(f==='knock')bits.push(name(c,x.off)+' has a knock. Take him off and check him');else if(f)bits.push(name(c,x.off)+' is '+FORM[f].n.toLowerCase());
     var why=opp.filter(function(k){var o=OPP[k];return (o.lines&&o.lines.indexOf(LINE[x.pos])>-1)||(o.slots&&o.slots.test(x.slot));}).map(function(k){return OPP[k].say;});
     if(why.length)bits.push((bits.length?'and ':'')+why.join(' and ')+', so fresh legs at '+x.slot);
     var t0=bits.join(' ')||'Fresh legs at '+x.slot;w.push(t0.charAt(0).toUpperCase()+t0.slice(1)+'. '+name(c,x.on)+' '+playsTxt(x)+'.');});return w;}
   function playsTxt(x){var p=c.P(x.on),a=(p&&c.pos?c.pos(p):[])||[];return a.indexOf(x.pos)>-1?'nominated '+x.pos:'nominated '+(a.join(', ')||'it')+', the same job as '+x.pos;}
-  function whySteady(ch){var x=ch[0];return [st+'. One like for like change keeps the shape: '+name(c,x.on)+' for '+name(c,x.off)+' at '+x.slot+'.'+(atRisk.indexOf(x.on)>-1?' '+name(c,x.on)+' needs this to reach half the game.':'')];}
+  function whySteady(ch){var x=ch.filter(function(y){return form(y.off)!=='knock';})[0];if(!x)return [st+'. Only the change you need for the knock: '+lst(ch.map(function(y){return name(c,y.on)+' for '+name(c,y.off)+' at '+y.slot;}))+'.'];return (ch.length>1?[name(c,ch[0].off)+' has a knock, so he comes off first.']:[]).concat([st+'. One like for like change keeps the shape: '+name(c,x.on)+' for '+name(c,x.off)+' at '+x.slot+'.'+(atRisk.indexOf(x.on)>-1?' '+name(c,x.on)+' needs this to reach half the game.':'')]);}
  }
  function windowsLeft(c){var mm=c.t/60,n=0;windows(c.half).forEach(function(w){if(w.at>=mm-2)n++;});return Math.max(1,n);}
  G.TLSubs={FORM:FORM,OPP:OPP,windows:windows,open:open,next:next,plan:plan};
