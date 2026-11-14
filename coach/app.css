@@ -301,3 +301,4 @@ body.tlc-today #tl-voice-fab{display:none!important}
 .md-qn{min-width:120px;font-size:14px}
 .md-q .chip{padding:6px 10px;min-height:36px}
 .md-more>summary{padding:4px 0}
+.tl-prevq{margin-top:10px;border-top:1px solid var(--line);padding-top:8px}.tl-prevq>summary{cursor:pointer;font-weight:700;padding:6px 0}

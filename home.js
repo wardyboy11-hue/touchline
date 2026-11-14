@@ -19,6 +19,7 @@
   '.tlh-lab{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#FFB81C;font-weight:800}.tlh-big{font-size:24px;font-weight:800;margin:4px 0}.tlh-meta{color:#dfe5f5;font-size:16px;margin:0}'+
   '.tlh-hero .btn{margin-top:12px;min-height:52px;font-size:17px}'+
   '.tlh-h{font-size:18px;margin:16px 2px 8px}'+
+  '.tl-prevq{margin-top:10px;border-top:1px solid rgba(255,255,255,.12);padding-top:8px}.tl-prevq>summary{cursor:pointer;font-weight:700;padding:8px 0;min-height:40px}'+
   '.tlh-row{display:flex;align-items:center;gap:12px;min-height:56px;width:100%;text-align:left;background:#0E1D45;border:1px solid #27407F;border-radius:14px;padding:10px 14px;margin:0 0 8px;color:inherit;font:inherit;cursor:pointer}'+
   '.tlh-row .t{flex:1}.tlh-row .t small{display:block;color:#A6B2D4;font-size:14px}.tlh-row .go{color:#FFB81C;font-weight:800}'+
   '.tlh-tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}.tlh-tile{background:#0E1D45;border:1px solid #27407F;border-radius:14px;min-height:76px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font:700 14px system-ui,sans-serif;color:#F4F6FC;cursor:pointer;text-decoration:none;padding:6px}.tlh-tile b{font-size:22px;line-height:1}'+
@@ -90,7 +91,19 @@
   return h;};
  /* Calendar: Games and Events side by side. */
  G.tlCalSwitch=function(cur){return '<div class="seg tl-calsw" role="tablist" aria-label="Calendar" style="display:flex;gap:8px;margin:4px 0 12px"><button type="button" role="tab" class="btn'+(cur==='games'?' pri':'')+'" style="flex:1" aria-selected="'+(cur==='games')+'" onclick="goTab(\'games\')">Games</button><button type="button" role="tab" class="btn'+(cur==='events'?' pri':'')+'" style="flex:1" aria-selected="'+(cur==='events')+'" onclick="goTab(\'events\')">Events</button></div>';};
- /* Nav: parents Home, Calendar, Videos, Ask, Me. Players Home, Calendar, Videos, Train, Me. */
+ 
+/* r114: answered questions move to Previous questions. A new answer shows once, then it is archived but still there on request. */
+G.tlQSeen=G.tlQSeen||{};
+G.tlQList=function(rows,item,opts){opts=opts||{};rows=rows||[];var seen={};try{seen=JSON.parse(localStorage.getItem('fam.qseen')||'{}')||{};}catch(e){}
+ var key=function(x){return String(x.q||'').slice(0,80)+'|'+String(x.a||'').length;};
+ var wait=rows.filter(function(x){return !x.a;}),ans=rows.filter(function(x){return x.a;});
+ var fresh=ans.filter(function(x){var k=key(x);return !seen[k]||G.tlQSeen[k];}),old=ans.filter(function(x){var k=key(x);return seen[k]&&!G.tlQSeen[k];});
+ if(opts.freshMax!=null&&fresh.length>opts.freshMax){old=fresh.slice(opts.freshMax).concat(old);fresh=fresh.slice(0,opts.freshMax);}
+ fresh.forEach(function(x){var k=key(x);if(!seen[k]){seen[k]=Date.now();G.tlQSeen[k]=1;}});try{localStorage.setItem('fam.qseen',JSON.stringify(seen));}catch(e){}
+ var h=wait.map(function(x){return item(x,'wait');}).join('')+fresh.map(function(x){return item(x,'new');}).join('');
+ if(old.length)h+='<details class="tl-prevq" id="'+(opts.id||'tl-prevq')+'"><summary>Previous questions ('+old.length+')</summary>'+old.map(function(x){return item(x,'old');}).join('')+'</details>';
+ return h;};
+/* Nav: parents Home, Calendar, Videos, Ask, Me. Players Home, Calendar, Videos, Train, Me. */
  G.tlNavTabs=function(){return role()==='player'?[['home','Home','home'],['games','Calendar','cal'],['media','Videos','img'],['train','Train','run'],['me','Me','user']]:[['home','Home','home'],['games','Calendar','cal'],['media','Videos','img'],['voice','Ask','chat'],['me','Me','user']];};
  G.tlNavOn=function(t,cur){if(t==='games')return cur==='games'||cur==='events';if(t==='media')return cur==='media'||cur==='lib';if(t==='home')return cur==='home'||cur==='today';if(t==='voice')return cur==='voice'||cur==='pq';return cur===t;};
 })(window);
