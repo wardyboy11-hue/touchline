@@ -33,6 +33,8 @@ const DONEFX=[{id:'m1',opp:'Westhoughton',date:'2026-11-21',ko:'09:00',ha:'A',co
   T(dn+' nav says Matchday',/Matchday/.test(await p.evaluate(()=>document.body.innerText)));
   T(dn+' pick team then Start match button',!!(await p.$('#md-start')));
   await shot(p,'r114_'+dn+'_matchday');
+  T(dn+' Matchday has no floating Ask',await p.evaluate(()=>{const f=document.getElementById('tl-voice-fab');return !f||getComputedStyle(f).display==='none';}));
+  T(dn+' header Ask still opens the helper on Matchday',await p.evaluate(async()=>{const b=document.querySelector('header [data-act="voiceOpen"]');if(!b)return false;b.click();await new Promise(r=>setTimeout(r,300));const s=document.getElementById('tl-voice-sheet');return !!s&&!s.hidden&&getComputedStyle(s).display!=='none';}));
   T(dn+' Matchday no page errors',errs.length===0);if(errs.length)console.log(errs);await ctx.close();
   // 2. not matchday: Wednesday does not jump
   ({ctx,p,errs}=await coach(b,dv,state(match()),'2026-11-18T17:30:00'));
@@ -48,6 +50,9 @@ const DONEFX=[{id:'m1',opp:'Westhoughton',date:'2026-11-21',ko:'09:00',ha:'A',co
   T(dn+' tapping an option asks first, nothing changed yet',before===await p.evaluate(()=>JSON.stringify((JSON.parse(localStorage.getItem('tl.state.v1')||'{}').matches||{}).m1.lineup))&&/Make these changes/.test(await p.textContent('#sheet')));
   await tap(p,'#sheet [data-act="mdDoIt"]');await w(300);
   T(dn+' Make changes does the swap',before!==await p.evaluate(()=>JSON.stringify((JSON.parse(localStorage.getItem('tl.state.v1')||'{}').matches||{}).m1.lineup)));
+  T(dn+' live match has no floating Ask',await p.evaluate(()=>{const f=document.getElementById('tl-voice-fab');return !f||getComputedStyle(f).display==='none';}));
+  await p.evaluate(()=>{location.hash='#/more';});await w(700);
+  T(dn+' floating Ask still shows off Today and Matchday',await p.evaluate(()=>{const f=document.getElementById('tl-voice-fab');return !!f&&getComputedStyle(f).display!=='none';}));
   T(dn+' live no page errors',errs.length===0);if(errs.length)console.log(errs);await ctx.close();
   // 4. 30 min with quick check answers, half time warning
   ({ctx,p,errs}=await coach(b,dv,state(live(30,{mdq:{p:{p8:{v:'tired'},p2:{v:'knock'}},o:{left:1,press:1}}})),'2026-11-21T09:30:00',{shown:1,hash:'#/m/m1'}));
@@ -91,7 +96,7 @@ const DONEFX=[{id:'m1',opp:'Westhoughton',date:'2026-11-21',ko:'09:00',ha:'A',co
    let fx={ctx:null};const api=a=>a.action==='f.home'?famData(role,DONEFX):a.action==='f.cmt.add'?{ok:true}:null;
    ({ctx,p,errs,calls}=await fam(b,dv,page,role,'2026-11-21T11:00:00',api));
    const card=await p.$('#pm-card');T(dn+' '+page+' '+role+' After the game card on Home',!!card);
-   if(card){const t=await card.innerText();T(dn+' '+page+' '+role+' card shows 2-1 and says coaches only',/2-1/.test(t)&&/Only Tim and Deano see this/.test(t)&&/Played against them\? Tell the coaches what you spotted/.test(t));
+   if(card){const t=await card.innerText();T(dn+' '+page+' '+role+' card shows 2-1 and says coaches only',/2-1/.test(t)&&/Only Tim and Deano see this/.test(t)&&/Your view on the game\. What went well, and what did you spot about Westhoughton for when we play them again\?/.test(t));
     if(role==='parent'&&page==='family.html')await shot(p,'r114_'+dn+'_family_home_after');
     await p.fill('#pm-game','Good shape in the second half');await p.fill('#pm-opp','Their number 9 is quick on the left');await p.click('#pm-card button.pri');await w(300);
     T(dn+' '+page+' '+role+' confirm shows Send and Cancel',!!(await p.$('#pm-send'))&&/Cancel/.test(await p.textContent('#pm-card')));

@@ -107,7 +107,8 @@ G.tlQList=function(rows,item,opts){opts=opts||{};rows=rows||[];var seen={};try{s
 /* r114: after the game. Comments on the game and notes on the opposition go to Tim and Deano only.
    Never shown to other families. One way: there is no reply thread, so it is never a private adult to child channel.
    Always Send and Cancel before it goes. If the backend is not updated yet, it waits on this phone and sends later. */
-var PM_WORDING='Played against them? Tell the coaches what you spotted, so we\'re ready next time.';
+/* Tim picked option 3. The opposition name goes in when we know it. */
+function pmWording(opp){opp=String(opp||'').trim();return 'Your view on the game. What went well, and what did you spot'+(opp?' about '+opp:'')+' for when we play them again?';}
 G.PM=G.PM||{open:'',step:'',err:'',worry:false,game:'',opp:''};
 function pmQ(){try{return JSON.parse(localStorage.getItem('fam.cmtq')||'[]')||[];}catch(x){return [];}}
 function pmQSet(a){try{localStorage.setItem('fam.cmtq',JSON.stringify(a));}catch(x){}}
@@ -123,7 +124,7 @@ G.pmCard=function(){var D=G.D;if(!D)return '';var m=pmMatch();if(!m)return '';va
  if(G.PM.step==='confirm'){h+='<p><b>Send this to Tim and Deano?</b></p>'+(G.PM.game?'<p class="small"><b>About the game:</b> '+e(G.PM.game)+'</p>':'')+(G.PM.opp?'<p class="small"><b>About '+opp+':</b> '+e(G.PM.opp)+'</p>':'');
   if(G.PM.worry)h+='<div class="card" style="border-color:#FB7185;margin:8px 0"><p class="small">What you wrote sounds like it could be about how you or someone else is feeling. Please talk to Tim, Deano'+(pl?', a parent':'')+' or the club welfare officer today'+(pl?', or ring Childline free on 0800 1111':'')+'. Coaches cannot reply to this note.</p></div>';
   return h+'<div class="row wrap2"><button class="btn pri grow" id="pm-send" onclick="pmSend(\''+e(m.id)+'\')">Send</button><button class="btn grow" onclick="pmCancel()">Cancel</button></div></div>';}
- h+='<p>'+e(PM_WORDING)+'</p>';
+ h+='<p>'+e(pmWording(m.opp))+'</p>';
  h+='<label class="small" for="pm-game" style="display:block;margin-top:8px"><b>About the game</b></label><textarea id="pm-game" maxlength="500" placeholder="'+(pl?'How did it go for you and the team?':'What went well, and anything we could do better')+'">'+e(G.PM.game)+'</textarea>';
  h+='<label class="small" for="pm-opp" style="display:block;margin-top:8px"><b>About '+opp+', for next time</b></label><textarea id="pm-opp" maxlength="500" placeholder="Their dangerous players by shirt number, how they set up, what worked against them">'+e(G.PM.opp)+'</textarea>';
  if(G.PM.err)h+='<p class="small" style="color:#FB7185">'+e(G.PM.err)+'</p>';
