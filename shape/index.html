@@ -67,6 +67,7 @@ footer{background:#0a1626;border-top:1px solid #1d3652;padding:8px 12px calc(10p
  </footer>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../tl-vox.js?v=115"></script>
 <script src="data.js"></script>
 <script>
 (function(){
@@ -199,14 +200,16 @@ function resize(){if(!okGL)return;var st=$('stage'),w=st.clientWidth,h=st.client
 
 /* ---------- audio ---------- */
 var AU=new Audio();AU.preload='auto';
+/* r115: the lads' voice choice from ../tl-vox.js. Northern lad clips live in audio/north/ once recorded; Beeps only starts with the voice off. */
+var ABASE='audio/';
 function clipKey(){return MODE==='squad'?SH.PHASES[PHASE].a:'r_'+ROLE;}
 function total(){return MODE==='squad'?dur(SH.PHASES[PHASE].a,SH.PHASES[PHASE].t):roleSegs(ROLE).total;}
 var BL={},READY=false,NL=0,WAIT=0;AU.setAttribute('playsinline','');
-function clipUrl(k){return BL[k]||('audio/'+k+'.mp3');}
+function clipUrl(k){return BL[k]||(ABASE+k+'.mp3');}
 function loadClip(){AU.pause();AU.src=clipUrl(clipKey());AU.load();}
 /* fetch every voice line up front so any clip or Play all starts with its voice, no silent start */
 function preload(){var keys=Object.keys(DUR);if(!keys.length){READY=true;ldUI();return;}var first=clipKey();keys.sort(function(a,b){return (b===first)-(a===first);});
- var i=0,run=function(){if(i>=keys.length)return Promise.resolve();var k=keys[i++];return fetch('audio/'+k+'.mp3').then(function(r){if(!r.ok)throw 0;return r.blob();}).then(function(b){BL[k]=URL.createObjectURL(b);}).catch(function(){}).then(function(){NL++;ldUI();return run();});};
+ var i=0,run=function(){if(i>=keys.length)return Promise.resolve();var k=keys[i++];return fetch(ABASE+k+'.mp3').then(function(r){if(!r.ok)throw 0;return r.blob();}).then(function(b){BL[k]=URL.createObjectURL(b);}).catch(function(){}).then(function(){NL++;ldUI();return run();});};
  Promise.all([run(),run(),run(),run()]).then(function(){READY=true;ldUI();if(!PLAYING)loadClip();});}
 function ldUI(){var n=Object.keys(DUR).length,b=$('play'),a=$('all');b.disabled=a.disabled=!READY;if(!READY){b.textContent='Loading voice '+NL+'/'+n;}else if(!PLAYING&&/Loading/.test(b.textContent))b.textContent='Play';}
 function startAudio(){if(!SOUND)return;try{AU.currentTime=Math.min(CLOCK,total());var p=AU.play();if(p&&p.catch)p.catch(function(){});}catch(e){}}
@@ -276,7 +279,10 @@ function boot(){
  requestAnimationFrame(function(t){LAST=t;tick(t);});
  window.__shape={state:function(){return {MODE:MODE,PHASE:PHASE,ROLE:ROLE,CLOCK:CLOCK,PLAYING:PLAYING,okGL:okGL,dur:DUR};},setClock:function(t){CLOCK=t;SEG=-1;},setMode:setMode,go:go,setRole:setRole};
 }
-fetch('audio/durations.json').then(function(r){return r.json();}).then(function(j){DUR=j;}).catch(function(){}).then(boot);
+var VOX=window.TLVOX?TLVOX.get():'alice';
+if(VOX==='beeps'){SOUND=false;}
+function durs(b){return fetch(b+'durations.json').then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(j){DUR=j;ABASE=b;});}
+(VOX==='north'?durs('audio/north/').catch(function(){return durs('audio/');}):durs('audio/')).catch(function(){}).then(function(){boot();try{if(!SOUND){var sb=document.getElementById('snd');if(sb)sb.textContent='Sound off';}}catch(e){}window.__shapeVox={voice:VOX,base:ABASE};});
 })();
 </script>
 </body>

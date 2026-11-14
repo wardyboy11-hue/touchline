@@ -5,7 +5,15 @@
  * No player data leaves this page (pregame may read tl.prestretch from localStorage only). */
 (function(){
 var S=STRETCH,IT=S.items,$=function(i){return document.getElementById(i);},vo=$('vo');
-var HOLD_MIN=15,REST=15,V='96';
+var HOLD_MIN=15,REST=15,V='115';
+/* r115: the lads pick the voice (Northern lad, Alice or beeps only) and the demo (lad in kit or plain figure).
+ * Both are saved on this phone by ../tl-vox.js. Nothing is sent anywhere. */
+var TV=window.TLVOX||null;
+function voiceNow(){var v=TV?TV.get():'alice';if(v==='north'&&!(S.voices&&S.voices.north))v='alice';return v;}
+function modelNow(){return TV?TV.model():'lad';}
+var VX=voiceNow(),MX=modelNow();
+function aSrc(n){return (VX==='north'?'audio/north/':'audio/')+n+'.mp3?v='+V;}
+function countD(){var nv=VX==='north'&&S.voices&&S.voices.north;return (nv&&nv.d&&nv.d.count)||(S.count&&S.count.d)||2;}
 var PRE=false;
 (function(){
  var q=new URLSearchParams(location.search),mode=q.get('mode')||'';
@@ -60,10 +68,12 @@ var built=buildSeg(),SEG=built.seg,TOTAL=built.total;
 function mmss(s){s=Math.max(0,Math.ceil(s));return Math.floor(s/60)+':'+('0'+s%60).slice(-2);}
 function sideTxt(x){return x.side==='L'?'Left':x.side==='R'?'Right':'';}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function figOn(pose){return MX==='figure'&&!!(window.__stretchFigs&&window.__stretchFigs[pose]);}
 function poseSrc(pose,kind){
- return 'img/'+pose+(kind==='start'?'_s':'')+'.webp?v='+V;
+ return (figOn(pose)?'fig/':'img/')+pose+(kind==='start'?'_s':'')+'.webp?v='+V;
 }
-function vidSrc(pose,ext){return 'vid/'+pose+'.'+ext+'?v='+V;}
+function thumbSrc(pose){return (figOn(pose)?'fig/':'img/')+pose+'_t.webp?v='+V;}
+function vidSrc(pose,ext){return (figOn(pose)?'fig/':'vid/')+pose+'.'+ext+'?v='+V;}
 function hasStart(pose){return !!window.__stretchStarts&&window.__stretchStarts[pose];}
 function hasVid(pose){return !!window.__stretchVids&&window.__stretchVids[pose];}
 function vidHtml(pose,side,opts){
@@ -109,9 +119,10 @@ try{var hl=$('hdr-len');if(hl)hl.textContent=mmss(TOTAL)+' · If it hurts, stop 
  if(!PRE&&listLead)listLead.textContent='After training or a match. Each stretch is held at least 15 seconds, with a 15 second rest between. Voice and pictures stay in step.';
 }catch(e){}
 
-$('items').innerHTML=IT.map(function(x,i){
- return '<li data-i="'+i+'"><div class="th"><img src="img/'+x.pose+'_t.webp?v='+V+'" alt=""'+(x.side==='R'?' class="mr"':'')+'></div><div class="nm">'+esc(x.name)+(x.side?' <span class="sd">'+sideTxt(x)+'</span>':'')+'</div><div class="tm">'+mmss(x.secs)+'</div></li>';
-}).join('');
+function thumbs(){$('items').innerHTML=IT.map(function(x,i){
+ return '<li data-i="'+i+'"><div class="th"><img src="'+thumbSrc(x.pose)+'" alt=""'+(x.side==='R'?' class="mr"':'')+'></div><div class="nm">'+esc(x.name)+(x.side?' <span class="sd">'+sideTxt(x)+'</span>':'')+'</div><div class="tm">'+mmss(x.secs)+'</div></li>';
+}).join('');}
+thumbs();
 
 /* Preload audio clips into a map. Playback starts, then the segment clock starts on 'playing'. */
 var clips={},readyN=0,readyNeed=0;
@@ -121,7 +132,8 @@ function preload(){
  IT.forEach(function(x){if(x.a)names[x.a]=1;});
  var list=Object.keys(names);readyNeed=list.length;readyN=0;
  list.forEach(function(n){
-  var a=new Audio('audio/'+n+'.mp3?v='+V);a.preload='auto';
+  if(VX==='beeps'){readyN++;return;}
+  var a=new Audio(aSrc(n));a.preload='auto';
   clips[n]=a;
   var done=function(){if(a.__ok)return;a.__ok=1;readyN++;if(readyN>=readyNeed){var b=$('start');if(b&&!b.__lab){b.__lab=1;b.textContent='Start';}}};
   a.addEventListener('canplaythrough',done);a.addEventListener('loadeddata',done);
@@ -138,10 +150,18 @@ function beep(){try{if(!ac)return;var o=ac.createOscillator(),g=ac.createGain();
 
 function stopVo(){Object.keys(clips).forEach(function(k){try{clips[k].pause();clips[k].currentTime=0;}catch(e){}});try{vo.pause();vo.removeAttribute('src');}catch(e){}}
 
+function beeps(name){
+ /* Beeps only: one beep for a new stretch or rest, two for switch, three quick ones for the last seconds. */
+ if(name==='count'){beep();setTimeout(beep,1000);setTimeout(beep,2000);}
+ else if(name==='switch'){beep();setTimeout(beep,250);}
+ else if(name!=='relax'&&name!=='welcome'&&name!=='finish'){beep();}
+ else if(name==='finish'){beep();setTimeout(beep,300);setTimeout(beep,600);}
+}
 function playClip(name,off,onPlaying){
  if(window.__silent){if(onPlaying)onPlaying();return null;}
+ if(VX==='beeps'){(window.__beepLog=window.__beepLog||[]).push(name);beeps(name);if(onPlaying)onPlaying();return null;}
  var a=clips[name];
- if(!a){a=new Audio('audio/'+name+'.mp3?v='+V);clips[name]=a;}
+ if(!a){a=new Audio(aSrc(name));clips[name]=a;}
  try{a.pause();a.currentTime=off||0;}catch(e){}
  var started=false;
  function go(){if(started)return;started=true;if(onPlaying)onPlaying();}
@@ -163,7 +183,7 @@ function badgeHtml(rem,total){
   var on=i>=gone;
   segs+='<path d="M'+x1.toFixed(2)+' '+y1.toFixed(2)+' A'+r+' '+r+' 0 0 1 '+x2.toFixed(2)+' '+y2.toFixed(2)+'" fill="none" stroke="'+(on?'#FFB81C':'#334155')+'" stroke-width="6" stroke-linecap="round" opacity="'+(on?1:0.35)+'"/>';
  }
- return '<div class="restwrap"><img class="restbadge" src="../badge.png" alt="Club badge"><svg class="restclock" viewBox="0 0 100 100" aria-hidden="true">'+segs+'</svg><div class="restnum">'+left+'</div><div class="restlab">Relax · next stretch loading</div></div>';
+ return '<div class="restwrap"><img class="restbadge" src="../badge.webp" alt="Club badge"><svg class="restclock" viewBox="0 0 100 100" aria-hidden="true">'+segs+'</svg><div class="restnum">'+left+'</div><div class="restlab">Relax · next stretch loading</div></div>';
 }
 
 function figFor(s,local,x){
@@ -173,7 +193,7 @@ function figFor(s,local,x){
   var prev='';
   if(nx){
    if(hasVid(nx.pose))prev='<div class="restprev">'+vidHtml(nx.pose,nx.side,{loop:1,cls:'mini'})+'<span>Next: '+esc(nx.name)+(nx.side?' ('+sideTxt(nx)+')':'')+'</span></div>';
-   else prev='<div class="restprev"><img src="img/'+nx.pose+'_t.webp?v='+V+'" alt=""'+(nx.side==='R'?' class="mr"':'')+'><span>Next: '+esc(nx.name)+(nx.side?' ('+sideTxt(nx)+')':'')+'</span></div>';
+   else prev='<div class="restprev"><img src=\"'+thumbSrc(nx.pose)+'\" alt=""'+(nx.side==='R'?' class="mr"':'')+'><span>Next: '+esc(nx.name)+(nx.side?' ('+sideTxt(nx)+')':'')+'</span></div>';
   }
   return badgeHtml(s.d-local,s.d)+prev;
  }
@@ -186,15 +206,15 @@ function figFor(s,local,x){
  if(s.k==='intro'||s.k==='welcome'){
   if(start){
    var p=Math.min(1,local/Math.max(1,s.d*0.7));
-   return '<div class="anim"><img class="a0" src="'+poseSrc(pose,'start')+'" alt="" style="opacity:'+(1-p).toFixed(3)+'"><img class="a1'+flip+'" src="img/'+pose+'.webp?v='+V+'" alt="'+esc(x.name)+'" style="opacity:'+p.toFixed(3)+'"></div>';
+   return '<div class="anim"><img class="a0" src="'+poseSrc(pose,'start')+'" alt="" style="opacity:'+(1-p).toFixed(3)+'"><img class="a1'+flip+'" src=\"'+poseSrc(pose,'')+'\" alt="'+esc(x.name)+'" style="opacity:'+p.toFixed(3)+'"></div>';
   }
-  return '<img id="pimg" class="pulsein'+flip+'" src="img/'+pose+'.webp?v='+V+'" alt="'+esc(x.name)+' demo">';
+  return '<img id="pimg" class="pulsein'+flip+'" src=\"'+poseSrc(pose,'')+'\" alt="'+esc(x.name)+' demo">';
  }
  if(start){
   var ph=(Math.sin(local*1.2)+1)/2;
-  return '<div class="anim holdanim"><img class="a0" src="'+poseSrc(pose,'start')+'" alt="" style="opacity:'+(0.15+0.1*ph).toFixed(3)+'"><img class="a1'+flip+'" src="img/'+pose+'.webp?v='+V+'" alt="'+esc(x.name)+'" style="opacity:'+(0.85-0.05*ph).toFixed(3)+'"></div>';
+  return '<div class="anim holdanim"><img class="a0" src="'+poseSrc(pose,'start')+'" alt="" style="opacity:'+(0.15+0.1*ph).toFixed(3)+'"><img class="a1'+flip+'" src=\"'+poseSrc(pose,'')+'\" alt="'+esc(x.name)+'" style="opacity:'+(0.85-0.05*ph).toFixed(3)+'"></div>';
  }
- return '<img id="pimg" class="breathe'+flip+'" src="img/'+pose+'.webp?v='+V+'" alt="'+esc(x.name)+' demo">';
+ return '<img id="pimg" class="breathe'+flip+'" src=\"'+poseSrc(pose,'')+'\" alt="'+esc(x.name)+' demo">';
 }
 
 function render(){
@@ -265,7 +285,7 @@ function cues(si,local){
   once('b',beep);
   var x=IT[s.i];
   if(x.mid&&local>=x.secs/2)once('m',function(){playClip('switch',0);});
-  var cs=s.d-((S.count&&S.count.d)||2)+.25;
+  var cs=s.d-countD()+.25;
   if(local>=cs&&local<s.d-.2)once('c',function(){playClip('count',Math.max(0,local-cs));});
  }
 }
@@ -309,8 +329,8 @@ function openHow(){
  ov.hidden=false;
  var demo='';
  if(hasVid(x.pose))demo=vidHtml(x.pose,x.side,{loop:1,rate:0.5,cls:'howto'});
- else if(hasStart(x.pose))demo='<img class="hs" src="'+poseSrc(x.pose,'start')+'" alt=""><img class="he'+(x.side==='R'?' mr':'')+'" src="img/'+x.pose+'.webp?v='+V+'" alt="">';
- else demo='<img src="img/'+x.pose+'.webp?v='+V+'" alt=""'+(x.side==='R'?' class="mr"':'')+'>';
+ else if(hasStart(x.pose))demo='<img class="hs" src="'+poseSrc(x.pose,'start')+'" alt=""><img class="he'+(x.side==='R'?' mr':'')+'" src=\"'+poseSrc(x.pose,'')+'\" alt="">';
+ else demo='<img src=\"'+poseSrc(x.pose,'')+'\" alt=""'+(x.side==='R'?' class="mr"':'')+'>';
  ov.innerHTML='<div class="howto-in" role="dialog" aria-label="How to do this stretch">'+
   '<h3 style="margin-top:0">'+esc(x.name)+(x.side?' · '+sideTxt(x):'')+'</h3>'+
   '<div class="howto-demo'+(hasVid(x.pose)||hasStart(x.pose)?' has-anim':'')+'">'+demo+'</div>'+
@@ -342,9 +362,20 @@ document.addEventListener('keydown',function(e){
 });
 document.addEventListener('visibilitychange',function(){if(document.hidden&&playing)pause();});
 
+/* r115: voice and demo pickers on the list screen */
+(function(){
+ var el=$('voxpick');if(!el||!TV)return;
+ el.innerHTML='<p class="small" style="margin:8px 0 0"><b>Voice</b></p>'+TV.picker()+'<p class="small" style="margin:8px 0 0"><b>Demo</b></p>'+TV.modelPicker();
+ window.addEventListener('tl-vox',function(){
+  var nv=voiceNow(),nm=modelNow();
+  if(nv!==VX){stopVo();VX=nv;clips={};preload();}
+  if(nm!==MX){MX=nm;var f=$('fig');if(f)f.dataset.k='';thumbs();if(document.body.classList.contains('playing'))render();}
+ });
+})();
 /* Which start-pose images exist (filled by build or a tiny manifest) */
 window.__stretchStarts=window.__stretchStarts||{};
 window.__stretchVids=window.__stretchVids||{};
+window.__stretchFigs=window.__stretchFigs||{};
 (function(){
  var poses={};IT.forEach(function(x){poses[x.pose]=1;});
  Object.keys(poses).forEach(function(p){
@@ -352,13 +383,15 @@ window.__stretchVids=window.__stretchVids||{};
   var v=document.createElement('video');v.preload='auto';v.muted=true;v.playsInline=true;
   v.onloadeddata=function(){window.__stretchVids[p]=1;};
   v.onerror=function(){};
-  v.src=vidSrc(p,'mp4');
+  v.src='vid/'+p+'.mp4?v='+V;
   try{v.load();}catch(e){}
+  /* Plain figure version, if this pose has one */
+  var fi=new Image();fi.onload=function(){window.__stretchFigs[p]=1;if(MX==='figure')thumbs();};fi.onerror=function(){};fi.src='fig/'+p+'_t.webp?v='+V;
  });
 })();
 
 window.__at=function(nt){document.body.classList.add('playing');playing=false;awaitingAudio=false;t=nt;cur=-1;render();return {seg:SEG[segAt(t)].k};};
 window.__seg=SEG;window.__total=TOTAL;window.__holdMin=HOLD_MIN;window.__rest=REST;
-window.__buildSeg=buildSeg;
+window.__buildSeg=buildSeg;window.__vox=function(){return {voice:VX,model:MX,src:aSrc('welcome')};};
 if('serviceWorker' in navigator)navigator.serviceWorker.register('ssw.js',{scope:'./'}).catch(function(){});
 })();

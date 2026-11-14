@@ -116,7 +116,7 @@ function hubHtml(st){
  var h='<div class="card"><span class="tag" style="background:#15803d">Running</span><h2 style="margin-top:8px">Running</h2><p class="small">Pick a ready made run or build your own. The timer tells you when to run, walk, sprint or rest.</p>'+
   '<p class="small muted">Two or three runs a week on top of training is plenty. Keep the day before a game easy. If anything hurts, stop and tell a parent or a coach.</p>'+
   '<p class="small"><b>'+wk+'</b> run'+(wk===1?'':'s')+' in the last 7 days on this phone.</p>'+
-  '<label style="margin-top:6px;display:block">Sound during the timer</label>'+cueChips(st.cue)+'</div>';
+  '<label style="margin-top:6px;display:block">Sound during the timer</label>'+cueChips(st.cue)+(G.TLVOX?'<label style="margin-top:6px;display:block">Whose voice</label>'+G.TLVOX.picker()+'<p class="small muted" style="margin:2px 0 0">The same choice is used for stretching. It is saved on this phone only.</p>':'')+'</div>';
  h+='<div class="card" id="tl-run-b5k"><h3 style="margin-top:0">Build up to 5k</h3><p class="small">New to running, or getting back into it? Nine weeks, three runs a week, starting with one minute runs. By week 9 you run for 30 minutes.</p>'+
   (nx?'<button type="button" class="btn pri block" data-run="plan" data-id="b5k-w'+nx.w+'" data-r="'+nx.r+'">Start week '+nx.w+', run '+nx.r+'</button>':'<p><b>All 27 runs done. Brilliant.</b> Keep it going with a Steady run or Play speed.</p>')+
   '<details style="margin-top:8px"><summary>Your 9 weeks (tap a run to tick it)</summary><div class="tl-run-b5k">'+
@@ -207,10 +207,12 @@ function close(){var ov=document.getElementById('tl-runview');if(ov)ov.remove();
 var T=null,AC=null,WL=null;
 function log(kind,text){(R._log=R._log||[]).push({k:kind,t:text,at:Date.now()});if(R._log.length>200)R._log.shift();}
 function beep(f,ms){log('beep',String(f));try{AC=AC||new (G.AudioContext||G.webkitAudioContext)();if(AC.state==='suspended')AC.resume();var o=AC.createOscillator(),g=AC.createGain();o.frequency.value=f;o.type='sine';g.gain.setValueAtTime(0.0001,AC.currentTime);g.gain.exponentialRampToValueAtTime(0.4,AC.currentTime+0.02);g.gain.exponentialRampToValueAtTime(0.0001,AC.currentTime+ms/1000);o.connect(g);g.connect(AC.destination);o.start();o.stop(AC.currentTime+ms/1000+0.05);}catch(e){}}
-function say(t){log('say',t);try{if(!G.speechSynthesis)return;speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(String(t||'').replace(/\bDeano\b/g,'Deeno'));u.lang='en-GB';u.rate=1;var v=(speechSynthesis.getVoices()||[]).filter(function(x){return /en-GB/i.test(x.lang);})[0];if(v)u.voice=v;speechSynthesis.speak(u);}catch(e){}}
+function phoneSay(t){try{if(!G.speechSynthesis)return;speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(String(t||'').replace(/\bDeano\b/g,'Deeno'));u.lang='en-GB';u.rate=1;var v=(speechSynthesis.getVoices()||[]).filter(function(x){return /en-GB/i.test(x.lang);})[0];if(v)u.voice=v;speechSynthesis.speak(u);}catch(e){}}
+/* r115: spoken cues use the lads' chosen voice (recorded clips) through tl-vox.js, phone speech if a line is not recorded. */
+function say(t){var parts=[].concat(t);log('say',parts.join(' '));try{if(G.TLVOX){var v=G.TLVOX.get();G.TLVOX.speak(parts,{voice:v==='beeps'?'alice':v});return;}}catch(e){}phoneSay(parts.join(' '));}
 function buzz(p){try{if(navigator.vibrate)navigator.vibrate(p);}catch(e){}}
 function cue(){return load().cue||'voice';}
-function blockStartCue(b,next){var c=cue();buzz(200);if(c==='silent')return;if(c==='beeps'){beep(880,450);return;}var t=BT[b[0]]||{say:''};say(t.say+' '+sayDur(b[1])+'.');}
+function blockStartCue(b,next){var c=cue();buzz(200);if(c==='silent')return;if(c==='beeps'){beep(880,450);return;}var t=BT[b[0]]||{say:''};say([t.say,sayDur(b[1])+'.']);}
 function nowMs(){return (G.performance&&performance.now)?performance.now():Date.now();}
 function speed(){return Number(R._speed)||1;}
 function start(id){var p=findPlan(id);if(!p)return;close();css();
@@ -234,7 +236,7 @@ function paintTimer(){var el=document.getElementById('tl-run-timer');if(!el||!T)
   '<div style="text-align:center"><div class="tl-run-tlab" id="tl-run-tlab">'+E(t.lab)+(T.paused?' (paused)':'')+'</div><div class="tl-run-big" id="tl-run-left" role="timer" aria-live="off">'+mmss(T.left)+'</div><div class="tl-run-next" id="tl-run-next">'+(nx?'Next: '+E((BT[nx[0]]||{lab:nx[0]}).lab)+' '+durLab(nx[1]):'Last block')+'</div></div>'+
   '<div style="width:100%;max-width:640px;display:flex;flex-direction:column;gap:10px;align-items:center">'+cueChips(cue(),true)+
   '<div class="tl-run-ctl"><button type="button" data-run="tprev" aria-label="Previous block">Back</button><button type="button" data-run="tpause">'+(T.paused?'Resume':'Pause')+'</button><button type="button" data-run="tskip" aria-label="Next block">Skip</button><button type="button" data-run="tstop">Stop</button></div></div>';}
-function release(){try{if(T&&T.iv)clearInterval(T.iv);}catch(e){}try{if(WL)WL.release();}catch(e){}WL=null;try{if(G.speechSynthesis)speechSynthesis.cancel();}catch(e){}}
+function release(){try{if(T&&T.iv)clearInterval(T.iv);}catch(e){}try{if(WL)WL.release();}catch(e){}WL=null;try{if(G.speechSynthesis)speechSynthesis.cancel();}catch(e){}try{if(G.TLVOX)G.TLVOX.stop();}catch(e){}}
 function record(complete){if(!T)return;var st=load(),secs=Math.round((Date.now()-T.startedAt)/1000);
  if(complete||secs>=120){st.log.unshift({id:T.p.id,name:T.p.name,at:Date.now(),secs:secs,full:!!complete});while(st.log.length>200)st.log.pop();}
  if(complete&&T.p.week){var k=null;for(var r=1;r<=3;r++){if(!st.b5k['w'+T.p.week+'r'+r]){k='w'+T.p.week+'r'+r;break;}}if(k)st.b5k[k]=Date.now();}
@@ -244,6 +246,8 @@ function finish(){var c=cue();if(c==='voice')say('Session done. Well played. Str
  if(el){el.style.background='#0b1330';el.innerHTML='<div></div><div style="text-align:center;max-width:520px"><div class="tl-run-tlab">Session done</div><p style="font-size:20px">'+E(p.name)+', '+mmss(total(p.blocks))+'. Saved on this phone.</p><p class="small">Stretch off, have a drink and something to eat.</p></div><div style="width:100%;max-width:640px;display:grid;gap:8px"><button type="button" class="btn pri block" style="min-height:56px" data-run="tdone">Back to running</button><button type="button" class="btn block" style="min-height:56px" data-run="fuel">Fuel and water</button></div>';}
  T=null;}
 function stop(){if(!T)return;record(false);release();T=null;var el=document.getElementById('tl-run-timer');if(el)el.remove();V.view='hub';paint();}
+/* r115: picking Beeps only for the lads' voice switches the timer to beeps, picking a voice switches it back to voice. */
+G.addEventListener('tl-vox',function(e){var d=e.detail||{},st=load(),was=st.cue;if(d.voice==='beeps')st.cue='beeps';else if(st.cue==='beeps')st.cue='voice';if(st.cue!==was){save(st);if(T)paintTimer();else if(document.getElementById('tl-runview'))paint();}});
 var prevHold=G.tlHold;
 G.tlHold=function(){if(T)return 'session';try{return prevHold?prevHold():'';}catch(e){return '';}};
 
@@ -285,5 +289,5 @@ document.addEventListener('click',function(e){var t=e.target.closest&&e.target.c
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!T&&document.getElementById('tl-runview'))close();});
 
 var R=G.TLRun={open:open,close:close,start:start,plans:PLANS,b5k:B5K,b5kPlan:b5kPlan,summary:summary,total:total,load:load,
- state:function(){return T?{id:T.p.id,i:T.i,left:T.left,paused:T.paused,type:T.p.blocks[T.i][0],n:T.p.blocks.length}:null;},_log:[],_speed:1};
+ bt:BT,dur:DUR,sayDur:sayDur,state:function(){return T?{id:T.p.id,i:T.i,left:T.left,paused:T.paused,type:T.p.blocks[T.i][0],n:T.p.blocks.length}:null;},_log:[],_speed:1};
 })(window);
