@@ -28,7 +28,7 @@ const T = (n, c) => { console.log((c ? 'PASS ' : 'FAIL ') + n); c ? ok++ : bad++
   const errs = [];
   p.on('pageerror', e => errs.push(e.message));
   p.on('console', m => { if (m.type() === 'error' && !/favicon|Failed to load/.test(m.text())) errs.push(m.text()); });
-  await p.addInitScript(() => { localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code', 'p'); localStorage.setItem('fam.ok1', '1'); localStorage.setItem('fam.wel.P', '1'); localStorage.setItem('fam.tour', '1'); });
+  await p.addInitScript(() => { localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code', 'p'); localStorage.setItem('fam.ok1', '1'); localStorage.setItem('fam.wel.P', '1'); localStorage.setItem('fam.tour', '1'); const _d=new Date(); localStorage.setItem('tl.md.shown.'+_d.getFullYear()+'-'+String(_d.getMonth()+1).padStart(2,'0')+'-'+String(_d.getDate()).padStart(2,'0'),'1'); /* r114: on a real Saturday the matchday screen covers the page */ });
   await p.route('**/macros/**', r => r.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify({ ok: true, data: fam }) }));
   await p.goto('http://localhost:' + PORT + '/parents.html');
   await p.waitForTimeout(1500);
