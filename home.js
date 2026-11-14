@@ -53,7 +53,7 @@
   if(!out.length)return '';
   return '<div class="card tlh-feed" id="tlh-feed"><h2 style="margin-top:0">From the coaches</h2>'+out.join('')+'<button type="button" class="btn block" onclick="tlHomeOpen(\'news\')">See all news</button></div>';}
  function tiles(){var back=encodeURIComponent(location.pathname),T;
-  if(role()==='player')T=[['<b>&#127939;</b>Run','href="#running"'],['<b>&#129496;</b>Stretch','href="stretch/index.html?v=113&back='+back+'"'],['<b>&#127919;</b>My goals','onclick="tlHomeGoals()"'],['<b>&#10067;</b>Ask','onclick="goTab(\'voice\')"']];
+  if(role()==='player')T=[['<b>&#127939;</b>Run','href="#running"'],['<b>&#129496;</b>Stretch','href="stretch/index.html?v=114&back='+back+'"'],['<b>&#127919;</b>My goals','onclick="tlHomeGoals()"'],['<b>&#10067;</b>Ask','onclick="goTab(\'voice\')"']];
   else T=[['<b>&#9742;&#65039;</b>Emergency','onclick="goTab(\'contacts\')"'],['<b>&#128663;</b>Lifts','onclick="goTab(\'games\')"'],['<b>&#127939;</b>Training','onclick="goTab(\'train\')"'],['<b>&#127916;</b>Clips','onclick="goTab(\'lib\')"']];
   return '<nav class="tlh-tiles" aria-label="Shortcuts">'+T.map(function(t){return t[1].indexOf('href')===0?'<a class="tlh-tile" '+t[1]+'>'+t[0]+'</a>':'<button type="button" class="tlh-tile" '+t[1]+'>'+t[0]+'</button>';}).join('')+'</nav>';}
  function sec(id,title,inner){return has('homeSec')?G.homeSec(id,title,inner,false):'';}
