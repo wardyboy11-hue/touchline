@@ -10,16 +10,17 @@ const cv=document.getElementById('cv');const ctx=cv.getContext('2d');
 const W=1280,H=720;cv.width=W;cv.height=H;
 const COL={R:'#e53935',B:'#1e88e5',Y:'#fdd835',K:'#8e24aa'};
 const clone=o=>JSON.parse(JSON.stringify(o));
-/* r115: the lads' voice choice (../../tl-vox.js, only on the pages the lads use). Northern lad lines are used when
-   the practice has them (P.north durations, audio/north/<slug>/); Beeps only starts with the voice off. */
+/* r115: the lads' voice choice (../../tl-vox.js, only on the pages the lads use). Andy's lines (P.north, audio/north/<slug>/)
+   or Alice's (P.alice, audio/alice/<slug>/) are used when the practice has them; Beeps only starts with the voice off. */
 const VOX=window.TLVOX?window.TLVOX.get():'';
 const LINES=[];/* every voice line in time order: {t0,win,dur,url} */
 let T=0;
 PH.forEach((P,pi)=>{
-  const NV=VOX==='north'&&Array.isArray(P.north);
-  const AD=NV?P.north:(P.audio||null);P._t0=T;P.INTRO=AD?Math.max(5,AD[0]+0.8):5;P.OUTRO=MULTI?7:8;
-  const base=NV?('audio/north/'+P.slug+'/'):(P.abase||('audio/'+P.slug+'/'));
-  (window.__animVox=window.__animVox||[]).push({voice:VOX,north:NV,base:base});
+  const VA=VOX==='alice'?'alice':'north';/* Beeps only starts with the voice off; if it is turned on, Andy speaks */
+  const NV=Array.isArray(P[VA]);
+  const AD=NV?P[VA]:(P.audio||null);P._t0=T;P.INTRO=AD?Math.max(5,AD[0]+0.8):5;P.OUTRO=MULTI?7:8;
+  const base=NV?('audio/'+VA+'/'+P.slug+'/'):(P.abase||('audio/'+P.slug+'/'));
+  (window.__animVox=window.__animVox||[]).push({voice:VOX,rec:NV?VA:'',base:base});
   let pos={};P.players.forEach(p=>pos[p.id]=[p.x,p.y]);
   P.team={};P.players.forEach(p=>P.team[p.id]=p.team);
   let ball={holder:P.ball,pt:null};const segs=[];let t=P.INTRO;

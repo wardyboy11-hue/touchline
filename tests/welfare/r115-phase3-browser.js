@@ -142,9 +142,26 @@ async function tapSizes(p,sel){return p.evaluate(s=>[...document.querySelectorAl
    T(nm+' shape guide: Andy by default, all 18 clips load',sv.v&&sv.v.voice==='north'&&sv.v.base==='audio/north/'&&sv.n===18&&sv.bad===0,sv);
    await p.goto(BASE+'/coach/anim/12_352_in_transition.html');await w(1500);
    const av=await p.evaluate(async()=>{const a=window.__animVox||[];let bad=0;const n=(window.PRACTICE.north||[]).length;for(let i=0;i<n;i++){const r=await fetch('audio/north/12_352_in_transition/'+i+'.mp3');if(!r.ok)bad++;}return {a,n,bad};});
-   T(nm+' 3-5-2 animation: Andy by default, all 10 lines load',av.a.length>0&&av.a.every(x=>x.voice==='north'&&x.north&&/audio\/north\/12_352_in_transition\//.test(x.base))&&av.n===10&&av.bad===0,av);
+   T(nm+' 3-5-2 animation: Andy by default, all 10 lines load',av.a.length>0&&av.a.every(x=>x.voice==='north'&&x.rec==='north'&&/audio\/north\/12_352_in_transition\//.test(x.base))&&av.n===10&&av.bad===0,av);
    T(nm+' shape and animation: no page errors',E.filter(x=>/pageerror/.test(x)).length===0,E);
    T(nm+' shape and animation: no missing files',MISS.length===0,MISS.slice());
+   await ctx.close();}
+  /* ---------- picking Alice plays Alice in the shape guide and 3-5-2 animation, never the old recordings ---------- */
+  {const ctx=await b.newContext(dev);const p=await ctx.newPage();const E=errsOf(p);MISS.length=0;const REQ=[];
+   p.on('request',q=>{if(/\.mp3/.test(q.url()))REQ.push(q.url().replace(BASE,''));});
+   await p.route('**/cdnjs.cloudflare.com/**',r=>r.fulfill({status:200,contentType:'text/javascript',body:''}));
+   await p.addInitScript(()=>localStorage.setItem('tl.vox','alice'));
+   await p.goto(BASE+'/shape/index.html');await w(2500);
+   const sv=await p.evaluate(async()=>{const v=window.__shapeVox;const d=await (await fetch('audio/alice/durations.json')).json();let bad=0;for(const k of Object.keys(d)){const r=await fetch('audio/alice/'+k+'.mp3');if(!r.ok)bad++;}return {v,n:Object.keys(d).length,bad};});
+   const shOld=REQ.filter(u=>/^\/shape\/audio\/[^/]+\.mp3/.test(u));
+   T(nm+' shape guide: Alice picked plays Alice, all 18 clips load, no old recordings fetched',sv.v&&sv.v.voice==='alice'&&sv.v.base==='audio/alice/'&&sv.n===18&&sv.bad===0&&shOld.length===0,{sv,shOld:shOld.slice(0,3)});
+   REQ.length=0;
+   await p.goto(BASE+'/coach/anim/12_352_in_transition.html');await w(2500);
+   const av=await p.evaluate(async()=>{const a=window.__animVox||[];let bad=0;const n=(window.PRACTICE.alice||[]).length;for(let i=0;i<n;i++){const r=await fetch('audio/alice/12_352_in_transition/'+i+'.mp3');if(!r.ok)bad++;}return {a,n,bad};});
+   const anOld=REQ.filter(u=>/\/coach\/anim\/audio\/12_352_in_transition\//.test(u));
+   T(nm+' 3-5-2 animation: Alice picked plays Alice, all 10 lines load, no old recordings fetched',av.a.length>0&&av.a.every(x=>x.voice==='alice'&&x.rec==='alice'&&/audio\/alice\/12_352_in_transition\//.test(x.base))&&av.n===10&&av.bad===0&&anOld.length===0,{av,anOld:anOld.slice(0,3)});
+   T(nm+' Alice shape and animation: no page errors',E.filter(x=>/pageerror/.test(x)).length===0,E);
+   T(nm+' Alice shape and animation: no missing files',MISS.length===0,MISS.slice());
    await ctx.close();}
   /* ---------- shape guide follows Beeps only ---------- */
   {const ctx=await b.newContext(dev);const p=await ctx.newPage();const E=errsOf(p);
@@ -152,7 +169,7 @@ async function tapSizes(p,sel){return p.evaluate(s=>[...document.querySelectorAl
    await p.addInitScript(()=>localStorage.setItem('tl.vox','beeps'));
    await p.goto(BASE+'/shape/index.html');await w(1500);
    const sv=await p.evaluate(()=>window.__shapeVox?Object.assign({snd:(document.getElementById('snd')||{}).textContent||''},window.__shapeVox):null);
-   T(nm+' shape guide: Beeps only starts with the voice off',sv&&sv.voice==='beeps'&&/Sound off/.test(sv.snd),sv);
+   T(nm+' shape guide: Beeps only starts with the voice off, Andy if it is turned on',sv&&sv.voice==='beeps'&&/Sound off/.test(sv.snd)&&sv.base==='audio/north/',sv);
    await ctx.close();}
  }
  console.log(ok+' passed, '+bad+' failed');

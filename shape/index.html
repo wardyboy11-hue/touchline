@@ -200,7 +200,7 @@ function resize(){if(!okGL)return;var st=$('stage'),w=st.clientWidth,h=st.client
 
 /* ---------- audio ---------- */
 var AU=new Audio();AU.preload='auto';
-/* r115: the lads' voice choice from ../tl-vox.js. Northern lad clips live in audio/north/ once recorded; Beeps only starts with the voice off. */
+/* r115: the lads' voice choice from ../tl-vox.js. Andy's clips are in audio/north/ and Alice's in audio/alice/. Beeps only starts with the sound off, and Andy speaks if the sound is turned back on. */
 var ABASE='audio/';
 function clipKey(){return MODE==='squad'?SH.PHASES[PHASE].a:'r_'+ROLE;}
 function total(){return MODE==='squad'?dur(SH.PHASES[PHASE].a,SH.PHASES[PHASE].t):roleSegs(ROLE).total;}
@@ -282,7 +282,7 @@ function boot(){
 var VOX=window.TLVOX?TLVOX.get():'alice';
 if(VOX==='beeps'){SOUND=false;}
 function durs(b){return fetch(b+'durations.json').then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(j){DUR=j;ABASE=b;});}
-(VOX==='north'?durs('audio/north/').catch(function(){return durs('audio/');}):durs('audio/')).catch(function(){}).then(function(){boot();try{if(!SOUND){var sb=document.getElementById('snd');if(sb)sb.textContent='Sound off';}}catch(e){}window.__shapeVox={voice:VOX,base:ABASE};});
+durs(VOX==='alice'?'audio/alice/':'audio/north/').catch(function(){return durs('audio/');}).catch(function(){}).then(function(){boot();try{if(!SOUND){var sb=document.getElementById('snd');if(sb)sb.textContent='Sound off';}}catch(e){}window.__shapeVox={voice:VOX,base:ABASE};});
 })();
 </script>
 </body>
