@@ -20,7 +20,7 @@ async function famPage(b,role,page,dv,day,hash,keep){const ctx=await b.newContex
  await p.addInitScript(fake(day||WED));await routes(p,role);
  await p.addInitScript(o=>{localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code',o.c);localStorage.setItem('fam.ok1','1');localStorage.setItem('fam.wel.'+o.c,'1');localStorage.setItem('fam.tour','1');},{c:role==='parent'?'PARENT1':'PLAYER1'});
  await p.goto(BASE+'/'+page+(hash||''));await w(2400);await p.evaluate(()=>{const s=document.getElementById('splash');if(s)s.remove();});await w(200);return {ctx,p,errs};}
-(async()=>{const b=await chromium.launch();const phone={...devices['Pixel 7']},laptop={viewport:{width:1366,height:768}};
+(async()=>{const b=await chromium.launch();{const _nc=b.newContext.bind(b);b.newContext=async(...a)=>{const c=await _nc(...a);await c.addInitScript(()=>{try{for(const k of ['SpeechRecognition','webkitSpeechRecognition'])if(window[k])Object.defineProperty(window[k],'available',{value:undefined});}catch(e){}});return c;};} /* r113: headless Chromium crashes on the on-device speech check */const phone={...devices['Pixel 7']},laptop={viewport:{width:1366,height:768}};
  for(const page of ['family.html','parents.html']){
   // parent, phone
   let {ctx,p,errs}=await famPage(b,'parent',page,phone);
@@ -95,7 +95,10 @@ async function famPage(b,role,page,dv,day,hash,keep){const ctx=await b.newContex
   T(tag+' coach header has no Bright and no Saved pill',await c.evaluate(()=>!document.querySelector('header [data-act="ps"]')&&(document.getElementById('st').hidden||getComputedStyle(document.getElementById('st')).display==='none')));
   T(tag+' coach has no share bar',!(await c.$('.tl-share-bar')));
   T(tag+' coach old Today sections still there',await c.evaluate(()=>['sec-today','sec-coming','sec-voice','sec-todo'].every(i=>!!document.getElementById(i))));
+  T(tag+' coach Today has no floating Ask',await c.evaluate(()=>{const f=document.getElementById('tl-voice-fab');return !f||getComputedStyle(f).display==='none';}));
+  T(tag+' coach header Ask still opens the helper',await c.evaluate(async()=>{const b=document.querySelector('header [data-act="voiceOpen"]');if(!b)return false;b.click();await new Promise(r=>setTimeout(r,300));const s=document.getElementById('tl-voice-sheet');const ok=!!s&&!s.hidden;try{document.querySelector('#tl-voice-sheet [aria-label="Close"], #tl-voice-sheet .tl-voice-x')?.click();}catch(e){}if(s)s.hidden=true;return ok;}));
   await c.evaluate(()=>{location.hash='#/more';});await w(700);T(tag+' Bright screen is in More',!!(await c.$('#root [data-act="ps"]')));
+  T(tag+' floating Ask still shows off Today',await c.evaluate(()=>{const f=document.getElementById('tl-voice-fab');return !!f&&getComputedStyle(f).display!=='none'&&!document.body.classList.contains('tlc-today');}));
   T(tag+' coach no page errors',errs.length===0);if(errs.length)console.log(errs);await ctx.close();}
  // coach, Saturday: Let's go opens the match
  {const ctx=await b.newContext(phone);const c=await ctx.newPage();const errs=[];c.on('pageerror',e=>errs.push(e.message));await c.addInitScript(fake(SAT));

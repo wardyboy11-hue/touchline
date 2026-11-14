@@ -27,7 +27,7 @@ function dirty(s) { return /[?&](pt|si)=/i.test(s) || /[?&]pt\b/i.test(s); }
   const src = fs.readFileSync(path.join(root, 'tl-spotify.js'), 'utf8');
   T('source uses the canonical open link', src.indexOf(OPEN) >= 0 && !dirty(src));
   T('source uses the canonical embed link', src.indexOf(EMBED) >= 0);
-  const b = await chromium.launch();
+  const b = await chromium.launch();{const _nc=b.newContext.bind(b);b.newContext=async(...a)=>{const c=await _nc(...a);await c.addInitScript(()=>{try{const d=new Date();localStorage.setItem('tl.md.shown.'+d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'),'1');}catch(e){}});return c;};} /* r113: the match morning screen is tested elsewhere; hide it if the run lands on a Saturday */
   const phone = devices['Pixel 7'];
   {
     const ctx = await b.newContext({ ...phone, serviceWorkers: 'block' });

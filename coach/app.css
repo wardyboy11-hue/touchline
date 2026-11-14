@@ -287,3 +287,6 @@ button.tl-vq{background:transparent;color:inherit;border:0;border-bottom:1px sol
 .tlc-else{font-size:16px;color:#A6B2D4;margin:18px 2px 8px;font-weight:700}
 #st[hidden]{display:none!important}
 body.ps .tlc-hero{background:#fff;color:#021945}
+
+/* r113: hide the floating Ask button on coach Today only. Header Ask stays. */
+body.tlc-today #tl-voice-fab{display:none!important}

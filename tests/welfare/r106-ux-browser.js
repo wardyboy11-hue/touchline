@@ -31,7 +31,7 @@ function fam(role) {
   return { first: 'Pat', role: role, num: '7', mine: {}, at: Date.now(), photo: '', posts: [{ id: 'tr1', type: 'training', date: '2026-11-11', time: '20:00', title: 'Training', place: 'Pitch' }], squadNums: [], vote: { motm: { open: false, elig: role === 'parent', cands: [{ id: 'p9', num: '9', name: 'Alex Sample' }], mine: [] }, poty: { open: false } }, x: { fixtures: [{ id: 'fx1', opp: 'Rivals Athletic', date: '2026-11-14', ko: '10:30', ha: 'A', done: false, pp: 0, venue: 'Rivals ground' }], news: [], events: [], lifts: [], media: [], contacts: [{ n: 'Club welfare', r: 'Welfare', e: '', p: '' }] } };
 }
 (async () => {
-  const b = await chromium.launch();
+  const b = await chromium.launch();{const _nc=b.newContext.bind(b);b.newContext=async(...a)=>{const c=await _nc(...a);await c.addInitScript(()=>{try{const d=new Date();localStorage.setItem('tl.md.shown.'+d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'),'1');}catch(e){}});return c;};} /* r113: the match morning screen is tested elsewhere; hide it if the run lands on a Saturday */
   const phone = devices['Pixel 7'];
   const desk = { viewport: { width: 1280, height: 800 } };
   async function bootFamily(page, role) {

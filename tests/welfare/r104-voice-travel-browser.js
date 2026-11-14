@@ -20,7 +20,7 @@ function errsOf(p){const e=[];p.on('pageerror',x=>e.push('pageerror: '+x.message
 const COACH_VIEWS=['today','match','squad','mday','ct','fa','em','conc','goals','priv','lab','stats','admin','sb','plan','run','pos','sess','rev','fit','pod','res','fav','anim','lib','rl','ig','x','att','board','cdev','roles','hub','refs','opp','lg','ask','more','guides','shop'];
 const FAM_TABS=['home','games','events','media','me','faq','contacts','lib','own','voice','data'];
 (async()=>{
- const b=await chromium.launch();
+ const b=await chromium.launch();{const _nc=b.newContext.bind(b);b.newContext=async(...a)=>{const c=await _nc(...a);await c.addInitScript(()=>{try{for(const k of ['SpeechRecognition','webkitSpeechRecognition'])if(window[k])Object.defineProperty(window[k],'available',{value:undefined});}catch(e){}});return c;};} /* r113: headless Chromium crashes on the on-device speech check */
  const ph={viewport:{width:390,height:844},deviceScaleFactor:2,isMobile:true,hasTouch:true};
  async function bootCoach(){
   const ctx=await b.newContext(ph);const p=await ctx.newPage();const E=errsOf(p);
