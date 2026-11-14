@@ -530,13 +530,13 @@ function mdDo(m,ch,wid){var done=0;ch.forEach(function(x){if(slotOfPlayer(m,x.of
 function cmtLoad(force){if(!CODE||view.cmtBusy||API.indexOf('__'+'API__')>-1)return;if(!force&&view.cmtAt&&now()-view.cmtAt<60000)return;view.cmtBusy=1;view.cmtAt=now();
  call('cmt.list').then(function(d){view.cmtBusy=0;view.cmtNa=false;view.cmts=(d&&d.rows)||[];lsSet('tl.cmts',JSON.stringify(view.cmts));render(true);}).catch(function(e){view.cmtBusy=0;if(/unknown/i.test(e.message)){view.cmtNa=true;render(true);}});}
 function cmtRows(){if(!view.cmts){try{view.cmts=JSON.parse(lsGet('tl.cmts')||'[]')||[];}catch(e){view.cmts=[];}}return view.cmts;}
-function oppKey(s){return String(s||'').toLowerCase().replace(/\b(fc|afc|jfc|u\d+|under \d+|juniors?|blues?|reds?|whites?)\b/g,'').replace(/[^a-z]/g,'');}
+function cmtOppKey(s){return String(s||'').toLowerCase().replace(/\b(fc|afc|jfc|u\d+|under \d+|juniors?|blues?|reds?|whites?)\b/g,'').replace(/[^a-z]/g,'');}
 function cmtRow(r){var rm=r.status==='removed';return '<div class="it" style="cursor:default;flex-wrap:wrap'+(rm?';opacity:.6':'')+'"><div class="grow small"><span class="tag">'+(r.kind==='opp'?'Opposition':'Game')+'</span> '+(rm?'<span class="tag bad">Removed</span> ':'')+'<b>'+esc(r.who||'')+'</b> <span class="muted">'+esc(r.at?new Date(r.at).toLocaleDateString('en-GB',{day:'numeric',month:'short'}):'')+'</span><div style="margin-top:4px;white-space:pre-wrap">'+esc(r.text)+'</div></div><div class="row" style="width:100%;margin-top:6px;gap:6px">'+(rm?'<button class="btn sm" data-act="cmtSet" data-id="'+esc(r.id)+'" data-st="new">Put back</button>':'<button class="btn sm" data-act="cmtSet" data-id="'+esc(r.id)+'" data-st="removed">Remove</button>')+'<button class="btn sm bad" data-act="cmtDel" data-id="'+esc(r.id)+'">Delete</button></div></div>';}
 function cmtCard(m){cmtLoad();var rows=cmtRows().filter(function(r){return r.mid===m.id;});
  var h='<div class="card" id="cmt-card"><h3 style="margin-top:0">Comments from players and parents <span class="small muted">coaches only</span></h3><p class="small muted">From the After the game card on their Home. Only you and Deano see these. Nobody else, and no replies go back. Remove hides one, Delete erases it.</p>';
  if(view.cmtNa)return h+'<p class="small">Comments need the backend update (see the steps in the PR). Families can still write them. They wait on their phones and send once it is switched on.</p></div>';
  return h+(rows.length?'<div class="list">'+rows.map(cmtRow).join('')+'</div>':'<p class="small muted">None yet.</p>')+'</div>';}
-function cmtOppHtml(m){var k=oppKey(m.opp);if(!k)return '';var rows=cmtRows().filter(function(r){return r.kind==='opp'&&oppKey(r.opp)===k&&r.status!=='removed';});if(!rows.length)return '';
+function cmtOppHtml(m){var k=cmtOppKey(m.opp);if(!k)return '';var rows=cmtRows().filter(function(r){return r.kind==='opp'&&cmtOppKey(r.opp)===k&&r.status!=='removed';});if(!rows.length)return '';
  return '<h4 style="margin:12px 0 4px">From players and parents ('+rows.length+')</h4><p class="small muted">Coaches only. Never shown to families.</p><div class="list">'+rows.map(cmtRow).join('')+'</div>';}
 /* ---------- r114: coaches edit media and clip titles. Until the backend update is in, the new title waits on this phone and is tried again. ---------- */
 function ttlQ(){try{return JSON.parse(lsGet('tl.titleq')||'{}')||{};}catch(e){return {};}}
@@ -2131,7 +2131,7 @@ document.addEventListener('input',function(e){var t=e.target;if(t.dataset&&t.dat
 var _shortName=shortName;shortName=function(p){var n=nickOf(p);return n||_shortName(p);};
 /* ---- scouting ---- */
 var SCT={danger:'Danger',weak:'Weakness',style:'How they play',set:'Set pieces',other:'Other'};
-function oppKey(m){return String(m.opp||'').toLowerCase().replace(/[^a-z0-9]/g,'').replace(/u15.*$/,'');}
+/* r114: oppKey is defined once, further down, and takes a match or a name. */
 function scoutHist(m){var k=oppKey(m);if(!k)return [];var out=[];Object.keys(S.matches).forEach(function(id){var x=S.matches[id];if(x.deleted||x.id===m.id||oppKey(x)!==k)return;(x.scout||[]).forEach(function(n){out.push({n:n,date:x.date});});});return out.sort(function(a,b){return b.date<a.date?-1:1;});}
 function scoutLine(n){return '<div class="it"><div class="grow small"><span class="tag">'+esc(SCT[n.tag]||'Note')+'</span> '+(n.num?'<b>#'+esc(n.num)+'</b> ':'')+esc(n.txt)+'</div></div>';}
 function scoutCard(m){if(!m||!m.id||m===S.settings.lab)return '';var cur_=(m.scout||[]),hist=scoutHist(m);
@@ -3020,7 +3020,7 @@ var OPV={rows:null,lg:null,busy:0,err:'',fresh:0,dirty:0};
 function oppLoad(force){if(!CODE||OPV.busy||(!force&&OPV.fresh))return;OPV.busy=1;
  Promise.all([call('opp.get'),call('league.get')]).then(function(a){OPV.busy=0;OPV.fresh=1;OPV.err='';OPV.rows=a[0].rows||[];OPV.lg=a[1].rows||[];if(view.tab==='opp'||view.tab==='lg'||view.tab==='today')render(true);}).catch(function(e){OPV.busy=0;OPV.fresh=1;OPV.err=/unknown/i.test(e.message)?'This part of the backend is not switched on yet (release 80 backend).':e.message;if(view.tab==='opp'||view.tab==='lg')render(true);});}
 function oppTeams(){var seen={},out=[];Object.keys(S.matches).map(function(k){return S.matches[k];}).filter(function(m){return !m.deleted&&m.opp;}).sort(function(a,b){return (a.date||'')<(b.date||'')?-1:1;}).forEach(function(m){var k=String(m.opp).trim();if(!seen[k.toLowerCase()]){seen[k.toLowerCase()]=1;out.push(k);}});return out;}
-function oppKey(s){return String(s||'').toLowerCase().replace(/\bu\d+s?\b/g,'').replace(/[^a-z0-9]/g,'');}
+function oppKey(s){if(s&&typeof s==='object')s=s.opp;return String(s||'').toLowerCase().replace(/\bu\d+s?\b/g,'').replace(/[^a-z0-9]/g,'');}
 function oppFor(opp){var k=oppKey(opp);if(!k)return null;return (OPV.rows||[]).filter(function(r){var t=oppKey(r.team),c=oppKey(r.club);return (t&&(t===k||k.indexOf(t)===0||t.indexOf(k)===0))||(c&&k.indexOf(c)===0);})[0]||null;}
 function oppMatches(r){return Object.keys(S.matches).map(function(k){return S.matches[k];}).filter(function(m){return !m.deleted&&m.opp&&oppFor(m.opp)===r;}).sort(function(a,b){return (a.date||'')<(b.date||'')?-1:1;});}
 function csvQ(v){v=String(v==null?'':v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}
