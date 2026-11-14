@@ -64,12 +64,13 @@ ol.list li .th img{width:100%;height:100%;border-radius:12px;object-fit:cover}
 .howto-demo video.stretch-vid{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
 
 </style></head><body>
-<header><img src="../badge.png" alt=""><h1>Stretching<small>Wigan Junior Latics U15 Blues</small></h1><button class="x" id="close" aria-label="Close">Close ✕</button></header>
+<header><img src="../badge.webp" alt=""><h1>Stretching<small>Wigan Junior Latics U15 Blues</small></h1><button class="x" id="close" aria-label="Close">Close ✕</button></header>
 <main>
 <section id="list">
  <div class="card"><h2 style="margin:0 0 4px">Cool down stretches</h2><p class="muted" style="margin:0">After training or a match. Each stretch is held at least 15 seconds, with a 15 second rest between. Voice and pictures stay in step.</p><p class="aimark" style="text-align:left;margin:6px 0 0">The videos are a computer made demo, not a real player.</p>
  <div class="tot"><span class="muted"><span id="cnt"></span> stretches</span><b id="total"></b></div>
- <button class="btn pri" id="start">Start</button><p class="small muted" style="margin:8px 0 0">Turn your sound on. Tap any stretch below to start from there. Tap the picture any time for how to do it.</p></div>
+ <div id="voxpick"></div>
+ <button class="btn pri" id="start" style="margin-top:10px">Start</button><p class="small muted" style="margin:8px 0 0">Turn your sound on. Tap any stretch below to start from there. Tap the picture any time for how to do it.</p></div>
  <div class="card safe"><b>Stay safe</b><ul style="margin:6px 0 0;padding-left:20px"><li>Ease in to a gentle pull. Never pain, never force it, no bouncing.</li><li>Stop if anything feels sharp and tell a coach.</li><li>Growing? Sore below the kneecap (Osgood-Schlatter) or in the heel (Sever's) means go gentler and tell a coach or your parents.</li><li>Breathe slowly the whole time.</li></ul></div>
  <div class="card"><ol class="list" id="items"></ol></div>
 </section>
@@ -91,5 +92,5 @@ ol.list li .th img{width:100%;height:100%;border-radius:12px;object-fit:cover}
 </main>
 <div id="howto" hidden></div>
 <audio id="vo" preload="auto"></audio>
-<script src="data.js?v=96"></script><script src="app.js?v=96"></script>
+<script src="../tl-vox.js?v=115"></script><script src="data.js?v=115"></script><script src="app.js?v=115"></script>
 </body></html>

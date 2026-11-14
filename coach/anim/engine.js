@@ -10,11 +10,17 @@ const cv=document.getElementById('cv');const ctx=cv.getContext('2d');
 const W=1280,H=720;cv.width=W;cv.height=H;
 const COL={R:'#e53935',B:'#1e88e5',Y:'#fdd835',K:'#8e24aa'};
 const clone=o=>JSON.parse(JSON.stringify(o));
+/* r115: the lads' voice choice (../../tl-vox.js, only on the pages the lads use). Andy's lines (P.north, audio/north/<slug>/)
+   or Alice's (P.alice, audio/alice/<slug>/) are used when the practice has them; Beeps only starts with the voice off. */
+const VOX=window.TLVOX?window.TLVOX.get():'';
 const LINES=[];/* every voice line in time order: {t0,win,dur,url} */
 let T=0;
 PH.forEach((P,pi)=>{
-  const AD=P.audio||null;P._t0=T;P.INTRO=AD?Math.max(5,AD[0]+0.8):5;P.OUTRO=MULTI?7:8;
-  const base=P.abase||('audio/'+P.slug+'/');
+  const VA=VOX==='alice'?'alice':'north';/* Beeps only starts with the voice off; if it is turned on, Andy speaks */
+  const NV=Array.isArray(P[VA]);
+  const AD=NV?P[VA]:(P.audio||null);P._t0=T;P.INTRO=AD?Math.max(5,AD[0]+0.8):5;P.OUTRO=MULTI?7:8;
+  const base=NV?('audio/'+VA+'/'+P.slug+'/'):(P.abase||('audio/'+P.slug+'/'));
+  (window.__animVox=window.__animVox||[]).push({voice:VOX,rec:NV?VA:'',base:base});
   let pos={};P.players.forEach(p=>pos[p.id]=[p.x,p.y]);
   P.team={};P.players.forEach(p=>P.team[p.id]=p.team);
   let ball={holder:P.ball,pt:null};const segs=[];let t=P.INTRO;
@@ -123,7 +129,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();
 
 /* ---- voice ---- */
 let t=0,playing=false,last=0,speed=1,wait=0;
-const N=LINES.length,BLOB=new Array(N).fill(null);let loaded=0,voiceOn=true,cur=-2,curSrc='';
+const N=LINES.length,BLOB=new Array(N).fill(null);let loaded=0,voiceOn=VOX!=='beeps',cur=-2,curSrc='';
 const au=new Audio();au.preload='auto';au.setAttribute('playsinline','');window.__au=au;
 function lineAt(tt){for(let i=0;i<N;i++){const L=LINES[i];if(tt>=L.t0&&tt<L.t0+L.win)return [i,tt-L.t0];}return [-1,0];}
 function syncAudio(force){if(!HASV)return;const [k,o]=lineAt(t);
@@ -139,7 +145,8 @@ if(HASV){let next=1;const pump=()=>{if(next>=N)return;const k=next++;get(k,1).th
  get(0,2).then(()=>{loaded++;status();pump();pump();pump();});}
 status();
 $('play').disabled=false;
-$('voice').onclick=()=>{voiceOn=!voiceOn;$('voice').textContent=voiceOn?'Voice on':'Voice off';syncAudio(true);};
+if(!voiceOn)$("voice").textContent="Voice off";
+$("voice").onclick=()=>{voiceOn=!voiceOn;$('voice').textContent=voiceOn?'Voice on':'Voice off';syncAudio(true);};
 function loop(ts){if(playing){const [k,o]=lineAt(t);
   if(HASV&&voiceOn&&k>=0&&k===cur&&!au.paused&&au.currentTime>0){const at=LINES[k].t0+au.currentTime;t=Math.max(t,at);}
   else if(HASV&&voiceOn&&k>=0&&au.paused&&o<LINES[k].dur-0.05&&(wait+=ts-last)<1500){}
