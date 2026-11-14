@@ -34,13 +34,16 @@ for(const role of ['player','parent']){
  await q.addInitScript(()=>{const _g=Storage.prototype.getItem;Storage.prototype.getItem=function(k){return /^fam\.wel\./.test(k)?'1':_g.call(this,k);};}); // welcome screen already seen
  await q.addInitScript((c)=>{localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code',c);localStorage.setItem('fam.ok1','1');},role);
  await q.goto('http://localhost:8769/family.html');await q.waitForTimeout(1500);
+ const home=await q.innerText('body'); // r113: the heading tick stays on Home, in Things to do
+ if(role==='player'){await q.evaluate(()=>{try{goTab('train');}catch(e){}});await q.waitForTimeout(300);} // r113: a player's goals sit at the top of Train (Home's My goals button goes there)
+ else{await q.evaluate(()=>{const d=document.getElementById('sec-players');if(d)d.open=true;});await q.waitForTimeout(200);} // r113: parents find goals under More for you, Players
  const tx=await q.innerText('body');
  if(role==='player'){T('player sees goals card with agreed goal',/my goals/i.test(tx)&&/talk more/.test(tx)&&/Agreed with the coaches/.test(tx));
-  T('player sees heading tick',/heading this week/i.test(tx));
+  T('player sees heading tick',/heading this week/i.test(home));
   await q.click('.chip:has-text("Physical")');await q.fill('textarea[maxlength="140"]','be quicker off the mark');await q.click('button:has-text("Send to Tim and Deano")');await q.waitForTimeout(500);
   T('goal sent with corner and words',added&&added.corner==='phy'&&added.txt==='be quicker off the mark');
   T('player has review buttons',/How is it going/.test(tx));}
  else{T('parent sees goals read only',/Goals/.test(tx)&&/talk more/.test(tx)&&!/Send to Tim and Deano/.test(tx)&&!/How is it going/.test(tx));
-  T('parent sees heading tick',/heading this week/i.test(tx));}
+  T('parent sees heading tick',/heading this week/i.test(home));}
  console.log(role,'errors',e2);await q.close();}
 console.log(ok,'passed',bad,'failed');await b.close();srv.close();})();

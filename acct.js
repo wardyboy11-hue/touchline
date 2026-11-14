@@ -51,7 +51,8 @@ function signOut(all){
 }
 var open=false,msg='',busy=false;
 function css(){if(document.getElementById('acctcss'))return;var st=document.createElement('style');st.id='acctcss';st.textContent=
-'#acctbtn{width:44px;height:44px;border-radius:50%;border:2px solid #ffb81c;background:#12204a;color:#fff;font:700 15px system-ui,sans-serif;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:none;padding:0;margin-left:4px}'+
+'#acctbtn{min-width:44px;height:44px;border-radius:22px;border:2px solid #ffb81c;background:#12204a;color:#fff;font:700 13px system-ui,sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;flex:none;padding:0 10px 0 4px;margin-left:4px}'+
+'#acctbtn .ab{width:30px;height:30px;border-radius:50%;background:#ffb81c;color:#0b1330;display:inline-flex;align-items:center;justify-content:center;font-size:15px}#acctbtn .aw{line-height:1}#acctbtn.out .ab{background:#0b1330;color:#ffb81c}#acctbtn .ac{display:none;font-size:12px;line-height:1;color:#ffb81c}@media (max-width:430px){#acctbtn .aw{display:none}#acctbtn .ac{display:inline}#acctbtn{padding:0 6px 0 4px;gap:3px}}'+
 '#acctbtn.out{background:#ffb81c;color:#0b1330}'+
 '#acctmenu{position:fixed;z-index:9999;top:58px;right:10px;width:min(92vw,330px);max-height:80vh;overflow:auto;background:#0f1a3d;color:#fff;border:1px solid #2b3f7a;border-radius:14px;padding:14px;font:15px/1.35 system-ui,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.5)}'+
 '#acctmenu h4{margin:12px 0 6px;font-size:13px;letter-spacing:.5px;text-transform:uppercase;color:#9fb2e6}'+
@@ -69,7 +70,7 @@ function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null
 function draw(){
  var m=document.getElementById('acctmenu');if(m)m.remove();
  var b=document.getElementById('acctbtn');
- if(b){var c=cur();b.textContent=c&&c.role?(c.role==='coach'?'C':c.role==='player'?'P':'Pa'):'+';b.className=c?'':'out';b.setAttribute('aria-expanded',open?'true':'false');b.setAttribute('aria-label',c?'Switch account. Signed in as '+labelFor(c.role,c.first):'Sign in');b.title=c?'Switch account':'Sign in';}
+ if(b){var c=cur();/* r113: a clearer button. A letter bubble for who you are, and the word Switch (or Sign in). */var f=c&&c.first?String(c.first).trim().charAt(0).toUpperCase():'';var ini=c&&c.role?(c.role==='coach'?'C':c.role==='player'?(f||'P'):'P'):'+';b.innerHTML='';var bub=el('span','ab',ini);bub.setAttribute('aria-hidden','true');b.appendChild(bub);b.appendChild(el('span','aw',c?'Switch':'Sign in'));var cv=el('span','ac','\u25BE');cv.setAttribute('aria-hidden','true');b.appendChild(cv);b.className=c?'':'out';b.setAttribute('aria-expanded',open?'true':'false');b.setAttribute('aria-label',c?'Switch account. Signed in as '+labelFor(c.role,c.first):'Sign in');b.title=c?'Switch account':'Sign in';}
  if(!open)return;
  m=el('div');m.id='acctmenu';m.setAttribute('role','dialog');m.setAttribute('aria-label','Accounts');
  var c2=cur(),a=list();

@@ -3,12 +3,12 @@ const { chromium, devices } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path');
 const root = path.resolve(__dirname, '../..');
 const PORT = +process.env.PORT || 8826;
-const SHOTS = process.env.SHOTS || '/opt/cursor/artifacts';
+const SHOTS = process.env.SHOTS || require('path').join(require('os').tmpdir(),'touchline-shots');
 fs.mkdirSync(SHOTS, { recursive: true });
 const MT = { '.js': 'text/javascript', '.html': 'text/html', '.json': 'application/json', '.css': 'text/css', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.webmanifest': 'application/json' };
 const srv = http.createServer((q, r) => {
   const u = decodeURIComponent(q.url.split('?')[0]);
-  if (u === '/version.json') { r.writeHead(200, { 'content-type': 'application/json' }); r.end('{"v":"105"}'); return; }
+  if (u === '/version.json') { r.writeHead(200, { 'content-type': 'application/json' }); r.end(JSON.stringify({v:(require('fs').readFileSync(require('path').join(__dirname,'../../update.js'),'utf8').match(/RUN='(\d+)'/)||[])[1]})); return; }
   let f = path.join(root, u);
   if (f.endsWith('/')) f += 'index.html';
   fs.readFile(f, (e, d) => {
@@ -35,6 +35,8 @@ function errsOf(p) {
     const ctx = await b.newContext({ ...ph, serviceWorkers: 'block' });
     const p = await ctx.newPage();
     const E = errsOf(p);
+    // r113: pin the clock to match day (Saturday 7 Nov, after kick off) so this does not depend on the real date. r110 hides the vote on other days.
+    await p.addInitScript("(()=>{const T=new Date('2026-11-07T12:30:00').getTime(),D0=Date.now(),R=Date;class FD extends R{constructor(...a){if(a.length)super(...a);else super(T+(R.now()-D0));}static now(){return T+(R.now()-D0);}}window.Date=FD;})()");
     await p.addInitScript(() => { window.open = () => { window.__opened = (window.__opened || 0) + 1; return null; }; localStorage.setItem('fam.pushAsk','9999999999999');localStorage.setItem('fam.code', 'p'); localStorage.setItem('fam.ok1', '1'); localStorage.setItem('fam.wel.P', '1'); localStorage.setItem('fam.tour', '1'); });
     await p.route('**/macros/**', r => r.fulfill({ status: 200, contentType: 'application/json', headers: H, body: JSON.stringify({ ok: true, data: fam }) }));
     await p.goto(BASE + '/parents.html');

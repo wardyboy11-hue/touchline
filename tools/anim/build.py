@@ -1,10 +1,11 @@
 """Build coach/anim/<slug>.html + pre-recorded voice (ElevenLabs, same voice as shape/audio).
 Usage: python3 tools/anim/build.py [slug ...]   (needs ELEVENLABS_API_KEY only for new or changed lines)"""
-import sys,json,os,glob,hashlib,html,urllib.request,subprocess
+import sys,json,os,glob,hashlib,html,urllib.request,subprocess,re
 R=os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 VOICE=os.environ.get('VO_VOICE','1zZSINK3SPk5qpVKuo3e');MODEL='eleven_multilingual_v2'
 CACHE=os.path.join(R,'tools/anim/.tts');os.makedirs(CACHE,exist_ok=True)
 def tts(text):
+    text=re.sub(r'\bDeano\b','Deeno',text)  # r113: Deano is said Deeno
     h=hashlib.sha1((VOICE+MODEL+text).encode()).hexdigest()[:16];f=os.path.join(CACHE,h+'.mp3')
     if not os.path.exists(f):
         rq=urllib.request.Request(f'https://api.elevenlabs.io/v1/text-to-speech/{VOICE}?output_format=mp3_44100_128',

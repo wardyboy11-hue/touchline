@@ -1,12 +1,13 @@
 """Build stretch/data.js + stretch/audio/*.mp3 from tools/stretch/stretches.json.
 r95: Alice British female voice (not Tim Cipher). Needs ELEVENLABS_API_KEY for new lines."""
-import json,os,sys,math,hashlib,urllib.request,subprocess
+import json,os,sys,math,hashlib,urllib.request,subprocess,re
 R=os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 VOICE=os.environ.get('STRETCH_VOICE','Xb7hH8MSUJpSbSDYk0k2')  # Alice - Clear, Engaging Educator (British female)
 MODEL='eleven_multilingual_v2'
 CACHE=os.path.join(R,'tools/stretch/.tts');os.makedirs(CACHE,exist_ok=True)
 od=os.path.join(R,'stretch/audio');os.makedirs(od,exist_ok=True)
 def tts(text):
+    text=re.sub(r'\bDeano\b','Deeno',text)  # r113: Deano is said Deeno
     h=hashlib.sha1((VOICE+MODEL+text).encode()).hexdigest()[:16]
     f=os.path.join(CACHE,h+'.mp3')
     if not os.path.exists(f):

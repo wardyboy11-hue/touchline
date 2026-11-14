@@ -346,7 +346,7 @@ function speak(text,done){
  try{
   if(!global.speechSynthesis){if(done)done();return;}
   speechSynthesis.cancel();
-  var u=new SpeechSynthesisUtterance(String(text||'').replace(/[\u2013\u2014]/g,', '));
+  var u=new SpeechSynthesisUtterance(String(text||'').replace(/[\u2013\u2014]/g,', ').replace(/\bDeano\b/g,'Deeno'));
   u.lang='en-GB';u.rate=1;u.pitch=1;
   var v=pickVoice();if(v)u.voice=v;
   u.onend=function(){if(done)done();};

@@ -2,10 +2,10 @@
 const {chromium}=require('playwright');const http=require('http'),fs=require('fs'),path=require('path');
 const root=path.resolve(__dirname,'../..');
 const PORT=+process.env.PORT||8824;
-const SHOTS=process.env.SHOTS||'/opt/cursor/artifacts';
+const SHOTS=process.env.SHOTS || require('path').join(require('os').tmpdir(),'touchline-shots');
 fs.mkdirSync(SHOTS,{recursive:true});
 const MT={'.js':'text/javascript','.html':'text/html','.json':'application/json','.css':'text/css','.png':'image/png','.jpg':'image/jpeg','.webp':'image/webp','.webmanifest':'application/json','.svg':'image/svg+xml','.mp3':'audio/mpeg','.vtt':'text/vtt','.mp4':'video/mp4'};
-const srv=http.createServer((q,r)=>{let u=decodeURIComponent(q.url.split('?')[0]);if(u==='/version.json'){r.writeHead(200,{'content-type':'application/json'});r.end('{"v": "109"}');return;}let f=path.join(root,u);if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,d)=>{if(e){r.writeHead(404);r.end();return;}r.writeHead(200,{'content-type':MT[path.extname(f)]||'application/octet-stream'});r.end(d);});}).listen(PORT);
+const srv=http.createServer((q,r)=>{let u=decodeURIComponent(q.url.split('?')[0]);if(u==='/version.json'){r.writeHead(200,{'content-type':'application/json'});r.end(JSON.stringify({v:(require('fs').readFileSync(require('path').join(__dirname,'../../update.js'),'utf8').match(/RUN='(\d+)'/)||[])[1]}));return;}let f=path.join(root,u);if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,d)=>{if(e){r.writeHead(404);r.end();return;}r.writeHead(200,{'content-type':MT[path.extname(f)]||'application/octet-stream'});r.end(d);});}).listen(PORT);
 const BASE='http://127.0.0.1:'+PORT;
 let ok=0,bad=0;const T=(n,c)=>{console.log((c?'PASS ':'FAIL ')+n);c?ok++:bad++;};
 const w=ms=>new Promise(r=>setTimeout(r,ms));
@@ -20,7 +20,7 @@ function errsOf(p){const e=[];p.on('pageerror',x=>e.push('pageerror: '+x.message
 const COACH_VIEWS=['today','match','squad','mday','ct','fa','em','conc','goals','priv','lab','stats','admin','sb','plan','run','pos','sess','rev','fit','pod','res','fav','anim','lib','rl','ig','x','att','board','cdev','roles','hub','refs','opp','lg','ask','more','guides','shop'];
 const FAM_TABS=['home','games','events','media','me','faq','contacts','lib','own','voice','data'];
 (async()=>{
- const b=await chromium.launch();
+ const b=await chromium.launch();{const _nc=b.newContext.bind(b);b.newContext=async(...a)=>{const c=await _nc(...a);await c.addInitScript(()=>{try{for(const k of ['SpeechRecognition','webkitSpeechRecognition'])if(window[k])Object.defineProperty(window[k],'available',{value:undefined});}catch(e){}});return c;};} /* r113: headless Chromium crashes on the on-device speech check */
  const ph={viewport:{width:390,height:844},deviceScaleFactor:2,isMobile:true,hasTouch:true};
  async function bootCoach(){
   const ctx=await b.newContext(ph);const p=await ctx.newPage();const E=errsOf(p);

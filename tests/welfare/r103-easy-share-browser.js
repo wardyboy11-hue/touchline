@@ -3,7 +3,7 @@ const {chromium,devices}=require('playwright');const http=require('http'),fs=req
 const root=path.resolve(__dirname,'../..'),PORT=+process.env.PORT||8813,SHOTS=process.env.SHOTS||'/workspace/shots',PRE=process.env.PRE||'r103_';
 fs.mkdirSync(SHOTS,{recursive:true});
 const MT={'.js':'text/javascript','.html':'text/html','.json':'application/json','.css':'text/css','.png':'image/png','.webmanifest':'application/json','.webp':'image/webp'};
-const srv=http.createServer((q,r)=>{let u=decodeURIComponent(q.url.split('?')[0]);if(u==='/version.json'){r.writeHead(200,{'content-type':'application/json'});r.end('{"v": "109"}');return;}let f=path.join(root,u);if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,d)=>{if(e){r.writeHead(404);r.end();return;}r.writeHead(200,{'content-type':MT[path.extname(f)]||'application/octet-stream'});r.end(d);});}).listen(PORT);
+const srv=http.createServer((q,r)=>{let u=decodeURIComponent(q.url.split('?')[0]);if(u==='/version.json'){r.writeHead(200,{'content-type':'application/json'});r.end(JSON.stringify({v:(require('fs').readFileSync(require('path').join(__dirname,'../../update.js'),'utf8').match(/RUN='(\d+)'/)||[])[1]}));return;}let f=path.join(root,u);if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,d)=>{if(e){r.writeHead(404);r.end();return;}r.writeHead(200,{'content-type':MT[path.extname(f)]||'application/octet-stream'});r.end(d);});}).listen(PORT);
 const BASE='http://localhost:'+PORT;let ok=0,bad=0;const T=(n,c)=>{console.log((c?'PASS ':'FAIL ')+n);c?ok++:bad++;};
 const H={'access-control-allow-origin':'*'};
 function errsOf(p){const e=[];p.on('pageerror',x=>e.push('pageerror: '+x.message));p.on('console',m=>{if(m.type()==='error'&&!/Failed to load resource|favicon|net::ERR|service.?worker/i.test(m.text()))e.push('console: '+m.text());});return e;}
@@ -49,7 +49,8 @@ function errsOf(p){const e=[];p.on('pageerror',x=>e.push('pageerror: '+x.message
   await c.locator('#tl-share-sheet [data-a=close]').click({force:true});
   await c.waitForTimeout(200);
   // clip overlay share
-  await c.locator('.mi.lk').first().click({force:true});
+  await c.evaluate(()=>{const m=document.querySelector('.mi.lk');if(m)m.scrollIntoView({block:'center'});}); // r113: keep the card clear of the fixed Share bar before tapping
+  await c.locator('.mi.lk b').first().click({force:true});
   await c.waitForTimeout(500);
   const ov=await c.evaluate(()=>({share:!!document.querySelector('[data-clclose]') && !!document.querySelector('[data-tlshare][aria-label="Share clip"]')}));
   T('family clip player has Share', ov.share);
@@ -68,7 +69,7 @@ function errsOf(p){const e=[];p.on('pageerror',x=>e.push('pageerror: '+x.message
   await c.evaluate(()=>{const s=document.getElementById('splash');if(s)s.remove();try{goTab('home');r();}catch(e){}});
   await c.waitForTimeout(700);
   const st=await c.evaluate(()=>({bar:!!document.querySelector('.tl-share-bar [data-tlshare-page]'), stretchShare:!!document.querySelector('#stretchc [data-tlshare]')}));
-  T('parents home has sticky Share this page', st.bar);
+  T('parents home has no floating Share bar (r113: it sat under Ask)', !st.bar);
   T('parents stretch card has Share', st.stretchShare);
   await c.screenshot({path:path.join(SHOTS,PRE+'parents_home_share_bar.png'),fullPage:false});
   T('parents zero console errors', E.length===0); if(E.length) console.log(E);
@@ -96,7 +97,7 @@ function errsOf(p){const e=[];p.on('pageerror',x=>e.push('pageerror: '+x.message
     const share=sh&&sh.querySelector('[data-tlshare]');
     return {open:!!sh, share:!!share, shareLabel:share?share.textContent.trim():'', h:share?share.getBoundingClientRect().height:0};
   });
-  T('coach resources has sticky Share this page', st.bar);
+  T('coach has no floating Share bar (r113: each card keeps its own Share)', !st.bar);
   T('coach TLShare loaded', st.hasTLShare);
   T('coach resource sheet has Share', sheet.share || st.cards===0);
   if(sheet.share) T('coach resource Share tap >=44', sheet.h>=44);
@@ -133,14 +134,15 @@ function errsOf(p){const e=[];p.on('pageerror',x=>e.push('pageerror: '+x.message
         await c.evaluate((t)=>{try{goTab(t);r();}catch(e){}},tab);
         await c.waitForTimeout(350);
         const has=await c.evaluate(()=>!!document.querySelector('.tl-share-bar'));
-        T(label+' '+tab+' has share bar', has);
+        const want=['games','events','media','lib','faq'].indexOf(tab)>-1; // r113: Share this page only where it helps
+        T(label+' '+tab+(want?' has':' has no')+' share bar', has===want);
       }
     }else{
       for(const tab of ['today','match','res','lib','hub','more']){
         await c.evaluate((t)=>{try{view.tab=t;render(true);}catch(e){}},tab);
         await c.waitForTimeout(350);
         const has=await c.evaluate(()=>!!document.querySelector('.tl-share-bar'));
-        T(label+' '+tab+' has share bar', has);
+        T(label+' '+tab+' has no share bar (r113)', !has);
       }
     }
     T(label+' sweep zero console errors', E.length===0); if(E.length) console.log(E);
@@ -154,7 +156,7 @@ function errsOf(p){const e=[];p.on('pageerror',x=>e.push('pageerror: '+x.message
   T('share.js has navigator.share', /navigator\.share/.test(share));
   T('share.js has wa.me fallback', /wa\.me\/\?text=/.test(share));
   T('share.js has coach only note', /Coach only/.test(share));
-  T('version is 104', JSON.parse(fs.readFileSync(path.join(root,'version.json'),'utf8')).v==='109');
+  T('version.json matches the app version in update.js', JSON.parse(fs.readFileSync(path.join(root,'version.json'),'utf8')).v===(fs.readFileSync(path.join(root,'update.js'),'utf8').match(/RUN='(\d+)'/)||[])[1]); // r113: no longer pinned to one release
  }
 
  await b.close();srv.close();

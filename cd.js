@@ -210,7 +210,7 @@
       cardBtn + lateBtn + animBtn +
       '<button class="btn" type="button" id="tl-md-go">Let\'s go</button>' +
       '</div>' +
-      '<p class="small muted" style="margin-top:10px">Shows once on match morning. Tap Let\'s go to open Today.</p>' +
+      '<p class="small muted" style="margin-top:10px">Shows once on match morning. Tap Let\'s go to ' + (opts && opts.coach ? 'open the match' : 'see today\'s match') + '.</p>' +
       '</div></div>';
   }
   function shownKey(date) { return KEY + (date || isoToday()); }
@@ -419,7 +419,7 @@
       } else {
         pinToday(m);
       }
-      setTimeout(function () { pinToday(m); }, 50);
+      if (!opts.noPin) setTimeout(function () { pinToday(m); }, 50);
     };
     var card = document.getElementById('tl-md-card');
     if (card) card.onclick = function () {

@@ -207,7 +207,7 @@ function close(){var ov=document.getElementById('tl-runview');if(ov)ov.remove();
 var T=null,AC=null,WL=null;
 function log(kind,text){(R._log=R._log||[]).push({k:kind,t:text,at:Date.now()});if(R._log.length>200)R._log.shift();}
 function beep(f,ms){log('beep',String(f));try{AC=AC||new (G.AudioContext||G.webkitAudioContext)();if(AC.state==='suspended')AC.resume();var o=AC.createOscillator(),g=AC.createGain();o.frequency.value=f;o.type='sine';g.gain.setValueAtTime(0.0001,AC.currentTime);g.gain.exponentialRampToValueAtTime(0.4,AC.currentTime+0.02);g.gain.exponentialRampToValueAtTime(0.0001,AC.currentTime+ms/1000);o.connect(g);g.connect(AC.destination);o.start();o.stop(AC.currentTime+ms/1000+0.05);}catch(e){}}
-function say(t){log('say',t);try{if(!G.speechSynthesis)return;speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='en-GB';u.rate=1;var v=(speechSynthesis.getVoices()||[]).filter(function(x){return /en-GB/i.test(x.lang);})[0];if(v)u.voice=v;speechSynthesis.speak(u);}catch(e){}}
+function say(t){log('say',t);try{if(!G.speechSynthesis)return;speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(String(t||'').replace(/\bDeano\b/g,'Deeno'));u.lang='en-GB';u.rate=1;var v=(speechSynthesis.getVoices()||[]).filter(function(x){return /en-GB/i.test(x.lang);})[0];if(v)u.voice=v;speechSynthesis.speak(u);}catch(e){}}
 function buzz(p){try{if(navigator.vibrate)navigator.vibrate(p);}catch(e){}}
 function cue(){return load().cue||'voice';}
 function blockStartCue(b,next){var c=cue();buzz(200);if(c==='silent')return;if(c==='beeps'){beep(880,450);return;}var t=BT[b[0]]||{say:''};say(t.say+' '+sayDur(b[1])+'.');}

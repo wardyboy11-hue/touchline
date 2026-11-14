@@ -199,12 +199,13 @@ body.ps header.tl-top{background:#fff}
 #root button,#root a,#root input,#root select,#root textarea,#root label,#root summary,#root .card,#root .tl-sec{scroll-margin-top:calc(132px + env(safe-area-inset-top));scroll-margin-bottom:calc(200px + env(safe-area-inset-bottom))}
 
 </style>
-<script src="tl-spotify.js?v=112"></script>
-<script src="tl-alarm.js?v=112"></script>
-<script src="tl-pages.js?v=112"></script>
-<script src="tl-quick.js?v=112"></script>
-<script src="cd.js?v=112"></script>
-<link rel="stylesheet" href="tl-ui.css?v=112">
+<script src="tl-spotify.js?v=113"></script>
+<script src="tl-alarm.js?v=113"></script>
+<script src="tl-pages.js?v=113"></script>
+<script src="tl-quick.js?v=113"></script>
+<script src="cd.js?v=113"></script>
+<script src="home.js?v=113"></script>
+<link rel="stylesheet" href="tl-ui.css?v=113">
 </head>
 <body>
 <div id="splash"><div class="spw"><svg viewBox="0 0 240 240" id="sprays"></svg><img src="badge.png" alt=""></div><p>Welcome to the <b>Wigan Junior Latics U15 Blues</b> team app</p><div class="spn"><span>Proudly sponsored by</span><img src="coach/mfs.png" alt="MFS Limited"></div></div>
@@ -273,7 +274,7 @@ function smallJpeg(file,cb){var fr=new FileReader();fr.onload=function(){var im=
 function upl(inp){if(!inp.files||!inp.files[0])return;smallJpeg(inp.files[0],function(u){call('f.photo',{dataUrl:u}).then(function(){alert('Thanks. Your photo has gone to the coaches to check. It will show once they approve it.');}).catch(function(e){alert(e.message);});});}
 
 var mcache={},mshow=false,mAdd=false,carIds=[],carI=0,carT=null,mMsg='';
-function intro(t){return '<div class="intro"><p>'+t+'</p><a href="#" onclick="goTab(\'faq\');return false">Stuck? See common questions</a></div>';}
+function intro(t){var inner='<p>'+t+'</p><a href="#" onclick="goTab(\'faq\');return false">Stuck? See common questions</a>';return window.tlFold?tlFold('f-'+tab,'About this page',inner,'intro'):'<div class="intro">'+inner+'</div>';}
 function mget(id,cb){if(mcache[id]){cb(mcache[id]);return;}call('f.media.get',{id:id}).then(function(d){mcache[id]=d.dataUrl;cb(d.dataUrl);}).catch(function(){});}
 function fillImgs(){var n=document.querySelectorAll('img[data-mid]');for(var i=0;i<n.length;i++){(function(el){mget(el.getAttribute('data-mid'),function(u){if(u)el.src=u;});})(n[i]);}}
 function startCar(){clearInterval(carT);var el=document.getElementById('carimg');if(!el||carIds.length<1)return;var show=function(){var e2=document.getElementById('carimg');if(!e2)return;var id=carIds[carI%carIds.length];carI++;mget(id,function(u){var e3=document.getElementById('carimg');if(e3&&u){e3.style.opacity=0;setTimeout(function(){e3.src=u;e3.style.opacity=1;},250);}});};show();carT=setInterval(show,4500);}
@@ -370,8 +371,8 @@ function faqPage(){var h=intro('Quick answers about using the app. Can\'t find y
  h+='<div class="card"><h2>Still stuck? Ask</h2><p class="small muted">Ask about using the app or about football. Please do not type names or private details.</p><textarea id="q" placeholder="Type your question"></textarea><button class="btn pri block" style="margin-top:10px" onclick="ask()"'+(askBusy?' disabled':'')+'>'+(askBusy?'Thinking':'Ask')+'</button>'+(askA?'<div class="ans">'+esc(askA).replace(/\n/g,'<br>')+'</div>':'')+'</div><button class="btn block" onclick="goTab(\'me\')">Back</button>';
  return h;}
 function goTab(t){tab=t;showHelp=false;showPriv=false;try{var nh=(t&&t!=='home'&&t!=='today')?'#'+t:'';if(location.hash!==nh)history.replaceState(null,'',location.pathname+location.search+nh);}catch(e){}r();window.scrollTo(0,0);}
-function ico(n){var P={home:'<path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>',cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/>',ball:'<circle cx="12" cy="12" r="9"/><path d="M12 7l4 3-1.5 5h-5L8 10z"/>',img:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M21 16l-5-5-8 9"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-3.5 3-5 7-5s7 1.5 7 5"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14c3 0 5 1.5 5 4"/>',clip:'<rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h6M9 14h6"/>',chat:'<path d="M4 5h16v11H9l-5 4z"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',more:'<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>',mic:'<path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',bag:'<path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>'};return '<svg viewBox="0 0 24 24" aria-hidden="true">'+(P[n]||'')+'</svg>';}
-function navBar(){var T=[['home','Home','home'],['games','Games','ball'],['events','Events','cal'],['media','Media','img'],['me','Me','user']];return '<nav class="tabs" aria-label="Main">'+T.map(function(t){return '<button aria-label="'+t[1]+'" class="'+(tab===t[0]?'on':'')+'" onclick="goTab(\''+t[0]+'\')">'+ico(t[2])+'<span>'+t[1]+((t[0]==='home'&&unans()>0)?'<span class="dot" aria-label="'+unans()+' to answer">'+unans()+'</span>':'')+'</span></button>';}).join('')+'</nav>';}
+function ico(n){var P={home:'<path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>',cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/>',ball:'<circle cx="12" cy="12" r="9"/><path d="M12 7l4 3-1.5 5h-5L8 10z"/>',img:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M21 16l-5-5-8 9"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-3.5 3-5 7-5s7 1.5 7 5"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14c3 0 5 1.5 5 4"/>',clip:'<rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h6M9 14h6"/>',chat:'<path d="M4 5h16v11H9l-5 4z"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',more:'<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>',mic:'<path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',bag:'<path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>',run:'<circle cx="14" cy="4.5" r="2"/><path d="M10 21l2.5-6-3-2.5 2-5 4 3h3M7 12l2-4h4"/>'};return '<svg viewBox="0 0 24 24" aria-hidden="true">'+(P[n]||'')+'</svg>';}
+function navBar(){var T=window.tlNavTabs?tlNavTabs():[['home','Home','home'],['games','Games','ball'],['events','Events','cal'],['media','Media','img'],['me','Me','user']];return '<nav class="tabs tl-famnav" aria-label="Main">'+T.map(function(t){var on=window.tlNavOn?tlNavOn(t[0],tab):tab===t[0];return '<button aria-label="'+t[1]+'"'+(on?' aria-current="page"':'')+' class="'+(on?'on':'')+'" onclick="goTab(\''+t[0]+'\')">'+ico(t[2])+'<span>'+t[1]+((t[0]==='home'&&unans()>0)?'<span class="dot" aria-label="'+unans()+' to answer">'+unans()+'</span>':'')+'</span></button>';}).join('')+'</nav>';}
 function koTxt(m){var d=new Date();d.setDate(d.getDate()+7);var lim=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');return esc(m.ko)+((!m.done&&!m.pp&&m.date>lim)?' (to be confirmed)':'');}
 function fxCard(m){var res=m.done?'<span class="big">'+(m.ha==='A'?m.f+' to '+m.a:m.f+' to '+m.a)+'</span>':'';var h='<div class="card"><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="tag">'+esc(m.comp)+'</span>'+(m.pp?'<span class="tag" style="background:#7a3b00;color:#ffd9a8">Postponed</span>':'')+(m.done?'<span class="tag" style="background:#14532d">Result</span>':'')+'</div><h2 style="margin-top:8px">'+(m.ha==='A'?'at ':'')+esc(m.opp)+'</h2><p><b>'+esc(nice(m.date))+'</b>'+(m.ko?', '+koTxt(m):'')+(m.venue?'<br>'+esc(m.venue):'')+'</p>';
  if(m.done)h+='<p>Wigan Junior Latics U15 Blues '+m.f+' to '+m.a+' '+esc(m.opp)+'</p>'+(m.motm?'<p class="small">Man of the match: <b>'+esc(m.motm)+'</b></p>':'');
@@ -510,8 +511,8 @@ function cnCard(){if(!D||D.role!=='parent')return '';cnLoad();
  if(CN.err)return '<div class="card"><h2>Photos and emergency contacts</h2><p class="small">'+esc(CN.err)+'</p></div>';
  if(!CN.d)return '<div class="card"><h2>Photos and emergency contacts</h2><p class="small muted">Loading</p></div>';
  var dr=CN.draft,c=dr?{photo:dr.photo,c1:{n:dr.c1n,p:dr.c1p,r:dr.c1r},c2:{n:dr.c2n,p:dr.c2p,r:dr.c2r},med:dr.med}:(CN.d.card||{c1:{},c2:{}}),v=function(x){return esc(x||'');},ck=function(k){return c.photo===k?' checked':'';};
- return '<div class="card" style="'+(CN.d.card?'':'border-color:#FFB81C')+'"><h2>Photos and emergency contacts</h2><p class="small">Once a season, for '+esc(D.first)+'. Season '+esc(CN.d.season)+'. '+(CN.d.card?'You have done this one. You can change it any time.':'Not done yet. It takes two minutes.')+'</p>'+
- '<h3>Photos</h3><label style="display:block;margin:6px 0"><input type="radio" name="cnph" value="yes"'+ck('yes')+'> Yes, the club can share photos and clips of '+esc(D.first)+' with the team families</label><label style="display:block;margin:6px 0"><input type="radio" name="cnph" value="team"'+ck('team')+'> Team only, inside this app, nowhere public</label><label style="display:block;margin:6px 0"><input type="radio" name="cnph" value="no"'+ck('no')+'> No photos or clips with '+esc(D.first)+' in</label>'+
+ return '<div class="card" style="'+(CN.d.card?'':'border-color:#FFB81C')+'"><h2>Photos and emergency contacts</h2><p class="small">Once a season, for '+(D.first?esc(D.first):'your child')+'. '+(String(CN.d.season||'').trim()?'Season '+esc(CN.d.season)+'. ':'')+(CN.d.card?'You have done this one. You can change it any time.':'Not done yet. It takes two minutes.')+'</p>'+
+ '<h3>Photos</h3><label class="cn-opt"><input type="radio" name="cnph" value="yes"'+ck('yes')+'> Yes, the club can share photos and clips of '+esc(D.first)+' with the team families</label><label class="cn-opt"><input type="radio" name="cnph" value="team"'+ck('team')+'> Team only, inside this app, nowhere public</label><label class="cn-opt"><input type="radio" name="cnph" value="no"'+ck('no')+'> No photos or clips with '+esc(D.first)+' in</label>'+
  '<h3>Emergency contact 1</h3><input id="cn1n" placeholder="Name" value="'+v(c.c1.n)+'" maxlength="60"><input id="cn1p" type="tel" placeholder="Phone" value="'+v(c.c1.p)+'" style="margin-top:6px"><input id="cn1r" placeholder="Relationship, for example Mum" value="'+v(c.c1.r)+'" maxlength="30" style="margin-top:6px">'+
  '<h3>Emergency contact 2 (optional)</h3><input id="cn2n" placeholder="Name" value="'+v(c.c2.n)+'" maxlength="60"><input id="cn2p" type="tel" placeholder="Phone" value="'+v(c.c2.p)+'" style="margin-top:6px"><input id="cn2r" placeholder="Relationship" value="'+v(c.c2.r)+'" maxlength="30" style="margin-top:6px">'+
  '<h3>Anything the coaches should know in an emergency (optional)</h3><p class="small muted">Only what you choose to share, for example an inhaler or an allergy. Please do not put diagnoses or long histories here.</p><textarea id="cnmed" maxlength="300" style="min-height:70px">'+v(c.med)+'</textarea>'+
@@ -571,14 +572,14 @@ function venueBlock(m){if(!(m.venue||(m.vi&&m.vi.pc)))return '<h3>Getting there<
 function famCdItems(){var x=X(),td=today(),items=[],nx=(x.fixtures||[]).filter(function(m){return !m.done&&m.date>=td&&!m.pp;})[0];
  if(nx)items.push({kind:'game',date:nx.date,ko:nx.ko,opp:nx.opp,ha:nx.ha,venue:nx.venue||nx.addr,meet:nx.meet,id:nx.id||('g-'+nx.date),go:'games',late:true});
  var tr=(D.posts||[]).filter(function(p){return (p.type==='train'||p.type==='training')&&p.date>=td;}).sort(function(a,b){return a.date<b.date?-1:1;})[0];
- if(tr)items.push({kind:'train',date:tr.date,time:tr.time||'19:00',title:tr.title||'Training',venue:tr.place,meet:tr.meet,id:tr.id||('t-'+tr.date),go:'train',late:true});
+ if(tr)items.push({kind:'train',date:tr.date,time:tr.time||'20:00',title:tr.title||'Training',venue:tr.place,meet:tr.meet,id:tr.id||('t-'+tr.date),go:'train',late:true});
  return items;}
 function famShirtNum(){if(D&&D.role==='parent'&&CHD&&CHD.num)return String(CHD.num);if(D&&D.num)return String(D.num);if(SELF&&SELF.num)return String(SELF.num);return '';}
 
 window.tlLateNum=function(){return famShirtNum();};
 window.tlLateSend=function(row){if(!row)return Promise.resolve();var act=row.op==='undo'?'f.late.undo':'f.late';return call(act,{id:row.id,num:row.num,mins:row.mins,kind:row.kind,ref:row.ref,date:row.date}).then(function(){alertMsg=row.op==='undo'?'Late notice cleared.':'Told the coaches: '+(window.TLCD?TLCD.lateLabel(row.num,row.mins):('No. '+row.num+' running late'));try{r();}catch(e){}}).catch(function(e){alertMsg=(e&&e.message)||'Saved on this phone. Will send when you are back online.';try{r();}catch(x){};});};
 window.addEventListener('online',function(){try{if(window.TLCD)TLCD.flushLate();}catch(e){}});
-function famMatchdayMaybe(){try{if(!window.TLCD||!D)return;var x=X(),td=today();var nx=(x.fixtures||[]).filter(function(m){return !m.done&&m.date===td&&!m.pp;})[0];if(!nx)return;if(D.role==='parent')loadChild();TLCD.showMatchday(nx,{role:D.role||'parent',anim:'12_352_in_transition',animHref:'coach/anim/12_352_in_transition.html?v=112',onGo:function(){try{goTab('home');}catch(e){}try{TLCD.pinToday(nx);}catch(e2){}},onCard:function(){try{goTab('home');}catch(e){}}});}catch(e){}}
+function famMatchdayMaybe(){try{if(!window.TLCD||!D)return;var x=X(),td=today();var nx=(x.fixtures||[]).filter(function(m){return !m.done&&m.date===td&&!m.pp;})[0];if(!nx)return;if(D.role==='parent')loadChild();TLCD.showMatchday(nx,{role:D.role||'parent',anim:'12_352_in_transition',animHref:'coach/anim/12_352_in_transition.html?v=113',onGo:function(){try{goTab('home');}catch(e){}try{TLCD.pinToday(nx);}catch(e2){}},onCard:function(){try{goTab('home');}catch(e){}}});}catch(e){}}
 
 
 /* r98/r100: attendance Yes/No at top of Home, with confirm toast and shirt-number summary. */
@@ -732,8 +733,8 @@ function selfForm(){var h='<div class="card"><h2>Make it yours</h2><p>Three minu
 function selfPrompt(){if(!D||D.role!=='player'||!SELF||SELF.done||SELF.role!=='player')return '';return '<div class="card" style="border-color:#FFB81C"><span class="tag" style="background:#FFB81C;color:#1b1200">First job</span><h2 style="margin-top:8px">Make it yours</h2><p>Pick your nickname, foot and positions, then rate yourself on the things we work on. Takes three minutes and helps Tim and Deano plan for you.</p><button class="btn pri block" onclick="selfOpen()">Start</button></div>';}
 function selfLink(){if(!D||D.role!=='player'||!SELF||SELF.role!=='player')return '';var h='<div class="card"><h3>My profile</h3><p class="small muted">Nickname, foot, positions and your own scores. Only you and the coaches can see these.</p><button class="btn block" onclick="selfOpen()">'+(SELF.done?'Update my profile':'Make it yours')+'</button></div>';if(window.roleBtn)h=roleBtn({label:'My position'})+h;if(window.niggleCard)h=niggleCard()+h;return h;}
 var WK3P={0:["w1_shape_to_receive_session","plans/w1_shape_to_receive_session.pdf"]};var WK3D=[["06_shape_to_receive_first_pass_forward", "Shape to receive, first pass forward", "Watch how the players move before the ball arrives: someone shows short, others give width, and the first pass goes forward."], ["07_counter_attack_three_runners", "Counter attack: first pass forward, three runners", "Watch the moment we win the ball: the first pass goes forward through a gap, and three players sprint straight away."], ["08_five_second_counter_press", "Lose it, react: five second press", "Watch what happens the moment we lose the ball: do the closest players chase it straight away together for about five seconds?"], ["09_build_from_keeper_then_break", "Build from the keeper, then break", "Watch the keeper start the attack and the defenders spread out wide, then the ball goes forward quickly."], ["10_rotate_roles_everyone_every_job", "Everyone plays every job", "Watch your child play in different positions. That is the plan: everyone learns every job in the team."], ["11_shape_and_transition_game", "Shape, and switching between attack and defence", "Watch for the three ideas from this block: getting into shape, reacting when we lose it, and breaking fast when we win it."]];
-function tonightCard(){var n=new Date(),p=function(x){return ('0'+x).slice(-2);},td=n.getFullYear()+'-'+p(n.getMonth()+1)+'-'+p(n.getDate());if(td<'2026-11-10'||td>'2026-11-11')return '';var pl=D&&D.role==='player';return '<div class="card" id="tonight" style="border-color:#FFB81C"><span class="tag" style="background:#1e3a8a">'+(td==='2026-11-11'?'Tonight':'Wed 11 Nov')+'</span><h2 style="margin-top:8px">Training 11/11: recover, play out, wing backs and three runners</h2><p class="small muted">60 minutes. Warm up, a keep ball game (rondo), two practices with Tim and Deano, then a game.</p>'+(pl?'<p>Watch it before training with the sound on. Tap Just my position to see what you do. Wing backs: you play in both practices, we swap at halfway.</p>':'<p><b>What to look for:</b> when the ball goes in behind, does the whole back unit drop together? When we win it, is the first pass out wide or through the middle? In the box, look for three runners: near post, far post and one arriving late.</p>')+'<a class="btn pri block" href="coach/anim/s1111_training.html?v=112&back='+encodeURIComponent(location.pathname)+'">Watch Training 11/11</a><p class="small muted" style="margin:8px 0">Six parts, each with voice over and words on screen. Tap Back to the app to come back here.</p><a class="btn block" href="plans/Block3_W2_session_v2_11Nov2026.pdf?v=112" target="_blank" rel="noopener">Session plan (PDF)</a></div>';}
-function stretchCard(){return '<div class="card" id="stretchc"><span class="tag" style="background:#16a34a">Cool down</span><h2 style="margin-top:8px">Stretching</h2><p class="small muted">18 football stretches, about 14 minutes. Voice over tells you each one, why it helps, then counts you down. Works without signal once you have opened it.</p><a class="btn block" href="stretch/index.html?v=112&back='+encodeURIComponent(location.pathname)+'">Start stretching</a><button type="button" class="btn block tl-share-btn" style="margin-top:8px;min-height:48px" data-tlshare="1" data-title="U15 Blues stretching" data-text="Stretching for the U15 Blues" data-url="'+(location.origin+(location.pathname.replace(/[^/]+$/,'')||'/')+'stretch/index.html')+'" aria-label="Share stretching">Share</button>'+(window.preStretchExtra?preStretchExtra():'<button type="button" class="btn pri block" style="margin-top:8px" onclick="openPreStretch&&openPreStretch()">Pre-game stretch</button>')+'</div>';}
+function tonightCard(){var n=new Date(),p=function(x){return ('0'+x).slice(-2);},td=n.getFullYear()+'-'+p(n.getMonth()+1)+'-'+p(n.getDate());if(td<'2026-11-10'||td>'2026-11-11')return '';var pl=D&&D.role==='player';return '<div class="card" id="tonight" style="border-color:#FFB81C"><span class="tag" style="background:#1e3a8a">'+(td==='2026-11-11'?'Tonight':'Wed 11 Nov')+'</span><h2 style="margin-top:8px">Training 11/11: recover, play out, wing backs and three runners</h2><p class="small muted">60 minutes. Warm up, a keep ball game (rondo), two practices with Tim and Deano, then a game.</p>'+(pl?'<p>Watch it before training with the sound on. Tap Just my position to see what you do. Wing backs: you play in both practices, we swap at halfway.</p>':'<p><b>What to look for:</b> when the ball goes in behind, does the whole back unit drop together? When we win it, is the first pass out wide or through the middle? In the box, look for three runners: near post, far post and one arriving late.</p>')+'<a class="btn pri block" href="coach/anim/s1111_training.html?v=113&back='+encodeURIComponent(location.pathname)+'">Watch Training 11/11</a><p class="small muted" style="margin:8px 0">Six parts, each with voice over and words on screen. Tap Back to the app to come back here.</p><a class="btn block" href="plans/Block3_W2_session_v2_11Nov2026.pdf?v=113" target="_blank" rel="noopener">Session plan (PDF)</a></div>';}
+function stretchCard(){return '<div class="card" id="stretchc"><span class="tag" style="background:#16a34a">Cool down</span><h2 style="margin-top:8px">Stretching</h2><p class="small muted">18 football stretches, about 14 minutes. Voice over tells you each one, why it helps, then counts you down. Works without signal once you have opened it.</p><a class="btn block" href="stretch/index.html?v=113&back='+encodeURIComponent(location.pathname)+'">Start stretching</a><button type="button" class="btn block tl-share-btn" style="margin-top:8px;min-height:48px" data-tlshare="1" data-title="U15 Blues stretching" data-text="Stretching for the U15 Blues" data-url="'+(location.origin+(location.pathname.replace(/[^/]+$/,'')||'/')+'stretch/index.html')+'" aria-label="Share stretching">Share</button>'+(window.preStretchExtra?preStretchExtra():'<button type="button" class="btn pri block" style="margin-top:8px" onclick="openPreStretch&&openPreStretch()">Pre-game stretch</button>')+'</div>';}
 function wk3dCard(){var s=new Date('2026-11-04T00:00:00'),n=Math.floor((Date.now()-s)/864e5),i=n<0?0:Math.floor(n/7);if(i>5||n<-14)return stretchCard()+(window.TLFit?TLFit.familyCard({who:D.role==='parent'?'parent':'player'}):'');var w=WK3D[i],pl=D&&D.role==='player',sp=WK3P[i],u='coach/anim/'+(sp?sp[0]:w[0])+'.html?v=86&back='+encodeURIComponent(location.pathname),dt=new Date(s.getTime()+i*7*864e5).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});return '<div class="card" id="wk3d"><span class="tag" style="background:#1e3a8a">'+(n<0?'Coming up':'This week')+'</span><h2 style="margin-top:8px">'+(pl?'This week\'s session':'This week\'s training')+'</h2><p class="small muted">Week '+(i+1)+' of 6, '+dt+': '+w[1]+'</p>'+(pl?'<p>Watch it before training. Turn the sound on. Players are shown by shirt number.</p>':'<p><b>What to look for:</b> '+w[2]+'</p>')+'<a class="btn pri block" href="'+u+'">'+(sp?'Watch the whole session':'Watch it')+'</a>'+(sp?'<p class="small muted" style="margin:8px 0">Warm up, both practices and the game, with voice over. Tap Close or press Esc to come back here.</p><a class="btn block" href="'+sp[1]+'?v=87" target="_blank" rel="noopener">Session plan (PDF)</a>':'')+'</div>'+stretchCard()+(window.TLFit?TLFit.familyCard({who:D.role==='parent'?'parent':'player'}):'');}
 /* UK dates: shared helper. Display only; stored dates stay yyyy-mm-dd. */
 function ukD(s,o){if(!s)return '';var m=/^(\d{4})-(\d\d)-(\d\d)/.exec(String(s)),d=m?new Date(Date.UTC(+m[1],+m[2]-1,+m[3],12)):new Date(s);if(isNaN(d))return String(s);return d.toLocaleDateString('en-GB',Object.assign({timeZone:'Europe/London'},o||{day:'numeric',month:'short',year:'numeric'}));}
@@ -821,9 +822,9 @@ function ownPage(){var h='<div class="card"><h2>My own training</h2><p class="mu
 
 var showMore=false;
 function moreTiles(){
- var L=[['home','Home','home'],['games','Games','ball'],['events','Events','cal'],['media','Media','img'],['me','Me','user'],['faq','FAQ','chat'],['contacts','Contacts','user'],['lib','Clips','clip']];
+ var L=[['home','Home','home'],['games','Games','ball'],['events','Events','cal'],['media','Media','img'],['me','Me','user'],['train','Training','run'],['voice',(D&&D.role==='player')?'Your voice':'Ask the coaches','chat'],['faq','FAQ','chat'],['contacts','Contacts and emergency','user'],['lib','Clips and library','clip']];
  if(D&&D.role==='parent')L.push(['child','His card','user'],['pq','Ask coaches','chat']);
- if(D&&D.role==='player')L.push(['voice','Your voice','chat'],['own','My goals','clip']);
+ if(D&&D.role==='player')L.push(['own','My goals','clip']);
  L.push(['shopx','Club shop','bag'],['stretchx','Stretching','clock'],['voicex','Voice help','mic']);
  return L;
 }
@@ -844,7 +845,7 @@ function closeMore(){
 function moreJump(k){
  closeMore();
  if(k==='shopx'){showKit=true;r();window.scrollTo(0,0);return;}
- if(k==='stretchx'){location.href='stretch/index.html?v=112&back='+encodeURIComponent(location.pathname);return;}
+ if(k==='stretchx'){location.href='stretch/index.html?v=113&back='+encodeURIComponent(location.pathname);return;}
  if(k==='voicex'){r();setTimeout(function(){try{document.getElementById('tl-voice-fab').click();}catch(e){}},50);return;}
  goTab(k);
 }
@@ -852,7 +853,7 @@ function moreSheet(){
  if(!showMore)return '';
  return '<div class="tl-fmore" onclick="if(event.target===this)closeMore()"><div class="tl-fmore-in" role="dialog" aria-label="More">'+
   '<div style="display:flex;align-items:center;gap:8px"><h2 style="margin:0;flex:1">More</h2><button type="button" class="btn" onclick="closeMore()">Close</button></div>'+
-  '<p class="small muted">Shortcuts: Playing?, Fixtures, Emergency, Clips.</p>'+
+  '<p class="small muted">Everything in the app, one tap away.</p>'+
   '<div class="tl-fgrid">'+moreTiles().map(function(x){return '<button type="button" class="tl-ftile" onclick="moreJump(\''+x[0]+'\')">'+ico(x[2])+'<span>'+x[1]+'</span></button>';}).join('')+'</div>'+
   '</div></div>';
 }
@@ -860,7 +861,7 @@ function topHead(){
  return '<header class="tl-top"><img src="badge.png" alt=""><h1>Wigan Junior Latics U15 Blues</h1>'+
   ((D&&D.role)?'<span class="tag" style="font-size:12px" aria-label="Signed in as">'+(D.role==='player'?'Player':'Parent')+'</span>':'')+
   SPONH+
-  (D?'<button type="button" class="tl-ib" aria-label="Voice helper" title="Ask for help" onclick="try{document.getElementById(\'tl-voice-fab\').click();}catch(e){}">'+ico('mic')+'<span class="tl-cap">Ask</span></button><button type="button" class="tl-ib'+(showMore?' on':'')+'" aria-label="More" onclick="openMore()">'+ico('more')+'<span class="tl-cap">More</span></button>':'')+
+  (D?'<button type="button" class="tl-ib" aria-label="Voice helper" title="Help with the app" onclick="try{document.getElementById(\'tl-voice-fab\').click();}catch(e){}">'+ico('mic')+'<span class="tl-cap">Help</span></button><button type="button" class="tl-ib'+(showMore?' on':'')+'" aria-label="More" onclick="openMore()">'+ico('more')+'<span class="tl-cap">More</span></button>':'')+
   '</header>';
 }
 
@@ -895,7 +896,7 @@ function tlVoiceBoot(){
     }catch(e){try{goTab('today');}catch(e2){}}
     return;
    }
-   if(intent.intent==='stretch'||intent.go==='stretch'){location.href='stretch/index.html?v=112&back='+encodeURIComponent(location.pathname);return;}
+   if(intent.intent==='stretch'||intent.go==='stretch'){location.href='stretch/index.html?v=113&back='+encodeURIComponent(location.pathname);return;}
    if(intent.intent==='shop'||intent.go==='shop'){try{goTab('me');}catch(e){}try{if(window.openShop)openShop();else showKit=true;}catch(e2){}r();return;}
    var go=intent.page||intent.go;
    if(intent.intent==='fixtures'||intent.intent==='kickoff'||intent.intent==='where')go='games';
@@ -915,7 +916,7 @@ function tlVoiceBoot(){
 /* r100: structured Home bands with sticky jump bar. */
 function homeSecOpen(id){try{var v=g('fam.sec.'+id);return v!=='0';}catch(e){return true;}}
 function homeSecToggle(id,el){try{s('fam.sec.'+id,el.open?'1':'0');}catch(e){}}
-function homeSec(id,title,inner,openDef){if(!inner)return '';var open=homeSecOpen(id);if(openDef===false&&g('fam.sec.'+id)===null)open=false;return '<details class="tl-sec" id="sec-'+id+'"'+(open?' open':'')+' ontoggle="homeSecToggle(\''+id+'\',this)"><summary>'+title+'</summary><div class="tl-sec-body">'+inner+'</div></details>';}
+function homeSec(id,title,inner,openDef){if(!inner)return '';var open=homeSecOpen(id);if(openDef===false&&!g('fam.sec.'+id))open=false;return '<details class="tl-sec" id="sec-'+id+'"'+(open?' open':'')+' ontoggle="homeSecToggle(\''+id+'\',this)"><summary>'+title+'</summary><div class="tl-sec-body">'+inner+'</div></details>';}
 function homeJump(){return '<nav class="tl-jump" aria-label="Home sections"><a href="#sec-alerts">Alerts</a><a href="#sec-week">This week</a><a href="#sec-train">Training</a><a href="#sec-news">News</a><a href="#sec-players">Players</a></nav>';}
 function homeMatchStrip(){var x=X(),td=today(),nx=x.fixtures.filter(function(m){return !m.done&&m.date>=td&&!m.pp;})[0];if(!nx)return '';
  var meet=(window.TLCD&&TLCD.meetChip)?TLCD.meetChip(nx.ko,nx.meet):(meetBy(nx.ko)?'Meet by '+esc(meetBy(nx.ko)):'');
@@ -924,10 +925,11 @@ function homeMatchStrip(){var x=X(),td=today(),nx=x.fixtures.filter(function(m){
 /* r100/r101: Man of the match on Home. Client opens from kick-off even before backend deploy. Shirt numbers only. */
 function motmNextFx(){var x=X(),td=today();return (x.fixtures||[]).filter(function(m){return !m.done&&!m.pp&&m.date>=td;}).sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:0;})[0]||null;}
 function motmKoMs(fx){if(!fx||!fx.date)return 0;var m=String(fx.ko||'').match(/(\d{1,2}):(\d{2})/);if(!m)return 0;var p=String(fx.date).split('-');return new Date(+p[0],+p[1]-1,+p[2],+m[1],+m[2],0).getTime();}
-function motmPersonLabel(c){var name=String((c&&c.name)||'').trim(),num=c&&c.num!=null&&String(c.num)!==''?String(c.num):'';if(name&&num)return name+' · '+num;return name||num||'Player';}
+function motmPersonLabel(c){var name=String((c&&c.name)||'').trim(),num=c&&c.num!=null&&String(c.num)!==''?String(c.num):'';if(name&&num)return name+' · '+num;return name||(num?'Shirt '+num:'Player');}
 function motmCands(){var v=(D&&D.vote&&D.vote.motm)||{},list=(v.cands&&v.cands.length)?v.cands:(D.squadNums||[]);
  if((!list||!list.length)&&D&&D.att){var seen={},out=[];Object.keys(D.att).forEach(function(pid){var A=D.att[pid];['Y','N','M','none'].forEach(function(k){(A[k]||[]).forEach(function(n){n=String(n);if(!seen[n]){seen[n]=1;out.push({id:'',num:n});}});});});list=out.sort(function(a,b){return (+a.num||0)-(+b.num||0);});}
- return (list||[]).filter(function(c){return c&&c.num;});}
+ var mem={};try{mem=JSON.parse(g('fam.motmNames')||'{}')||{};}catch(e){}var fresh=0;(list||[]).forEach(function(c){if(c&&c.num&&c.name){if(mem[c.num]!==c.name){mem[c.num]=c.name;fresh=1;}}});if(fresh)try{s('fam.motmNames',JSON.stringify(mem));}catch(e){}
+ return (list||[]).filter(function(c){return c&&c.num;}).map(function(c){return (c.name||!mem[c.num])?c:{id:c.id,num:c.num,name:mem[c.num]};});}
 function motmPhase(){var fx=motmNextFx(),td=today(),bv=(D&&D.vote&&D.vote.motm)||{};
  if(!fx)return {phase:'none',fx:null,bv:bv};
  var ko=motmKoMs(fx),now=Date.now();
@@ -983,18 +985,18 @@ function homeTraining(){return wcCard()+(window.posCard?posCard()+prepCard():'')
 function homeNewsShelf(){var bits=[];
  bits.push('<div class="card"><h3 style="margin-top:0">Reminders and news</h3>'+bodyHome()+'</div>');
  var car=carousel();if(car)bits.push(car);
- bits.push('<div class="card"><h3 style="margin-top:0">Check these out</h3><p class="small muted">Sessions, shape and ideas. Tap one.</p><div class="row wrap2"><button class="btn grow" onclick="goTab(\'lib\')">Library</button><button class="btn grow" onclick="goTab(\'own\')">My own training</button><a class="btn grow" href="shape/index.html?mode=squad&back='+encodeURIComponent(location.pathname.split('/').pop())+'">Our 352</a><a class="btn grow" href="stretch/index.html?v=112&back='+encodeURIComponent(location.pathname)+'">Stretching</a></div></div>');
- bits.push(voiceCard()+rsCard('home')+tourCard());
+ bits.push('<div class="card"><h3 style="margin-top:0">Check these out</h3><p class="small muted">Sessions, shape and ideas. Tap one.</p><div class="row wrap2"><button class="btn grow" onclick="goTab(\'lib\')">Library</button><button class="btn grow" onclick="goTab(\'own\')">My own training</button><a class="btn grow" href="shape/index.html?mode=squad&back='+encodeURIComponent(location.pathname.split('/').pop())+'">Our 352</a><a class="btn grow" href="stretch/index.html?v=113&back='+encodeURIComponent(location.pathname)+'">Stretching</a></div></div>');
+ bits.push(voiceCard()+(window.tlHomeBody?'':rsCard('home')+tourCard())); /* r113: the new Home shows these at the top */
  return '<div class="tl-shelf">'+bits.map(function(b){return '<div>'+b+'</div>';}).join('')+'</div>';}
 function homePlayers(){var h=glCard()+rcPlayerCard()+mdpCard()+fmCard()+workCard()+shapeCard()+selfPrompt();
  if(D&&D.role==='player')h+=ownLink()+libLink()+playerBox();
  if(D&&D.role==='parent')h+=childCard()+subsCard()+c100Card()+(window.pqCard?pqCard():'');
  h+=bodyHomePosts();
  return h||'<div class="card"><p class="muted">Nothing here yet.</p></div>';}
-function homeBody(){return (window.tlQuickRow?tlQuickRow():'')+homeJump()+homeSec('alerts','Alerts',homeAlerts())+homeSec('week','This week',homeThisWeek())+homeSec('train','Training this week',homeTraining())+homeSec('news','News and check these out',homeNewsShelf())+homeSec('players','Players',homePlayers())+SPONX;}
+function homeBody(){if(window.tlHomeBody)return tlHomeBody();return (window.tlQuickRow?tlQuickRow():'')+homeJump()+homeSec('alerts','Alerts',homeAlerts())+homeSec('week','This week',homeThisWeek())+homeSec('train','Training this week',homeTraining())+homeSec('news','News and check these out',homeNewsShelf())+homeSec('players','Players',homePlayers())+SPONX;}
 
 
-function tlSharePageBar(){return (window.TLShare?TLShare.pageBarHtml({label:'Share this page',aria:'Share this page'}):'');}
+function tlSharePageBar(){if(['games','events','media','lib','faq'].indexOf(tab)<0)return '';return (window.TLShare?TLShare.pageBarHtml({label:'Share this page',aria:'Share this page'}):'');}
 function tlShareBind(){try{if(window.TLShare)TLShare.bind(document,function(){var titles={home:'Home',games:'Games',events:'Events',media:'Media',me:'Me',contacts:'Contacts',faq:'Help'};return {title:'Touchline U15 Blues - '+(titles[tab]||tab),text:'Open the U15 Blues team page',url:TLShare.pageUrl(tab&&tab!=='home'?'#'+tab:location.hash||'')};});}catch(e){}}
 function tlOpenClipHash(){try{var h=String(location.hash||'');var m=h.match(/^#clip\/([^/?#]+)/)||h.match(/[?#&]clip=([^&]+)/);if(!m)return;var id=decodeURIComponent(m[1]);try{goTab('media');}catch(e){}setTimeout(function(){try{clipPlay(id);}catch(e){}},500);}catch(e){}}
 
@@ -1005,7 +1007,7 @@ function r(){var el=document.getElementById('root'),h=topHead()+updLine();
  if(selfPage&&SD){el.innerHTML=h+selfForm();return;}
  if(showKit){el.innerHTML=h+kitPage();return;}
  if(resImg){h+='<div class="card"><h2>'+esc(resTitle)+'</h2>'+(resImg==='loading'?'<p class="muted">Loading</p>':resBody(resTitle,resImg))+'<button class="btn block" style="margin-top:10px" onclick="resImg=\'\';r()">Back</button></div>';el.innerHTML=h;return;}
- h+=tab==='games'?intro('Every fixture and result. Tap Add to calendar or WhatsApp on a game. On away games you can offer or ask for a lift.')+bodyGames():tab==='events'?bodyEvents():tab==='media'?mediaTab():tab==='contacts'?contactsPage():tab==='faq'?faqPage():tab==='pq'?(window.pqPage?pqPage():''):tab==='voice'?voicePage():tab==='child'?childPage():tab==='lib'?libPage():tab==='data'?dataPage():tab==='own'?ownPage():tab==='me'?intro('Your picture, calendar, kit, contacts and settings live here.')+selfLink()+ownLink()+pushCard()+bodyMe()+SPONX:(homeBody()+todayCard());
+ h+=tab==='train'?(window.tlTrainBody?tlTrainBody():homeTraining()):tab==='games'?(window.tlCalSwitch?tlCalSwitch('games'):'')+intro('Every fixture and result. Tap Add to calendar or WhatsApp on a game. On away games you can offer or ask for a lift.')+bodyGames():tab==='events'?(window.tlCalSwitch?tlCalSwitch('events'):'')+bodyEvents():tab==='media'?mediaTab():tab==='contacts'?contactsPage():tab==='faq'?faqPage():tab==='pq'?(window.pqPage?pqPage():''):tab==='voice'?voicePage():tab==='child'?childPage():tab==='lib'?libPage():tab==='data'?dataPage():tab==='own'?ownPage():tab==='me'?intro('Your picture, calendar, kit, contacts and settings live here.')+selfLink()+ownLink()+pushCard()+bodyMe()+SPONX:(window.tlHomeBody?homeBody():(homeBody()+todayCard()));
  el.innerHTML=h+((tab==='faq'||tab==='voice')?'':quickHelp())+moreSheet()+tlSharePageBar()+navBar();fillImgs();startCar();typeof tlVoiceBoot==='function'&&tlVoiceBoot();}
 function voteCards(){var V=D.vote||{},h=(D.role==='parent'?'<p class="small" style="margin:8px 0 0">'+wh('motm','Watch how to vote, under a minute')+'</p>':'');
  [['motm','Man of the match','Parents vote for the man of the match, one player each. Coaches vote too.'],['poty','Player of the year','Parents, players and coaches each vote for their own player of the year.']].forEach(function(x){var v=V[x[0]]||{open:false};
@@ -1073,7 +1075,7 @@ function pushOn(q){pushQuiet=!!q;
      if(!j.ok)throw new Error('Not saved');s('fam.push','1');s('fam.pushOff','');s('fam.pushAns','');call('f.push',{on:true}).catch(function(){});if(!pushQuiet){pushMsg='Notifications are on for this phone.';r();}});
    });
   });
- }).catch(function(e){pushMsg='Could not switch on alerts. '+(e&&e.message?e.message:'');r();});
+ }).catch(function(e){try{console.warn('alerts',e);}catch(x){}pushMsg=(typeof navigator!=='undefined'&&navigator.onLine===false)?'No signal. Try again when you have signal.':'That did not work. Check you have signal, then tap Turn on alerts again. If it still does not work, ask Tim.';r();});
 }
 function pushOff(){s('fam.pushOff','1');call('f.push',{on:false}).catch(function(){});
  navigator.serviceWorker.getRegistration('fsw.js').then(function(reg){return reg&&reg.pushManager.getSubscription();}).then(function(sub){
@@ -1115,15 +1117,17 @@ function pushRefresh(){try{if(!pushOK()||g('fam.push')!=='1'||Notification.permi
 function landVotes(){var V=(D&&D.vote)||{};if(!(V.poty&&V.poty.open&&V.poty.elig))return '';var h=voteCards();/* MoM has its own Home card */h=h.replace(/<div class="card"[^>]*>[\s\S]*?Man of the match[\s\S]*?<\/div>/,'');return h.replace(/<div class="card"><h2>[^<]*<\/h2><p class="muted">[^<]*<\/p><\/div>/g,'');}
 function feedCard(){var f=(D&&D.feed)||[];if(!f.length)return '';return '<div class="card"><h2>From your coaches</h2>'+f.slice(0,6).map(function(x){return '<div style="margin:8px 0"><b>'+(x.u&&/^https:\/\//.test(x.u)?'<a target="_blank" rel="noopener" href="'+esc(x.u)+'">'+esc(x.t)+'</a>':esc(x.t))+'</b>'+(x.squad?' <span class="tag">Whole squad</span>':'')+(x.note?'<p class="small" style="margin:2px 0 0;white-space:pre-wrap">'+esc(x.note)+'</p>':'')+'</div>';}).join('')+'</div>';}
 function out(){CODE='';D=null;s(CK,'');s('fam.cache','');r();}
+/* r113: the offline helper is for every family, not only those with alerts on. It does not ask for alerts. */
+try{if('serviceWorker' in navigator)window.addEventListener('load',function(){setTimeout(function(){navigator.serviceWorker.register('fsw.js').catch(function(){});},1200);});}catch(e){}
 if(CODE){var cc=null;try{cc=JSON.parse(g('fam.cache')||'null');}catch(x){}if(cc&&cc.c===CODE&&cc.d){D=cc.d;r();splashDone();setTimeout(famMatchdayMaybe,500);setTimeout(pushAskMaybe,1500);}load();}else{r();splashDone();}
 </script>
-<script src="positions.js?v=112" defer></script>
-<script src="fitness.js?v=112" defer></script>
-<script src="running.js?v=112" defer></script>
-<script src="prestretch.js?v=112" defer></script>
-<script src="acct.js?v=112" defer></script>
-<script src="shop.js?v=112" defer></script>
-<script src="voice.js?v=112" defer></script>
+<script src="positions.js?v=113" defer></script>
+<script src="fitness.js?v=113" defer></script>
+<script src="running.js?v=113" defer></script>
+<script src="prestretch.js?v=113" defer></script>
+<script src="acct.js?v=113" defer></script>
+<script src="shop.js?v=113" defer></script>
+<script src="voice.js?v=113" defer></script>
 
 <script>
 (function(){function __tlShareAfter(){try{tlShareBind();tlOpenClipHash();}catch(e){}}
@@ -1138,7 +1142,7 @@ if(CODE){var cc=null;try{cc=JSON.parse(g('fam.cache')||'null');}catch(x){}if(cc&
 <script>
 /* r112: direct links. #games #events #media #me #faq #contacts #lib #ask open that page once signed in.
    #fitness #running #fuel open those panels. Nothing personal is ever put in the address. */
-(function(){var TABS={home:'home',games:'games',events:'events',media:'media',me:'me',faq:'faq',help:'faq',contacts:'contacts',lib:'lib',clips:'lib',ask:'voice',voice:'voice',pq:'pq',data:'data',child:'child'},PAR={pq:1,data:1,child:1},done=false;
+(function(){var TABS={home:'home',today:'home',train:'train',training:'train',calendar:'games',videos:'media',games:'games',events:'events',media:'media',me:'me',faq:'faq',help:'faq',contacts:'contacts',lib:'lib',clips:'lib',ask:'voice',voice:'voice',pq:'pq',data:'data',child:'child'},PAR={pq:1,data:1,child:1},done=false;
  function go(){var h=String(location.hash||'').replace(/^#\/?/,'').toLowerCase();if(!h||/^(clip\/|clip=|sec-)/.test(h))return;if(typeof CODE==='undefined'||!CODE||!D)return;
   if(TABS[h]){var t=TABS[h];if(PAR[t]&&D.role!=='parent')t='me';if(tab!==t)goTab(t);return;}
   if(h==='fitness'||h==='running'||h==='fuel'){var n=0,iv=setInterval(function(){n++;if(h==='fitness'&&window.TLFit){clearInterval(iv);TLFit.open({});}else if(h!=='fitness'&&window.TLRun){clearInterval(iv);TLRun.open({view:h==='fuel'?'fuel':'hub'});}else if(n>80)clearInterval(iv);},100);}}
@@ -1146,8 +1150,8 @@ if(CODE){var cc=null;try{cc=JSON.parse(g('fam.cache')||'null');}catch(x){}if(cc&
  var iv=setInterval(function(){if(done)return clearInterval(iv);if(typeof D!=='undefined'&&D&&typeof CODE!=='undefined'&&CODE&&document.querySelector('nav.tabs')){done=true;clearInterval(iv);setTimeout(go,50);}},150);
 })();
 </script>
-<script src="share.js?v=112" defer></script>
-<script src="update.js?v=112" defer></script>
-<script src="pq.js?v=112" defer></script>
+<script src="share.js?v=113" defer></script>
+<script src="update.js?v=113" defer></script>
+<script src="pq.js?v=113" defer></script>
 </body>
 </html>
