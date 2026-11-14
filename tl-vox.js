@@ -9,6 +9,8 @@
 var VK='tl.vox',MK='tl.model';
 /* Which voices have recordings in this release. Northern goes to 1 once Tim has picked the voice. */
 var READY={north:0,alice:1,beeps:1};
+/* Which voices have the running timer lines recorded in audio/vox/<voice>/. Until then the phone's speech says them. */
+var REC={north:0,alice:0};
 var OPTS=[{k:'north',l:'Northern lad'},{k:'alice',l:'Alice'},{k:'beeps',l:'Beeps only'}];
 var MODELS=[{k:'lad',l:'Lad in kit'},{k:'figure',l:'Plain figure'}];
 function ls(k){try{return localStorage.getItem(k);}catch(e){return null;}}
@@ -24,7 +26,7 @@ function fix(t){return String(t==null?'':t).replace(/\bDeano\b/gi,'Deeno').repla
 function hash(t){t=fix(t);var h=5381;for(var i=0;i<t.length;i++){h=((h<<5)+h+t.charCodeAt(i))>>>0;}return ('0000000'+h.toString(16)).slice(-8);}
 var MAN={},AUD=null,Q=[];
 var ROOT=(function(){try{var s=document.currentScript&&document.currentScript.src;if(s)return s.replace(/tl-vox\.js.*$/,'');}catch(e){}return '';})();
-function manifest(v,cb){if(MAN[v]!==undefined){cb(MAN[v]);return;}
+function manifest(v,cb){if(!REC[v]){MAN[v]={};cb(MAN[v]);return;}if(MAN[v]!==undefined){cb(MAN[v]);return;}
  MAN[v]=null;try{fetch(ROOT+'audio/vox/'+v+'/m.json?v=115').then(function(r){return r.ok?r.json():null;}).then(function(j){MAN[v]=j||{};cb(MAN[v]);}).catch(function(){MAN[v]={};cb(MAN[v]);});}catch(e){MAN[v]={};cb({});}}
 function phoneSay(t){try{if(!G.speechSynthesis)return;speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(fix(t));u.lang='en-GB';u.rate=1;var vv=(speechSynthesis.getVoices()||[]).filter(function(x){return /en-GB/i.test(x.lang);})[0];if(vv)u.voice=vv;speechSynthesis.speak(u);}catch(e){}}
 function stop(){Q=[];try{if(AUD){AUD.pause();AUD.onended=null;}}catch(e){}try{if(G.speechSynthesis)speechSynthesis.cancel();}catch(e){}}
@@ -45,7 +47,7 @@ function picker(opts){opts=opts||{};var cur=get();
   return '<button type="button" class="tlvox-b'+(cur===o.k?' on':'')+'" data-vox="'+o.k+'"'+(off?' disabled aria-disabled="true" title="Coming soon"':'')+' aria-pressed="'+(cur===o.k)+'">'+o.l+(off?' <small>(coming soon)</small>':'')+'</button>';}).join('')+'</div>';}
 function modelPicker(){var cur=model();
  return '<div class="tlvox" role="group" aria-label="Demo">'+MODELS.map(function(o){return '<button type="button" class="tlvox-b'+(cur===o.k?' on':'')+'" data-model="'+o.k+'" aria-pressed="'+(cur===o.k)+'">'+o.l+'</button>';}).join('')+'</div>';}
-var API={get:get,set:set,ready:ready,model:model,setModel:setModel,fix:fix,hash:hash,speak:speak,stop:stop,picker:picker,modelPicker:modelPicker,opts:OPTS,models:MODELS,_ready:READY,manifest:manifest};
+var API={get:get,set:set,ready:ready,model:model,setModel:setModel,fix:fix,hash:hash,speak:speak,stop:stop,picker:picker,modelPicker:modelPicker,opts:OPTS,models:MODELS,_ready:READY,_rec:REC,manifest:manifest};
 G.TLVOX=API;
 /* One click handler for every picker on the page. Pages listen for the tl-vox event to repaint. */
 document.addEventListener('click',function(e){var b=e.target&&e.target.closest&&e.target.closest('[data-vox],[data-model]');if(!b||b.disabled)return;
@@ -53,7 +55,7 @@ document.addEventListener('click',function(e){var b=e.target&&e.target.closest&&
  var g=b.parentNode;if(g)[].forEach.call(g.querySelectorAll('.tlvox-b'),function(x){var on=x===b;x.classList.toggle('on',on);x.setAttribute('aria-pressed',String(on));});
  if(b.hasAttribute('data-vox')&&get()!=='beeps'){manifest(get(),function(){});}});
 (function(){if(document.getElementById('tlvox-css'))return;var st=document.createElement('style');st.id='tlvox-css';
- st.textContent='.tlvox{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}.tlvox-b{min-height:44px;padding:6px 14px;border-radius:22px;border:1px solid currentColor;background:transparent;color:inherit;font:inherit;font-weight:600;cursor:pointer;opacity:.9}.tlvox-b.on{background:#1d4ed8;border-color:#1d4ed8;color:#fff;opacity:1}.tlvox-b[disabled]{opacity:.45;cursor:not-allowed}.tlvox-b small{font-weight:400}';
+ st.textContent='.tlvox{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}.tlvox-b{min-height:48px;padding:6px 14px;border-radius:22px;border:1px solid currentColor;background:transparent;color:inherit;font:inherit;font-weight:600;cursor:pointer;opacity:.9}.tlvox-b.on{background:#1d4ed8;border-color:#1d4ed8;color:#fff;opacity:1}.tlvox-b[disabled]{opacity:.45;cursor:not-allowed}.tlvox-b small{font-weight:400}';
  (document.head||document.documentElement).appendChild(st);})();
 try{manifest(get(),function(){});}catch(e){}
 })(window);
