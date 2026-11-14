@@ -25,7 +25,7 @@ const w=ms=>new Promise(r=>setTimeout(r,ms));const H=c=>c.evaluate(()=>location.
  const ph={viewport:{width:390,height:844},deviceScaleFactor:2,isMobile:true,hasTouch:true};
  const {cc,c,ce}=await open(b,ph,null,SHOTS?path.join(SHOTS,'r90_vid'):'');
  const labels=await c.$$eval('nav.tabs button',x=>x.map(b=>b.textContent.trim()));
- T('five tabs: Today, Match, Train, Library, Team',labels.join(',')==='Today,Match,Train,Library,Team');
+ T('five tabs: Today, Matchday, Train, Library, Team',labels.join(',')==='Today,Matchday,Train,Library,Team');
  T('More and Comms sit in the top bar',!!(await c.$('header.tl-top [aria-label="More"]'))&&!!(await c.$('header.tl-top [aria-label="Comms"]')));
  T('Today has an address',(await H(c))==='#/today');await shot(c,'phone_today');
  await c.click('nav.tabs [aria-label="Library"]');await w(400);T('Library tab opens Positions at #/pos/lib',(await H(c))==='#/pos/lib');await shot(c,'phone_library');
@@ -49,7 +49,7 @@ const w=ms=>new Promise(r=>setTimeout(r,ms));const H=c=>c.evaluate(()=>location.
  T('refresh keeps the page and the scroll point ('+y0+' then '+y1+')',(await H(c))==='#/more'&&y0>300&&Math.abs(y1-y0)<60);
  // an iPhone memory clear: fresh tab, no hash
  await c.goto(`http://localhost:${PORT}/coach/index.html`);await w(900);T('opening fresh with no address goes back to the last page',(await H(c))==='#/more');
- await c.click('nav.tabs [aria-label="Match"]');await w(300);await c.goBack();await w(400);T('Back button returns to the previous page',(await H(c))==='#/more');
+ await c.click('nav.tabs [aria-label="Matchday"]');await w(300);await c.goBack();await w(400);T('Back button returns to the previous page',(await H(c))==='#/more');
  // guides
  await c.goto(`http://localhost:${PORT}/coach/index.html#/guides`);await w(900);
  T('guides page shows cards and loads no video until tapped',(await c.$$('.tl-card')).length===6&&!(await c.$('video')));

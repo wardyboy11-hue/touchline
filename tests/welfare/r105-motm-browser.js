@@ -89,7 +89,7 @@ function errsOf(p) {
     await p.screenshot({ path: path.join(SHOTS, 'r105-motm-tie.png') });
     await p.locator('#tl-motm-tie button').first().click();
     await p.waitForFunction(() => /Blair Sample|Casey Sample/.test((document.getElementById('tl-motm-photo-note') || {}).textContent || '') || document.getElementById('tl-motm-card'));
-    await p.waitForTimeout(400);
+    await p.waitForTimeout(1500); /* r114: let the background loads finish first; a late page redraw resets the card */
     const note = await p.locator('#tl-motm-photo-note').innerText();
     T('missing photo is explained and not invented', /does not invent a picture|shirt number only|No approved photo/.test(note));
     await p.screenshot({ path: path.join(SHOTS, 'r105-motm-card.png') });

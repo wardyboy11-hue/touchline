@@ -24,7 +24,7 @@ function coachState(){return {ideas:{},players:{p1:{id:'p1',name:'Alex One',num:
  const b=await chromium.launch();const ph=devices['Pixel 7'];
  if(!ONLY||ONLY==='coach'){const ctx=await b.newContext({...ph});const c=await ctx.newPage();const E=errsOf(c);
   await c.addInitScript(fakeDate);
-  await c.addInitScript(st=>{localStorage.setItem('tl.code','x');localStorage.setItem('tl.who','Tim');localStorage.setItem('tl.state.v1',JSON.stringify(st));},coachState());
+  await c.addInitScript(st=>{localStorage.setItem('tl.code','x');{const _d=new Date();localStorage.setItem('tl.mdOpen',_d.getFullYear()+'-'+String(_d.getMonth()+1).padStart(2,'0')+'-'+String(_d.getDate()).padStart(2,'0'));} /* r114: a match today opens Matchday once; these tests check Today */localStorage.setItem('tl.who','Tim');localStorage.setItem('tl.state.v1',JSON.stringify(st));},coachState());
   await c.route('**/touchline-push.wardyboy11.workers.dev/**',r=>{SENT.push(r.request().url());r.fulfill({status:200,contentType:'application/json',headers:H,body:'{"ok":true,"sent":0,"total":0}'});});
   await c.route('**/macros/**',r=>{let a={};try{a=JSON.parse(r.request().postData()||'{}');}catch(e){}
     const D={'voice.list':{rows:VOICE},'push.stats':{squad:16,on:12,missing:[{num:'4',name:'Sam'},{num:'11',name:'Joe'},{num:'14',name:'Kai'},{num:'19',name:'Max'}]}}[a.action]||{rows:[],docs:[],serverTime:Date.now()};

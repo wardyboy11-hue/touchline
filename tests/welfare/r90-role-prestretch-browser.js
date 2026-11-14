@@ -107,7 +107,7 @@ async function seedFamily(page,role){
 
  // coach niggle attendance
  const C=await b.newContext({...ph});const c=await C.newPage();
- await c.addInitScript(()=>{localStorage.setItem('tl.code','x');localStorage.setItem('tl.state.v1',JSON.stringify({ideas:{},players:{p6:{id:'p6',name:'Gus Test',num:'7',pos:['CM'],active:true},p0:{id:'p0',name:'Alfie Test',num:'1',pos:['GK'],active:true}},matches:{},settings:{id:'main',half:35,subEvery:17,roles:{},att:{},updatedAt:0},dirty:{},lastSync:Date.now()}));});
+ await c.addInitScript(()=>{localStorage.setItem('tl.code','x');{const _d=new Date();localStorage.setItem('tl.mdOpen',_d.getFullYear()+'-'+String(_d.getMonth()+1).padStart(2,'0')+'-'+String(_d.getDate()).padStart(2,'0'));} /* r114: a match today opens Matchday once; these tests check Today */localStorage.setItem('tl.state.v1',JSON.stringify({ideas:{},players:{p6:{id:'p6',name:'Gus Test',num:'7',pos:['CM'],active:true},p0:{id:'p0',name:'Alfie Test',num:'1',pos:['GK'],active:true}},matches:{},settings:{id:'main',half:35,subEvery:17,roles:{},att:{},updatedAt:0},dirty:{},lastSync:Date.now()}));});
  await c.route('**/macros/**',async r=>{let a={};try{a=JSON.parse(r.request().postData()||'{}');}catch(e){}
   const okk=d=>r.fulfill({status:200,contentType:'application/json',headers:H,body:JSON.stringify({ok:true,data:d})});
   if(a.action==='niggle.list')return okk({rows:[{id:'N1',num:'7',areas:['hamstrings','calves'],date:_iso,at:Date.now()}]});
@@ -149,12 +149,12 @@ async function seedFamily(page,role){
 
  // Base44 shell QA: five tabs still present on coach
  const S=await b.newContext({...ph});const s=await S.newPage();
- await s.addInitScript(()=>{localStorage.setItem('tl.code','x');localStorage.setItem('tl.state.v1',JSON.stringify({ideas:{},players:{},matches:{},settings:{id:'main',half:35,subEvery:17,roles:{},updatedAt:0},dirty:{},lastSync:Date.now()}));});
+ await s.addInitScript(()=>{localStorage.setItem('tl.code','x');{const _d=new Date();localStorage.setItem('tl.mdOpen',_d.getFullYear()+'-'+String(_d.getMonth()+1).padStart(2,'0')+'-'+String(_d.getDate()).padStart(2,'0'));} /* r114: a match today opens Matchday once; these tests check Today */localStorage.setItem('tl.state.v1',JSON.stringify({ideas:{},players:{},matches:{},settings:{id:'main',half:35,subEvery:17,roles:{},updatedAt:0},dirty:{},lastSync:Date.now()}));});
  await s.route('**/macros/**',r=>r.fulfill({status:200,contentType:'application/json',headers:H,body:JSON.stringify({ok:true,data:{rows:[],docs:[],serverTime:Date.now()}})}));
  await s.goto('http://localhost:'+PORT+'/coach/index.html');await w(1200);
  await s.evaluate(()=>{const x=document.getElementById('splash');if(x)x.remove();});
  const tabs=await s.$$eval('nav.tabs button',xs=>xs.map(b=>b.textContent.trim()));
- T('Base44 shell five tabs intact',tabs.join(',')==='Today,Match,Train,Library,Team');
+ T('Base44 shell five tabs intact',tabs.join(',')==='Today,Matchday,Train,Library,Team');
  T('More in top bar',!!(await s.$('header.tl-top [aria-label="More"]')));
  await shot(s,'r90_role_phone_shell.png');
  await S.close();
