@@ -1,5 +1,5 @@
 /* r115: one voice choice and one demo choice for the lads, saved on this phone only (localStorage).
- * Voices: north (Northern lad, recorded), alice (Alice, recorded), beeps (beeps only, no words).
+ * Voices: north (Andy, Northern lad, recorded), alice (Alice, recorded), beeps (beeps only, no words).
  * Recorded lines live in audio/vox/<voice>/<hash>.mp3 with a list in audio/vox/<voice>/m.json.
  * If a line is not recorded yet we fall back to the phone's own speech, so nothing goes quiet.
  * Every spoken line goes through fix() so Deano is always said Deeno.
@@ -7,11 +7,12 @@
 (function(G){
 'use strict';
 var VK='tl.vox',MK='tl.model';
-/* Which voices have recordings in this release. Northern goes to 1 once Tim has picked the voice. */
-var READY={north:0,alice:1,beeps:1};
+/* Which voices have recordings in this release. Andy (Northern lad, ElevenLabs x8Zbp1rqd4UcTdV8cRII) is recorded from r115.
+ * Andy is the default only when this phone has no saved choice; a saved Alice or Beeps choice is always kept. */
+var READY={north:1,alice:1,beeps:1};
 /* Which voices have the running timer lines recorded in audio/vox/<voice>/. Until then the phone's speech says them. */
-var REC={north:0,alice:0};
-var OPTS=[{k:'north',l:'Northern lad'},{k:'alice',l:'Alice'},{k:'beeps',l:'Beeps only'}];
+var REC={north:1,alice:0};
+var OPTS=[{k:'north',l:'Andy (Northern)'},{k:'alice',l:'Alice'},{k:'beeps',l:'Beeps only'}];
 var MODELS=[{k:'lad',l:'Lad in kit'},{k:'figure',l:'Plain figure'}];
 function ls(k){try{return localStorage.getItem(k);}catch(e){return null;}}
 function lsSet(k,v){try{localStorage.setItem(k,v);}catch(e){}}

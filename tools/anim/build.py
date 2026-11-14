@@ -30,6 +30,9 @@ def build(spec):
     for i,t in enumerate(lines):
         c=tts(t);o=os.path.join(od,f'{i}.mp3');open(o,'wb').write(open(c,'rb').read());ad.append(round(dur(o),2))
     P['audio']=ad
+    # r115: Andy (Northern lad) recordings, made through the ElevenLabs connector, sit in audio/north/<slug>/
+    nf=os.path.join(R,'coach/anim/audio/north',slug,'durations.json')
+    if os.path.exists(nf):P['north']=json.load(open(nf))
     txt=('<div class="txt">'+(('<h2>For parents: what to look for</h2><p>'+html.escape(P['parents'])+'</p>') if P.get('parents') else '')+
       '<div class="grid"><div><h2>Set up</h2>'+ul(P['setup'])+'<h2>Rules</h2>'+ul(P['rules'])+'<h2>How it starts and restarts</h2><ul><li>'+html.escape(P['start'])+'</li>'+''.join('<li>'+html.escape(x)+'</li>' for x in P['restart'])+'</ul></div>'
       '<div><h2>Coaching points</h2>'+ul(P['points'])+'<h2>Progressions</h2>'+ul(P['progress'])+'</div></div></div>')
