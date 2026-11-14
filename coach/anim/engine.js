@@ -19,6 +19,7 @@ PH.forEach((P,pi)=>{
   const NV=VOX==='north'&&Array.isArray(P.north);
   const AD=NV?P.north:(P.audio||null);P._t0=T;P.INTRO=AD?Math.max(5,AD[0]+0.8):5;P.OUTRO=MULTI?7:8;
   const base=NV?('audio/north/'+P.slug+'/'):(P.abase||('audio/'+P.slug+'/'));
+  (window.__animVox=window.__animVox||[]).push({voice:VOX,north:NV,base:base});
   let pos={};P.players.forEach(p=>pos[p.id]=[p.x,p.y]);
   P.team={};P.players.forEach(p=>P.team[p.id]=p.team);
   let ball={holder:P.ball,pt:null};const segs=[];let t=P.INTRO;

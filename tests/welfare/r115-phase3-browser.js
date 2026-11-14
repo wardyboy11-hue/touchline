@@ -31,6 +31,10 @@ async function tapSizes(p,sel){return p.evaluate(s=>[...document.querySelectorAl
  T('stretch sw: parses (was broken since r96) and is r115',sswOk&&/touchline-stretch-v115/.test(ssw));
  const vox=fs.readFileSync(path.join(root,'tl-vox.js'),'utf8');
  T('tl-vox: never the Tim Cipher voice, no names in lines',!/1zZSINK3SPk5qpVKuo3e/.test(vox)&&!/1zZSINK3SPk5qpVKuo3e/.test(fs.readFileSync(path.join(root,'tools/voice/build.py'),'utf8')));
+ T('tl-vox: Andy (Northern) ready with timer lines recorded, Alice and Beeps the only other choices',/READY=\{north:1,alice:1,beeps:1\}/.test(vox)&&/REC=\{north:1/.test(vox)&&/Andy \(Northern\)/.test(vox)&&(vox.match(/\{k:'(north|alice|beeps)',l:/g)||[]).length===3);
+ const sdat=fs.readFileSync(path.join(root,'stretch/data.js'),'utf8');
+ T('stretch data: Andy\'s voice id, never the Tim Cipher voice',/"north": \{"id": "x8Zbp1rqd4UcTdV8cRII"/.test(sdat)&&!/1zZSINK3SPk5qpVKuo3e/.test(sdat));
+ T('Andy\'s lines say Deeno, never Deano',!/\bDeano\b/i.test(fs.readFileSync(path.join(root,'tools/voice/lines.json'),'utf8'))&&!/\bDeano\b/i.test(fs.readFileSync(path.join(root,'tools/stretch/stretches.json'),'utf8')));
  const lines=JSON.parse(fs.readFileSync(path.join(root,'tools/voice/lines.json'),'utf8')).running;
  T('running lines: 38, plain words, no banned words, no dashes',lines.length>=30&&!lines.some(l=>BANNED.test(l)||/[\u2013\u2014]| - /.test(l)),lines.filter(l=>BANNED.test(l)));
  const figs=['adductor','butterfly','calf','dog','flexor','glute','ham','knee','quad','twist','wall'];
@@ -63,7 +67,10 @@ async function tapSizes(p,sel){return p.evaluate(s=>[...document.querySelectorAl
   {const ctx=await b.newContext(dev);const p=await ctx.newPage();const E=errsOf(p);MISS.length=0;
    await p.goto(BASE+'/stretch/index.html?v=115');await w(1200);
    const pk=await p.evaluate(()=>[...document.querySelectorAll('#voxpick .tlvox-b')].map(x=>({t:x.innerText.trim(),off:x.disabled,on:x.classList.contains('on')})));
-   T(nm+' stretch: voice picker shows Northern lad (coming soon), Alice, Beeps only',pk.length===5&&pk[0].off&&/coming soon/.test(pk[0].t)&&pk[1].on&&/Beeps only/.test(pk[2].t),pk);
+   T(nm+' stretch: voice picker shows Andy (Northern), Alice, Beeps only, all ready',pk.length===5&&!pk[0].off&&!pk[1].off&&!pk[2].off&&/Andy \(Northern\)/.test(pk[0].t)&&/Alice/.test(pk[1].t)&&/Beeps only/.test(pk[2].t)&&!pk.some(x=>/coming soon/i.test(x.t)),pk);
+   T(nm+' stretch: Andy is the default when nothing is saved',pk[0].on&&!pk[1].on&&await p.evaluate(()=>!localStorage.getItem('tl.vox')&&window.__vox().voice==='north'&&/^audio\/north\/welcome/.test(window.__vox().src)));
+   const nf=await p.evaluate(async()=>{const d=STRETCH.voices&&STRETCH.voices.north&&STRETCH.voices.north.d||{};const ks=Object.keys(d);const bad=[];for(const k of ks){const r=await fetch('audio/north/'+k+'.mp3');if(!r.ok)bad.push(k);}return {n:ks.length,bad,id:STRETCH.voices.north&&STRETCH.voices.north.id};});
+   T(nm+' stretch: all 23 of Andy\'s stretching clips load',nf.n===23&&nf.bad.length===0&&nf.id==='x8Zbp1rqd4UcTdV8cRII',nf);
    T(nm+' stretch: demo picker shows Lad in kit and Plain figure',pk[3]&&pk[3].on&&/Plain figure/.test(pk[4]&&pk[4].t));
    T(nm+' stretch: picker buttons at least 48px high',(await tapSizes(p,'#voxpick .tlvox-b:not([disabled])')).length===0,await tapSizes(p,'#voxpick .tlvox-b'));
    await p.screenshot({path:path.join(SHOTS,PRE+nm+'_stretch_list.png')});
@@ -103,7 +110,10 @@ async function tapSizes(p,sel){return p.evaluate(s=>[...document.querySelectorAl
    await p.waitForFunction(()=>!!(window.TLRun&&window.TLVOX),{timeout:8000}).catch(()=>{});
    await p.evaluate(()=>TLRun.open({view:'hub'}));await w(400);
    const vp=await p.evaluate(()=>[...document.querySelectorAll('#tl-runview .tlvox-b')].map(x=>x.innerText.trim()));
-   T(nm+' running: Whose voice picker in the hub',vp.length===3,vp);
+   T(nm+' running: Whose voice picker in the hub',vp.length===3&&/Andy \(Northern\)/.test(vp[0]),vp);
+   const ac=await p.evaluate(async()=>{await new Promise(r=>TLVOX.manifest('north',r));const m=await (await fetch('audio/vox/north/m.json')).json();const hs=Object.keys(m);let bad=0;for(const h of hs){const r=await fetch('audio/vox/north/'+h+'.mp3');if(!r.ok)bad++;}
+     const how=TLVOX.speak(['Warm up. Brisk walk and loosen up.','5 minutes.'],{voice:'north'});TLVOX.stop();return {n:hs.length,bad,how};});
+   T(nm+' running: Andy has all 38 timer lines recorded and the block start plays his clips',ac.n===38&&ac.bad===0&&ac.how==='clip',ac);
    T(nm+' running: picker buttons at least 48px high',(await tapSizes(p,'#tl-runview .tlvox-b:not([disabled])')).length===0);
    await p.screenshot({path:path.join(SHOTS,PRE+nm+'_running_hub.png')});
    await p.click('#tl-runview [data-vox=beeps]');await w(300);
@@ -117,6 +127,24 @@ async function tapSizes(p,sel){return p.evaluate(s=>[...document.querySelectorAl
    T(nm+' running: Deano is said Deeno',await p.evaluate(()=>TLVOX.fix('Tell Tim or Deano')==='Tell Tim or Deeno'));
    T(nm+' running: no page errors',E.filter(x=>/pageerror/.test(x)).length===0,E);
    T(nm+' running: no missing files',MISS.length===0,MISS.slice());
+   await ctx.close();}
+  /* ---------- an existing saved choice is kept ---------- */
+  {const ctx=await b.newContext(dev);const p=await ctx.newPage();
+   await p.addInitScript(()=>{if(!sessionStorage.getItem('x')){localStorage.setItem('tl.vox','alice');sessionStorage.setItem('x','1');}});
+   await p.goto(BASE+'/stretch/index.html?v=115');await w(900);
+   T(nm+' stretch: a phone that already picked Alice stays on Alice',await p.evaluate(()=>localStorage.getItem('tl.vox')==='alice'&&window.__vox().voice==='alice'&&document.querySelector('#voxpick [data-vox=alice]').classList.contains('on')));
+   await ctx.close();}
+  /* ---------- shape guide and 3-5-2 animation use Andy by default ---------- */
+  {const ctx=await b.newContext(dev);const p=await ctx.newPage();const E=errsOf(p);MISS.length=0;
+   await p.route('**/cdnjs.cloudflare.com/**',r=>r.fulfill({status:200,contentType:'text/javascript',body:''}));
+   await p.goto(BASE+'/shape/index.html');await w(1500);
+   const sv=await p.evaluate(async()=>{const v=window.__shapeVox;const d=await (await fetch('audio/north/durations.json')).json();let bad=0;for(const k of Object.keys(d)){const r=await fetch('audio/north/'+k+'.mp3');if(!r.ok)bad++;}return {v,n:Object.keys(d).length,bad};});
+   T(nm+' shape guide: Andy by default, all 18 clips load',sv.v&&sv.v.voice==='north'&&sv.v.base==='audio/north/'&&sv.n===18&&sv.bad===0,sv);
+   await p.goto(BASE+'/coach/anim/12_352_in_transition.html');await w(1500);
+   const av=await p.evaluate(async()=>{const a=window.__animVox||[];let bad=0;const n=(window.PRACTICE.north||[]).length;for(let i=0;i<n;i++){const r=await fetch('audio/north/12_352_in_transition/'+i+'.mp3');if(!r.ok)bad++;}return {a,n,bad};});
+   T(nm+' 3-5-2 animation: Andy by default, all 10 lines load',av.a.length>0&&av.a.every(x=>x.voice==='north'&&x.north&&/audio\/north\/12_352_in_transition\//.test(x.base))&&av.n===10&&av.bad===0,av);
+   T(nm+' shape and animation: no page errors',E.filter(x=>/pageerror/.test(x)).length===0,E);
+   T(nm+' shape and animation: no missing files',MISS.length===0,MISS.slice());
    await ctx.close();}
   /* ---------- shape guide follows Beeps only ---------- */
   {const ctx=await b.newContext(dev);const p=await ctx.newPage();const E=errsOf(p);
