@@ -62,7 +62,7 @@ function famData(role){
       players:!!document.getElementById('sec-players'),
       att:!!document.getElementById('att-top'),
       shirts:document.querySelectorAll('.tl-shirt span').length,
-      shirtText:(document.querySelector('.att-sum')||{}).innerText||''
+      shirtText:(document.querySelector('.att-sum')||{}).textContent||'' // r116: folded under Squad answers
     };
   });
   T(pg+' short Home (was jump bar)', st.jump);
