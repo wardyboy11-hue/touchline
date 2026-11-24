@@ -66,13 +66,16 @@
   var m=nextFx(),md=m&&m.date===td();
   /* Order: the tour for new families, then anything that needs an answer (r98: Yes or No always comes first),
      then tonight's session, then the match on match day, then the next game. */
-  var att=call('attTopCard'),ask=att.indexOf('Needs your answer')>-1;
+  /* r116: the week card (training and match Yes or No) always sits at the front and stays until that Saturday is over.
+     On match day it follows the match card, unless something still needs an answer. */
+  var att=call('attTopCard'),ask=att.indexOf('Needs your answer')>-1,first=!md||ask;
   h+=call('tourCard');
-  if(ask)h+=att;
-  h+=call('tonightCard');
+  if(first)h+=att;
   if(md)h+=call('todayCard')+call('mdpCard');
-  if(pl){if(!md)h+=playerHero();if(!ask)h+=att;}
-  else if(!ask){h+=att||(md?'':(has('homeMatchStrip')?call('homeMatchStrip'):''));}
+  if(!first)h+=att;
+  h+=call('tonightCard');
+  if(pl){if(!md)h+=playerHero();}
+  else if(!att&&!md){h+=has('homeMatchStrip')?call('homeMatchStrip'):'';}
   if(!pl&&!md&&att)h+=nextRow();
   var rs='';try{rs=has('rsCard')?G.rsCard('home')||'':'';}catch(e){}
   var todo=rs+call('selfPrompt')+call('motmHomeCard')+call('pmCard')+call('evAttHomeCards')+call('notifCard')+call('hcCard')+call('headCard')+call('landVotes');
