@@ -1,0 +1,13 @@
+const fs=require('fs'),path=require('path'),assert=require('assert');
+const root=path.resolve(__dirname,'../..');
+const app=fs.readFileSync(path.join(root,'coach','app.js'),'utf8');
+const m=app.match(/ login:function\(\)\{[\s\S]*?\n/);
+assert.ok(m,'coach login present');
+const L=m[0];
+assert.ok(/action:'who\.am\.i'/.test(L),'coach login checks who.am.i for six letter codes');
+assert.ok(/ro==='parent'\|\|ro==='player'/.test(L),'parent and player codes are recognised');
+assert.ok(/localStorage\.setItem\('fam\.code',v\)/.test(L)&&/parents\.html/.test(L),'family code is kept and the family page opens');
+assert.ok(/lsSet\(CKEY,''\)/.test(L),'a family code is never stored as the coach code');
+assert.ok(L.indexOf("who.am.i")<L.indexOf("call('sync'"),'who.am.i runs before the coach sync, so a family code never adds to the coach lockout');
+assert.ok(/Parent or player\? Put your code in here and we will open your page\./.test(app),'login says parents and players can use it');
+console.log('family-code-coach-login: ok');
