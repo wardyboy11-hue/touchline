@@ -14,6 +14,7 @@ Browser tests start their own tiny web server and fake the Apps Script backend, 
 - `fa-pdf-browser.js`: the matchday FA team sheet PDF on the Team sheet tab (add, show, replace, remove, wiped on sign out).
 - `r112-running-browser.js`: Running (Build up to 5k, position runs, build your own, timer blocks, beeps or voice cues) and the Fuel and water card, on a phone and a 1366 wide laptop. Also the direct links (#games, #me, #running, #fuel and so on) and that Running sends nothing to the backend.
 - `r113-home-browser.js`: the new Homes for parents, players and coaches (Wednesday 18 Nov, training 20:00 to 21:00, match Saturday 21 Nov), the new nav (Calendar, Videos, Ask or Train), old links like #games and #media, fixtures first, help folded after the first look, Share only where it helps, the offline helper for every family, the account button, MoM names, the consent card, the 1366 laptop rail, and Let's go opening the match.
+- `r116-week-att-postpone-browser.js`: the This week card on parent and player Home (Wednesday training 20:00 to 21:00 and Saturday's match Yes or No, your answer, change it, stays first until Saturday is over, then rolls on, called off games), and Game off? on the coach's Matchday, live match and Today screens all match day (reason, new date, message, urgent, Check then Send or Cancel, push and news), on a phone and a 1366 wide laptop.
 
 Tests that depend on the date pin the clock (Wednesday training, Saturday matches). Browser tests serve the version from update.js so the app never refreshes itself in the middle of a test.
 
