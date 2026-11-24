@@ -156,6 +156,16 @@ const stM=p=>p.evaluate(()=>{const s=JSON.parse(localStorage.getItem('tl.state.v
   await tap(p,'#ppd-send');await w(1200);
   T(dn+' retry sends once more',push.length===2);
   await ctx.close();
+  // after full time: no card (Tim, 24 Nov)
+  ({ctx,p,errs}=await coach(b,dv,state(match({status:'done',lineup:Object.assign({},LINEUP),events:[{id:'e0',t:0,type:'ko'}]})),'2026-11-28T13:00:00',{hash:'#/m/m1'}));
+  T(dn+' after full time: no Game off? on the match screen',!(await p.$('#tl-ppd')));
+  await p.evaluate(()=>{location.hash='#/today';});await w(700);
+  T(dn+' after full time: no Game off? on Today',!(await p.$('#tl-ppd')));
+  T(dn+' after full time no page errors',errs.length===0);if(errs.length)console.log(errs);await ctx.close();
+  // urgent starts ticked
+  ({ctx,p,errs}=await coach(b,dv,state(match()),'2026-11-28T09:00:00'));
+  await tap(p,'#ppd-open');await w(200);
+  T(dn+' before kick off urgent starts ticked',await p.$eval('#pd_urgent',x=>x.checked));await ctx.close();
   // not match day: no card
   ({ctx,p,errs}=await coach(b,dv,state(match()),'2026-11-27T18:00:00'));
   T(dn+' Friday: no Game off? card',!(await p.$('#tl-ppd')));

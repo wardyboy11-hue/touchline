@@ -1,11 +1,11 @@
 /* ===================== r116: Game off? on match day =====================
- * Coach only. Shows on Today, the Matchday screen and the match list all match day, before and after kick off.
+ * Coach only. Shows on Today, the Matchday screen and the match list on match day, before kick off and during the game. Hidden once full time is recorded (Tim, 24 Nov).
  * Same steps as Fixture change: what happened, new date if known, the message, then Send or Cancel.
  * Goes out through the existing family push (everyone with alerts on, parents and players) and the team page news.
  * Urgent: the push says URGENT and stays on screen until tapped, and Tim's and Deano's phones ring (alert.send).
  * No WhatsApp, no direct messages to players, no names in the message. */
 var PPD_R=[['pitch','The pitch is not fit to play on'],['weather','Bad weather'],['ref','No referee'],['opp','The other team cannot play'],['us','We do not have enough players'],['abandoned','The game was stopped and abandoned'],['other','Something else (say in the message)']];
-function ppdMatch(){var td=isoToday();return Object.keys(S.matches).map(function(k){return S.matches[k];}).filter(function(m){return m&&!m.deleted&&m.date===td&&!isTrainM(m);}).sort(function(a,b){return String(a.ko||'').localeCompare(String(b.ko||''));})[0]||null;}
+function ppdMatch(){var td=isoToday();return Object.keys(S.matches).map(function(k){return S.matches[k];}).filter(function(m){return m&&!m.deleted&&m.date===td&&m.status!=='done'&&!isTrainM(m);}).sort(function(a,b){return String(a.ko||'').localeCompare(String(b.ko||''));})[0]||null;}
 function ppdMsg(m,f){var r=(PPD_R.filter(function(x){return x[0]===f.reason;})[0]||PPD_R[0]),ab=f.reason==='abandoned';
  var t='Game off: U15 Blues '+(m.ha==='A'?'at ':'v ')+(m.opp||'opponent')+' today is '+(ab?'abandoned':'postponed')+'. '+(f.reason==='other'||ab?'':r[1]+'. ');
  t+=f.date?'New date '+fcUk(f.date)+(f.ko?' '+f.ko:'')+'. Please tap Playing? Yes or No again.':'New date to follow.';
@@ -30,7 +30,7 @@ function ppdCard(m){var f=view.ppd&&view.ppd.id===m.id?view.ppd:null,op=(m.ha===
  h+='<label for="pd_msg">Message for families and players</label><textarea id="pd_msg" maxlength="180" style="min-height:96px">'+esc(f.msg||'')+'</textarea><p class="small muted">No names. Up to 180 letters.</p>';
  h+='<label style="display:flex;gap:10px;align-items:center;min-height:48px;margin-top:6px"><input type="checkbox" id="pd_urgent" style="width:26px;height:26px;min-height:26px"'+(f.urgent?' checked':'')+'> Urgent alert</label><p class="small muted" style="margin-top:0">Shows as URGENT on every phone with alerts on and stays until tapped. Also rings Tim\'s and Deano\'s phones.</p>';
  return h+'<div class="row wrap2"><button class="btn pri grow" data-act="ppdCheck" id="ppd-check">Check and send</button><button class="btn grow" data-act="ppdClose">Cancel</button></div></div>';}
-function ppdTop(m){try{if(m&&m.date===isoToday()&&!m.deleted&&!isTrainM(m))return ppdCard(m);}catch(e){}return '';}
+function ppdTop(m){try{if(m&&m.date===isoToday()&&!m.deleted&&m.status!=='done'&&!isTrainM(m))return ppdCard(m);}catch(e){}return '';}
 function ppdPush(m,msg,urgent){
  var p=famPush(msg,'/family.html',urgent?{urgent:1}:null).then(function(j){m.ppSent={ok:1,sent:j.sent,total:j.total,urgent:urgent?1:0,time:new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}),msg:msg};saveM(m);sync();toast('Sent to '+j.sent+' of '+j.total+' phones');render(true);})
   .catch(function(e){m.ppSent={ok:0,err:(e&&e.message)||'no signal',urgent:urgent?1:0,msg:msg};saveM(m);toast('Saved. Phone alert did not go: '+((e&&e.message)||'no signal'));render(true);});
