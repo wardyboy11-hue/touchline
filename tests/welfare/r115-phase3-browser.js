@@ -26,7 +26,7 @@ async function tapSizes(p,sel){return p.evaluate(s=>[...document.querySelectorAl
  T('coach: guide chapters moved to cch.js',!/var CCH=\[\{/.test(app)&&fs.existsSync(path.join(root,'coach/cch.js')));
  T('coach: WebP badge and sponsor on screen, PNG kept for PDFs',/BADGE='..\/badge.webp'/.test(app)&&/sbImg\('mfs.png'\)/.test(app)&&fs.statSync(path.join(root,'badge.webp')).size<12000&&fs.statSync(path.join(root,'coach/mfs.webp')).size<12000);
  const sw=fs.readFileSync(path.join(root,'coach/sw.js'),'utf8');
- T('coach sw: caches cch.js and the WebP images',/cch\.js\?v=115/.test(sw)&&/badge\.webp/.test(sw)&&/'mfs\.webp'/.test(sw));
+ T('coach sw: caches cch.js and the WebP images',/cch\.js\?v=1\d\d/.test(sw)&&/badge\.webp/.test(sw)&&/'mfs\.webp'/.test(sw));
  const ssw=fs.readFileSync(path.join(root,'stretch/ssw.js'),'utf8');let sswOk=true;try{new Function(ssw.replace(/self\./g,'0&&self.'));}catch(e){sswOk=false;}
  T('stretch sw: parses (was broken since r96) and is r115',sswOk&&/touchline-stretch-v115/.test(ssw));
  const vox=fs.readFileSync(path.join(root,'tl-vox.js'),'utf8');

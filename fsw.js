@@ -2,8 +2,8 @@
    r113: registered for every family (not only those with alerts on), and faster repeat visits:
    versioned files (?v=) come from the cache, pages try the network for 3 seconds then use the saved copy,
    pictures and styles show the saved copy and refresh in the background. */
-var FV='tl-fam-v115';
-var FSHELL=['tl-ui.css?v=115','tl-spotify.js?v=115','tl-alarm.js?v=115','tl-pages.js?v=115','tl-quick.js?v=115','share.js?v=115','voice.js?v=115','shop.js?v=115','fitness.js?v=115','fitness.css?v=115','tl-vox.js?v=115','running.js?v=115','positions.js?v=115','acct.js?v=115','update.js?v=115','pq.js?v=115','family.html','parents.html','badge.png','icon-192.png','prestretch.js?v=115','cd.js?v=115','home.js?v=115','shop.css?v=115'].concat(['ss-core-supporters-coat-navy','ss-core-thermal-jacket-navy','end-of-line-ss-bench-coat-navy','ss-core-softshell-jacket-navy','ss-core-padded-gilet-navy','new-ss-core-rain-jacket-navy','ss-core-softshell-gilet-navy'].map(function(s){return 'shop/img/'+s+'.webp?v=115';}));
+var FV='tl-fam-v116';
+var FSHELL=['tl-ui.css?v=116','tl-spotify.js?v=116','tl-alarm.js?v=116','tl-pages.js?v=116','tl-quick.js?v=116','share.js?v=116','voice.js?v=116','shop.js?v=116','fitness.js?v=116','fitness.css?v=116','tl-vox.js?v=116','running.js?v=116','positions.js?v=116','acct.js?v=116','update.js?v=116','pq.js?v=116','family.html','parents.html','badge.png','icon-192.png','prestretch.js?v=116','cd.js?v=116','home.js?v=116','shop.css?v=116'].concat(['ss-core-supporters-coat-navy','ss-core-thermal-jacket-navy','end-of-line-ss-bench-coat-navy','ss-core-softshell-jacket-navy','ss-core-padded-gilet-navy','new-ss-core-rain-jacket-navy','ss-core-softshell-gilet-navy'].map(function(s){return 'shop/img/'+s+'.webp?v=116';}));
 self.addEventListener('install',function(e){e.waitUntil(caches.open(FV).then(function(c){return c.addAll(FSHELL);}).then(function(){return self.skipWaiting();}).catch(function(){return self.skipWaiting();}));});
 self.addEventListener('activate',function(e){e.waitUntil(caches.keys().then(function(ks){return Promise.all(ks.filter(function(k){return k.indexOf('tl-fam-')===0&&k!==FV;}).map(function(k){return caches.delete(k);}));}).then(function(){return self.clients.claim();}));});
 function put(r,res){if(res&&res.ok&&res.type==='basic'){var cp=res.clone();caches.open(FV).then(function(c){c.put(r,cp);});}return res;}
@@ -36,7 +36,7 @@ self.addEventListener('fetch',function(e){
 });
 self.addEventListener('push',function(e){
  e.waitUntil(fetch('https://touchline-push.wardyboy11.workers.dev/latest',{cache:'no-store'}).then(function(r){return r.json();}).catch(function(){return {title:'Wigan Junior Latics U15 Blues',body:'Open the page for the latest news.',url:'/family.html'};}).then(function(m){
-  return self.registration.showNotification(m.title||'Wigan Junior Latics U15 Blues',{body:m.body||'',icon:'icon-192.png',badge:'badge.png',data:{url:m.url||'/family.html'},tag:'latics-alert',renotify:true});
+  var ur=/^URGENT/.test(m.title||'');return self.registration.showNotification(m.title||'Wigan Junior Latics U15 Blues',{body:m.body||'',icon:'icon-192.png',badge:'badge.png',data:{url:m.url||'/family.html'},tag:'latics-alert',renotify:true,requireInteraction:ur,vibrate:ur?[300,150,300,150,600]:[200]});
  }));
 });
 self.addEventListener('notificationclick',function(e){

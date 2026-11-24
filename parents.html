@@ -199,13 +199,13 @@ body.ps header.tl-top{background:#fff}
 #root button,#root a,#root input,#root select,#root textarea,#root label,#root summary,#root .card,#root .tl-sec{scroll-margin-top:calc(132px + env(safe-area-inset-top));scroll-margin-bottom:calc(200px + env(safe-area-inset-bottom))}
 
 </style>
-<script src="tl-spotify.js?v=115"></script>
-<script src="tl-alarm.js?v=115"></script>
-<script src="tl-pages.js?v=115"></script>
-<script src="tl-quick.js?v=115"></script>
-<script src="cd.js?v=115"></script>
-<script src="home.js?v=115"></script>
-<link rel="stylesheet" href="tl-ui.css?v=115">
+<script src="tl-spotify.js?v=116"></script>
+<script src="tl-alarm.js?v=116"></script>
+<script src="tl-pages.js?v=116"></script>
+<script src="tl-quick.js?v=116"></script>
+<script src="cd.js?v=116"></script>
+<script src="home.js?v=116"></script>
+<link rel="stylesheet" href="tl-ui.css?v=116">
 </head>
 <body>
 <div id="splash"><div class="spw"><svg viewBox="0 0 240 240" id="sprays"></svg><img src="badge.png" alt=""></div><p>Welcome to the <b>Wigan Junior Latics U15 Blues</b> team app</p><div class="spn"><span>Proudly sponsored by</span><img src="coach/mfs.png" alt="MFS Limited"></div></div>
@@ -579,7 +579,7 @@ function famShirtNum(){if(D&&D.role==='parent'&&CHD&&CHD.num)return String(CHD.n
 window.tlLateNum=function(){return famShirtNum();};
 window.tlLateSend=function(row){if(!row)return Promise.resolve();var act=row.op==='undo'?'f.late.undo':'f.late';return call(act,{id:row.id,num:row.num,mins:row.mins,kind:row.kind,ref:row.ref,date:row.date}).then(function(){alertMsg=row.op==='undo'?'Late notice cleared.':'Told the coaches: '+(window.TLCD?TLCD.lateLabel(row.num,row.mins):('No. '+row.num+' running late'));try{r();}catch(e){}}).catch(function(e){alertMsg=(e&&e.message)||'Saved on this phone. Will send when you are back online.';try{r();}catch(x){};});};
 window.addEventListener('online',function(){try{if(window.TLCD)TLCD.flushLate();}catch(e){}});
-function famMatchdayMaybe(){try{if(!window.TLCD||!D)return;var x=X(),td=today();var nx=(x.fixtures||[]).filter(function(m){return !m.done&&m.date===td&&!m.pp;})[0];if(!nx)return;if(D.role==='parent')loadChild();TLCD.showMatchday(nx,{role:D.role||'parent',anim:'12_352_in_transition',animHref:'coach/anim/12_352_in_transition.html?v=115',onGo:function(){try{goTab('home');}catch(e){}try{TLCD.pinToday(nx);}catch(e2){}},onCard:function(){try{goTab('home');}catch(e){}}});}catch(e){}}
+function famMatchdayMaybe(){try{if(!window.TLCD||!D)return;var x=X(),td=today();var nx=(x.fixtures||[]).filter(function(m){return !m.done&&m.date===td&&!m.pp;})[0];if(!nx)return;if(D.role==='parent')loadChild();TLCD.showMatchday(nx,{role:D.role||'parent',anim:'12_352_in_transition',animHref:'coach/anim/12_352_in_transition.html?v=116',onGo:function(){try{goTab('home');}catch(e){}try{TLCD.pinToday(nx);}catch(e2){}},onCard:function(){try{goTab('home');}catch(e){}}});}catch(e){}}
 
 
 /* r98/r100: attendance Yes/No at top of Home, with confirm toast and shirt-number summary. */
@@ -600,17 +600,39 @@ function attShirtBlock(p){if(!p||!D||!D.att||!D.att[p.id])return '';var A=D.att[
  if((A.M||[]).length)h+='<p class="small" style="margin:8px 0 2px"><b>Maybe</b> ('+A.M.length+')</p><div class="tl-shirt">'+A.M.map(function(n){return chip(n,'m');}).join('')+'</div>';
  h+='<p class="small" style="margin:8px 0 2px"><b>Not answered</b> ('+A.none.length+')</p><div class="tl-shirt">'+(A.none.length?A.none.map(function(n){return chip(n,'w');}).join(''):'<span class="muted small">None</span>')+'</div></div>';
  return h;}
-function attTopCard(){var p=attPend();var answered=null,posts=(D&&D.posts)||[];
- if(!p&&D){var td=today();answered=posts.filter(function(x){return x.date>=td&&(D.mine||{})[x.id];}).sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:0;})[0]||null;}
- var show=p||answered;if(!show||!D)return '';
- var use=p||answered,x=X(),who=D.role==='player'?'you':esc(D.first),fx=use.type==='match'?x.fixtures.filter(function(m){return m.date===use.date&&!m.done;})[0]:null,pl=use.place||(fx&&fx.venue)||'',mt=use.type==='match';
- var mine=(D.mine||{})[use.id]||'';
- var h='<div class="card today" id="att-top" style="border-color:#FFB81C;border-width:2px"><span class="tag" style="background:#FFB81C;color:#1b1200">'+(mine?'Your answer':'Needs your answer')+'</span><h2 style="margin-top:8px">'+(mt?(D.role==='player'?'Playing?':'Is '+who+' playing?'):(D.role==='player'?'Can you come?':'Can '+who+' come?'))+'</h2>';
- h+='<p><b>'+esc(use.title|| (mt?'Match':'Training'))+'</b><br><b>'+esc(nice(use.date))+'</b>'+(use.time?', '+esc(use.time):'')+(pl?'<br>'+esc(pl):'')+'</p>';
- if(mt&&fx){var meet=(window.TLCD&&TLCD.meetChip)?TLCD.meetChip(fx.ko,fx.meet):(meetBy(fx.ko)?'Meet by '+esc(meetBy(fx.ko)):'');h+='<p class="small">'+(fx.ko?'Kick-off <b>'+esc(fx.ko)+'</b> · ':'')+(meet?meet+' · ':'')+esc(famKit(fx))+'</p>';}
- h+='<div class="ybig"><button class="btn'+(mine==='Y'?' on-y':'')+'" style="background:#14532d;border-color:#4ADE80;min-height:56px;font-size:18px" onclick="ans(\''+use.id+'\',\'Y\')">Yes</button><button class="btn'+(mine==='N'?' on-n':'')+'" style="background:#7f1d33;border-color:#FB7185;min-height:56px;font-size:18px" onclick="ans(\''+use.id+'\',\'N\')">No</button></div>';
- if(!mt)h+='<button class="btn block'+(mine==='M'?' on-m':'')+'" style="margin-top:8px" onclick="ans(\''+use.id+'\',\'M\')">Maybe</button>';
- h+='<p class="small muted" style="margin-top:8px">Tap Yes or No. You can change it any time. If it is No, you can tell the coaches why below. You do not have to.</p>'+attShirtBlock(use)+'</div>';
+function attWeek(){var td=today(),p=td.split('-'),dow=new Date(+p[0],+p[1]-1,+p[2]).getDay(),end=addD(td,(6-dow+7)%7);return {start:addD(end,-6),end:end};}
+function attLive(x){return x&&x.status!=='removed'&&x.status!=='draft'&&!x.deleted;}
+function attRow(use,kind,fx){var x=X(),who=D.role==='player'?'you':esc(D.first),td=today(),mt=kind==='match';
+ var q=mt?(D.role==='player'?'Playing?':'Is '+who+' playing?'):(D.role==='player'?'Can you come?':'Can '+who+' come?');
+ if(mt&&!fx&&use)fx=x.fixtures.filter(function(m){return m.date===use.date;})[0]||null;
+ var head='<p class="att-q" style="margin:0 0 2px;font-size:18px;font-weight:800">'+q+'</p>';
+ if(mt&&fx&&fx.pp)return '<div class="att-row att-pp" id="att-match" style="padding:10px 0;border-top:1px solid var(--line)"><p class="att-q" style="margin:0 0 2px;font-size:18px;font-weight:800">Match called off</p><p style="margin:2px 0"><b>'+esc((fx.ha==='A'?'at ':'v ')+(fx.opp||'opponent'))+'</b><br>'+esc(nice(fx.date))+'</p><p class="small" style="margin:4px 0 0">'+esc(fx.ppnote||'This game is postponed. New date to follow.')+'</p></div>';
+ if(!use){var when=mt&&fx?esc(nice(fx.date))+(fx.ko?', kick off '+esc(fx.ko):''):'';
+  if(!mt){var w=attWeek(),wd=addD(w.start,3);if(wd<td)return '';when=esc(nice(wd))+', 20:00 to 21:00';}
+  if(mt&&!fx)return '';
+  return '<div class="att-row att-wait" id="att-'+(mt?'match':'train')+'" style="padding:10px 0;border-top:1px solid var(--line)"><p class="att-q" style="margin:0 0 2px;font-size:18px;font-weight:800">'+(mt?'Match':'Training')+'</p><p style="margin:2px 0">'+(mt&&fx?'<b>'+esc((fx.ha==='A'?'at ':'v ')+(fx.opp||'opponent'))+'</b><br>':'')+when+'</p><p class="small muted" style="margin:4px 0 0">The coaches have not asked yet. Your Yes or No buttons show here when they do.</p></div>';}
+ var mine=(D.mine||{})[use.id]||'',past=use.date<td,pl=use.place||(fx&&fx.venue)||'';
+ var h='<div class="att-row" id="att-'+(mt?'match':'train')+'" data-post="'+esc(use.id)+'" style="padding:10px 0;border-top:1px solid var(--line)">'+head;
+ h+='<p style="margin:2px 0"><b>'+esc(use.title||(mt?'Match':'Training'))+'</b><br>'+esc(nice(use.date))+(use.time?', '+esc(use.time)+(!mt&&use.time==='20:00'?' to 21:00':''):'')+(pl?'<br>'+esc(pl):'')+'</p>';
+ if(mt&&fx&&!past){var meet=(window.TLCD&&TLCD.meetChip)?TLCD.meetChip(fx.ko,fx.meet):(meetBy(fx.ko)?'Meet by '+esc(meetBy(fx.ko)):'');h+='<p class="small" style="margin:2px 0">'+(fx.ko?'Kick off <b>'+esc(fx.ko)+'</b> · ':'')+(meet?meet+' · ':'')+esc(famKit(fx))+'</p>';}
+ h+='<p class="small att-now" style="margin:6px 0"><b>'+(mine?'Your answer: '+attAnsLabel(mine):'Not answered yet')+'</b>'+(past?' · Been and gone':'')+'</p>';
+ if(!past){h+='<div class="ybig"><button class="btn'+(mine==='Y'?' on-y':'')+'" aria-pressed="'+(mine==='Y')+'" style="background:#14532d;border-color:#4ADE80;min-height:56px;font-size:18px" onclick="ans(\''+use.id+'\',\'Y\')">Yes</button><button class="btn'+(mine==='N'?' on-n':'')+'" aria-pressed="'+(mine==='N')+'" style="background:#7f1d33;border-color:#FB7185;min-height:56px;font-size:18px" onclick="ans(\''+use.id+'\',\'N\')">No</button></div>';
+  if(mine==='N'&&typeof whyBox==='function')h+=whyBox(use);
+  if(!mt)h+='<button class="btn block'+(mine==='M'?' on-m':'')+'" aria-pressed="'+(mine==='M')+'" style="margin-top:8px" onclick="ans(\''+use.id+'\',\'M\')">Maybe</button>';}
+ var sb=attShirtBlock(use);if(sb)h+='<details class="att-squad"><summary class="small" style="cursor:pointer;padding:6px 0">Squad answers (shirt numbers only)</summary>'+sb+'</details>';
+ return h+'</div>';}
+/* r116: the week's training and match answers sit on the front of Home and stay put until that Saturday is over. */
+function attTopCard(){if(!D)return '';var w=attWeek(),x=X(),posts=((D.posts)||[]).filter(function(p){return attLive(p)&&p.date>=w.start&&p.date<=w.end;}).sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:0;});
+ var tr=posts.filter(function(p){return p.type!=='match';}),ms=posts.filter(function(p){return p.type==='match';});
+ var fxs=x.fixtures.filter(function(m){return m.date>=w.start&&m.date<=w.end;}).sort(function(a,b){return a.date<b.date?-1:1;});
+ var rows=[];tr.forEach(function(p){rows.push({d:p.date,h:attRow(p,'train')});});if(!tr.length)rows.push({d:addD(w.start,3),h:attRow(null,'train')});
+ var used={};ms.forEach(function(p){var fx=fxs.filter(function(m){return m.date===p.date;})[0]||null;if(fx)used[fx.id||fx.date]=1;rows.push({d:p.date,m:1,h:attRow(p,'match',fx)});});
+ fxs.forEach(function(fx){if(used[fx.id||fx.date])return;rows.push({d:fx.date,m:1,h:attRow(null,'match',fx)});});
+ rows=rows.filter(function(r){return r.h;}).sort(function(a,b){return a.d<b.d?-1:a.d>b.d?1:(a.m?0:1)-(b.m?0:1);});if(!rows.length)return '';
+ var td=today(),need=posts.some(function(p){return p.date>=td&&!(D.mine||{})[p.id];});
+ var h='<div class="card today" id="att-top" style="border-color:#FFB81C;border-width:2px"><span class="tag" style="background:#FFB81C;color:#1b1200">'+(need?'Needs your answer':'Your answers')+'</span><h2 style="margin:8px 0 2px">This week</h2>';
+ h+=rows.map(function(r){return r.h;}).join('');
+ h+='<p class="small muted" style="margin-top:8px">Stays here until after '+esc(new Date(w.end+'T12:00:00').toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'}))+'. Tap to change your answer any time before. If it is No, you can tell the coaches why. You do not have to.</p></div>';
  return h;}
 function todayCard(){var x=X(),td=today();
  var nx=x.fixtures.filter(function(m){return !m.done&&m.date>=td&&!m.pp;})[0];var who=D.role==='player'?'you':esc(D.first);
@@ -733,8 +755,8 @@ function selfForm(){var h='<div class="card"><h2>Make it yours</h2><p>Three minu
 function selfPrompt(){if(!D||D.role!=='player'||!SELF||SELF.done||SELF.role!=='player')return '';return '<div class="card" style="border-color:#FFB81C"><span class="tag" style="background:#FFB81C;color:#1b1200">First job</span><h2 style="margin-top:8px">Make it yours</h2><p>Pick your nickname, foot and positions, then rate yourself on the things we work on. Takes three minutes and helps Tim and Deano plan for you.</p><button class="btn pri block" onclick="selfOpen()">Start</button></div>';}
 function selfLink(){if(!D||D.role!=='player'||!SELF||SELF.role!=='player')return '';var h='<div class="card"><h3>My profile</h3><p class="small muted">Nickname, foot, positions and your own scores. Only you and the coaches can see these.</p><button class="btn block" onclick="selfOpen()">'+(SELF.done?'Update my profile':'Make it yours')+'</button></div>';if(window.roleBtn)h=roleBtn({label:'My position'})+h;if(window.niggleCard)h=niggleCard()+h;return h;}
 var WK3P={0:["w1_shape_to_receive_session","plans/w1_shape_to_receive_session.pdf"]};var WK3D=[["06_shape_to_receive_first_pass_forward", "Shape to receive, first pass forward", "Watch how the players move before the ball arrives: someone shows short, others give width, and the first pass goes forward."], ["07_counter_attack_three_runners", "Counter attack: first pass forward, three runners", "Watch the moment we win the ball: the first pass goes forward through a gap, and three players sprint straight away."], ["08_five_second_counter_press", "Lose it, react: five second press", "Watch what happens the moment we lose the ball: do the closest players chase it straight away together for about five seconds?"], ["09_build_from_keeper_then_break", "Build from the keeper, then break", "Watch the keeper start the attack and the defenders spread out wide, then the ball goes forward quickly."], ["10_rotate_roles_everyone_every_job", "Everyone plays every job", "Watch your child play in different positions. That is the plan: everyone learns every job in the team."], ["11_shape_and_transition_game", "Shape, and switching between attack and defence", "Watch for the three ideas from this block: getting into shape, reacting when we lose it, and breaking fast when we win it."]];
-function tonightCard(){var n=new Date(),p=function(x){return ('0'+x).slice(-2);},td=n.getFullYear()+'-'+p(n.getMonth()+1)+'-'+p(n.getDate());if(td<'2026-11-10'||td>'2026-11-11')return '';var pl=D&&D.role==='player';return '<div class="card" id="tonight" style="border-color:#FFB81C"><span class="tag" style="background:#1e3a8a">'+(td==='2026-11-11'?'Tonight':'Wed 11 Nov')+'</span><h2 style="margin-top:8px">Training 11/11: recover, play out, wing backs and three runners</h2><p class="small muted">60 minutes. Warm up, a keep ball game (rondo), two practices with Tim and Deano, then a game.</p>'+(pl?'<p>Watch it before training with the sound on. Tap Just my position to see what you do. Wing backs: you play in both practices, we swap at halfway.</p>':'<p><b>What to look for:</b> when the ball goes in behind, does the whole back unit drop together? When we win it, is the first pass out wide or through the middle? In the box, look for three runners: near post, far post and one arriving late.</p>')+'<a class="btn pri block" href="coach/anim/s1111_training.html?v=115&back='+encodeURIComponent(location.pathname)+'">Watch Training 11/11</a><p class="small muted" style="margin:8px 0">Six parts, each with voice over and words on screen. Tap Back to the app to come back here.</p><a class="btn block" href="plans/Block3_W2_session_v2_11Nov2026.pdf?v=115" target="_blank" rel="noopener">Session plan (PDF)</a></div>';}
-function stretchCard(){return '<div class="card" id="stretchc"><span class="tag" style="background:#16a34a">Cool down</span><h2 style="margin-top:8px">Stretching</h2><p class="small muted">18 football stretches, about 14 minutes. Voice over tells you each one, why it helps, then counts you down. Works without signal once you have opened it.</p><a class="btn block" href="stretch/index.html?v=115&back='+encodeURIComponent(location.pathname)+'">Start stretching</a><button type="button" class="btn block tl-share-btn" style="margin-top:8px;min-height:48px" data-tlshare="1" data-title="U15 Blues stretching" data-text="Stretching for the U15 Blues" data-url="'+(location.origin+(location.pathname.replace(/[^/]+$/,'')||'/')+'stretch/index.html')+'" aria-label="Share stretching">Share</button>'+(window.preStretchExtra?preStretchExtra():'<button type="button" class="btn pri block" style="margin-top:8px" onclick="openPreStretch&&openPreStretch()">Pre-game stretch</button>')+'</div>';}
+function tonightCard(){var n=new Date(),p=function(x){return ('0'+x).slice(-2);},td=n.getFullYear()+'-'+p(n.getMonth()+1)+'-'+p(n.getDate());if(td<'2026-11-10'||td>'2026-11-11')return '';var pl=D&&D.role==='player';return '<div class="card" id="tonight" style="border-color:#FFB81C"><span class="tag" style="background:#1e3a8a">'+(td==='2026-11-11'?'Tonight':'Wed 11 Nov')+'</span><h2 style="margin-top:8px">Training 11/11: recover, play out, wing backs and three runners</h2><p class="small muted">60 minutes. Warm up, a keep ball game (rondo), two practices with Tim and Deano, then a game.</p>'+(pl?'<p>Watch it before training with the sound on. Tap Just my position to see what you do. Wing backs: you play in both practices, we swap at halfway.</p>':'<p><b>What to look for:</b> when the ball goes in behind, does the whole back unit drop together? When we win it, is the first pass out wide or through the middle? In the box, look for three runners: near post, far post and one arriving late.</p>')+'<a class="btn pri block" href="coach/anim/s1111_training.html?v=116&back='+encodeURIComponent(location.pathname)+'">Watch Training 11/11</a><p class="small muted" style="margin:8px 0">Six parts, each with voice over and words on screen. Tap Back to the app to come back here.</p><a class="btn block" href="plans/Block3_W2_session_v2_11Nov2026.pdf?v=116" target="_blank" rel="noopener">Session plan (PDF)</a></div>';}
+function stretchCard(){return '<div class="card" id="stretchc"><span class="tag" style="background:#16a34a">Cool down</span><h2 style="margin-top:8px">Stretching</h2><p class="small muted">18 football stretches, about 14 minutes. Voice over tells you each one, why it helps, then counts you down. Works without signal once you have opened it.</p><a class="btn block" href="stretch/index.html?v=116&back='+encodeURIComponent(location.pathname)+'">Start stretching</a><button type="button" class="btn block tl-share-btn" style="margin-top:8px;min-height:48px" data-tlshare="1" data-title="U15 Blues stretching" data-text="Stretching for the U15 Blues" data-url="'+(location.origin+(location.pathname.replace(/[^/]+$/,'')||'/')+'stretch/index.html')+'" aria-label="Share stretching">Share</button>'+(window.preStretchExtra?preStretchExtra():'<button type="button" class="btn pri block" style="margin-top:8px" onclick="openPreStretch&&openPreStretch()">Pre-game stretch</button>')+'</div>';}
 function wk3dCard(){var s=new Date('2026-11-04T00:00:00'),n=Math.floor((Date.now()-s)/864e5),i=n<0?0:Math.floor(n/7);if(i>5||n<-14)return stretchCard()+(window.TLFit?TLFit.familyCard({who:D.role==='parent'?'parent':'player'}):'');var w=WK3D[i],pl=D&&D.role==='player',sp=WK3P[i],u='coach/anim/'+(sp?sp[0]:w[0])+'.html?v=86&back='+encodeURIComponent(location.pathname),dt=new Date(s.getTime()+i*7*864e5).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});return '<div class="card" id="wk3d"><span class="tag" style="background:#1e3a8a">'+(n<0?'Coming up':'This week')+'</span><h2 style="margin-top:8px">'+(pl?'This week\'s session':'This week\'s training')+'</h2><p class="small muted">Week '+(i+1)+' of 6, '+dt+': '+w[1]+'</p>'+(pl?'<p>Watch it before training. Turn the sound on. Players are shown by shirt number.</p>':'<p><b>What to look for:</b> '+w[2]+'</p>')+'<a class="btn pri block" href="'+u+'">'+(sp?'Watch the whole session':'Watch it')+'</a>'+(sp?'<p class="small muted" style="margin:8px 0">Warm up, both practices and the game, with voice over. Tap Close or press Esc to come back here.</p><a class="btn block" href="'+sp[1]+'?v=87" target="_blank" rel="noopener">Session plan (PDF)</a>':'')+'</div>'+stretchCard()+(window.TLFit?TLFit.familyCard({who:D.role==='parent'?'parent':'player'}):'');}
 /* UK dates: shared helper. Display only; stored dates stay yyyy-mm-dd. */
 function ukD(s,o){if(!s)return '';var m=/^(\d{4})-(\d\d)-(\d\d)/.exec(String(s)),d=m?new Date(Date.UTC(+m[1],+m[2]-1,+m[3],12)):new Date(s);if(isNaN(d))return String(s);return d.toLocaleDateString('en-GB',Object.assign({timeZone:'Europe/London'},o||{day:'numeric',month:'short',year:'numeric'}));}
@@ -845,7 +867,7 @@ function closeMore(){
 function moreJump(k){
  closeMore();
  if(k==='shopx'){showKit=true;r();window.scrollTo(0,0);return;}
- if(k==='stretchx'){location.href='stretch/index.html?v=115&back='+encodeURIComponent(location.pathname);return;}
+ if(k==='stretchx'){location.href='stretch/index.html?v=116&back='+encodeURIComponent(location.pathname);return;}
  if(k==='voicex'){r();setTimeout(function(){try{document.getElementById('tl-voice-fab').click();}catch(e){}},50);return;}
  goTab(k);
 }
@@ -896,7 +918,7 @@ function tlVoiceBoot(){
     }catch(e){try{goTab('today');}catch(e2){}}
     return;
    }
-   if(intent.intent==='stretch'||intent.go==='stretch'){location.href='stretch/index.html?v=115&back='+encodeURIComponent(location.pathname);return;}
+   if(intent.intent==='stretch'||intent.go==='stretch'){location.href='stretch/index.html?v=116&back='+encodeURIComponent(location.pathname);return;}
    if(intent.intent==='shop'||intent.go==='shop'){try{goTab('me');}catch(e){}try{if(window.openShop)openShop();else showKit=true;}catch(e2){}r();return;}
    var go=intent.page||intent.go;
    if(intent.intent==='fixtures'||intent.intent==='kickoff'||intent.intent==='where')go='games';
@@ -985,7 +1007,7 @@ function homeTraining(){return wcCard()+(window.posCard?posCard()+prepCard():'')
 function homeNewsShelf(){var bits=[];
  bits.push('<div class="card"><h3 style="margin-top:0">Reminders and news</h3>'+bodyHome()+'</div>');
  var car=carousel();if(car)bits.push(car);
- bits.push('<div class="card"><h3 style="margin-top:0">Check these out</h3><p class="small muted">Sessions, shape and ideas. Tap one.</p><div class="row wrap2"><button class="btn grow" onclick="goTab(\'lib\')">Library</button><button class="btn grow" onclick="goTab(\'own\')">My own training</button><a class="btn grow" href="shape/index.html?mode=squad&back='+encodeURIComponent(location.pathname.split('/').pop())+'">Our 352</a><a class="btn grow" href="stretch/index.html?v=115&back='+encodeURIComponent(location.pathname)+'">Stretching</a></div></div>');
+ bits.push('<div class="card"><h3 style="margin-top:0">Check these out</h3><p class="small muted">Sessions, shape and ideas. Tap one.</p><div class="row wrap2"><button class="btn grow" onclick="goTab(\'lib\')">Library</button><button class="btn grow" onclick="goTab(\'own\')">My own training</button><a class="btn grow" href="shape/index.html?mode=squad&back='+encodeURIComponent(location.pathname.split('/').pop())+'">Our 352</a><a class="btn grow" href="stretch/index.html?v=116&back='+encodeURIComponent(location.pathname)+'">Stretching</a></div></div>');
  bits.push(voiceCard()+(window.tlHomeBody?'':rsCard('home')+tourCard())); /* r113: the new Home shows these at the top */
  return '<div class="tl-shelf">'+bits.map(function(b){return '<div>'+b+'</div>';}).join('')+'</div>';}
 function homePlayers(){var h=glCard()+rcPlayerCard()+mdpCard()+fmCard()+workCard()+shapeCard()+selfPrompt();
@@ -1121,14 +1143,14 @@ function out(){CODE='';D=null;s(CK,'');s('fam.cache','');r();}
 try{if('serviceWorker' in navigator)window.addEventListener('load',function(){setTimeout(function(){navigator.serviceWorker.register('fsw.js').catch(function(){});},1200);});}catch(e){}
 if(CODE){var cc=null;try{cc=JSON.parse(g('fam.cache')||'null');}catch(x){}if(cc&&cc.c===CODE&&cc.d){D=cc.d;r();splashDone();setTimeout(famMatchdayMaybe,500);setTimeout(pushAskMaybe,1500);}load();}else{r();splashDone();}
 </script>
-<script src="positions.js?v=115" defer></script>
-<script src="fitness.js?v=115" defer></script>
-<script src="tl-vox.js?v=115" defer></script>
-<script src="running.js?v=115" defer></script>
-<script src="prestretch.js?v=115" defer></script>
-<script src="acct.js?v=115" defer></script>
-<script src="shop.js?v=115" defer></script>
-<script src="voice.js?v=115" defer></script>
+<script src="positions.js?v=116" defer></script>
+<script src="fitness.js?v=116" defer></script>
+<script src="tl-vox.js?v=116" defer></script>
+<script src="running.js?v=116" defer></script>
+<script src="prestretch.js?v=116" defer></script>
+<script src="acct.js?v=116" defer></script>
+<script src="shop.js?v=116" defer></script>
+<script src="voice.js?v=116" defer></script>
 
 <script>
 (function(){function __tlShareAfter(){try{tlShareBind();tlOpenClipHash();}catch(e){}}
@@ -1151,8 +1173,8 @@ if(CODE){var cc=null;try{cc=JSON.parse(g('fam.cache')||'null');}catch(x){}if(cc&
  var iv=setInterval(function(){if(done)return clearInterval(iv);if(typeof D!=='undefined'&&D&&typeof CODE!=='undefined'&&CODE&&document.querySelector('nav.tabs')){done=true;clearInterval(iv);setTimeout(go,50);}},150);
 })();
 </script>
-<script src="share.js?v=115" defer></script>
-<script src="update.js?v=115" defer></script>
-<script src="pq.js?v=115" defer></script>
+<script src="share.js?v=116" defer></script>
+<script src="update.js?v=116" defer></script>
+<script src="pq.js?v=116" defer></script>
 </body>
 </html>

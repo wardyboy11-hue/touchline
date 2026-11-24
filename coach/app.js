@@ -219,7 +219,7 @@ function render1(keepScroll){try{ccSync();}catch(e){}
  if(!CODE){r.innerHTML=vLogin();return;}
  loadPhotos();
  var body;INTRO_T='';
- if(view.mid&&M(view.mid)){var m=M(view.mid);body=m.status==='plan'?vPlan(m):(m.status==='done'?vDone(m):vLive(m));}
+ if(view.mid&&M(view.mid)){var m=M(view.mid);body=ppdTop(m)+(m.status==='plan'?vPlan(m):(m.status==='done'?vDone(m):vLive(m)));}
  else body=view.tab==='today'?vToday():subnav()+(view.tab==='squad'?vSquad():view.tab==='ct'?vCt():view.tab==='mday'?vMday():view.tab==='fa'?vFATab():view.tab==='em'?vEm():view.tab==='conc'?vConc():view.tab==='goals'?vGoals():view.tab==='priv'?vPriv():view.tab==='lab'?vLab():view.tab==='sb'?vSb():view.tab==='rev'?vRev():view.tab==='fit'?vFit():view.tab==='pod'?vPod():view.tab==='plan'?vSession():view.tab==='run'?vRun():view.tab==='sess'?vSessLib():view.tab==='rl'?vRL():view.tab==='pos'?(window.vPos?window.vPos():'<p class="muted">Loading</p>'):view.tab==='lib'?vLib():view.tab==='res'||view.tab==='fav'?vRes():view.tab==='anim'?vAnim():view.tab==='ig'?vIg():view.tab==='x'?vX():view.tab==='hub'?vHub():view.tab==='refs'?vRefs():view.tab==='opp'?vOpp():view.tab==='lg'?vLg():view.tab==='ask'?vAsk():view.tab==='cdev'?(cdvGet()?CDV.vCdev():'<div class="card"><p class="small muted">Loading</p></div>'):view.tab==='stats'?vStats():view.tab==='more'?vMore():view.tab==='admin'?vAdmin():view.tab==='att'?vAtt():view.tab==='board'?vBoard():view.tab==='guides'?vGuides():view.tab==='roles'?vRoles():view.tab==='shop'?vShop():vMatches());
  try{body=helpFold(body);}catch(e){}
  /* r113: no floating Ask on coach Today (phone and laptop). The header Ask stays and still opens the helper. */
@@ -235,7 +235,7 @@ function vMatches(){
  var srt=function(a,b){return (a.date||'9')<(b.date||'9')?-1:(a.date||'9')>(b.date||'9')?1:String(a.ko||'').localeCompare(String(b.ko||''));};
  var up=ms.filter(function(m){return m.status==='plan'&&!m.pp;}).sort(srt),rl=ms.filter(function(m){return m.status==='plan'&&m.pp;}).sort(srt);
  var done=ms.filter(function(m){return m.status==='done';}).sort(function(a,b){return a.date<b.date?1:-1;});
- var h=intro('Plan matches, run them live with the clock and subs, and add results. Tap a match to open it.')+'<div class="row" style="margin:6px 0"><h2 class="grow" style="margin:0">Matches</h2><button class="btn" data-act="newResult">Add result</button><button class="btn pri" data-act="newMatch">New match</button></div>';
+ var h=ppdTop(ppdMatch())+intro('Plan matches, run them live with the clock and subs, and add results. Tap a match to open it.')+'<div class="row" style="margin:6px 0"><h2 class="grow" style="margin:0">Matches</h2><button class="btn" data-act="newResult">Add result</button><button class="btn pri" data-act="newMatch">New match</button></div>';
  function item(m){var sc=score(m);return '<div class="it" data-act="openMatch" data-id="'+m.id+'"><div class="grow"><b>'+(m.ha==='A'?'at ':'')+esc(m.opp||'Opponent TBC')+'</b><div class="small muted">'+niceDate(m.date)+' · '+esc(m.ko)+' · '+esc(m.comp)+'</div></div>'+(m.status==='plan'?(m.pp?'<span class="tag tagpp">Postponed</span>':'<span class="tag">'+FORMS[m.formation].n+'</span>'):'<b>'+sc[0]+'-'+sc[1]+'</b>')+'</div>';}
  if(live.length)h+='<div class="card"><h3>Live now</h3><div class="list">'+live.map(item).join('')+'</div></div>';
  if(view.fc&&S.matches[view.fc.id])h+=vFixChange();
@@ -1127,9 +1127,9 @@ function coachShapeCard(full){var R=[['GK','Keeper'],['LCB','Left CB'],['CB','Mi
  if(full)h+='<p class="small muted" style="margin:10px 0 4px">Each position</p><div class="chips">'+R.map(function(r){return '<a class="chip" href="'+shapeU('mode=role&role='+r[0])+'">'+r[1]+'</a>';}).join('')+'</div>';
  else h+='<div class="row" style="margin-top:8px"><button class="btn grow" data-act="tab" data-v="anim">Positions and 3D clips</button></div>';
  return h+'</div>';}
-var ANSESS={'06_shape_to_receive_first_pass_forward':'w1_shape_to_receive_session'},ANPDF={'s1111_training':'../plans/Block3_W2_session_v2_11Nov2026.pdf?v=115','w1_shape_to_receive_session':'../plans/w1_shape_to_receive_session.pdf?v=90','t1104_body_shape_quick_play':'../plans/t1104_body_shape_quick_play.pdf?v=90'};
+var ANSESS={'06_shape_to_receive_first_pass_forward':'w1_shape_to_receive_session'},ANPDF={'s1111_training':'../plans/Block3_W2_session_v2_11Nov2026.pdf?v=116','w1_shape_to_receive_session':'../plans/w1_shape_to_receive_session.pdf?v=90','t1104_body_shape_quick_play':'../plans/t1104_body_shape_quick_play.pdf?v=90'};
 var TONIGHT={d:'2026-11-11',from:'2026-11-10',an:'s1111_training',t:'Training 11/11 (60 min)',f:'Recover and play out, wing backs and three runners.',ro:[['0 to 8','Warm up: pass, follow, open up'],['8 to 16','Side on rondo 5v2'],['16 to 31','Split 1. Tim: recover and play out. Deano: wing backs and three runners'],['31','Halfway whistle: the four wing backs swap pitches'],['31 to 46','Split 2. Same practices, other pair of wing backs'],['46 to 48','Drinks'],['48 to 58','Unit v unit game, 7v7 with our one keeper, adapt to numbers'],['58 to 60','Cool down and three questions']]};
-function tonightCard(){var td=isoToday();if(td<(TONIGHT.from||'2026-11-03')||td>TONIGHT.d)return '';return '<div class="card runc" id="tonight"><span class="tag">'+(td===TONIGHT.d?'Tonight':niceDate(TONIGHT.d))+'</span><h2 style="font-size:24px;margin:8px 0 4px">'+esc(TONIGHT.t)+'</h2><p style="font-size:18px;margin:0 0 6px"><b>'+esc(TONIGHT.f)+'</b> All sessions are 60 minutes.</p>'+TONIGHT.ro.map(function(r){return '<div class="it" style="cursor:default"><div class="grow" style="font-size:18px"><b>'+esc(r[0])+' min</b><div>'+esc(r[1])+'</div></div></div>';}).join('')+'<a class="btn pri block" style="margin-top:8px;min-height:52px" data-ext="1" href="anim/'+TONIGHT.an+'.html?v=115&back='+encodeURIComponent('/coach/')+'">Play the session animation</a><a class="btn block" style="margin-top:8px" data-ext="1" target="_blank" rel="noopener" href="'+ANPDF[TONIGHT.an]+'">Session plan (PDF)</a></div>';}
+function tonightCard(){var td=isoToday();if(td<(TONIGHT.from||'2026-11-03')||td>TONIGHT.d)return '';return '<div class="card runc" id="tonight"><span class="tag">'+(td===TONIGHT.d?'Tonight':niceDate(TONIGHT.d))+'</span><h2 style="font-size:24px;margin:8px 0 4px">'+esc(TONIGHT.t)+'</h2><p style="font-size:18px;margin:0 0 6px"><b>'+esc(TONIGHT.f)+'</b> All sessions are 60 minutes.</p>'+TONIGHT.ro.map(function(r){return '<div class="it" style="cursor:default"><div class="grow" style="font-size:18px"><b>'+esc(r[0])+' min</b><div>'+esc(r[1])+'</div></div></div>';}).join('')+'<a class="btn pri block" style="margin-top:8px;min-height:52px" data-ext="1" href="anim/'+TONIGHT.an+'.html?v=116&back='+encodeURIComponent('/coach/')+'">Play the session animation</a><a class="btn block" style="margin-top:8px" data-ext="1" target="_blank" rel="noopener" href="'+ANPDF[TONIGHT.an]+'">Session plan (PDF)</a></div>';}
 window.addEventListener('message',function(e){var d=e.data||{};if(e.origin!==location.origin||d.type!=='tl-anim-close')return;if(view.rcAn){view.rcAn=false;render(true);}else if(view.tab==='anim'){var c=document.querySelector('iframe.libplay');if(c)c.scrollIntoView({block:'start'});window.scrollTo(0,0);}});
 function vAnim(){var i=view.an!=null?view.an:0,a=ANI[i];
  var h=intro('Our own practice animations. Press Play, turn the voice on, and show it to the lads or Deano on the phone.')+'<h2 style="margin:6px 0">Practice animations</h2><p class="small muted">Original designs, made for Wigan Junior Latics. Pitch sizes match the league. Use the Voice button to hear it on your phone voice. Coaches only until you decide to share.</p>'+coachShapeCard(true);
@@ -2540,7 +2540,8 @@ function vToday(){
  try{al+=votesToday();}catch(e){}
  try{al+=refPrompt(nm);}catch(e){}
  var hero='';
- if(nm&&nm.date===td){mdPrefetch(nm);hero+=spine(nm)+mdCard(nm);}else if(nm){wk+=spine(nm)+'<div class="card kcard"><h3 style="margin-top:0">Next match</h3><h2>'+(nm.ha==='A'?'at ':'v ')+esc(nm.opp)+(nm.pp?' (postponed)':'')+'</h2><p><b>'+niceDate(nm.date)+'</b>, '+esc(nm.ko)+(nm.venue?'<br>'+esc(nm.venue):'')+'</p><div class="row"><button class="btn pri" data-act="openMatch" data-id="'+nm.id+'">Open match</button>'+((nm.addr||nm.venue)?'<a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(nm.addr||nm.venue)+'">Directions</a>':'')+'</div></div>';}
+ var ppm=ppdMatch();if(ppm&&ppm.pp)hero+=ppdTop(ppm);
+ if(nm&&nm.date===td&&!nm.pp){mdPrefetch(nm);hero+=spine(nm)+mdCard(nm);}else if(nm){wk+=spine(nm)+'<div class="card kcard"><h3 style="margin-top:0">Next match</h3><h2>'+(nm.ha==='A'?'at ':'v ')+esc(nm.opp)+(nm.pp?' (postponed)':'')+'</h2><p><b>'+niceDate(nm.date)+'</b>, '+esc(nm.ko)+(nm.venue?'<br>'+esc(nm.venue):'')+'</p><div class="row"><button class="btn pri" data-act="openMatch" data-id="'+nm.id+'">Open match</button>'+((nm.addr||nm.venue)?'<a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(nm.addr||nm.venue)+'">Directions</a>':'')+'</div></div>';}
  else wk+='<div class="card"><h3 style="margin-top:0">Next match</h3><p class="muted">No match in the diary.</p></div>';
  /* This week timeline */
  var weekItems=[];
@@ -2570,6 +2571,7 @@ function vToday(){
  view._r108wk=wk+tr;
  var top=vTodayTop(td,nm,tdx);
  /* r113: Today opens with what matters. Match day: the match. Other days: the next training, the next match, then what is waiting. */
+ if(ppm&&!ppm.pp)hero+=ppdTop(ppm);
  if(!(nm&&nm.date===td)){hero+=trainHero(td,ts,ps);if(nm)hero+=matchHero(nm);}
  hero+=waitCard(pe,pm,ol,hc.length+ht.length);
  return head+(late||'')+'<div id="tlc-top">'+hero+'</div><h2 class="tlc-else">Everything else</h2>'+top+coachAcc('alerts','Alerts and votes','',al||'<div class="card"><p class="muted">Nothing waiting.</p></div>')+coachFold('news','Comms and news',nw)+coachFold('players','Squad',sq||'<div class="card"><p class="muted">No squad alerts.</p></div>');
@@ -2896,7 +2898,7 @@ Object.assign(ACT,{
 });
 /* ---------- Attendance requests, stats and the team pick note (release 77). Coaches only. ---------- */
 var PUSHW='https://touchline-push.wardyboy11.workers.dev/send';
-function famPush(body,url){return fetch(PUSHW,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({code:CODE,title:'Wigan Junior Latics U15 Blues',body:String(body).trim().slice(0,180),url:url||'/family.html'})}).then(function(r){return r.json();}).then(function(j){if(!j.ok)throw new Error(j.error==='code'?'Code not accepted':'Not sent');return j;});}
+function famPush(body,url,o){var ur=!!(o&&o.urgent);return fetch(PUSHW,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({code:CODE,title:(ur?'URGENT: ':'')+'Wigan Junior Latics U15 Blues',body:String(body).trim().slice(0,180),url:url||'/family.html',urgent:ur?1:0})}).then(function(r){return r.json();}).then(function(j){if(!j.ok)throw new Error(j.error==='code'?'Code not accepted':'Not sent');return j;});}
 function ukDay(iso){if(!iso)return '';var p=String(iso).split('-');var d=new Date(+p[0],+p[1]-1,+p[2]);return d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});}
 function nextTrainPost(){var td=isoToday();return posts().filter(function(x){return x.type==='training'&&x.date>=td;}).sort(function(a,b){return a.date<b.date?-1:1;})[0]||null;}
 function nextMatch(){var td=isoToday();return Object.keys(S.matches).map(function(k){return S.matches[k];}).filter(function(m){return !m.deleted&&m.status==='plan'&&m.date&&m.date>=td;}).sort(function(a,b){return a.date<b.date?-1:1;})[0]||null;}
@@ -3037,6 +3039,66 @@ Object.assign(ACT,{
  xmasSave:function(){var a=($('#xm_from')||{}).value,b=($('#xm_to')||{}).value;if(!a||!b||b<a){toast('Pick a start and an end after it');return;}S.settings.xmas={from:a,to:b};touch('settings',S.settings);sync();render(true);toast('Break saved: '+fcUk(a)+' to '+fcUk(b));}
 });
 document.addEventListener('change',function(e){if(e.target&&e.target.id==='fc_pp'&&view.fc){fcForm();view.fc.rows=null;render(true);}});
+/* ===================== r116: Game off? on match day =====================
+ * Coach only. Shows on Today, the Matchday screen and the match list on match day, before kick off and during the game. Hidden once full time is recorded (Tim, 24 Nov).
+ * Same steps as Fixture change: what happened, new date if known, the message, then Send or Cancel.
+ * Goes out through the existing family push (everyone with alerts on, parents and players) and the team page news.
+ * Urgent: the push says URGENT and stays on screen until tapped, and Tim's and Deano's phones ring (alert.send).
+ * No WhatsApp, no direct messages to players, no names in the message. */
+var PPD_R=[['pitch','The pitch is not fit to play on'],['weather','Bad weather'],['ref','No referee'],['opp','The other team cannot play'],['us','We do not have enough players'],['abandoned','The game was stopped and abandoned'],['other','Something else (say in the message)']];
+function ppdMatch(){var td=isoToday();return Object.keys(S.matches).map(function(k){return S.matches[k];}).filter(function(m){return m&&!m.deleted&&m.date===td&&m.status!=='done'&&!isTrainM(m);}).sort(function(a,b){return String(a.ko||'').localeCompare(String(b.ko||''));})[0]||null;}
+function ppdMsg(m,f){var r=(PPD_R.filter(function(x){return x[0]===f.reason;})[0]||PPD_R[0]),ab=f.reason==='abandoned';
+ var t='Game off: U15 Blues '+(m.ha==='A'?'at ':'v ')+(m.opp||'opponent')+' today is '+(ab?'abandoned':'postponed')+'. '+(f.reason==='other'||ab?'':r[1]+'. ');
+ t+=f.date?'New date '+fcUk(f.date)+(f.ko?' '+f.ko:'')+'. Please tap Playing? Yes or No again.':'New date to follow.';
+ if(!ab&&m.status==='plan')t+=' If you are on your way, please head home.';
+ return t.slice(0,180);}
+function ppdForm(){var f=view.ppd;if(!f)return null;var g=function(id){var e=$('#'+id);return e?e.value:null;};
+ var r=g('pd_reason'),d=g('pd_date'),k=g('pd_ko'),t=g('pd_msg'),u=$('#pd_urgent');
+ if(r!==null)f.reason=r;if(d!==null)f.date=d;if(k!==null)f.ko=k;if(t!==null)f.msg=t;if(u)f.urgent=u.checked;return f;}
+function ppdCard(m){var f=view.ppd&&view.ppd.id===m.id?view.ppd:null,op=(m.ha==='A'?'at ':'v ')+(m.opp||'opponent'),s=m.ppSent||null;
+ var h='<div class="card" id="tl-ppd" style="border-color:#FB7185;border-width:2px">';
+ if(!f&&m.pp){h+='<span class="tag tagpp">Game off</span><h3 style="margin:8px 0 4px">'+esc(op)+' is off</h3><p class="small">'+esc(m.ppnote||'New date to follow.')+'</p>';
+  if(s)h+='<p class="small muted">'+(s.ok?'Families and players told at '+esc(s.time)+(s.urgent?', as urgent':'')+'. Sent to '+esc(String(s.sent))+' of '+esc(String(s.total))+' phones.':'Saved, but the phone alert did not go: '+esc(s.err||'no signal')+'.')+'</p>';
+  return h+'<div class="row wrap2">'+(s&&!s.ok?'<button class="btn pri grow" data-act="ppdRetry" data-id="'+esc(m.id)+'">Try the alert again</button>':'')+'<button class="btn grow" data-act="ppdOpen" data-id="'+esc(m.id)+'">Send another message</button></div></div>';}
+ if(!f)return h+'<div class="row" style="align-items:center"><div class="grow"><h3 style="margin:0">Game off?</h3><p class="small muted" style="margin:2px 0 0">Postponed or called off, even on the way or after kick off. You see the message before it goes.</p></div><button class="btn bad" data-act="ppdOpen" data-id="'+esc(m.id)+'" id="ppd-open">Postponed or called off</button></div></div>';
+ if(f.step==='check'){h+='<h3 style="margin-top:0">Check before it goes</h3><p class="small">This goes to every family and player with alerts on'+(f.urgent?', marked <b>URGENT</b>. It stays on their screen until they tap it, and rings Tim\'s and Deano\'s phones':'')+'. '+(f.retry?'':'It also goes on the team page news.')+'</p>';
+  h+='<div class="card" style="background:rgba(255,255,255,.05);margin:8px 0"><p style="margin:0" id="ppd-preview">'+esc(f.msg)+'</p></div>';
+  if(!f.retry)h+='<p class="small muted">The game is marked '+(f.date?'as moved to '+esc(fcUk(f.date))+(f.ko?' '+esc(f.ko):'')+', and families are asked Playing? again.':'as off, new date to follow. It goes on the relist list.')+' Nothing goes until you press Send.</p>';
+  return h+'<div class="row wrap2"><button class="btn pri grow" data-act="ppdSend" id="ppd-send">Send</button><button class="btn grow" data-act="ppdBack" id="ppd-cancel">Cancel</button></div></div>';}
+ h+='<h3 style="margin-top:0">Game off: '+esc(op)+'</h3><p class="small muted">Same as Fixture change, quicker for match day.</p>';
+ h+='<label for="pd_reason">What happened</label><select id="pd_reason">'+PPD_R.map(function(r){return '<option value="'+r[0]+'"'+(f.reason===r[0]?' selected':'')+'>'+esc(r[1])+'</option>';}).join('')+'</select>';
+ h+='<div class="row"><div class="grow"><label for="pd_date">New date, if you know it</label><input type="date" id="pd_date" value="'+esc(f.date||'')+'"></div><div class="grow"><label for="pd_ko">Kick off</label><input type="time" id="pd_ko" value="'+esc(f.ko||'')+'"></div></div>';
+ h+='<label for="pd_msg">Message for families and players</label><textarea id="pd_msg" maxlength="180" style="min-height:96px">'+esc(f.msg||'')+'</textarea><p class="small muted">No names. Up to 180 letters.</p>';
+ h+='<label style="display:flex;gap:10px;align-items:center;min-height:48px;margin-top:6px"><input type="checkbox" id="pd_urgent" style="width:26px;height:26px;min-height:26px"'+(f.urgent?' checked':'')+'> Urgent alert</label><p class="small muted" style="margin-top:0">Shows as URGENT on every phone with alerts on and stays until tapped. Also rings Tim\'s and Deano\'s phones.</p>';
+ return h+'<div class="row wrap2"><button class="btn pri grow" data-act="ppdCheck" id="ppd-check">Check and send</button><button class="btn grow" data-act="ppdClose">Cancel</button></div></div>';}
+function ppdTop(m){try{if(m&&m.date===isoToday()&&!m.deleted&&m.status!=='done'&&!isTrainM(m))return ppdCard(m);}catch(e){}return '';}
+function ppdPush(m,msg,urgent){
+ var p=famPush(msg,'/family.html',urgent?{urgent:1}:null).then(function(j){m.ppSent={ok:1,sent:j.sent,total:j.total,urgent:urgent?1:0,time:new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}),msg:msg};saveM(m);sync();toast('Sent to '+j.sent+' of '+j.total+' phones');render(true);})
+  .catch(function(e){m.ppSent={ok:0,err:(e&&e.message)||'no signal',urgent:urgent?1:0,msg:msg};saveM(m);toast('Saved. Phone alert did not go: '+((e&&e.message)||'no signal'));render(true);});
+ if(urgent)call('alert.send',{title:'Latics URGENT',msg:msg,level:'urgent'}).catch(function(){});
+ return p;}
+Object.assign(ACT,{
+ ppdOpen:function(d){var m=S.matches[d.id];if(!m)return;view.ppd={id:m.id,reason:m.status==='plan'?'pitch':'abandoned',date:'',ko:'',urgent:true,step:'form',edited:false};view.ppd.msg=ppdMsg(m,view.ppd);render(true);var c=$('#tl-ppd');if(c&&c.scrollIntoView)c.scrollIntoView({block:'start'});},
+ ppdClose:function(){view.ppd=null;render(true);},
+ ppdCheck:function(){var f=ppdForm(),m=f&&S.matches[f.id];if(!m)return;if(f.date&&!/^\d{4}-\d{2}-\d{2}$/.test(f.date)){toast('Pick a proper date or leave it empty');return;}if(f.date&&f.date<=isoToday()){toast('The new date has to be after today');return;}
+  if(String(f.msg||'').trim().length<5){toast('Type a short message first');return;}f.msg=String(f.msg).trim().slice(0,180);f.step='check';render(true);},
+ ppdBack:function(){if(view.ppd){if(view.ppd.retry)view.ppd=null;else view.ppd.step='form';}render(true);},
+ ppdSend:function(){var f=view.ppd,m=f&&S.matches[f.id];if(!m||f.step!=='check')return;if(f.retry){view.ppd=null;render(true);ppdPush(m,f.msg,!!f.urgent);return;}
+  var r=(PPD_R.filter(function(x){return x[0]===f.reason;})[0]||PPD_R[0])[1],old=fcSnap(m),arr=posts();
+  if(m.postId){arr.forEach(function(p){if(p.id===m.postId)p.status='removed';});delete m.postId;}
+  if(m.status!=='plan'&&m.status!=='done'){m.abnd={at:now(),status:m.status,events:m.events,clock:m.clock,stints:m.stints};m.status='plan';m.period=1;m.clock={acc:0,running:false,t0:0};m.stints={};m.events=[];}
+  if(f.date){m.date=f.date;if(f.ko)m.ko=f.ko;m.pp=0;m.relist=0;m.ppnote='';}
+  else{m.pp=1;m.relist=1;m.ppnote=(f.reason==='other'?'':r+'. ')+'New date to follow.';}
+  S.settings.posts=arr;var nw=f.date?fcLine(old)+' moves to '+fcUk(f.date)+(m.ko&&m.ko!=='TBA'?' '+m.ko:'')+'. '+r:fcLine(old).replace(/, .*$/,'')+' today is off. '+r+'. New date to follow';
+  var s=S.settings,hs=s.fxHist=s.fxHist||[];hs.unshift({at:now(),who:who()||'',txt:'Game off. '+nw});while(hs.length>60)hs.pop();
+  news().unshift({id:uid(),t:('Game off. '+f.msg).slice(0,400),d:isoToday()});touch('settings',s);saveM(m);
+  var msg=f.msg,urg=!!f.urgent,moved=!!f.date;view.ppd=null;render(true);
+  var go=function(){return ppdPush(m,msg,urg);};
+  var sy=Promise.resolve(sync(true));(moved?sy.then(function(){return postMatch(m);}):sy).then(go,go);},
+ ppdRetry:function(d){var m=S.matches[d.id];if(!m||!m.ppSent)return;var s=m.ppSent;view.ppd={id:m.id,reason:'other',date:'',ko:'',urgent:!!s.urgent,msg:s.msg||ppdMsg(m,{reason:'other'}),step:'check',edited:true,retry:1};render(true);}
+});
+document.addEventListener('change',function(e){var t=e.target;if(!t||!view.ppd)return;if(t.id==='pd_reason'||t.id==='pd_date'||t.id==='pd_ko'){var f=ppdForm(),m=S.matches[f.id];if(m&&!f.edited){f.msg=ppdMsg(m,f);var x=$('#pd_msg');if(x)x.value=f.msg;}}else if(t.id==='pd_urgent')ppdForm();});
+document.addEventListener('input',function(e){if(e.target&&e.target.id==='pd_msg'&&view.ppd){view.ppd.msg=e.target.value;view.ppd.edited=true;}});
 takeShare();
 document.addEventListener('click',function(e){var t=e.target;if(t&&t.tagName==='INPUT'&&(t.type==='date'||t.type==='time')&&t.showPicker){try{t.showPicker();}catch(x){}}});
 try{rvMigrate();}catch(e){}
@@ -3156,7 +3218,7 @@ window.addEventListener('hashchange',function(){if(location.hash===R87.last)retu
 (function(){var h=routeRead(location.hash),o=(view.mid&&M(view.mid))?null:(h||((view.tab==='today'&&!view.mid)?routeRead(lsGet('tl.nav')):null));if(o&&!(o.mid&&!S.matches[o.mid]))routeApply(o);})();
 
 /* hold updates during a match or a session. update.js asks this before it refreshes. */
-window.tlHold=function(){try{var live=Object.keys(S.matches).some(function(k){var m=S.matches[k];return m&&!m.deleted&&(m.status==='live'||m.status==='ht');});if(live)return 'match';if(!view.mid&&(view.tab==='run'||view.tab==='sess'||view.tab==='board'))return 'session';if(document.querySelector('#sheet.on'))return 'sheet';}catch(e){}return '';};
+window.tlHold=function(){try{if(view.ppd)return 'sheet';var live=Object.keys(S.matches).some(function(k){var m=S.matches[k];return m&&!m.deleted&&(m.status==='live'||m.status==='ht');});if(live)return 'match';if(!view.mid&&(view.tab==='run'||view.tab==='sess'||view.tab==='board'))return 'session';if(document.querySelector('#sheet.on'))return 'sheet';}catch(e){}return '';};
 
 /* error card instead of a white screen */
 function errCard(e){return '<div class="card tl-err" role="alert"><h3 style="margin-top:0">This page hit a problem</h3><p class="small">Your data is safe on this phone. Try again, or go back to Today.</p><p class="small muted">'+esc(String(e&&e.message||e||'Unknown error').slice(0,160))+'</p><div class="row wrap2"><button class="btn pri grow" data-act="errRetry">Try again</button><button class="btn grow" data-act="tab" data-v="today">Today</button><button class="btn grow" data-act="errReload">Reload app</button></div></div>';}
@@ -3228,7 +3290,7 @@ setTimeout(function(){
     var go=intent.page||intent.go;
     if(intent.intent==='coach_att'||intent.intent==='attendance')go='att';
     if(intent.intent==='fixtures'||intent.intent==='kickoff'||intent.intent==='where')go='match';
-    if(intent.intent==='stretch'){location.href='../stretch/index.html?v=115&back='+encodeURIComponent('/coach/');return;}
+    if(intent.intent==='stretch'){location.href='../stretch/index.html?v=116&back='+encodeURIComponent('/coach/');return;}
     if(intent.intent==='shop')go='shop';
     if(intent.intent==='training')go=intent.span==='week'?'plan':'run';
     if(intent.intent==='clip')go='rl';
