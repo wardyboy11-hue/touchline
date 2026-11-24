@@ -89,7 +89,7 @@ const stM=p=>p.evaluate(()=>{const s=JSON.parse(localStorage.getItem('tl.state.v
    // Saturday, game called off: the row says so
    ({ctx,p,errs}=await fam(b,dv,page,role,'2026-11-28T10:40:00',{mine:{t1:'Y',m1p:'Y'},posts:POSTS().filter(x=>x.id!=='m1p'),fx:[FX({pp:1,ppnote:'The pitch is not fit to play on. New date to follow.'})]}));
    t=await attTxt(p);
-   T(tag+' called off game shows Called off and the reason',/Called off/.test(t)&&/pitch is not fit/.test(t));
+   T(tag+' called off game shows Called off and the reason',/Match called off/.test(t)&&/pitch is not fit/.test(t));
    await shot(p,dn+'_'+page.replace('.html','')+'_'+role+'_called_off','#att-top');
    T(tag+' called off no page errors',errs.length===0);if(errs.length)console.log(errs);await ctx.close();
   }

@@ -605,12 +605,12 @@ function attLive(x){return x&&x.status!=='removed'&&x.status!=='draft'&&!x.delet
 function attRow(use,kind,fx){var x=X(),who=D.role==='player'?'you':esc(D.first),td=today(),mt=kind==='match';
  var q=mt?(D.role==='player'?'Playing?':'Is '+who+' playing?'):(D.role==='player'?'Can you come?':'Can '+who+' come?');
  if(mt&&!fx&&use)fx=x.fixtures.filter(function(m){return m.date===use.date;})[0]||null;
- var head='<h3 style="margin:0 0 2px">'+(mt?'Match':'Training')+'. '+q+'</h3>';
- if(mt&&fx&&fx.pp)return '<div class="att-row att-pp" id="att-match" style="padding:10px 0;border-top:1px solid var(--line)"><h3 style="margin:0 0 2px">Match. Called off</h3><p style="margin:2px 0"><b>'+esc((fx.ha==='A'?'at ':'v ')+(fx.opp||'opponent'))+'</b><br>'+esc(nice(fx.date))+'</p><p class="small" style="margin:4px 0 0">'+esc(fx.ppnote||'This game is postponed. New date to follow.')+'</p></div>';
+ var head='<p class="att-q" style="margin:0 0 2px;font-size:18px;font-weight:800">'+q+'</p>';
+ if(mt&&fx&&fx.pp)return '<div class="att-row att-pp" id="att-match" style="padding:10px 0;border-top:1px solid var(--line)"><p class="att-q" style="margin:0 0 2px;font-size:18px;font-weight:800">Match called off</p><p style="margin:2px 0"><b>'+esc((fx.ha==='A'?'at ':'v ')+(fx.opp||'opponent'))+'</b><br>'+esc(nice(fx.date))+'</p><p class="small" style="margin:4px 0 0">'+esc(fx.ppnote||'This game is postponed. New date to follow.')+'</p></div>';
  if(!use){var when=mt&&fx?esc(nice(fx.date))+(fx.ko?', kick off '+esc(fx.ko):''):'';
   if(!mt){var w=attWeek(),wd=addD(w.start,3);if(wd<td)return '';when=esc(nice(wd))+', 20:00 to 21:00';}
   if(mt&&!fx)return '';
-  return '<div class="att-row att-wait" id="att-'+(mt?'match':'train')+'" style="padding:10px 0;border-top:1px solid var(--line)"><h3 style="margin:0 0 2px">'+(mt?'Match':'Training')+'</h3><p style="margin:2px 0">'+(mt&&fx?'<b>'+esc((fx.ha==='A'?'at ':'v ')+(fx.opp||'opponent'))+'</b><br>':'')+when+'</p><p class="small muted" style="margin:4px 0 0">The coaches have not asked yet. Your Yes or No buttons show here when they do.</p></div>';}
+  return '<div class="att-row att-wait" id="att-'+(mt?'match':'train')+'" style="padding:10px 0;border-top:1px solid var(--line)"><p class="att-q" style="margin:0 0 2px;font-size:18px;font-weight:800">'+(mt?'Match':'Training')+'</p><p style="margin:2px 0">'+(mt&&fx?'<b>'+esc((fx.ha==='A'?'at ':'v ')+(fx.opp||'opponent'))+'</b><br>':'')+when+'</p><p class="small muted" style="margin:4px 0 0">The coaches have not asked yet. Your Yes or No buttons show here when they do.</p></div>';}
  var mine=(D.mine||{})[use.id]||'',past=use.date<td,pl=use.place||(fx&&fx.venue)||'';
  var h='<div class="att-row" id="att-'+(mt?'match':'train')+'" data-post="'+esc(use.id)+'" style="padding:10px 0;border-top:1px solid var(--line)">'+head;
  h+='<p style="margin:2px 0"><b>'+esc(use.title||(mt?'Match':'Training'))+'</b><br>'+esc(nice(use.date))+(use.time?', '+esc(use.time)+(!mt&&use.time==='20:00'?' to 21:00':''):'')+(pl?'<br>'+esc(pl):'')+'</p>';
