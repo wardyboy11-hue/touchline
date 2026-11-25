@@ -1,5 +1,5 @@
 /* Touchline share helper. Vanilla JS, works offline once cached.
-   navigator.share when available; otherwise a small sheet with Copy link, WhatsApp and Email.
+   Coach app (r117): TLShareInApp, the in-app sheet, comes first. Family pages: navigator.share when available; otherwise a small sheet with Copy link, WhatsApp and Email.
    Paid or copyrighted items: pass the source URL only. Coach-only items: set coachOnly true. */
 (function (w) {
   'use strict';
@@ -108,6 +108,12 @@
   function share(opts) {
     opts = opts || {};
     if (opts.blocked) { toast(opts.blocked); return Promise.resolve(); }
+    /* r117: on the coach app every Share opens the in-app sheet first (whole team, players, parents only, chosen people, coaches only).
+       The phone share sheet is only used when a page has no in-app sheet (parent and player pages). */
+    if (!opts.outside && typeof w.TLShareInApp === 'function') {
+      try { w.TLShareInApp({ title: opts.title, text: opts.text, url: opts.url ? absUrl(opts.url) : '', note: opts.note, coachOnly: !!opts.coachOnly, kind: opts.kind }); } catch (e) {}
+      return Promise.resolve();
+    }
     var title = opts.title || 'Touchline';
     var text = opts.text || '';
     var url = absUrl(opts.url);
