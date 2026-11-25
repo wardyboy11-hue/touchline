@@ -46,4 +46,28 @@ const cat=JSON.parse(fs.readFileSync(path.join(root,'tools/tactx-catalog.json'),
 const blob=JSON.stringify(cat);
 assert.ok(!/uscreencdn\.com\/images\/programs/.test(blob), 'catalog snapshot must not store thumbnails');
 assert.ok(!blob.includes('data-short-description'));
+const gk=[
+  ['https://tactxcoach.com/programs/gkpo01-9870dd','GOALKEEPING / PLAYING OUT / PRACTICE 1'],
+  ['https://tactxcoach.com/programs/gkpo02-c0f087','GOALKEEPING / PLAYING OUT / PRACTICE 2'],
+  ['https://tactxcoach.com/programs/gkpo03-6ab41d','GOALKEEPING / PLAYING OUT / PRACTICE 3'],
+  ['https://tactxcoach.com/programs/gkpo04-3deb41','GOALKEEPING / PLAYING OUT / PRACTICE 4'],
+  ['https://tactxcoach.com/programs/gk-in-possession-talkover-b82eb3','RUBEN AMORIM / IN POSSESSION / GOALKEEPING / TALK-OVER'],
+  ['https://tactxcoach.com/programs/ederson-the-best-ball-playing-goalkeeper-in-world-football','EDERSON - THE BEST BALL-PLAYING GOALKEEPER IN WORLD FOOTBALL']
+];
+for(const [url,title] of gk){
+  const r=tx.find(x=>x.url===url);
+  assert.ok(r, 'missing '+url);
+  assert.equal(r.title,title);
+  assert.equal(r.t,5,'goalkeeping topic for '+url);
+  assert.equal(r.aud,'c');assert.equal(r.emb,'l');assert.equal(r.appr,false);
+  assert.equal(r.paid,true);
+}
+assert.ok(!tx.some(r=>/futsal/i.test(r.title+' '+r.url)), 'futsal GK class must stay out');
+const appSrc=fs.readFileSync(path.join(root,'coach/app.js'),'utf8');
+assert.ok(appSrc.includes("libIsTactx(r)?'Members, link only':'Paid, link only'"), 'coach Library shows Members on Tactx paid rows');
+assert.ok(appSrc.includes("Paid sources are links only. Tactx items marked Members are included with your Tactx membership"));
+const fam=fs.readFileSync(path.join(root,'family.html'),'utf8');
+const par=fs.readFileSync(path.join(root,'parents.html'),'utf8');
+assert.ok(fam.includes("r.paid?'Paid, link only':'Free'"), 'family wording stays Paid if a paid item is ever shown there');
+assert.ok(par.includes("r.paid?'Paid, link only':'Free'"), 'parents wording stays Paid');
 console.log('tactx library ok', tx.length, 'rows,', free.length, 'free,', paid.length, 'paid');

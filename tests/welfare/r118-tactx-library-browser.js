@@ -27,12 +27,16 @@ const coachState=()=>({ideas:{},players:{p1:{id:'p1',name:'Alex One',num:'7',act
     const t=document.body.innerText||'';
     const links=[...document.querySelectorAll('a[href*="tactxcoach.com/programs/"]')].map(a=>a.getAttribute('href'));
     const iframe=[...document.querySelectorAll('iframe')].filter(i=>/tactxcoach|uscreencdn/.test(i.src||''));
-    return {t,links,iframes:iframe.length,hasWarm:/WARM-UP PRACTICES/.test(t)||/Warm-Up Practices/.test(t)||/WARM-UP PRACTICES - SEASON 1/.test(t),hasPaid:/paid/i.test(t)||/Paid/.test(t),hasTactx:/Tactx/.test(t),shown:/of \d+ shown/.test(t)? (t.match(/(\d+) of (\d+) shown/)||[]) : []};
+    const tags=[...document.querySelectorAll('.it .tag')].map(x=>x.textContent.trim());
+    return {t,links,iframes:iframe.length,hasWarm:/WARM-UP PRACTICES/.test(t)||/Warm-Up Practices/.test(t)||/WARM-UP PRACTICES - SEASON 1/.test(t),hasMembers:tags.includes('Members, link only')||/Members, link only/.test(t),hasPaidTag:tags.includes('Paid, link only'),hasTalk:/RUBEN AMORIM \/ IN POSSESSION \/ GOALKEEPING \/ TALK-OVER/.test(t)||/RUBEN AMORIM/.test(t),hasGkPo:/GOALKEEPING \/ PLAYING OUT \/ PRACTICE/.test(t),hasTactx:/Tactx/.test(t),tags};
   });
   T('library names Tactx', lib.hasTactx);
   T('library has Tactx programme links', lib.links.length>0);
   T('library does not embed Tactx media', lib.iframes===0);
   T('library can show a known free title', lib.hasWarm);
+  T('Tactx paid rows say Members, link only', lib.hasMembers);
+  T('Tactx list does not say Paid, link only', !lib.hasPaidTag);
+  T('goalkeeping playing-out practices are listed', lib.hasGkPo);
   await shot(c,'phone-library-tactx');
   T('coach library zero console errors', E.length===0); if(E.length) console.log(E);
   // Phone: Resources

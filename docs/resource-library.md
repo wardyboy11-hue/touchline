@@ -35,4 +35,4 @@ Coach: Train, Library mode, Library tab. Player and parent: Library card on the 
 
 ## Tactx
 
-Tactx is a paid coaching library (animated practices, full sessions and analysis). Touchline stores titles and links only, the same way it does for Sportplan. Nothing is copied or embedded. Items are coach only until you approve them, and they open on tactxcoach.com. Free catalog titles are marked free; most still need a Tactx account to watch. Terms: https://tactxcoach.com/terms
+Tactx is a paid coaching library (animated practices, full sessions and analysis). Touchline stores titles and links only, the same way it does for Sportplan. Nothing is copied or embedded. Items are coach only until you approve them, and they open on tactxcoach.com. Free catalog titles are marked free. Other Tactx titles are marked Members in the coach app, because they are included with the team's Tactx membership. They still open on Tactx. Terms: https://tactxcoach.com/terms

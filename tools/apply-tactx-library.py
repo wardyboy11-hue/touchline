@@ -14,6 +14,18 @@ CAT = json.loads((Path(__file__).parent / 'tactx-catalog.json').read_text())
 SKIP_CATS = {'Blog', 'Live Stream Recordings', 'Upcoming Live Streams', 'Whats Coming'}
 SKIP_SLUG_RE = re.compile(r'(futsal|tactx-homepage)', re.I)
 
+# Official public titles and Goalkeeping topic (index 5) for the keeper set Tim named.
+# Titles use a slash in the packed files, because | is the library row separator.
+FORCE_GK = {
+    'https://tactxcoach.com/programs/gkpo01-9870dd': 'GOALKEEPING | PLAYING OUT | PRACTICE 1',
+    'https://tactxcoach.com/programs/gkpo02-c0f087': 'GOALKEEPING | PLAYING OUT | PRACTICE 2',
+    'https://tactxcoach.com/programs/gkpo03-6ab41d': 'GOALKEEPING | PLAYING OUT | PRACTICE 3',
+    'https://tactxcoach.com/programs/gkpo04-3deb41': 'GOALKEEPING | PLAYING OUT | PRACTICE 4',
+    'https://tactxcoach.com/programs/gk-in-possession-talkover-b82eb3': 'RUBEN AMORIM | IN POSSESSION | GOALKEEPING | TALK-OVER',
+    'https://tactxcoach.com/programs/ederson-the-best-ball-playing-goalkeeper-in-world-football': 'EDERSON - THE BEST BALL-PLAYING GOALKEEPER IN WORLD FOOTBALL',
+}
+
+
 # Library tab topics (coach/topics.js)
 TOPIC = {
     'breaking': 0,  # Breaking lines and positional play
@@ -115,6 +127,8 @@ def build_rows():
             continue
         seen.add(path)
         title = pack(it.get('title') or slug_title(it.get('slug') or slug))
+        if it.get('url') in FORCE_GK:
+            title = pack(FORCE_GK[it['url']])
         reason = should_skip(it, title, slug)
         if reason:
             skipped.append({'url': it['url'], 'title': title, 'reason': reason})
@@ -122,6 +136,8 @@ def build_rows():
         cats = it.get('categories') or []
         free = 'Free Content' in cats
         topic = topic_for(title, cats, slug)
+        if it.get('url') in FORCE_GK:
+            topic = TOPIC['goalkeeping']
         fmt = fmt_for(topic, cats, it.get('collection'), it.get('media') or '')
         rec = {
             'id': f'tx{n:04d}',
