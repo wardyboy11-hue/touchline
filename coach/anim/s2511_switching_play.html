@@ -27,6 +27,28 @@
   #notes p { margin:0; }
   footer { text-align:center; font-size:13px; opacity:.6; margin:14px 0 24px; }
   @media (max-width:600px){ button, select { font-size:14px; padding:8px 10px; } }
+  /* r120: bigger view. body.fs = Full screen (real or CSS), body.land = phone turned sideways */
+  #rail { display:none; }
+  #rail button, #rail a { width:56px; min-height:44px; padding:0; font-size:18px; display:flex; align-items:center; justify-content:center;
+    border-radius:8px; border:2px solid var(--gold); background:#0d1d4a; color:#fff; text-decoration:none; font-weight:700; }
+  #rail #rplay { background:var(--gold); color:var(--navy); }
+  body.fs, body.land { overflow:hidden; }
+  body.fs #back, body.land #back, body.fs #controls, body.land #controls, body.fs #tip, body.land #tip,
+  body.fs #notes, body.land #notes, body.fs footer, body.land footer { display:none; }
+  body.fs #wrap, body.land #wrap { position:fixed; inset:0; z-index:50; max-width:none; min-width:0; margin:0; padding:0;
+    width:100vw; height:100vh; width:100dvw; height:100dvh; background:var(--navy);
+    display:flex; align-items:center; justify-content:center; gap:6px; }
+  body.fs canvas, body.land canvas { width:min(calc(100vw - 72px), calc(100vh * 16 / 9)); width:min(calc(100dvw - 72px), calc(100dvh * 16 / 9));
+    height:auto; border-radius:0; box-shadow:none; }
+  body.fs #rail, body.land #rail { display:flex; flex-direction:column; gap:4px; }
+  body #rail #fsx { display:none; }
+  body.fs #rail #fsx { display:flex; }
+  @media (orientation:portrait){
+    body.fs #wrap { flex-direction:column; }
+    body.fs canvas { width:min(100vw, calc((100vh - 60px) * 16 / 9)); width:min(100dvw, calc((100dvh - 60px) * 16 / 9)); }
+    body.fs #rail { flex-direction:row; }
+  }
+  #snd { font-size:13px; opacity:.75; text-align:center; min-height:1em; margin:0 0 6px; }
 </style>
 </head>
 <body>
@@ -41,8 +63,20 @@
     <button id="next" title="Next step (right arrow)">Next &#9654;</button>
     <button id="restart" title="Restart (R)">&#8634; Restart</button>
     <select id="jump" aria-label="Jump to part"></select>
+    <button id="mute" aria-pressed="false" title="Sound on or off (M)">&#128266; Sound on</button>
+    <button id="fs" title="Full screen (F)">&#x26F6; Full screen</button>
   </div>
-  <div id="tip">Tap the pitch to play or pause. On a phone, turn it sideways for the biggest view.</div>
+  <div id="rail" aria-label="Controls">
+    <a id="rback" href="../../" aria-label="Back to the app">&#8249;</a>
+    <button id="fsx" aria-label="Exit full screen">&#10005;</button>
+    <button id="rprev" aria-label="Previous step">&#9664;</button>
+    <button id="rplay" aria-label="Play or pause">&#9654;</button>
+    <button id="rnext" aria-label="Next step">&#9654;&#9654;</button>
+    <button id="rmute" aria-label="Sound on or off">&#128266;</button>
+  </div>
+  <audio id="vo" preload="none"></audio>
+  <div id="snd" aria-live="polite"></div>
+  <div id="tip">Tap Play to hear the coach. Tap the pitch to play or pause. On a phone, turn it sideways or tap Full screen for the biggest view.</div>
   <div id="notes"></div>
   <footer>Source: "Switching play" session plan by Eric Laurie (Molde FK), Coaches' Voice Pro Coach Series (U12 to U16). Adapted for Wigan Junior Latics U15 Blues by Tim and Deano: warm up, cool down, timings and goalkeeping added.</footer>
 </div>
@@ -483,18 +517,46 @@ function drawOutro(part) {
 /* ---------- Player state ---------- */
 let idx = 0, t = 0, playing = false, runOnce = false, last = null;
 
+/* ---------- r120: voice (Andy, same lines as the session videos). One clip per intro and step. ---------- */
+const AUD = {"0_0":8.33,"0_1":4.82,"0_2":4.1,"0_3":5.78,"0_4":6.19,"0_5":6.96,"1_0":11.81,"1_1":4.61,"1_2":4.8,"1_3":5.02,"1_4":5.71,"1_5":6.94,"1_6":6.6,"2_0":13.49,"2_1":5.06,"2_2":4.3,"2_3":5.71,"2_4":6.05,"2_5":4.82,"2_6":3.94,"3_0":11.98,"3_1":2.78,"3_2":5.52,"3_3":3.86,"3_4":4.8,"3_5":4.08,"3_6":6.98,"4_0":6.58,"4_1":4.63,"4_2":5.21,"4_3":6.43};
+const AUD_DIR = 'audio/s2511_switching_play/';
+const vo = document.getElementById('vo');
+let muted = false, audOk = true, audKey = '';
+const BAD = {};   /* clips that did not load: skip them, the words stay on screen */
+try { muted = localStorage.getItem('s2511.mute') === '1'; } catch (e) {}
+function clipKey(i) { const it = SEQ[i]; if (!it) return ''; const k = it.type === 'intro' ? 0 : it.type === 'step' ? it.k + 1 : -1; return k < 0 ? '' : it.part + '_' + k; }
+function durOf(i) { const it = SEQ[i], ck = clipKey(i), a = (!muted && audOk && !BAD[ck] && AUD[ck]) || 0; return Math.max(it.dur, a ? a + 0.6 : 0); }
+function sndMsg(m) { const e = document.getElementById('snd'); if (e) e.textContent = m || ''; }
+function voStop() { try { vo.pause(); } catch (e) {} }
+function voPlay(fromT) {
+  const k = clipKey(idx);
+  if (muted || !audOk || !k || !AUD[k] || BAD[k]) { voStop(); return; }
+  if (fromT >= AUD[k]) { voStop(); return; }
+  try {
+    if (audKey !== k) { audKey = k; vo.src = AUD_DIR + 'p' + k + '.mp3?v=120'; }
+    if (fromT > 0.05 && Math.abs((vo.currentTime || 0) - fromT) > 0.4) { try { vo.currentTime = fromT; } catch (e) {} }
+    else if (fromT <= 0.05) { try { vo.currentTime = 0; } catch (e) {} }
+    const p = vo.play(); if (p && p.catch) p.catch(err => { if (err && err.name === 'NotAllowedError') sndMsg('Tap Play to hear the coach.'); });
+  } catch (e) {}
+  const n = clipKey(idx + 1);   /* fetch the next clip quietly so it is ready on weak signal */
+  if (n && AUD[n] && window.fetch) { try { fetch(AUD_DIR + 'p' + n + '.mp3?v=120').catch(() => {}); } catch (e) {} }
+}
+vo.addEventListener('error', () => { if (!vo.getAttribute('src')) return; if (audKey) BAD[audKey] = true; if (Object.keys(BAD).length >= 3) audOk = false; sndMsg('Sound did not load. The words are on screen.'); });
+vo.addEventListener('playing', () => sndMsg(''));
+
 function render() {
   const item = SEQ[idx], part = PARTS[item.part];
   ctx.fillStyle = COL.navy; ctx.fillRect(0, 0, 1280, 720);
+  const D = durOf(idx);
   if (item.type === 'intro') {
     drawScene(part, -1, 0); drawIntro(part);
-    drawCaption('INTRO · ' + part.short.toUpperCase(), 'How it starts: ' + part.start, t / item.dur);
+    drawCaption('INTRO · ' + part.short.toUpperCase(), 'How it starts: ' + part.start, t / D);
   } else if (item.type === 'outro') {
     drawScene(part, 'end', 0); drawOutro(part);
-    drawCaption('COACHING POINTS', 'Freeze it, check the coaching points, then make it harder if they have got it.', t / item.dur);
+    drawCaption('COACHING POINTS', 'Freeze it, check the coaching points, then make it harder if they have got it.', t / D);
   } else {
     drawScene(part, item.k, t);
-    drawCaption(`STEP ${item.k + 1} OF ${part.steps.length}`, part.steps[item.k].c, t / item.dur);
+    drawCaption(`STEP ${item.k + 1} OF ${part.steps.length}`, part.steps[item.k].c, t / D);
   }
   drawHeader(part);
   drawLegend(part);
@@ -503,34 +565,38 @@ function render() {
 function tick(ts) {
   if (last == null) last = ts;
   const dt = Math.min(0.1, (ts - last) / 1000); last = ts;
-  const item = SEQ[idx];
+  const D = durOf(idx);
   if (playing) {
     t += dt;
-    if (t >= item.dur) {
+    if (t >= D) {
       if (idx < SEQ.length - 1) { setIdx(idx + 1, false); }
-      else { t = item.dur; setPlaying(false); }
+      else { t = D; setPlaying(false); }
     }
   } else if (runOnce) {
     t += dt;
-    if (t >= item.dur) { t = item.dur; runOnce = false; }
+    if (t >= D) { t = D; runOnce = false; }
   }
   render();
   requestAnimationFrame(tick);
 }
 
 const btnPlay = document.getElementById('play');
+const rplay = document.getElementById('rplay');
 const sel = document.getElementById('jump');
 const notes = document.getElementById('notes');
 
 function setPlaying(v) {
   playing = v; runOnce = false;
-  if (v && idx === SEQ.length - 1 && t >= SEQ[idx].dur) setIdx(0, false);
+  if (v && idx === SEQ.length - 1 && t >= durOf(idx)) setIdx(0, false);
   btnPlay.innerHTML = v ? '&#10074;&#10074; Pause' : '&#9654; Play';
+  rplay.innerHTML = v ? '&#10074;&#10074;' : '&#9654;';
+  if (v) voPlay(t); else voStop();
 }
 let shownPart = -1;
 function setIdx(i, once = true) {
   idx = clamp(i, 0, SEQ.length - 1); t = 0;
   runOnce = !playing && once;
+  if (playing || runOnce) voPlay(0); else voStop();
   const p = SEQ[idx].part;
   if (sel.value != p) sel.value = p;
   if (p !== shownPart) { shownPart = p; showNotes(p); }
@@ -557,14 +623,67 @@ document.getElementById('next').addEventListener('click', () => setIdx(idx + 1))
 document.getElementById('prev').addEventListener('click', () => setIdx(idx - 1));
 document.getElementById('restart').addEventListener('click', () => { setIdx(0, false); setPlaying(true); });
 cv.addEventListener('click', () => setPlaying(!playing));
+document.getElementById('rprev').addEventListener('click', () => setIdx(idx - 1));
+document.getElementById('rnext').addEventListener('click', () => setIdx(idx + 1));
+rplay.addEventListener('click', () => setPlaying(!playing));
+
+/* r120: sound on or off */
+function setMute(m) {
+  muted = m; try { localStorage.setItem('s2511.mute', m ? '1' : '0'); } catch (e) {}
+  const b = document.getElementById('mute'), r = document.getElementById('rmute');
+  b.innerHTML = m ? '&#128263; Sound off' : '&#128266; Sound on'; b.setAttribute('aria-pressed', m ? 'true' : 'false');
+  r.innerHTML = m ? '&#128263;' : '&#128266;'; r.setAttribute('aria-pressed', m ? 'true' : 'false');
+  if (m) voStop(); else if (playing) voPlay(t);
+}
+document.getElementById('mute').addEventListener('click', () => setMute(!muted));
+document.getElementById('rmute').addEventListener('click', () => setMute(!muted));
+
+/* r120: Full screen. Real Full screen where the browser allows it (Android, PC). iPhone Safari only lets
+   videos go full screen, so there the page fills the screen with CSS instead. Exit button and Back always show. */
+const fsEl = document.documentElement;
+function realFs() { return document.fullscreenElement || document.webkitFullscreenElement || null; }
+function fsIn() {
+  document.body.classList.add('fs');
+  const rq = fsEl.requestFullscreen || fsEl.webkitRequestFullscreen;
+  if (rq) {
+    try {
+      const p = rq.call(fsEl);
+      const lock = () => { try { if (screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(() => {}); } catch (e) {} };
+      if (p && p.then) p.then(lock).catch(() => {}); else lock();
+    } catch (e) {}
+  }
+}
+function fsOut() {
+  document.body.classList.remove('fs');
+  try { if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); } catch (e) {}
+  if (realFs()) { const ex = document.exitFullscreen || document.webkitExitFullscreen; if (ex) { try { const p = ex.call(document); if (p && p.catch) p.catch(() => {}); } catch (e) {} } }
+}
+function fsChange() { if (!realFs() && document.body.classList.contains('fs') && document.body.dataset.realfs === '1') document.body.classList.remove('fs'); document.body.dataset.realfs = realFs() ? '1' : '0'; }
+document.addEventListener('fullscreenchange', fsChange);
+document.addEventListener('webkitfullscreenchange', fsChange);
+document.getElementById('fs').addEventListener('click', fsIn);
+document.getElementById('fsx').addEventListener('click', fsOut);
+
+/* r120: phone turned sideways fills the screen too */
+const landMQ = window.matchMedia ? window.matchMedia('(orientation: landscape) and (max-height: 520px)') : null;
+function landCheck() { document.body.classList.toggle('land', !!(landMQ && landMQ.matches)); }
+if (landMQ) { if (landMQ.addEventListener) landMQ.addEventListener('change', landCheck); else if (landMQ.addListener) landMQ.addListener(landCheck); }
+window.addEventListener('resize', landCheck);
+landCheck();
+document.getElementById('rback').setAttribute('href', document.getElementById('back').getAttribute('href'));
+
 document.addEventListener('keydown', e => {
   if (e.target === sel) return;
+  if (e.key === 'Escape' && document.body.classList.contains('fs')) { fsOut(); return; }
+  if (e.key === 'f' || e.key === 'F') { if (document.body.classList.contains('fs')) fsOut(); else fsIn(); return; }
+  if (e.key === 'm' || e.key === 'M') { setMute(!muted); return; }
   if (e.code === 'Space') { e.preventDefault(); setPlaying(!playing); }
   else if (e.code === 'ArrowRight') setIdx(idx + 1);
   else if (e.code === 'ArrowLeft') setIdx(idx - 1);
   else if (e.key === 'r' || e.key === 'R') { setIdx(0, false); setPlaying(true); }
 });
 
+setMute(muted);
 setIdx(0, false);
 requestAnimationFrame(tick);
 </script>
