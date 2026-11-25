@@ -38,9 +38,9 @@ for(const row of rd){
 }
 const app=fs.readFileSync(path.join(root,'coach/app.js'),'utf8');
 assert.ok(/Tactx'\]/.test(app)||/Tactx"]/.test(app), 'RSRC should include Tactx');
-assert.ok(app.includes("lib.js?v=118") && app.includes("res.js?v=118"));
+assert.ok(app.includes("lib.js?v=119") && app.includes("res.js?v=119"));
 const ver=JSON.parse(fs.readFileSync(path.join(root,'version.json'),'utf8'));
-assert.equal(ver.v,'118');
+assert.equal(ver.v,'119');
 // No Tactx stills or write-ups in the catalog snapshot
 const cat=JSON.parse(fs.readFileSync(path.join(root,'tools/tactx-catalog.json'),'utf8'));
 const blob=JSON.stringify(cat);

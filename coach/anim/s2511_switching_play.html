@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Switching play · Wigan Junior Latics U15 Blues · Wed 25 Nov</title>
+<style>
+  :root { --navy:#06102B; --gold:#FFB81C; --blue:#1E5BC6; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; background:var(--navy); color:#fff;
+    font-family: system-ui, "Segoe UI", Roboto, Arial, sans-serif; }
+  #wrap { max-width: min(1280px, calc((100vh - 24px) * 16 / 9)); min-width: 300px; margin:0 auto; padding:8px; }
+  canvas { display:block; width:100%; aspect-ratio:16/9; border-radius:10px; cursor:pointer;
+    box-shadow:0 4px 24px rgba(0,0,0,.5); }
+  #controls { display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:center; margin:10px 0; }
+  button, select { font:inherit; font-size:16px; font-weight:600; border-radius:8px; border:2px solid var(--gold);
+    background:#0d1d4a; color:#fff; padding:9px 14px; cursor:pointer; min-height:44px; }
+  button:hover, select:hover { background:#163070; }
+  #play { background:var(--gold); color:var(--navy); min-width:110px; }
+  #tip { text-align:center; font-size:14px; opacity:.75; margin:4px 0 12px; }
+  #notes { background:#0b1838; border:1px solid #23408a; border-radius:10px; padding:14px 18px; line-height:1.45; }
+  #notes h2 { margin:0 0 4px; color:var(--gold); font-size:20px; }
+  #notes .meta { opacity:.8; margin-bottom:10px; font-size:15px; }
+  #notes h3 { margin:12px 0 4px; font-size:16px; color:#9fc2ff; text-transform:uppercase; letter-spacing:.04em; }
+  #notes ul { margin:0; padding-left:20px; }
+  #notes li { margin:2px 0; }
+  #notes p { margin:0; }
+  footer { text-align:center; font-size:13px; opacity:.6; margin:14px 0 24px; }
+  @media (max-width:600px){ button, select { font-size:14px; padding:8px 10px; } }
+</style>
+</head>
+<body>
+<a id="back" href="../../" style="display:inline-block;margin:8px 0 0 8px;color:#FFB81C;font-weight:700;text-decoration:none;font-size:16px;padding:8px 4px;min-height:44px">&#8249; Back to the app</a>
+<script>(function(){var m=/[?&]back=([^&]+)/.exec(location.search);if(m){try{var u=decodeURIComponent(m[1]);if(/^\/[^\/]/.test(u))document.getElementById('back').href=u;}catch(e){}}})();</script>
+
+<div id="wrap">
+  <canvas id="c" width="2560" height="1440" aria-label="Animated coaching diagram"></canvas>
+  <div id="controls">
+    <button id="prev" title="Previous step (left arrow)">&#9664; Previous</button>
+    <button id="play" title="Play or pause (space)">&#9654; Play</button>
+    <button id="next" title="Next step (right arrow)">Next &#9654;</button>
+    <button id="restart" title="Restart (R)">&#8634; Restart</button>
+    <select id="jump" aria-label="Jump to part"></select>
+  </div>
+  <div id="tip">Tap the pitch to play or pause. On a phone, turn it sideways for the biggest view.</div>
+  <div id="notes"></div>
+  <footer>Source: "Switching play" session plan by Eric Laurie (Molde FK), Coaches' Voice Pro Coach Series (U12 to U16). Adapted for Wigan Junior Latics U15 Blues by Tim and Deano: warm up, cool down, timings and goalkeeping added.</footer>
+</div>
+
+<script>
+"use strict";
+/* ---------- Styles ---------- */
+const TEAM = {
+  B: { fill:'#1E5BC6', text:'#FFFFFF', name:'Blues (our team)' },
+  O: { fill:'#F26B21', text:'#FFFFFF', name:'Orange bibs' },
+  Y: { fill:'#FFD400', text:'#14213D', name:'Yellow bibs' },
+  K: { fill:'#2E7D32', text:'#FFFFFF', name:'Keeper (1)' }
+};
+const COL = { navy:'#06102B', grass:'#2e7d32', pass:'#ffeb3b', cone:'#FFB81C', gold:'#FFB81C' };
+const FONT = 'system-ui, "Segoe UI", Roboto, Arial, sans-serif';
+const R = 17;               // player radius (design px)
+const STEP_DUR = 5.5, INTRO_DUR = 7, OUTRO_DUR = 10;
+
+/* ---------- Session data ---------- */
+const P = (team, label, x, y) => ({ id: team + label, team, label, x, y });
+
+const PARTS = [
+{
+  minutes:'0 to 10 min', title:'Warm up: 5v1 boxes and the keeper switch', short:'Warm up',
+  theme:'Scan, open up, switch', format:'Two 5v1 rondos plus keeper',
+  area:'Two 10m x 10m boxes, 14m apart', kit:'8 cones, 2 orange bibs, plenty of balls',
+  start:'Keeper stands in the gap between the boxes with a ball',
+  L:36, W:14,
+  zones:[{x0:1,x1:11,y0:2,y1:12,label:'Box 1'},{x0:25,x1:35,y0:2,y1:12,label:'Box 2'}],
+  cones:[[1,2],[11,2],[1,12],[11,12],[25,2],[35,2],[25,12],[35,12]], goals:[],
+  players:[P('K','1',18,7),P('B','4',3,4),P('B','5',9,3),P('B','6',10,9),P('B','2',4,11),P('B','3',2,8),P('O','A',6,7),
+           P('B','7',27,4),P('B','8',26,10),P('B','9',33,3),P('B','10',34,9),P('B','11',30,11.5),P('O','B',30,7)],
+  ball:'B4',
+  steps:[
+    {c:'Box 1: 4 plays to 5. Two touches. Open your body to see both boxes.', m:{OA:[7.5,4.5],B6:[10,7]}, p:['B5']},
+    {c:'Four passes done. 5 plays into the keeper in the gap.', m:{K1:[16,6],OA:[8.5,4]}, p:['K1']},
+    {c:'Keeper (1): first touch out of your feet, then switch into Box 2.', m:{K1:[18,7],B8:[25.5,8],OB:[29,6]}, p:['B8']},
+    {c:'Box 2 keeps it, then 10 goes long, straight into Box 1. A direct switch.', m:{OB:[32,8],B3:[2,7],OA:[5,6]}, p:['B10','B3']},
+    {c:'Any ball in the air in the gap: keeper catches it and rolls it in.', m:{K1:[18,8]}}
+  ],
+  setup:'Two 10m boxes, 14m apart, 5 blues and 1 orange bib in each. Keeper (1) in the gap between the boxes.',
+  rules:'Two touches. After four passes, switch: through the keeper or straight to the other box. Presser swaps every 60 seconds.',
+  restarts:'Presser wins it: swap with the player who lost it. Keeper restarts every ball that goes out.',
+  points:'Open your body before it arrives. Look before you get it. Keeper: first touch out of your feet, then switch with either foot.',
+  harder:'One touch for the switch pass. Keeper must use his weaker foot for every other switch.',
+  gk:'Stands in the 14m gap between the boxes. Receives, first touch out of his feet, switches into the other box with either foot. Catches any ball in the air and rolls it in.'
+},
+{
+  minutes:'10 to 25 min', title:'Part 1: Three team possession', short:'Part 1',
+  theme:'Draw the press, find the free man', format:'4v1 to 4v2 in the end zones, 3 teams of 4',
+  area:'10m wide; Zone 1 6m, Zone 2 4m, Zone 3 6m (keeper behind Zone 1)', kit:'Cones, orange and yellow bibs, balls with the keeper',
+  start:'Keeper plays the ball into Zone 1',
+  L:18, W:10,
+  zones:[{x0:1,x1:7,y0:0,y1:10,label:'Zone 1 (6m)'},{x0:7,x1:11,y0:0,y1:10,label:'Zone 2 (4m)'},{x0:11,x1:17,y0:0,y1:10,label:'Zone 3 (6m)'}],
+  cones:[], goals:[],
+  players:[P('K','1',0.4,5),P('B','8',2.3,4.9),P('B','3',3.85,2.0),P('B','2',3.85,7.9),P('B','7',5.35,4.9),
+           P('O','A',8.7,1.2),P('O','B',8.9,3.3),P('O','C',9.1,5.5),P('O','D',8.8,7.9),
+           P('Y','A',12.8,4.9),P('Y','B',14.3,1.8),P('Y','C',14.3,7.9),P('Y','D',15.6,4.9)],
+  ball:'K1',
+  steps:[
+    {c:'Keeper (1) plays it into 8. One orange can press in Zone 1.', m:{OB:[4,3.5],B8:[2.5,5.5]}, p:['B8']},
+    {c:'Make the zone big: width and depth. 8 to 3.', m:{OB:[3.6,3],B3:[3.6,1.2]}, p:['B3']},
+    {c:'3 back to the keeper. He is the spare man behind.', m:{K1:[0.4,4],OB:[2.5,3.5]}, p:['K1']},
+    {c:'Four passes done: a second orange joins the press. Keeper to 2.', m:{OC:[5,6.5],OB:[3,6],B2:[4.5,8.6],YC:[13,6.3],YB:[13.5,2.4]}, p:['B2']},
+    {c:'Two oranges out of Zone 2 means gaps. 2 splits them into the yellows. Point.', m:{YC:[12.5,6.4],OA:[8.6,2],OD:[9,8.4]}, p:['YC']},
+    {c:'Oranges switch: one goes to press in Zone 3, the rest reset in Zone 2.', m:{OA:[13,3.5],OB:[8.8,4],OC:[9,6]}}
+  ],
+  setup:'10m wide area split into three zones: 6m, 4m, 6m. Three teams of 4, one team per zone. Keeper (1) stands behind Zone 1 with the balls.',
+  rules:'Play from Zone 1 to Zone 3 (or back) over Zone 2: 1 point. One orange can press. Every four passes another orange joins. Rounds last 1 minute, then rotate so a new team defends.',
+  restarts:'Oranges win it or ball out: new ball into the other end zone. Keeper restarts Zone 1, Deano restarts Zone 3.',
+  points:'Make your zone big: width, depth, space between you. Switch at the first good chance. Wall passes and third man passes make it. Far zone: get between the oranges, out of their cover shadow. Keeper: be the spare man, then switch fast.',
+  harder:'Two touch max in the end zones. If it is too tight for us, go 20m wide with 10m end zones.',
+  gk:'The spare man behind Zone 1. Starts every Zone 1 ball, offers an angle behind, and switches play quickly.'
+},
+{
+  minutes:'25 to 40 min', title:'Part 2: Finding the free man', short:'Part 2',
+  theme:'Pull them over, then switch', format:'6v6 plus keeper as the joker',
+  area:'40m x 40m, two 5m scoring zones marked by poles', kit:'4 poles, cones, orange bibs, balls',
+  start:'Ball starts with the blues on the left',
+  L:40, W:40,
+  zones:[{x0:4,x1:9,y0:17.5,y1:22.5,label:'Score'},{x0:31,x1:36,y0:17.5,y1:22.5,label:'Score'}],
+  cones:[[4,17.5],[9,17.5],[4,22.5],[9,22.5],[31,17.5],[36,17.5],[31,22.5],[36,22.5]], goals:[],
+  players:[P('K','1',12,24),P('B','4',2.4,5.4),P('B','7',8.6,4.4),P('B','10',11.8,13.3),P('B','5',18,10),P('B','2',22.6,36.5),P('B','9',34,26),
+           P('O','A',4.7,7.8),P('O','B',7.8,14.8),P('O','C',13.1,7.0),P('O','D',15,15.4),P('O','E',15,26.2),P('O','F',25.9,19.2)],
+  ball:'B7',
+  steps:[
+    {c:'Blues keep it tight on one side. Short passes pull the oranges over.', m:{OD:[14,9],OE:[16,17],OF:[20,15],B10:[11,11.5]}},
+    {c:'7 plays to 4. Oranges squeeze the ball side.', m:{OA:[5.2,7.8],OC:[10.5,6.5],OB:[7,11],K1:[6,17]}, p:['B4']},
+    {c:'4 into the keeper, the joker. He opens up to the far side.', m:{K1:[2.5,17.5],OB:[5.5,13]}, p:['K1']},
+    {c:'Switch inside two passes: keeper goes long to 2 in the space.', m:{B2:[24,34],OF:[24,24],OE:[18,22]}, p:['B2']},
+    {c:'2 finds 9 arriving in the scoring zone. Point.', m:{B9:[33.5,20.5],OF:[29,24]}, p:['B9']},
+    {c:'Keep the ball: 5 passes before the next point.', m:{B5:[24,14],B10:[22,20],OE:[26,22],OD:[22,16]}}
+  ],
+  setup:'40m x 40m. Two 5m scoring zones marked by poles, one near each end. 6v6, keeper (1) is the joker for the team with the ball.',
+  rules:'A pass received in either scoring zone: 1 point. Dribbling in does not count. After a point, 5 passes before the next one. Unlimited touches. Ball out: quick restart to the other team.',
+  restarts:'Ball out: quick restart for the other team. Lose it: play on.',
+  points:'Draw them in with short passes, then switch. Switch with one big pass or inside two passes. Always keep one player wide on the far side. Keeper: open your body, look early, switch into space with either foot.',
+  harder:'Two touch max. No joker: keeper plays for one team, swap every 3 minutes.',
+  gk:'The joker who plays for whichever team has the ball. Opens his body to the far side and plays the long switch into space.'
+},
+{
+  minutes:'40 to 57 min', title:'Part 3: Six goal game', short:'Part 3',
+  theme:'Switch the point of attack', format:'6v6 plus keeper, each team attacks one way',
+  area:'36m x 25m, three goals each end (mini goal, pole gate, mini goal)', kit:'4 mini goals, 4 poles, cones, orange bibs, balls',
+  start:'Keeper (1) starts every Blues ball',
+  L:36, W:25, zones:[],
+  cones:[[16.5,0],[19.5,0],[16.5,25],[19.5,25]],
+  goals:[[3.1,0,2.2],[32.9,0,2.2],[3.1,25,2.2],[32.9,25,2.2]],
+  players:[P('K','1',18,1.2),P('B','5',7.5,3.2),P('B','6',18.2,3.5),P('B','2',1.7,8.1),P('B','8',12.6,10.2),P('B','3',32.8,11),P('B','9',15.9,21),
+           P('O','A',13.1,5.5),P('O','B',4.7,11.2),P('O','C',14.9,12.5),P('O','D',25,14.2),P('O','E',20.6,17.6),P('O','F',9.8,19.9)],
+  ball:'K1',
+  steps:[
+    {c:'Keeper (1) starts it short to 5.', m:{OA:[10,4.5]}, p:['B5']},
+    {c:'Oranges squeeze. 5 plays into 8, who has support either side and behind.', m:{OA:[8.5,4],OC:[13,10],OB:[9,9]}, p:['B8']},
+    {c:'8 sets it to 6. Scan first: where is the space?', m:{B6:[19.8,3.4],OC:[15.5,7],OA:[14,4]}, p:['B6']},
+    {c:'6 plays the big switch into space for 3. Weight it to his feet.', m:{B3:[32.8,14.3],OD:[28,16]}, p:['B3']},
+    {c:'3 drives at the far mini goal before they shift. One point.', m:{B3:[32.8,23.5],OD:[31,20],B9:[22,22]}},
+    {c:'Oranges attack the top. Keeper (1) sets in the middle of the pole gate.', m:{K1:[18,1.2],B5:[11,5],B6:[20,5],B8:[15,9]}}
+  ],
+  setup:'36m x 25m. Each end: two mini goals out wide and a 3m pole gate in the middle. 6v6. Blues attack the bottom, oranges attack the top. Keeper (1) guards the top pole gate and starts Blues attacks.',
+  rules:'Mini goal: 1 point. Dribble through the pole gate under control: 2 points. Offside is on. After a goal, new ball in from the side to the team who scored.',
+  restarts:'Restart on alternate sides to make new pictures. Swap ends after 8 minutes so the keeper faces both ways.',
+  points:'Support the ball carrier either side and behind. Quick attack one way, then switch the point of attack. Big switch into space, to feet. Out of possession: stay compact, guard the two goals nearest the ball. Lose it: press hard straight away.',
+  harder:'Two touch max for the team with the ball. A goal straight after a switch counts double.',
+  gk:'Guards the top pole gate (a dribble through it is 2 points) and starts every Blues attack, short or wide. Swap ends after 8 minutes so he faces both ways.'
+},
+{
+  minutes:'57 to 60 min', title:'Cool down and three questions', short:'Cool down',
+  theme:'Reflect', format:'Light jog and stretch', area:'Half pitch', kit:'None', start:'Keep it calm.',
+  L:30, W:20, zones:[], cones:[], goals:[],
+  players:[P('K','1',6,10),P('B','4',9,5),P('B','5',9,10),P('B','6',9,15),P('B','2',15,3),P('B','3',15,17),
+           P('B','7',14,7),P('B','8',13,10),P('B','10',14,13),P('B','9',20,8),P('B','11',20,12)],
+  ball:'B8',
+  steps:[
+    {c:'Question 1: Why do we keep it on one side first?', m:{B7:[13,8],B8:[13,10]}},
+    {c:'Question 2: How many passes to switch it?', m:{B2:[16,4],B3:[16,16]}},
+    {c:'Question 3: Keeper, where do you look first when it comes back?', m:{K1:[7,10]}}
+  ],
+  setup:'Light jog and stretch.', rules:'Ask the three questions.', restarts:'',
+  points:'Keep it on one side to pull them over. Switch with one big pass or two quick ones. Keeper: look to the far side first.',
+  harder:'Save one coaching line each in Touchline Reflect.',
+  gk:'Answers question 3: where do you look first when the ball comes back to you?'
+}
+];
+
+/* ---------- Build states ---------- */
+PARTS.forEach(part => {
+  const pos = {}; part.players.forEach(p => pos[p.id] = [p.x, p.y]);
+  let holder = part.ball;
+  part.states = [{ pos: JSON.parse(JSON.stringify(pos)), holder }];
+  part.steps.forEach(s => {
+    const prev = part.states[part.states.length - 1];
+    const np = JSON.parse(JSON.stringify(prev.pos));
+    for (const k in (s.m || {})) { if (!np[k]) console.warn('Unknown id', k); np[k] = s.m[k]; }
+    const h = s.p ? s.p[s.p.length - 1] : prev.holder;
+    part.states.push({ pos: np, holder: h });
+  });
+});
+
+/* Sequence of screens */
+const SEQ = [];
+PARTS.forEach((part, i) => {
+  SEQ.push({ part:i, type:'intro', dur:INTRO_DUR });
+  part.steps.forEach((s, k) => SEQ.push({ part:i, type:'step', k, dur:STEP_DUR }));
+  SEQ.push({ part:i, type:'outro', dur:OUTRO_DUR });
+});
+
+/* ---------- Canvas setup ---------- */
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d');
+ctx.scale(2, 2);   // draw in 1280 x 720 design units at 2x for sharpness
+
+const AREA = { x:40, y:62, w:1200, h:526 };   // pitch area
+const MARGIN = 30;
+
+function geom(part) {
+  const s = Math.min((AREA.w - 2*MARGIN) / part.L, (AREA.h - 2*MARGIN) / part.W);
+  const pw = part.L * s, ph = part.W * s;
+  return { s, ox: AREA.x + (AREA.w - pw)/2, oy: AREA.y + (AREA.h - ph)/2, pw, ph };
+}
+const toPx = (g, x, y) => [g.ox + x*g.s, g.oy + y*g.s];
+
+const clamp = (v, a=0, b=1) => Math.max(a, Math.min(b, v));
+const ease = t => t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3)/2;
+const lerp = (a, b, t) => a + (b - a)*t;
+
+function roundRect(x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r, y); ctx.arcTo(x+w, y, x+w, y+h, r); ctx.arcTo(x+w, y+h, x, y+h, r);
+  ctx.arcTo(x, y+h, x, y, r); ctx.arcTo(x, y, x+w, y, r); ctx.closePath();
+}
+function wrap(text, maxW) {
+  const words = String(text).split(' '); const lines = []; let line = '';
+  for (const w of words) {
+    const test = line ? line + ' ' + w : w;
+    if (ctx.measureText(test).width > maxW && line) { lines.push(line); line = w; } else line = test;
+  }
+  if (line) lines.push(line);
+  return lines;
+}
+const sentences = t => String(t).split(/(?<=\.)\s+/).map(s => s.trim()).filter(Boolean);
+
+/* ---------- Drawing pieces ---------- */
+function drawPitch(part, g) {
+  // grass with a margin
+  ctx.fillStyle = COL.grass;
+  roundRect(g.ox - 22, g.oy - 22, g.pw + 44, g.ph + 44, 12); ctx.fill();
+  // mowing stripes across the length
+  const n = part.L >= 30 ? Math.round(part.L / 4) : Math.round(part.L / 2);
+  const sw = (g.pw + 44) / n;
+  ctx.save(); roundRect(g.ox - 22, g.oy - 22, g.pw + 44, g.ph + 44, 12); ctx.clip();
+  ctx.fillStyle = 'rgba(255,255,255,0.045)';
+  for (let i = 0; i < n; i += 2) ctx.fillRect(g.ox - 22 + i*sw, g.oy - 22, sw, g.ph + 44);
+  ctx.restore();
+  // zones
+  part.zones.forEach(z => {
+    const [x0, y0] = toPx(g, z.x0, z.y0), [x1, y1] = toPx(g, z.x1, z.y1);
+    ctx.fillStyle = 'rgba(255,255,255,0.09)'; ctx.fillRect(x0, y0, x1-x0, y1-y0);
+    ctx.setLineDash([9, 7]); ctx.strokeStyle = 'rgba(255,255,255,0.85)'; ctx.lineWidth = 2;
+    [[x0,y0,x1,y0],[x0,y1,x1,y1],[x0,y0,x0,y1],[x1,y0,x1,y1]].forEach(([a,b,c,d]) => { ctx.beginPath(); ctx.moveTo(a,b); ctx.lineTo(c,d); ctx.stroke(); });
+    ctx.setLineDash([]);
+    ctx.fillStyle = 'rgba(255,255,255,0.8)'; ctx.font = `600 14px ${FONT}`;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    ctx.fillText(z.label, x0 + 6, y0 + 5);
+  });
+  // boundary
+  ctx.strokeStyle = '#fff'; ctx.lineWidth = 3;
+  ctx.strokeRect(g.ox, g.oy, g.pw, g.ph);
+  // mini goals
+  part.goals.forEach(([cx, cy, w]) => {
+    const [x0] = toPx(g, cx - w/2, cy), [x1, y] = toPx(g, cx + w/2, cy);
+    const d = 13, top = cy === 0 ? y - d : y;
+    ctx.fillStyle = 'rgba(255,255,255,0.25)'; ctx.fillRect(x0, top, x1-x0, d);
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 3; ctx.strokeRect(x0, top, x1-x0, d);
+  });
+  // cones / poles
+  part.cones.forEach(([x, y]) => { const [px, py] = toPx(g, x, y); drawCone(px, py); });
+}
+function drawCone(px, py, size = 9) {
+  ctx.beginPath(); ctx.moveTo(px, py - size); ctx.lineTo(px + size*0.9, py + size*0.6); ctx.lineTo(px - size*0.9, py + size*0.6); ctx.closePath();
+  ctx.fillStyle = COL.cone; ctx.fill(); ctx.strokeStyle = '#5a3d00'; ctx.lineWidth = 1.2; ctx.stroke();
+}
+function drawPlayer(team, label, px, py) {
+  const st = TEAM[team];
+  ctx.save();
+  ctx.shadowColor = 'rgba(0,0,0,0.45)'; ctx.shadowBlur = 6; ctx.shadowOffsetY = 2;
+  ctx.beginPath(); ctx.arc(px, py, R, 0, Math.PI*2); ctx.fillStyle = st.fill; ctx.fill();
+  ctx.restore();
+  ctx.beginPath(); ctx.arc(px, py, R, 0, Math.PI*2);
+  ctx.strokeStyle = team === 'Y' ? '#14213D' : '#fff'; ctx.lineWidth = team === 'K' ? 3.5 : 2.5; ctx.stroke();
+  if (team === 'Y') { ctx.beginPath(); ctx.arc(px, py, R + 2, 0, Math.PI*2); ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke(); }
+  ctx.fillStyle = st.text; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.font = `800 ${label.length > 1 ? 17 : 20}px ${FONT}`;
+  ctx.fillText(label, px, py + 1);
+}
+function drawBall(px, py) {
+  ctx.beginPath(); ctx.arc(px, py, 7, 0, Math.PI*2);
+  ctx.fillStyle = '#fff'; ctx.fill(); ctx.strokeStyle = '#111'; ctx.lineWidth = 2; ctx.stroke();
+  ctx.beginPath(); ctx.arc(px, py, 2.4, 0, Math.PI*2); ctx.fillStyle = '#111'; ctx.fill();
+}
+function arrow(x1, y1, x2, y2, color, dashed, alpha = 1) {
+  const dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy);
+  if (len < 2*R + 10) return;
+  const ux = dx/len, uy = dy/len;
+  const sx = x1 + ux*(R + 4), sy = y1 + uy*(R + 4);
+  const ex = x2 - ux*(R + 6), ey = y2 - uy*(R + 6);
+  ctx.save(); ctx.globalAlpha = alpha;
+  ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = dashed ? 2.5 : 3.5;
+  ctx.setLineDash(dashed ? [8, 6] : []);
+  ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(ex - ux*8, ey - uy*8); ctx.stroke();
+  ctx.setLineDash([]);
+  const hw = 7, hl = 14;
+  ctx.beginPath(); ctx.moveTo(ex, ey);
+  ctx.lineTo(ex - ux*hl - uy*hw, ey - uy*hl + ux*hw);
+  ctx.lineTo(ex - ux*hl + uy*hw, ey - uy*hl - ux*hw); ctx.closePath(); ctx.fill();
+  ctx.restore();
+}
+const BOFF = R * 0.95;   // ball offset beside the player
+function beside(p) { return [p[0] + BOFF, p[1] + BOFF]; }
+
+/* ---------- Scene at a time ---------- */
+function drawScene(part, stepIdx, t) {
+  // stepIdx = -1 for start state, k for step k animating, or 'end' for final state
+  const g = geom(part);
+  drawPitch(part, g);
+  let from, to, step = null;
+  if (stepIdx === -1) { from = to = part.states[0]; }
+  else if (stepIdx === 'end') { from = to = part.states[part.states.length - 1]; }
+  else { from = part.states[stepIdx]; to = part.states[stepIdx + 1]; step = part.steps[stepIdx]; }
+
+  const runT = step ? ease(clamp((t - 0.2) / 2.6)) : 1;
+  const cur = {};
+  part.players.forEach(p => {
+    const a = toPx(g, ...from.pos[p.id]), b = toPx(g, ...to.pos[p.id]);
+    cur[p.id] = [lerp(a[0], b[0], runT), lerp(a[1], b[1], runT)];
+  });
+
+  // arrows
+  if (step) {
+    const fade = 1 - clamp((t - (STEP_DUR - 0.6)) / 0.6) * 0.5;
+    for (const id in (step.m || {})) {
+      const a = toPx(g, ...from.pos[id]), b = toPx(g, ...to.pos[id]);
+      arrow(a[0], a[1], b[0], b[1], 'rgba(255,255,255,0.95)', true, fade);
+    }
+    if (step.p) {
+      let passer = from.holder;
+      step.p.forEach(rc => {
+        const a = toPx(g, ...(passer === from.holder ? from.pos[passer] : to.pos[passer])), b = toPx(g, ...to.pos[rc]);
+        arrow(a[0], a[1], b[0], b[1], COL.pass, false, fade);
+        passer = rc;
+      });
+    }
+  }
+
+  // players (keeper first so outfield sit on top where they overlap)
+  const order = part.players.slice().sort((a, b) => (a.team === 'K' ? -1 : 0) - (b.team === 'K' ? -1 : 0));
+  order.forEach(p => drawPlayer(p.team, p.label, ...cur[p.id]));
+
+  // ball
+  let ball;
+  if (step && step.p) {
+    const chain = [from.holder, ...step.p];
+    const t0 = 0.5, t1 = chain.length > 2 ? 3.2 : 2.3;
+    const segs = chain.length - 1;
+    if (t <= t0) ball = beside(cur[chain[0]]);
+    else if (t >= t1) ball = beside(cur[chain[chain.length - 1]]);
+    else {
+      const u = (t - t0) / (t1 - t0) * segs, i = Math.min(segs - 1, Math.floor(u)), f = ease(u - i);
+      const a = beside(cur[chain[i]]), b = beside(cur[chain[i + 1]]);
+      ball = [lerp(a[0], b[0], f), lerp(a[1], b[1], f)];
+    }
+  } else {
+    ball = beside(cur[(step ? to : from).holder]);
+  }
+  drawBall(...ball);
+}
+
+/* ---------- Frame chrome ---------- */
+function drawHeader(part) {
+  ctx.fillStyle = '#0b1a45'; ctx.fillRect(0, 0, 1280, 54);
+  ctx.fillStyle = COL.gold; ctx.fillRect(0, 54, 1280, 3);
+  ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+  ctx.font = `800 26px ${FONT}`; ctx.fillStyle = COL.gold;
+  const stamp = part.minutes + ': ';
+  ctx.fillText(stamp, 22, 28);
+  const sw = ctx.measureText(stamp).width;
+  ctx.fillStyle = '#fff'; ctx.font = `700 24px ${FONT}`;
+  ctx.fillText(part.title, 22 + sw, 28);
+  ctx.textAlign = 'right'; ctx.font = `600 15px ${FONT}`; ctx.fillStyle = 'rgba(255,255,255,0.8)';
+  ctx.fillText('U15 Blues · Switching play', 1258, 20);
+  ctx.fillText('Wed 25 Nov · 20:00 to 21:00', 1258, 38);
+}
+function drawLegend(part) {
+  const teams = [...new Set(part.players.map(p => p.team))];
+  const order = ['B', 'K', 'O', 'Y'].filter(t => teams.includes(t));
+  const items = order.map(t => ({ kind:'team', t, label: TEAM[t].name }));
+  items.push({ kind:'pass', label:'Pass' }, { kind:'run', label:'Run' }, { kind:'ball', label:'Ball' });
+  if (part.cones.length) items.push({ kind:'cone', label: part.goals.length ? 'Pole' : 'Cone / pole' });
+  if (part.goals.length) items.push({ kind:'goal', label:'Mini goal' });
+  ctx.font = `600 15px ${FONT}`;
+  const widths = items.map(it => 30 + ctx.measureText(it.label).width + 22);
+  let x = 640 - widths.reduce((a, b) => a + b, 0) / 2;
+  const y = 604;
+  items.forEach((it, i) => {
+    const cx = x + 11;
+    if (it.kind === 'team') {
+      ctx.beginPath(); ctx.arc(cx, y, 9, 0, Math.PI*2); ctx.fillStyle = TEAM[it.t].fill; ctx.fill();
+      ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+    } else if (it.kind === 'pass' || it.kind === 'run') {
+      ctx.strokeStyle = it.kind === 'pass' ? COL.pass : '#fff'; ctx.lineWidth = 3;
+      ctx.setLineDash(it.kind === 'run' ? [5, 4] : []);
+      ctx.beginPath(); ctx.moveTo(cx - 11, y); ctx.lineTo(cx + 6, y); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = ctx.strokeStyle; ctx.beginPath(); ctx.moveTo(cx + 13, y); ctx.lineTo(cx + 4, y - 5); ctx.lineTo(cx + 4, y + 5); ctx.fill();
+    } else if (it.kind === 'ball') { drawBall(cx, y); }
+    else if (it.kind === 'cone') { drawCone(cx, y + 2, 8); }
+    else if (it.kind === 'goal') { ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.fillRect(cx - 11, y - 5, 22, 10); ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.strokeRect(cx - 11, y - 5, 22, 10); }
+    ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+    ctx.fillText(it.label, x + 28, y + 1);
+    x += widths[i];
+  });
+}
+function drawCaption(label, text, progress) {
+  ctx.fillStyle = '#0b1a45'; ctx.fillRect(0, 622, 1280, 98);
+  ctx.fillStyle = COL.gold; ctx.fillRect(0, 622, 1280, 3);
+  ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+  ctx.font = `800 16px ${FONT}`; ctx.fillStyle = COL.gold;
+  ctx.fillText(label, 24, 644);
+  ctx.font = `600 25px ${FONT}`; ctx.fillStyle = '#fff';
+  const lines = wrap(text, 1232).slice(0, 2);
+  lines.forEach((l, i) => ctx.fillText(l, 24, 676 + i*30 - (lines.length === 1 ? 0 : 0)));
+  // progress bar
+  ctx.fillStyle = 'rgba(255,255,255,0.15)'; ctx.fillRect(0, 716, 1280, 4);
+  ctx.fillStyle = COL.gold; ctx.fillRect(0, 716, 1280 * clamp(progress), 4);
+}
+
+/* ---------- Cards ---------- */
+function cardBox() {
+  ctx.fillStyle = 'rgba(6,16,43,0.62)'; ctx.fillRect(0, 57, 1280, 565);
+  ctx.fillStyle = 'rgba(11,26,69,0.96)'; roundRect(170, 72, 940, 510, 16); ctx.fill();
+  ctx.strokeStyle = COL.gold; ctx.lineWidth = 3; roundRect(170, 72, 940, 510, 16); ctx.stroke();
+}
+function drawIntro(part) {
+  cardBox();
+  ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+  ctx.fillStyle = COL.gold; ctx.font = `800 20px ${FONT}`; ctx.fillText(part.minutes.toUpperCase(), 206, 118);
+  ctx.fillStyle = '#fff'; ctx.font = `800 32px ${FONT}`;
+  const tl = wrap(part.title, 860); tl.forEach((l, i) => ctx.fillText(l, 206, 158 + i*38));
+  let y = 158 + tl.length*38 + 16;
+  const rows = [['Theme', part.theme], ['Format', part.format], ['Area', part.area], ['Kit', part.kit], ['How it starts', part.start], ['Keeper (1)', part.gk]];
+  rows.forEach(([k, v]) => {
+    ctx.font = `800 19px ${FONT}`; ctx.fillStyle = COL.gold; ctx.fillText(k, 206, y);
+    ctx.font = `500 20px ${FONT}`; ctx.fillStyle = '#fff';
+    const ls = wrap(v, 700); ls.forEach((l, i) => ctx.fillText(l, 376, y + i*26));
+    y += ls.length*26 + 12;
+  });
+}
+function drawOutro(part) {
+  cardBox();
+  ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+  ctx.fillStyle = COL.gold; ctx.font = `800 20px ${FONT}`; ctx.fillText(part.short.toUpperCase() + ' · COACHING POINTS', 206, 118);
+  let y = 158;
+  const block = (items) => {
+    ctx.font = `500 20px ${FONT}`; ctx.fillStyle = '#fff';
+    items.forEach(s => {
+      const ls = wrap(s, 820);
+      ctx.fillStyle = COL.gold; ctx.beginPath(); ctx.arc(214, y - 7, 4.5, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = '#fff';
+      ls.forEach((l, i) => ctx.fillText(l, 232, y + i*26));
+      y += ls.length*26 + 8;
+    });
+  };
+  block(sentences(part.points));
+  y += 14;
+  ctx.fillStyle = COL.gold; ctx.font = `800 20px ${FONT}`; ctx.fillText('MAKE IT HARDER', 206, y); y += 34;
+  block(sentences(part.harder));
+}
+
+/* ---------- Player state ---------- */
+let idx = 0, t = 0, playing = false, runOnce = false, last = null;
+
+function render() {
+  const item = SEQ[idx], part = PARTS[item.part];
+  ctx.fillStyle = COL.navy; ctx.fillRect(0, 0, 1280, 720);
+  if (item.type === 'intro') {
+    drawScene(part, -1, 0); drawIntro(part);
+    drawCaption('INTRO · ' + part.short.toUpperCase(), 'How it starts: ' + part.start, t / item.dur);
+  } else if (item.type === 'outro') {
+    drawScene(part, 'end', 0); drawOutro(part);
+    drawCaption('COACHING POINTS', 'Freeze it, check the coaching points, then make it harder if they have got it.', t / item.dur);
+  } else {
+    drawScene(part, item.k, t);
+    drawCaption(`STEP ${item.k + 1} OF ${part.steps.length}`, part.steps[item.k].c, t / item.dur);
+  }
+  drawHeader(part);
+  drawLegend(part);
+}
+
+function tick(ts) {
+  if (last == null) last = ts;
+  const dt = Math.min(0.1, (ts - last) / 1000); last = ts;
+  const item = SEQ[idx];
+  if (playing) {
+    t += dt;
+    if (t >= item.dur) {
+      if (idx < SEQ.length - 1) { setIdx(idx + 1, false); }
+      else { t = item.dur; setPlaying(false); }
+    }
+  } else if (runOnce) {
+    t += dt;
+    if (t >= item.dur) { t = item.dur; runOnce = false; }
+  }
+  render();
+  requestAnimationFrame(tick);
+}
+
+const btnPlay = document.getElementById('play');
+const sel = document.getElementById('jump');
+const notes = document.getElementById('notes');
+
+function setPlaying(v) {
+  playing = v; runOnce = false;
+  if (v && idx === SEQ.length - 1 && t >= SEQ[idx].dur) setIdx(0, false);
+  btnPlay.innerHTML = v ? '&#10074;&#10074; Pause' : '&#9654; Play';
+}
+let shownPart = -1;
+function setIdx(i, once = true) {
+  idx = clamp(i, 0, SEQ.length - 1); t = 0;
+  runOnce = !playing && once;
+  const p = SEQ[idx].part;
+  if (sel.value != p) sel.value = p;
+  if (p !== shownPart) { shownPart = p; showNotes(p); }
+}
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function list(text) { return '<ul>' + sentences(text).map(s => `<li>${esc(s)}</li>`).join('') + '</ul>'; }
+function showNotes(i) {
+  const p = PARTS[i];
+  let h = `<h2>Coach notes: ${esc(p.minutes)}: ${esc(p.title)}</h2>
+  <div class="meta">Theme: ${esc(p.theme)} · Format: ${esc(p.format)} · Area: ${esc(p.area)} · Kit: ${esc(p.kit)}</div>
+  <h3>Set up</h3><p>${esc(p.setup)}</p>
+  <h3>Rules</h3>${list(p.rules)}`;
+  if (p.restarts) h += `<h3>Restarts</h3>${list(p.restarts)}`;
+  h += `<h3>Coaching points</h3>${list(p.points)}
+  <h3>Make it harder</h3>${list(p.harder)}
+  <h3>Keeper (1) in this part</h3><p>${esc(p.gk)}</p>`;
+  notes.innerHTML = h;
+}
+
+PARTS.forEach((p, i) => { const o = document.createElement('option'); o.value = i; o.textContent = `${p.minutes}: ${p.short}`; sel.appendChild(o); });
+sel.addEventListener('change', () => setIdx(SEQ.findIndex(s => s.part == sel.value)));
+btnPlay.addEventListener('click', () => setPlaying(!playing));
+document.getElementById('next').addEventListener('click', () => setIdx(idx + 1));
+document.getElementById('prev').addEventListener('click', () => setIdx(idx - 1));
+document.getElementById('restart').addEventListener('click', () => { setIdx(0, false); setPlaying(true); });
+cv.addEventListener('click', () => setPlaying(!playing));
+document.addEventListener('keydown', e => {
+  if (e.target === sel) return;
+  if (e.code === 'Space') { e.preventDefault(); setPlaying(!playing); }
+  else if (e.code === 'ArrowRight') setIdx(idx + 1);
+  else if (e.code === 'ArrowLeft') setIdx(idx - 1);
+  else if (e.key === 'r' || e.key === 'R') { setIdx(0, false); setPlaying(true); }
+});
+
+setIdx(0, false);
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>
