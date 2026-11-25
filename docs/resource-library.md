@@ -32,3 +32,7 @@ Coach: Train, Library mode, Library tab. Player and parent: Library card on the 
 - Push alert to the player when an item is given (the push worker exists, not wired to this).
 - "I tried it" is recorded but does not yet feed the marks and needs loop.
 - The research table of 51 sources was not in the prompt file, so only the items listed in the prompt are in lib.js. Topics are set to 0 (positional play) unless noted, and U15 suitable is only ticked for items already known to suit.
+
+## Tactx
+
+Tactx is a paid coaching library (animated practices, full sessions and analysis). Touchline stores titles and links only, the same way it does for Sportplan. Nothing is copied or embedded. Items are coach only until you approve them, and they open on tactxcoach.com. Free catalog titles are marked free. Other Tactx titles are marked Members in the coach app, because they are included with the team's Tactx membership. They still open on Tactx. Terms: https://tactxcoach.com/terms
