@@ -1,0 +1,417 @@
+{
+  "report": {
+    "added": 453,
+    "skipped": 76,
+    "free": 83,
+    "paid": 370,
+    "fmt": {
+      "n": 334,
+      "v": 119
+    },
+    "topic": {
+      "4": 34,
+      "8": 7,
+      "13": 118,
+      "7": 37,
+      "10": 72,
+      "1": 47,
+      "6": 36,
+      "0": 71,
+      "2": 23,
+      "5": 6,
+      "15": 1,
+      "9": 1
+    },
+    "titleSource": {
+      "catalog": 409,
+      "sitemap-slug": 44
+    },
+    "skippedByReason": {
+      "futsal or homepage leftover": 24,
+      "blog, live recording or coming-soon listing": 45,
+      "sitemap clip without a public catalog title": 7
+    }
+  },
+  "skipped": [
+    {
+      "url": "https://tactxcoach.com/programs/collection-smafbrxjhzk",
+      "title": "EXPLORING VIDEO ANALYSIS WITH VEO - ENGLAND FUTSAL WEBINAR",
+      "reason": "futsal or homepage leftover"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/collection-1fkm2dk-lyk",
+      "title": "BUILDING AN IDENTITY WITH SERGIO MULLOR - ENGLAND FUTSAL WEBINAR",
+      "reason": "futsal or homepage leftover"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/developing-the-performer-with-luke-webb-futsal-pride-dna",
+      "title": "DEVELOPING THE PERFORMER WITH LUKE WEBB - FUTSAL PRIDE DNA SERIES",
+      "reason": "futsal or homepage leftover"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/developing-the-athlete-with-isaac-thurston-futsal-pride-dna",
+      "title": "DEVELOPING THE ATHLETE WITH ISAAC THURSTON - FUTSAL PRIDE DNA SERIES",
+      "reason": "futsal or homepage leftover"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/preparing-for-training-with-indoor-data-futsal-pride-dna",
+      "title": "PREPARING FOR TRAINING WITH INDOOR DATA - FUTSAL PRIDE DNA SERIES",
+      "reason": "futsal or homepage leftover"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/role-and-responsibilities-of-the-pivot-futsal-pride-dna",
+      "title": "THE ROLE AND RESPONSIBILITIES OF THE PIVOT WITH JOE RYAN - FUTSAL PRIDE DNA SERIES",
+      "reason": "futsal or homepage leftover"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/developing-the-player-with-john-tapia-owens-futsal-pride-dna",
+      "title": "DEVELOPING THE PLAYER WITH JOHN TAPIA-OWENS - FUTSAL PRIDE DNA SERIES",
+      "reason": "futsal or homepage leftover"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/building-athletically-dominant-players-with-wharrsion-muzzy-england-futsal-winter-series",
+      "title": "BUILDING ATHLETICALLY DOMINANT PLAYERS WITH HARRISON MUZZY - ENGLAND FUTSAL WINTER SERIES 25/26",
+      "reason": "futsal or homepage leftover"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/pressing-principles-with-mico-martic",
+      "title": "PRESSING PRINCIPLES WITH MICO MARTIC - ENGLAND FUTSAL WINTER SERIES 25/26",
+      "reason": "futsal or homepage leftover"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/collection-bgdbvpswytc",
+      "title": "CONNECTING WITH THE PIVOT IN THE ATTACKING THIRD WITH MAX BELLARTE - ENGLAND FUTSAL WINTER SERIES 25/26",
+      "reason": "futsal or homepage leftover"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/marko-gavrilovic-webinar",
+      "title": "ATTACKING DUALITIES WITH MARKO GAVRILOVIC - ENGLAND FUTSAL WINTER SERIES 25/26",
+      "reason": "futsal or homepage leftover"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/gargelli-webinar",
+      "title": "DEFENSIVE TRANSITIONS WITH SERGIO GARGELLI - ENGLAND FUTSAL WINTER SERIES 25/26",
+      "reason": "futsal or homepage leftover"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/collection-t2gducpupu0",
+      "title": "VERTICAL PLAY & ATTACKING SPACE WITH SERGIO MULLOR - ENGLAND FUTSAL WINTER SERIES 25/26",
+      "reason": "futsal or homepage leftover"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/collection-smallunitfutsal",
+      "title": "SMALL UNIT PLAY WITH JOHN TAPIA OWENS - ENGLAND FUTSAL WINTER SERIES 25/26",
+      "reason": "futsal or homepage leftover"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/control-receive-pass-futsal",
+      "title": "CONTROL, RECEIVE & PASS - FUTSAL",
+      "reason": "futsal or homepage leftover"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/traveling-running-with-the-ball-futsal",
+      "title": "TRAVELLING & RUNNING WITH THE BALL - FUTSAL",
+      "reason": "futsal or homepage leftover"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/game-of-three-futsal",
+      "title": "GAME OF THREE - FUTSAL",
+      "reason": "futsal or homepage leftover"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/game-of-two-futsal",
+      "title": "GAME OF TWO - FUTSAL",
+      "reason": "futsal or homepage leftover"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/futsal-to-football-futsal-class",
+      "title": "FUTSAL TO FOOTBALL - FUTSAL",
+      "reason": "futsal or homepage leftover"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/shooting-and-finishing-futsal-class",
+      "title": "SHOOTING & FINISHING - FUTSAL",
+      "reason": "futsal or homepage leftover"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/moving-and-feinting-futsal-class",
+      "title": "MOVING & FEINTING - FUTSAL",
+      "reason": "futsal or homepage leftover"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/defensive-fundamentals-class-1-england-futsal",
+      "title": "DEFENSIVE FUNDAMENTALS CLASS 1 - FUTSAL (DEFENDING IN PAIRS)",
+      "reason": "futsal or homepage leftover"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/goalkeeping-fundamentals-class-1-futsal",
+      "title": "GOALKEEPING FUNDAMENTALS CLASS 1 - FUTSAL",
+      "reason": "futsal or homepage leftover"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/talking-everything-football-episode-14-the-system-shifts",
+      "title": "Talking Everything Football - Episode 14 - The System Shifts & Subscribers' Questions",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/formations-in-youth-football",
+      "title": "TALKING EVERYTHING FOOTBALL 13 - FORMATIONS IN YOUTH FOOTBALL. WHAT TO PLAY?",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/tef-jon-mackenzie-3ba402",
+      "title": "TALKING EVERYTHING FOOTBALL - EPISODE 12 - A LIVE WEBINAR WITH JON MACKENZIE",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/talking-everything-football-episode-11-artetas-attacking-organisation",
+      "title": "TALKING EVERYTHING FOOTBALL - EPISODE 11 - ARTETA'S ATTACKING ORGANISATION",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/brighton-chelsea",
+      "title": "TALKING EVERYTHING FOOTBALL - EPISODE 9 - BRIGHTON, VAN HECKE AND SHAMBOLIC CHELSEA",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/the-arsenal-press-and-where-it-went-wrong",
+      "title": "THE ARSENAL PRESS AND WHERE IT WENT WRONG - MAN CITY VS ARSENAL ANALYSIS",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/pep-outsmarts-arteta",
+      "title": "TALKING EVERYTHING FOOTBALL - EPISODE 8 - PEP OUTSMARTS ARTETA",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/mantoman-press",
+      "title": "TALKING EVERYTHING FOOTBALL EPISODE 7 - BEATING THE MAN-TO-MAN PRESS",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/tef-episode-6-the-nine-movement-patterns",
+      "title": "TALKING EVERYTHING FOOTBALL EPISODE 6 - THE NINE MOVEMENT PATTERNS",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/collection-fnxdhq9mbva",
+      "title": "TALKING EVERYTHING FOOTBALL EPISODE 5 - FABREGAS, COMO AND SUBSCRIBERS QUESTIONS",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/attacking-transition-class",
+      "title": "TALKING EVERYTHING FOOTBALL EPISODE 4 - ATTACKING TRANSITION",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/tef-episode-3-side-pressure-defending",
+      "title": "TALKING EVERYTHING FOOTBALL EPISODE 3 - SIDE PRESSURE DEFENDING",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/defending-arsenal-corners",
+      "title": "TALKING EVERYTHING FOOTBALL - EPISODE 2 - DEFENDING THE ARSENAL CORNER",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/tef-episode-1-e69e99",
+      "title": "TALKING EVERYTHING FOOTBALL EPISODE 1 - THE 3-BOX-3 AGAINST THE 4-4-2 FORMATION",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/low-block-in-football",
+      "title": "Low Block in Football: How to Defend It and Coach It",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/3v3-football",
+      "title": "3v3 Football: Why the FA's New Format Works and How to Coach It",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/what-is-attacking-transition-in-football",
+      "title": "Attacking Transition Drills: When to Risk and When to Retain",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/anthony-gordon-england-dna",
+      "title": "Anthony Gordon Says It's Not in England's DNA. We Think He's Diagnosing the Wrong Problem",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/what-is-scanning-in-football",
+      "title": "What Is Scanning in Football? A Coaching Guide",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/i-signed-iliman-ndiaye-for-100-a-week",
+      "title": "I signed Iliman Ndiaye for \u00a3100 a Week. He Just Joined Manchester City.",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/player-development-in-america",
+      "title": "Player Development in America: The Real Hurdle",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/supporting-movements-in-football",
+      "title": "Supporting Movements in Football: How to Coach Players to Find Space",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/counter-pressing-gegenpressing-system",
+      "title": "Counter Pressing: The Gegenpressing System Your Players Can Actually Learn",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/best-1v1-skills-in-football",
+      "title": "The Best 1v1 Skills in Football: What 30 Pro Games of Data Reveal",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/football-periodisation-explained",
+      "title": "Football Periodisation Explained: A Practical Guide for Youth and Grassroots Coaches",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/defensive-midfielder-in-possession",
+      "title": "The Defensive Midfielder in Possession: Show, Slide, Sink, Step On",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/how-to-coach-the-4-3-3",
+      "title": "How to Coach the 4-3-3: From Training Sessions to Match Day",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/football-player-development",
+      "title": "Football Player Development: The 3-Stage Coach Framework",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/best-formations-for-youth-teams",
+      "title": "Best Formations For Youth Teams",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/5-best-football-passing-drills",
+      "title": "5 Best Football Passing Drills for Better Ball Control",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/best-football-drills-for-u9-to-u12-players",
+      "title": "Best Football Drills for 9 to 12 Year Olds: A Foundation Phase Guide",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/rondo-football-drills",
+      "title": "Rondo Football Drills: Setup, Variations & Coaching Tips",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/erling-haaland-finishing-drills-for-football-coaches",
+      "title": "How Erling Haaland Scores Goals: 4 Finishing Actions Coaches Can Train",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/how-to-beat-man-to-man-press",
+      "title": "How To Beat Man-To-Man Press In Football / Tactical Guide",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/modern-number-10-role-in-football",
+      "title": "The Modern Number 10 in Football: Skills, Tactics & Coaching Guide",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/dribbling-mastery",
+      "title": "6 Small-Sided Games to Develop Dribbling Under Pressure: A Coaching Guide",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/football-pressing-drills",
+      "title": "Top 6 Football Pressing Drills To Dominate The Pitch",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/football-dribbling-drills",
+      "title": "Dribbling Drills to Beat Pressure: A Football Coaching Guide",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/blog-buildup",
+      "title": "Why Your Football Team Struggles To Build From The Back",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/shooting-drills-to-improve-scoring-in-football",
+      "title": "Shooting Drills To Improve Scoring In Football Training",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/football-passing-drills-that-improve-team-possession",
+      "title": "Football Passing Drills That Improve Team Possession",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/top10-football-practices",
+      "title": "10 Core Training Practices Every Coach Should Use to Develop Technical Players",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/how-to-plan-football-training",
+      "title": "How To Plan A Football Training Session",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/warm-up-practices",
+      "title": "Best 10 Warm-Up Practices For Youth Football Coaches",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/small-sided-games",
+      "title": "Small-Sided Games For Football Training Sessions",
+      "reason": "blog, live recording or coming-soon listing"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/tactx-homepage-0e929b",
+      "title": "Tactx Homepage",
+      "reason": "futsal or homepage leftover"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/arsenal-clip-1-talkover-0f2fb3",
+      "title": "Arsenal Clip 1 Talkover",
+      "reason": "sitemap clip without a public catalog title"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/arsenal-clip-2-talkover-d4914b",
+      "title": "Arsenal Clip 2 Talkover",
+      "reason": "sitemap clip without a public catalog title"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/arsenal-clip-3-talkover-e901c5",
+      "title": "Arsenal Clip 3 Talkover",
+      "reason": "sitemap clip without a public catalog title"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/clip-10-c97f62",
+      "title": "Clip 10",
+      "reason": "sitemap clip without a public catalog title"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/chel-clip-2-painted-f43c97",
+      "title": "Chel Clip 2 Painted",
+      "reason": "sitemap clip without a public catalog title"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/clip-3-paint-a93175",
+      "title": "Clip 3 Paint",
+      "reason": "sitemap clip without a public catalog title"
+    },
+    {
+      "url": "https://tactxcoach.com/programs/chel-clip-3-f6dd0f",
+      "title": "Chel Clip 3",
+      "reason": "sitemap clip without a public catalog title"
+    }
+  ]
+}

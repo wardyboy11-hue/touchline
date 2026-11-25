@@ -17,3 +17,5 @@ python3 libbuild/build.py   # then copy the output to coach/library.json
 - Coaches' Voice is paid and personal-licence: link only, never rehost or copy text/media. Items are marked `private`.
 - No player data, ever.
 - `res.js` items are merged at runtime by `resList()`, not duplicated here.
+
+Tactx link-only rows are built from `tools/tactx-catalog.json` by `python3 tools/apply-tactx-library.py` and written into `coach/lib.js` (Library) and `coach/res.js` (Resources). Titles and URLs only.
